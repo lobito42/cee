@@ -49,6 +49,10 @@ CORE_ONLY = (
     ".githooks/",
     ".github/",
     "tools/guard.py",
+    "LICENSE",
+    "NOTICE",
+    "sdk/LICENSE",
+    "format/LICENSE",
 )
 BRANCH_RE = re.compile(r"^(?:claude/)?(spec|tests|change)/([a-z0-9][a-z0-9-]*)$")
 

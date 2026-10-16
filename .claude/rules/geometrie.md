@@ -1,22 +1,22 @@
 ---
 paths:
-  - "packages/cadloop-core/**/*.py"
-  - "packages/geometry-service/**/*.py"
-  - "packages/rules/**/*.py"
+  - "worker/**/*.py"
   - "parts/**/*.py"
+  - "sdk/python/**/*.py"
 ---
 <!-- generiert von tools/sync_agents.py – Quelle: docs/rules/geometrie.md -->
 
-# Regeln für Geometrie-Code (Python, build123d/OCP)
+# Regeln für Geometrie (Worker in Python, build123d/OCP)
 
-- Topologie nie über Listenindizes referenzieren (`faces()[3]`). Immer über Feature-ID, Selektor mit
+- Der Worker ist zustandslos: Eingabe ist eine Nachricht nach `format/kernel/`, Ausgabe ein Ergebnis mit
+  Inhalts-Hash. Kein Zugriff auf Datenbank, Netz oder Dateien außerhalb des Auftrags (ADR-032).
+- Topologie nie über Listenindizes referenzieren (`faces()[3]`). Immer über Element-ID, Selektor mit
   Begründung oder veröffentlichten Namen (ADR-016).
-- Jede Kernel-Operation, die Topologie erzeugt oder verändert, läuft über die Wrapper in
-  `cadloop_core.ops`, damit die Topologie-Historie aufgezeichnet wird. Direkte OCP-Aufrufe nur in
-  `cadloop_core.kernel`.
-- Features sind deterministisch: keine Zufallszahlen, keine Zeit, keine globalen Zustände (ADR-025).
-- Toleranzen immer explizit: `TOL_LINEAR = 1e-6` mm und `TOL_ANGULAR = 1e-9` rad aus `cadloop_core.tol`.
-- Kernel-Fehler (`StdFail_NotDone`, ungültige Shapes) in `CadloopGeometryError` mit Feature-ID und
-  Hinweis übersetzen; nie verschlucken.
+- Jede Kernel-Operation, die Topologie erzeugt oder verändert, zeichnet die Topologie-Historie auf, damit
+  Unter-IDs stabil bleiben. Direkte OCP-Aufrufe nur im Modul `kernel` des Workers.
+- Operationen sind deterministisch: keine Zufallszahlen, keine Zeit, keine globalen Zustände (ADR-025).
+- Toleranzen immer explizit: `TOL_LINEAR = 1e-6` mm und `TOL_ANGULAR = 1e-9` rad.
+- Kernel-Fehler (`StdFail_NotDone`, ungültige Shapes) als strukturierte Antwort mit Element-ID und
+  Hinweis zurückgeben; nie verschlucken. Ein Absturz darf nur den Worker treffen.
 - Neue Geometrie-Funktion = mindestens ein Golden-Test (Volumen, Fläche, Schwerpunkt, Topologie-Zählung).
 - Performance: kein Ray-Casting oder Tessellieren in Schleifen über Flächen ohne Cache.

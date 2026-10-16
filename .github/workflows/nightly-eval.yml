@@ -1,7 +1,7 @@
 name: Nightly Eval
 
-# Läuft nächtlich die KI-Eval-Suite (AP-14) und Identitäts-Stresstests.
-# Bis AP-14 umgesetzt ist, führt der Job nur die vollständige Testsuite aus.
+# Läuft nächtlich die KI-Eval-Suite (ap-13) und Identitäts-Stresstests.
+# Bis ap-13 umgesetzt ist, führt der Job nur die vollständige Testsuite aus.
 
 on:
   schedule:

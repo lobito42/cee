@@ -1,6 +1,6 @@
 # ADR-003: Code ist die Quelle der Wahrheit
 
-- Status: vorgeschlagen
+- Status: ersetzt durch ADR-028
 - Datum: 2026-10-16
 - Entscheider: Kernteam
 

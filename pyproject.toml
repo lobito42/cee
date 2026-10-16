@@ -1,9 +1,9 @@
 [project]
 name = "cadloop"
 version = "0.0.1"
-description = "KI-gestütztes Code-CAD für VS Code auf Basis von build123d/OpenCascade"
+description = "Python-Teil: Geometrie-Worker (build123d/OpenCascade), Python-SDK und Harness-Werkzeuge"
 requires-python = ">=3.11,<3.14"
-license = "Apache-2.0"
+license = "MPL-2.0"  # Worker; sdk/python erhält eigenes pyproject mit Apache-2.0 (ADR-034)
 dependencies = []
 
 [project.optional-dependencies]
@@ -15,6 +15,7 @@ cad = [
 dev = [
     "pytest>=8",
     "ruff>=0.6",
+    "jsonschema>=4.23",
 ]
 
 [tool.uv]
@@ -22,7 +23,7 @@ package = false
 default-groups = ["dev"]
 
 [tool.uv.workspace]
-members = []  # packages/* werden in AP-01 ff. als Workspace-Mitglieder ergänzt
+members = []  # worker und sdk/python werden in ap-00-setup als Workspace-Mitglieder ergänzt
 
 [tool.pytest.ini_options]
 testpaths = ["tests/unit"]  # Abnahmetests gezielt: uv run pytest tests/acceptance/apxx
@@ -31,9 +32,9 @@ addopts = "-ra"
 [tool.ruff]
 line-length = 110
 target-version = "py311"
-extend-exclude = ["spikes"]
+extend-exclude = ["spikes", "server", "client", "crates", "target"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "SIM"]
-# SIM117: `with feature(...)` umschließt bewusst eigene Builder-Kontexte (Code-Konvention, ADR-024)
+# SIM117: `with feature(...)` umschließt bewusst eigene Builder-Kontexte (Script-Elemente)
 ignore = ["SIM117"]

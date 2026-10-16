@@ -7,18 +7,21 @@ Gilt für das automatische Review jedes Pull Requests und für den Reviewer-Agen
 - Meldungen von `python3 tools/guard.py range origin/main` (Vertrag auf falschem Branch geändert:
   ADRs, OpenSpec-Specs, Proposals, Abnahmetests, Werkzeug-Konfiguration).
 - Abgeschwächte, übersprungene (`skip`, `xfail`) oder gelöschte Tests.
-- Neue Abhängigkeit unter GPL/AGPL oder ohne geklärte Lizenz (ADR-013).
-- Topologie-Referenzen über Indizes statt Feature-ID oder veröffentlichtem Namen (ADR-016).
-- UI schreibt direkt in `.py`-Dateien statt über den Geometrie-Dienst (ADR-024).
+- Neue Abhängigkeit unter GPL/AGPL oder ohne geklärte Lizenz (ADR-034).
+- Topologie-Referenzen über Indizes statt Element-ID oder veröffentlichtem Namen (ADR-016).
+- Datenmodell-Logik außerhalb des Rust-Kerns nachgebaut (Server, Client, SDK) (ADR-029).
+- Geometrie im Server-Prozess statt im Worker; ein Prozess je Element statt je Dokument (ADR-030/032).
+- Elementtyp mit Sonderfeldern statt der einheitlichen Elementform (ADR-028).
 - KI-Änderung wird ohne Änderungskarte übernommen (ADR-021).
-- Netzwerkzugriffe zur Laufzeit.
+- Netzwerkzugriffe außerhalb des Sync-Protokolls zwischen Client und Server; Kern und Worker haben keinen Netzzugriff.
 
 ## Wichtig
 
 - Jedes Scenario des OpenSpec-Changes ist durch einen Test belegt; alle Tasks sind abgehakt.
-- Fehler aus dem Kernel werden strukturiert weitergegeben (Feature-ID, Hinweis), nicht verschluckt.
+- Fehler aus Kern und Worker werden strukturiert weitergegeben (Element-ID, Hinweis), nicht verschluckt.
+- Schemaänderung mit neuer `SCHEMA_VERSION`, Migration und Test mit altem Dokument.
 - MCP-Antworten bleiben kompakt (< 2.000 Tokens typisch), mit Schema.
-- UI: nur Theme-Variablen, keine Menüs oder modalen Dialoge, eine Akzentfarbe.
+- UI: nur Design-Tokens, keine Menüs oder modalen Dialoge, eine Akzentfarbe; Browser und Tauri geprüft.
 - Performance-Budgets aus der Spec sind gemessen und eingehalten.
 
 ## Hinweise

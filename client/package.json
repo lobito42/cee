@@ -1,0 +1,14 @@
+{
+  "name": "@cadloop/client",
+  "description": "Web-App und Desktop-App (Tauri 2) – Arbeitsfläche, Knoten-Editor, Textprojektion (ADR-031, ADR-035)",
+  "version": "0.0.1",
+  "license": "MPL-2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "node -e \"console.log('lint: Quellen folgen in ap-00-setup (ESLint + Prettier, TypeScript strict)')\"",
+    "test": "node -e \"console.log('test: Tests folgen in ap-00-setup (Vitest)')\"",
+    "ui:snapshot": "node -e \"console.log('ui:snapshot: folgt mit der Arbeitsfläche (Playwright, hell und dunkel)')\"",
+    "ui:perf": "node -e \"console.log('ui:perf: folgt mit der Arbeitsfläche')\""
+  }
+}

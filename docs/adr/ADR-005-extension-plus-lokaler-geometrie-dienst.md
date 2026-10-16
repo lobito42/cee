@@ -1,6 +1,6 @@
 # ADR-005: Extension plus lokaler Geometrie-Dienst
 
-- Status: vorgeschlagen
+- Status: ersetzt durch ADR-031
 - Datum: 2026-10-16
 - Entscheider: Kernteam
 

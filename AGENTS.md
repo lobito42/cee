@@ -1,8 +1,9 @@
 # CADLoop – Anweisungen für Coding-Agenten
 
-Gilt für Claude Code, OpenCode und Pi. CADLoop (Arbeitsname) ist eine Open-Source-VS-Code-Extension:
-KI erzeugt aus Anforderungen parametrische 3D-Modelle als Python-Code (build123d/OpenCascade), prüft sie
-gegen Regeln und exportiert STEP. Jedes Element hat eine stabile ID und kann veröffentlicht werden.
+Gilt für Claude Code, OpenCode und Pi. CADLoop (Arbeitsname) ist eine offene, kollaborative Plattform für
+Produktdefinition: Ein Projekt ist ein **Graph aus Elementen** – ein Achsenursprung genauso wie ein ganzes
+Bauteil. Alle sehen online denselben Stand, offline wird wie bei Git weitergearbeitet. Bearbeitet wird in
+3D, im Knoten-Editor oder als Text; KI-Agenten arbeiten über denselben Graphen.
 
 ## Arbeitsweise: Spec-driven mit OpenSpec
 
@@ -12,50 +13,55 @@ gegen Regeln und exportiert STEP. Jedes Element hat eine stabile ID und kann ver
    - `spec/<id>` – Change entwerfen: nur `openspec/changes/<id>/`
    - `tests/<id>` – Abnahmetests schreiben: nur `tests/acceptance/<id>/`, `tests/golden/`, `tests/ui-reference/`
    - `change/<id>` – umsetzen: Produktcode + Häkchen in `openspec/changes/<id>/tasks.md`
-3. **Abnahmetests sind der Vertrag.** Fertig heißt: `uv run pytest tests/acceptance/<id>` grün und alle
-   Tasks abgehakt. Tests nie abschwächen, überspringen oder löschen.
+3. **Abnahmetests sind der Vertrag.** Sie sind pytest-Tests und dürfen `cargo`, `mix` oder `npm` aufrufen.
+   Fertig heißt: `uv run pytest -q tests/acceptance/<id>` grün und alle Tasks abgehakt. Tests nie
+   abschwächen, überspringen oder löschen.
 4. **ADRs in `docs/adr/` sind verbindlich.** Widerspruch → melden, nicht umgehen.
 5. **Ein Change pro Branch und Pull Request.** Nach drei erfolglosen Anläufen am selben Problem:
    anhalten, committen, im PR unter „Offene Fragen“ beschreiben.
 
 Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `openspec/config.yaml`,
-`openspec/queue.yaml`, `AGENTS.md`, `CLAUDE.md`, `REVIEW.md`, Werkzeug-Konfiguration (`.claude/`,
-`.opencode/`, `opencode.json`, `.pi/`, `.githooks/`, `.github/`).
+`openspec/queue.yaml`, `AGENTS.md`, `CLAUDE.md`, `REVIEW.md`, Lizenzdateien, Werkzeug-Konfiguration
+(`.claude/`, `.opencode/`, `opencode.json`, `.pi/`, `.githooks/`, `.github/`).
 
 ## Token sparen (Pro-Abo)
 
 - Lies gezielt: `openspec show <id>`, `rg`, Dateiausschnitte. Nie `docs/konzept.md` komplett lesen –
   nur den Abschnitt, den der Change nennt.
-- Tests knapp: `uv run pytest -q -x <pfad>`; nur fehlschlagende Ausgaben im Detail ansehen.
+- Teste nur, was du geändert hast, und knapp: `pytest -q -x`, `cargo test -q -p <crate>`, `mix test --failed`.
 - Keine Erkundung „zur Sicherheit“. Plane kurz, setze um, prüfe mit dem Test aus der Task.
 - Regeln je Bereich stehen in `docs/rules/` – lies nur die zu deinen Dateien:
-  `geometrie.md` (packages/cadloop-core, geometry-service, rules, parts), `extension-ui.md`
-  (packages/extension), `mcp-server.md` (packages/mcp-server).
+  `kern.md` (crates/), `server.md` und `mcp.md` (server/), `client.md` (client/), `geometrie.md` (worker/, parts/, sdk/python/).
 
-## Befehle
+## Struktur und Befehle
 
-- Setup: `uv sync --extra cad`, `git config core.hooksPath .githooks`
-- Tests: `uv run pytest -q tests/unit`, Abnahme: `uv run pytest -q tests/acceptance/<id>`
-- Lint/Format: `uv run ruff check --fix . && uv run ruff format .`
+| Pfad | Inhalt | Sprache | Prüfen |
+| --- | --- | --- | --- |
+| `crates/graph` | Element-Graph, CRDT, Textprojektion – die einzige Implementierung des Datenmodells | Rust | `cargo fmt --check && cargo clippy --all-targets -- -D warnings && cargo test -q` |
+| `server/` | Sync, Presence, Historie, Freigaben, Worker-Steuerung, MCP | Elixir | `cd server && mix format --check-formatted && mix test` |
+| `client/` | Web-App und Tauri-Desktop-App | TypeScript | `cd client && npm run lint && npm test` |
+| `worker/` | Geometrie-Worker (OpenCascade über build123d/OCP) | Python | `uv run ruff check . && uv run pytest -q` |
+| `sdk/`, `format/` | SDKs und offene Formatspezifikation (Apache-2.0) | – | – |
+| `parts/` | Beispiele, z. B. Script-Element `parts/examples/halter.py` | Python | – |
+
+- Setup: `uv sync --extra cad`, `git config core.hooksPath .githooks`, `cd server && mix deps.get`
 - OpenSpec: `openspec list`, `openspec show <id>`, `openspec status --change <id>`, `openspec validate <id>`
 - Schutz prüfen: `python3 tools/guard.py check <pfad>`
 
-## Struktur
-
-`packages/cadloop-core` Identität, Publikation, Skizzen, Blech · `packages/geometry-service` lokaler
-Geometrie-Dienst · `packages/mcp-server` MCP für Claude · `packages/rules` Regel-Engine ·
-`packages/extension` VS-Code-Extension (TypeScript) · `parts/` Beispielteile · `docs/spikes/` Spike-Berichte
-
 ## Architekturregeln (Kurzfassung)
 
-- Geometrie nur über build123d/OCP (ADR-001/002). Code ist Quelle der Wahrheit; STEP/STL/PNG nie einchecken (ADR-003).
-- Topologie nie über Indizes; immer Feature-ID (`with feature("name"):`) oder veröffentlichter Name (ADR-016).
-- Export und Querverweise nur über `publish(...)`, nie über Sichtbarkeit (ADR-015/018).
-- UI ändert Code nur über LibCST (ADR-024); KI-Änderungen nur als Änderungskarte mit Vorschau (ADR-021).
-- Nur Apache-2.0-kompatible Abhängigkeiten; LGPL nur dynamisch; kein GPL (ADR-013/027). Keine Netzwerkzugriffe zur Laufzeit.
+- Der **Element-Graph ist die Quelle der Wahrheit** (ADR-028). Jedes Element hat dieselbe Form; keine
+  Sonderwege für einzelne Typen. Geometrie ist abgeleiteter Cache und wird nie gespeichert oder synchronisiert (ADR-032).
+- Datenmodell-Logik nur im Rust-Kern; Server, Client und SDK binden ihn ein (ADR-029).
+- Server: ein Prozess je Dokument, nie je Element; keine Geometrie in der BEAM (ADR-030).
+- Geometrie nur im Worker hinter der Kernel-Schnittstelle (ADR-032). Topologie nie über Indizes (ADR-016).
+- Export und Querverweise nur über veröffentlichte Elemente, nie über Sichtbarkeit (ADR-015/018).
+- KI-Änderungen nur als Änderungssatz mit Vorschau (ADR-021).
+- Lizenzen: Kern MPL-2.0, `sdk/` und `format/` Apache-2.0. Abhängigkeiten nur MPL/Apache/MIT/BSD/ISC/Zlib;
+  LGPL nur dynamisch oder im Worker-Prozess; kein GPL/AGPL (ADR-034).
 
 ## Konventionen
 
-Python ≥ 3.11 mit Typ-Hints, ruff, pytest. TypeScript strict. Bauteilmodule: `@dataclass Params`,
-`build(p: Params)`, Features in `with feature("…"):`, `publish(...)` am Ende.
-Commits im Imperativ mit Change-ID: `ap-17-identitaet: Signatur-Matching für Flächen`.
+Rust 2021, kein `unsafe`, Fehler als `Result`. Elixir mit `mix format`, Typespecs an öffentlichen
+Funktionen. TypeScript strict. Python ≥ 3.11 mit Typ-Hints, ruff, pytest.
+Commits im Imperativ mit Change-ID: `ap-01-spike-datenmodell: Merge-Zeit für 10.000 Elemente messen`.

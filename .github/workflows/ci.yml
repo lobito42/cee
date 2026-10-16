@@ -26,6 +26,41 @@ jobs:
           npm install -g @fission-ai/openspec@latest
           openspec validate --all --no-interactive
 
+  rust:
+    name: Rust-Kern
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo fmt --all --check
+      - run: cargo clippy --workspace --all-targets -- -D warnings
+      - run: cargo test -q --workspace
+      - name: Lizenzen (ADR-034)
+        uses: EmbarkStudios/cargo-deny-action@v2
+        with:
+          command: check licenses
+
+  elixir:
+    name: Elixir-Server
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v4
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: "27"
+          elixir-version: "1.18"
+      - uses: dtolnay/rust-toolchain@stable  # für die Rustler-Anbindung an crates/graph
+      - run: mix deps.get
+      - run: mix format --check-formatted
+      - run: mix compile --warnings-as-errors
+      - run: mix test
+
   python:
     name: Python (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
@@ -40,19 +75,35 @@ jobs:
       - run: uv run ruff check .
       - run: uv run ruff format --check .
       - run: uv run pytest -q tests/unit
-      - name: Fällige Abnahmetests
-        shell: bash
+
+  abnahme:
+    name: Fällige Abnahmetests
+    runs-on: ubuntu-latest
+    needs: [rust, elixir, python]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: "27"
+          elixir-version: "1.18"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: uv sync --extra cad
+      - shell: bash
         run: |
           targets=$(uv run python tools/acceptance_targets.py)
           echo "Abnahmetests: ${targets:-keine}"
           if [ -n "$targets" ]; then uv run pytest -q $targets; fi
 
-  extension:
-    name: Extension
+  client:
+    name: Client (Web)
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: packages/extension
+        working-directory: client
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -61,3 +112,4 @@ jobs:
       - run: npm install
       - run: npm run lint
       - run: npm test
+  # Tauri-Builds für Linux, Windows, macOS kommen mit dem Desktop-Gerüst (ap-00-setup, Task 1.4).

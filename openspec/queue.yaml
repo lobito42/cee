@@ -5,12 +5,18 @@
 #          build   → Tests sind gemergt, Umsetzung steht an (Branch change/<id>)
 #          review  → PR offen, wartet auf Kernteam
 #          done    → gemergt, wartet auf Archivierung
-# model:   sonnet (Standard, sparsam) | opus (nur für schwierige Geometrie)
+# model:   sonnet (Standard, sparsam) | opus (Spikes und schwierige Fälle)
 # night:   true = darf unbeaufsichtigt bearbeitet werden
 
 changes:
   - id: ap-00-setup
     phase: build
     model: sonnet
-    night: false   # Spikes S1/S4 brauchen Referenzteile und menschliche Bewertung
+    night: true    # reine Einrichtung, durch Abnahmetests vollständig prüfbar
+    depends_on: []
+
+  - id: ap-01-spike-datenmodell
+    phase: build
+    model: opus    # Agent kern-specialist
+    night: false   # Ergebnis entscheidet über ADR-028/029/033, Bewertung durch das Kernteam
     depends_on: []

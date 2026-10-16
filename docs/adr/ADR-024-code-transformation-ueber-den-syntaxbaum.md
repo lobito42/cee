@@ -1,6 +1,6 @@
 # ADR-024: Code-Transformation über den Syntaxbaum
 
-- Status: vorgeschlagen
+- Status: ersetzt durch ADR-028 und ADR-035
 - Datum: 2026-10-16
 - Entscheider: Kernteam
 

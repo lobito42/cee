@@ -1,4 +1,4 @@
-"""Abnahmetests AP-00 – Beispielteil (AK-2, AK-3)."""
+"""Abnahmetests AP-00 – Beispiel-Script-Element (AK-5)."""
 
 import importlib.util
 import sys
@@ -20,16 +20,16 @@ def _load_part():
     return module
 
 
-def test_ak2_example_part_is_valid_solid():
-    """AK-2: build(Params()) liefert einen gültigen Volumenkörper mit Volumen > 0."""
+def test_ak5_example_part_is_valid_solid():
+    """AK-5: build(Params()) liefert einen gültigen Volumenkörper mit Volumen > 0."""
     part = _load_part()
     shape = part.build(part.Params())
     assert shape.is_valid
     assert shape.volume > 0
 
 
-def test_ak3_example_part_builds_fast():
-    """AK-3: Das Beispielteil baut in unter 3 Sekunden."""
+def test_ak5_example_part_builds_fast():
+    """AK-5: Das Beispielteil baut in unter 3 Sekunden."""
     part = _load_part()
     start = time.perf_counter()
     part.build(part.Params())

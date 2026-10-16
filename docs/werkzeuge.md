@@ -4,6 +4,8 @@ Alle Werkzeuge arbeiten mit derselben Quelle: `AGENTS.md` (Anweisungen), OpenSpe
 `tools/guard.py` (Vertragsschutz) und den Skills unter `.claude/skills/`. Ein Werkzeugwechsel ändert
 nichts am Projekt.
 
+Gemeint sind die Werkzeuge **zum Entwickeln**. Das Produkt selbst ist eine Web- und Desktop-App (ADR-031).
+
 ## Überblick
 
 | | VS Code + Claude-Extension | Claude Desktop (Linux) | Claude Code CLI | OpenCode | Pi |

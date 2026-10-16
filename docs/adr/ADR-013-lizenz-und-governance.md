@@ -1,6 +1,6 @@
 # ADR-013: Lizenz und Governance
 
-- Status: vorgeschlagen
+- Status: ersetzt durch ADR-034
 - Datum: 2026-10-16
 - Entscheider: Kernteam
 

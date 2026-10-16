@@ -1,28 +1,28 @@
 ## Context
 
-Siehe proposal.md – Why. Architektur und Entscheidungen stehen in `docs/adr/`; dieser Change liefert die
-Messwerte, mit denen die ADRs im Workshop bestätigt oder überarbeitet werden.
+Siehe proposal.md – Why. Architektur in `docs/adr/` (ADR-028 bis ADR-036). Dieser Change liefert nur das
+Gerüst; Inhalte entstehen in den folgenden Changes.
 
 ## Goals / Non-Goals
 
-**Goals:** belastbare Messwerte je Spike; lauffähige Pipeline; reproduzierbare Umgebung.
+**Goals:** jede Sprache baut, testet und formatiert lokal und in der CI; reproduzierbare Umgebung
+(`.devcontainer/`); Lizenzregeln automatisch geprüft.
 
-**Non-Goals:** keine produktiven Funktionen in `packages/`; Spike-Code wird nicht übernommen, sondern
-dient nur als Beleg.
+**Non-Goals:** keine Produktfunktionen; keine Rustler-Anbindung (ap-03); keine Geometrie-Operationen außer `ping`.
 
 ## Decisions
 
-| Spike | Frage | Messung | Go, wenn |
-| --- | --- | --- | --- |
-| S1 Identität | Lässt sich die OCCT-Topologie-Historie über OCP stabil auf IDs abbilden? | Erhaltungsquote der Flächen-IDs über ≥ 50 zufällige Parameteränderungen an 3 Referenzteilen | ≥ 95 % ohne Eingriff, 0 falsche Zuordnungen |
-| S2 Rebuild | Reicht ein Feature-Cache für flüssige Bedienung? | Rebuild-Zeit nach Parameteränderung an 3 Referenzteilen | typisch < 1 s |
-| S3 Interaktion | Trägt three.js mit Element-IDs und GPU-Picking im Webview? | Picking-Latenz, Ziehgriff funktioniert | Auswahl < 100 ms |
-| S4 Blech | Ist die Abwicklung genau genug? | Abweichung zur Referenz aus kommerziellem CAD | ≤ 0,1 mm |
-| S5 Rendering | Klappt Offscreen-Rendering auf allen Plattformen? | 7 Ansichten als PNG ohne Display | auf Linux, macOS, Windows |
+| Bereich | Entscheidung | Budget |
+| --- | --- | --- |
+| Server | `mix phx.new server --app cadloop_server --no-html --no-assets --no-mailer --no-dashboard`, PostgreSQL über Ecto | `mix test` < 30 s |
+| Client | Vite + TypeScript strict, Vitest, ESLint (flat config), Prettier | `npm test` < 30 s |
+| Desktop | Tauri 2, Fenster lädt den Vite-Build; CI baut für Linux, Windows, macOS | Installer < 20 MB |
+| Worker | Paket `cadloop_worker` unter `worker/src/`, Aufruf `uv run python -m cadloop_worker`; eine JSON-Zeile je Nachricht | `ping` < 2 s inkl. Start |
+| Lizenzen | Python: pip-licenses; Rust: cargo-deny (`deny.toml`); npm: license-checker; Mix: Lizenzfeld aus `mix.lock`-Paketen | 0 Verstöße |
 
-Alternative zu S1, falls No-Go: OCAF/TNaming direkt nutzen (ADR-016 nennt das bereits).
+Antwort des Workers auf `{"op": "ping"}`: `{"ok": true, "kernel": "occt", "kernel_version": "<x.y.z>"}`.
 
 ## Risks / Trade-offs
 
-- [Referenzteile fehlen] → Spikes zunächst mit synthetischen Teilen, Fachbereich liefert nach
-- [S4 ohne kommerzielles CAD] → Referenzwerte aus Lehrbuch-Formeln für einfache Biegungen
+- [Tauri-Abhängigkeiten unter Linux (WebKitGTK)] → im Devcontainer installiert, in der CI per apt
+- [Elixir-Versionen] → lokal und in der CI Erlang 27, Elixir 1.18 (mise bzw. setup-beam)

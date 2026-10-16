@@ -5,10 +5,14 @@ context: |
   All artifacts must be written in de.
   Keep OpenSpec structural headings and SHALL/MUST keywords in English.
 
-  Projekt: KI-gestütztes Code-CAD für VS Code (Arbeitsname CADLoop). Python (build123d/OpenCascade) für
-  Geometrie, TypeScript für Extension und Arbeitsfläche, MCP-Server für Claude.
+  Projekt: offene, kollaborative Plattform für Produktdefinition (Arbeitsname CADLoop). Quelle der Wahrheit
+  ist ein Element-Graph (ADR-028): jedes Element – vom Achsenursprung bis zur Baugruppe – hat dieselbe Form.
+  Rust-Kern für das Datenmodell (crates/, ADR-029), Elixir/Phoenix-Server für Sync, Historie und Worker
+  (server/, ADR-030), TypeScript-Client als Web- und Tauri-App (client/, ADR-031), Python-Worker mit
+  OpenCascade für Geometrie (worker/, ADR-032). Lizenz: Kern MPL-2.0, sdk/ und format/ Apache-2.0 (ADR-034).
   Architekturentscheidungen stehen in docs/adr/ (README.md ist der Index). Sie sind verbindlich.
   Ein Change ist ein Arbeitspaket aus docs/konzept.md (Abschnitt Arbeitspakete); Change-ID: ap-xx-kurzname.
+  Abnahmetests sind pytest-Tests unter tests/acceptance/<change-id>/ und dürfen cargo, mix und npm aufrufen.
 
 rules:
   proposal:
@@ -27,7 +31,7 @@ operations:
   apply:
     guidance:
       - Arbeite auf dem Branch change/<change-id>; Abnahmetests unter tests/acceptance/<change-id>/ sind der Vertrag und werden nicht geändert
-      - Testausgaben knapp halten (pytest -q -x); nur fehlschlagende Tests im Detail lesen
+      - Testausgaben knapp halten (pytest -q -x, cargo test -q, mix test --failed); nur fehlschlagende Tests im Detail lesen
       - Nach drei erfolglosen Anläufen am selben Problem anhalten und im PR unter Offene Fragen beschreiben
   archive:
     guidance:

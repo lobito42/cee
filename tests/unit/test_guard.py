@@ -20,6 +20,9 @@ ALLOWED = [
     ("tests/golden/halter.json", "tests/ap-17-identitaet"),
     ("tests/unit/test_x.py", "tests/ap-17-identitaet"),
     ("packages/x.py", "claude/change/ap-17-identitaet"),  # Präfix der Cloud-Routinen
+    ("crates/graph/src/lib.rs", "change/ap-01-spike-datenmodell"),
+    ("server/lib/cadloop_server.ex", "change/ap-01-spike-datenmodell"),
+    ("format/schema/element.json", "change/ap-01-spike-datenmodell"),
 ]
 
 BLOCKED = [
@@ -39,6 +42,8 @@ BLOCKED = [
     (".claude/settings.json", "main"),
     (".pi/extensions/guard.ts", "main"),
     ("opencode.json", "main"),
+    ("LICENSE", "change/ap-17-identitaet"),
+    ("sdk/LICENSE", "main"),
 ]
 
 

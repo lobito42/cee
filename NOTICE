@@ -1,3 +1,5 @@
 Copyright 2026 CADLoop contributors
 
-Licensed under the Apache License, Version 2.0. Den vollständigen Lizenztext vor dem ersten Release als LICENSE ablegen (https://www.apache.org/licenses/LICENSE-2.0.txt).
+Kern (crates/, server/, client/, worker/): Mozilla Public License 2.0, siehe LICENSE.
+SDK und Format (sdk/, format/): Apache License 2.0, siehe sdk/LICENSE und format/LICENSE.
+Entscheidung und Abhängigkeitsregeln: docs/adr/ADR-034.

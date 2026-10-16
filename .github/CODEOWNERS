@@ -4,6 +4,9 @@
 /docs/adr/            @person-a
 /tests/acceptance/    @person-a
 /tests/ui-reference/  @person-b
-/packages/extension/  @person-b
+/client/              @person-b
+/server/              @person-a
+/crates/              @person-a
+/format/              @person-a
 /AGENTS.md            @person-a
 /.claude/             @person-a

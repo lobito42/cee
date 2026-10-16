@@ -8,7 +8,8 @@ Ersetzt in Textdateien und Pfaden:
   CADLoop → Anzeigename (wie angegeben)     cadloop → kebab-case     CADLOOP → GROSS_MIT_UNTERSTRICH
   Cadloop → PascalCase (Klassennamen)       cadloop_core → snake_case-Variante (Python-Module)
   Der Zusatz „(Arbeitsname)“ entfällt.
-Danach: `python3 tools/sync_agents.py`, `uv lock`, Tests laufen lassen, committen (Rolle core).
+Danach: `python3 tools/sync_agents.py`, `uv lock`, `cargo generate-lockfile`, Tests laufen lassen,
+committen (Rolle core).
 """
 
 from __future__ import annotations
@@ -18,7 +19,17 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SKIP_DIRS = {".git", ".venv", "node_modules", "__pycache__", ".pytest_cache", ".ruff_cache"}
+SKIP_DIRS = {
+    ".git",
+    ".venv",
+    "node_modules",
+    "__pycache__",
+    ".pytest_cache",
+    ".ruff_cache",
+    "target",
+    "_build",
+    "deps",
+}
 SELF = Path(__file__).resolve()
 
 

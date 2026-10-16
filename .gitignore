@@ -22,3 +22,10 @@ CLAUDE.local.md
 .claude/worktrees/
 .env
 .env.*
+
+# Rust, Elixir, Tauri
+target/
+server/_build/
+server/deps/
+client/src-tauri/target/
+*.ez

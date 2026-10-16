@@ -1,4 +1,4 @@
 schema: spec-driven
 created: 2026-10-16
-# AP-00 ist Tooling und Spikes ohne Produktverhalten; Specs entstehen ab AP-01.
+# ap-00 ist Gerüst und Werkzeug ohne Produktverhalten; Specs entstehen ab ap-05.
 skip_specs: true

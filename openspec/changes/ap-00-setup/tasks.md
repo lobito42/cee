@@ -1,17 +1,16 @@
-## 1. Setup
+## 1. Gerüst
 
-- [ ] 1.1 uv-Workspace, ruff, pytest lauffähig – Prüfung: `uv run pytest` grün, `uv run ruff check .` sauber
-- [ ] 1.2 Beispielteil baut gültig und in < 3 s – Prüfung: `tests/acceptance/ap-00-setup/test_example_part.py`
-- [ ] 1.3 Lizenz-Scan ohne GPL/AGPL – Prüfung: `tests/acceptance/ap-00-setup/test_licenses.py`
-- [ ] 1.4 Pipeline-Durchlauf an einem Mini-Change dokumentiert – Prüfung: Link auf gemergten PR in `docs/spikes/README.md`
+- [ ] 1.1 Rust-Workspace: `cargo fmt --check`, `cargo clippy -- -D warnings`, `cargo test` grün – Prüfung: AK-2
+- [ ] 1.2 Phoenix-Anwendung in `server/` mit `GET /health` → 200 und Test – Prüfung: AK-2
+- [ ] 1.3 Client mit Vite, TypeScript strict, ESLint, Prettier, Vitest; echte `lint`- und `test`-Skripte – Prüfung: AK-3
+- [ ] 1.4 Tauri-2-Hülle in `client/src-tauri/` plus CI-Job für Linux, Windows, macOS – Prüfung: AK-1, AK-3
+- [ ] 1.5 Worker `cadloop_worker` beantwortet `ping` über stdio – Prüfung: AK-4
+- [ ] 1.6 Beispiel-Script-Element `parts/examples/halter.py` baut gültig in < 3 s – Prüfung: AK-5
 
-## 2. Spikes
+## 2. Regeln
 
-- [ ] 2.1 S1 Identität – Prüfung: `docs/spikes/S1-identitaet.md` vollständig, Erhaltungsquote genannt (AK-4, AK-5)
-- [ ] 2.2 S2 Rebuild – Prüfung: `docs/spikes/S2-rebuild.md` vollständig (AK-4)
-- [ ] 2.3 S3 Interaktion – Prüfung: `docs/spikes/S3-interaktion.md` vollständig (AK-4)
-- [ ] 2.4 S4 Blech – Prüfung: `docs/spikes/S4-blech.md` vollständig (AK-4)
-- [ ] 2.5 S5 Rendering – Prüfung: `docs/spikes/S5-rendering.md` vollständig (AK-4)
+- [ ] 2.1 Lizenzprüfung für Python, Cargo, npm, Mix ohne Verstöße – Prüfung: AK-6
+- [ ] 2.2 Pipeline-Durchlauf an einem Mini-Change dokumentiert – Prüfung: Link auf gemergten PR in `docs/spikes/README.md`
 
 ## 3. Integration
 
@@ -19,5 +18,4 @@
 
 ## Workflow follow-up
 
-- ADR-Workshop: Spike-Ergebnisse besprechen, ADR-Status auf „akzeptiert“ setzen (Kernteam)
-- Change archivieren mit `/opsx:archive ap-00-setup` (Kernteam), Gate G1 abnehmen
+- Change archivieren mit `/opsx:archive ap-00-setup` (Kernteam)

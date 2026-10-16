@@ -1,7 +1,8 @@
-"""Beispielteil: einfacher Winkelhalter (Frästeil).
+"""Beispiel für ein Script-Element (ADR-028): einfacher Winkelhalter (Frästeil).
 
-Folgt der Code-Konvention aus CLAUDE.md. `feature(...)` und `publish(...)` kommen mit AP-17/AP-18 aus
-`cadloop_core`; bis dahin stehen sie hier als markierte Platzhalter, damit Agenten die Form kennenlernen.
+Ein Script-Element ist ein Element vom Typ `script`, dessen Geometrie der Worker mit build123d berechnet.
+`Params` sind die Parameter des Elements, `publish(...)` deklariert seine Ausgänge. `feature(...)` und
+`publish(...)` kommen mit ap-05/ap-11 aus dem Python-SDK; bis dahin stehen sie hier als Platzhalter.
 """
 
 from __future__ import annotations
@@ -22,9 +23,9 @@ from build123d import (
 )
 
 
-# --- Platzhalter bis AP-17/AP-18 (cadloop_core.feature / cadloop_core.publish) -------------------------
+# --- Platzhalter bis ap-05/ap-11 (Python-SDK: feature / publish) ----------------------------------------
 @contextmanager
-def feature(name: str):  # noqa: ARG001 - Name wird ab AP-17 für die Identitätsschicht genutzt
+def feature(name: str):  # noqa: ARG001 - Name wird ab ap-05 für die Identität genutzt
     yield
 
 

@@ -1,0 +1,4 @@
+schema: spec-driven
+created: 2026-10-17
+# Spike: liefert Messwerte, Schema-Entwurf und Prototyp; Specs entstehen mit ap-05 (Graph-Kern produktiv).
+skip_specs: true

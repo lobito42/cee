@@ -26,14 +26,11 @@ ROOT = Path(__file__).resolve().parents[1]
 HEADER = "<!-- generiert von tools/sync_agents.py – Quelle: {src} -->\n"
 
 RULE_PATHS = {
-    "geometrie": [
-        "packages/cadloop-core/**/*.py",
-        "packages/geometry-service/**/*.py",
-        "packages/rules/**/*.py",
-        "parts/**/*.py",
-    ],
-    "extension-ui": ["packages/extension/**/*"],
-    "mcp-server": ["packages/mcp-server/**/*"],
+    "kern": ["crates/**/*", "Cargo.toml"],
+    "server": ["server/**/*"],
+    "mcp": ["server/lib/**/mcp/**/*", "server/test/**/mcp/**/*"],
+    "client": ["client/**/*"],
+    "geometrie": ["worker/**/*.py", "parts/**/*.py", "sdk/python/**/*.py"],
 }
 OPENCODE_MODELS = {
     "sonnet": "anthropic/claude-sonnet-5-5",
