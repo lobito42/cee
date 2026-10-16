@@ -1,0 +1,34 @@
+schema: spec-driven
+
+context: |
+  Language: de
+  All artifacts must be written in de.
+  Keep OpenSpec structural headings and SHALL/MUST keywords in English.
+
+  Projekt: KI-gestütztes Code-CAD für VS Code (Arbeitsname CADLoop). Python (build123d/OpenCascade) für
+  Geometrie, TypeScript für Extension und Arbeitsfläche, MCP-Server für Claude.
+  Architekturentscheidungen stehen in docs/adr/ (README.md ist der Index). Sie sind verbindlich.
+  Ein Change ist ein Arbeitspaket aus docs/konzept.md (Abschnitt Arbeitspakete); Change-ID: ap-xx-kurzname.
+
+rules:
+  proposal:
+    - Unter Impact die betroffenen ADRs mit Nummer nennen; widerspricht der Change einem ADR, das explizit sagen
+    - Unter Impact das Gate (G1–G4) und den Pfad der Abnahmetests tests/acceptance/<change-id>/ nennen
+    - Nicht-Ziele nennen, besonders Themen aus Phase 2
+  specs:
+    - Jedes Requirement braucht mindestens ein messbares Scenario (Zahl, Toleranz, Zeit oder Ja/Nein)
+  design:
+    - Performance-Budgets und Toleranzen als Zahlen angeben
+  tasks:
+    - Jede Aufgabe passt in eine Agenten-Sitzung (höchstens ca. 2 Stunden)
+    - Jede Aufgabe nennt den Test oder Befehl, der sie belegt
+
+operations:
+  apply:
+    guidance:
+      - Arbeite auf dem Branch change/<change-id>; Abnahmetests unter tests/acceptance/<change-id>/ sind der Vertrag und werden nicht geändert
+      - Testausgaben knapp halten (pytest -q -x); nur fehlschlagende Tests im Detail lesen
+      - Nach drei erfolglosen Anläufen am selben Problem anhalten und im PR unter Offene Fragen beschreiben
+  archive:
+    guidance:
+      - Archivieren nur durch das Kernteam nach Abnahme des Gates

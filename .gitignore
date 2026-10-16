@@ -1,0 +1,24 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+node_modules/
+dist/
+out/
+*.vsix
+
+# Abgeleitete Artefakte (ADR-003) – nicht einchecken
+*.step
+*.stp
+*.stl
+*.3mf
+build/
+renders/
+
+# Lokale Claude-Einstellungen
+.claude/settings.local.json
+CLAUDE.local.md
+.claude/worktrees/
+.env
+.env.*

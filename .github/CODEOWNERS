@@ -1,0 +1,9 @@
+# Ersetze @person-a und @person-b durch eure GitHub-Namen.
+*                     @person-a @person-b
+/openspec/            @person-a
+/docs/adr/            @person-a
+/tests/acceptance/    @person-a
+/tests/ui-reference/  @person-b
+/packages/extension/  @person-b
+/AGENTS.md            @person-a
+/.claude/             @person-a

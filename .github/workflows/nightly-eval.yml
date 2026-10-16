@@ -1,0 +1,30 @@
+name: Nightly Eval
+
+# Läuft nächtlich die KI-Eval-Suite (AP-14) und Identitäts-Stresstests.
+# Bis AP-14 umgesetzt ist, führt der Job nur die vollständige Testsuite aus.
+
+on:
+  schedule:
+    - cron: "17 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --extra cad
+      - name: Testsuite
+        run: uv run pytest -q
+      - name: Eval-Suite
+        if: ${{ hashFiles('evals/run.py') != '' }}
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: uv run python evals/run.py --report eval-report.md
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-report
+          path: eval-report.md
+          if-no-files-found: ignore

@@ -1,0 +1,16 @@
+# Warteschlange freigegebener Changes – nur das Kernteam ändert diese Datei.
+# Ein Eintrag hier ist die Freigabe. Die Nachtschicht nimmt den ersten Eintrag, dessen nächster Schritt offen ist.
+#
+# phase:   tests   → Abnahmetests fehlen noch (Branch tests/<id>)
+#          build   → Tests sind gemergt, Umsetzung steht an (Branch change/<id>)
+#          review  → PR offen, wartet auf Kernteam
+#          done    → gemergt, wartet auf Archivierung
+# model:   sonnet (Standard, sparsam) | opus (nur für schwierige Geometrie)
+# night:   true = darf unbeaufsichtigt bearbeitet werden
+
+changes:
+  - id: ap-00-setup
+    phase: build
+    model: sonnet
+    night: false   # Spikes S1/S4 brauchen Referenzteile und menschliche Bewertung
+    depends_on: []

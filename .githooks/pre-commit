@@ -1,0 +1,4 @@
+#!/bin/sh
+# Vertragsschutz für jedes Werkzeug (Claude Code, OpenCode, Pi, Hand).
+# Aktivieren einmalig pro Klon: git config core.hooksPath .githooks
+exec python3 "$(git rev-parse --show-toplevel)/tools/guard.py" staged

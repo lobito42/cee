@@ -1,0 +1,49 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "anthropic/claude-sonnet-5-5",
+  "permission": {
+    "edit": {
+      "*": "allow",
+      "openspec/changes/*": "ask",
+      "tests/acceptance/*": "ask",
+      "tests/golden/*": "ask",
+      "tests/ui-reference/*": "ask",
+      "docs/adr/*": "deny",
+      "docs/rules/*": "deny",
+      "openspec/specs/*": "deny",
+      "openspec/changes/archive/*": "deny",
+      "openspec/config.yaml": "deny",
+      "openspec/queue.yaml": "deny",
+      "AGENTS.md": "deny",
+      "CLAUDE.md": "deny",
+      "REVIEW.md": "deny",
+      ".claude/*": "deny",
+      ".opencode/*": "deny",
+      "opencode.json": "deny",
+      ".pi/*": "deny",
+      ".githooks/*": "deny",
+      ".github/*": "deny",
+      "tools/guard.py": "deny"
+    },
+    "bash": {
+      "*": "ask",
+      "uv *": "allow",
+      "openspec *": "allow",
+      "python3 tools/*": "allow",
+      "rg *": "allow",
+      "git status*": "allow",
+      "git diff*": "allow",
+      "git log*": "allow",
+      "git add *": "allow",
+      "git commit *": "allow",
+      "git switch *": "allow",
+      "git checkout -b *": "allow",
+      "gh pr *": "allow",
+      "git push *": "ask",
+      "git push * main": "deny",
+      "git push --force*": "deny",
+      "git reset --hard*": "deny",
+      "rm -rf *": "deny"
+    }
+  }
+}

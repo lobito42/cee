@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  vertrag:
+    name: Vertrag und Konfiguration
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Vertragsschutz (Branch-Regeln aus tools/guard.py)
+        if: github.event_name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, 'vertrag')
+        run: python3 tools/guard.py range origin/${{ github.base_ref }}
+      - name: Werkzeug-Dateien synchron
+        run: python3 tools/sync_agents.py --check
+      - name: OpenSpec gültig
+        run: |
+          npm install -g @fission-ai/openspec@latest
+          openspec validate --all --no-interactive
+
+  python:
+    name: Python (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --extra cad
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      - run: uv run pytest -q tests/unit
+      - name: Fällige Abnahmetests
+        shell: bash
+        run: |
+          targets=$(uv run python tools/acceptance_targets.py)
+          echo "Abnahmetests: ${targets:-keine}"
+          if [ -n "$targets" ]; then uv run pytest -q $targets; fi
+
+  extension:
+    name: Extension
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/extension
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install
+      - run: npm run lint
+      - run: npm test
