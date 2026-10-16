@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Collaborative Engineering – Logo">
+  <title>Collaborative Engineering</title>
+  <style>
+    .m { stroke: #1d1d1f; }
+    @media (prefers-color-scheme: dark) { .m { stroke: #f5f5f7; } }
+  </style>
+  <!-- C: Kreisbogen um (60,60), Radius 40, Öffnung nach rechts (±45°) -->
+  <path class="m" d="M88.28 31.72 A40 40 0 1 0 88.28 88.28" fill="none" stroke-width="14" stroke-linecap="round"/>
+  <!-- Strich in der Mitte, berührt den Bogen nicht -->
+  <line class="m" x1="52" y1="60" x2="94" y2="60" stroke-width="12" stroke-linecap="round"/>
+</svg>

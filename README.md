@@ -1,7 +1,9 @@
-# CEE – Collaborative Engineering Environment
+<img src="docs/marke/wortmarke.svg" alt="Collaborative Engineering" width="320">
 
-Offene, kollaborative Plattform für Produktdefinition. Name und Logo (ein C mit Strich in der Mitte)
-stehen unter Markenvorbehalt, bis die Recherche abgeschlossen ist. Ein Projekt ist ein **Graph aus Elementen** – ein
+# Collaborative Engineering
+
+Offene, kollaborative Plattform für Produktdefinition. Technisches Kürzel: **CEE**. Name und Logo
+(`docs/marke/`) stehen unter Markenvorbehalt, bis die Recherche abgeschlossen ist. Ein Projekt ist ein **Graph aus Elementen** – ein
 Achsenursprung genauso wie ein ganzes Bauteil. Alle sehen online denselben Stand; offline geht es weiter
 wie bei Git. Bearbeitet wird in 3D, im Knoten-Editor oder als Text, Menschen und KI-Agenten gemeinsam.
 
