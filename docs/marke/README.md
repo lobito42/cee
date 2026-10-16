@@ -1,7 +1,7 @@
 # Marke
 
-Name: **Collaborative Engineering**. Technisches Kürzel: **CEE** (Paket-, Crate- und Dateinamen, z. B. `cee-graph`).
-Nicht „CE“: Das ist das CE-Kennzeichen der EU.
+Name: **CEE**, ausgeschrieben **Collaborative Engineering Environment**. In Paket-, Crate- und Dateinamen
+`cee` (z. B. `cee-graph`). Nie nur „CE“: Das ist das CE-Kennzeichen der EU.
 
 Logo: ein C mit einem freistehenden Strich in der Mitte. Der Strich berührt den Bogen nicht; angelehnt an das
 Zeichen ∈ („ist Element von“) – jedes Teil ist ein Element des Ganzen.
