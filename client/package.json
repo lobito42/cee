@@ -1,5 +1,5 @@
 {
-  "name": "@cadloop/client",
+  "name": "@cee/client",
   "description": "Web-App und Desktop-App (Tauri 2) – Arbeitsfläche, Knoten-Editor, Textprojektion (ADR-031, ADR-035)",
   "version": "0.0.1",
   "license": "MPL-2.0",

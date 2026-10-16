@@ -1,4 +1,4 @@
-defmodule CadloopServer do
+defmodule CeeServer do
   @moduledoc """
   Server für Zusammenarbeit (ADR-030): ein überwachter Prozess je geöffnetem Dokument,
   nie ein Prozess je Element.

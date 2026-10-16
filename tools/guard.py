@@ -8,7 +8,7 @@ Was ein Agent schreiben darf, ergibt sich aus dem Branch:
   change/<id>  Produktcode und openspec/changes/<id>/tasks.md – aber keinen Vertrag
   sonst        Produktcode, aber keinen Vertrag
 
-CADLOOP_ROLE=core (Kernteam) darf alles. Merges in main prüft zusätzlich die CI und CODEOWNERS.
+CEE_ROLE=core (Kernteam) darf alles. Merges in main prüft zusätzlich die CI und CODEOWNERS.
 
 Aufrufe:
   guard.py claude-pre          Claude-PreToolUse (JSON auf stdin), Exit 2 = blockiert
@@ -141,7 +141,7 @@ def check_paths(paths: list[str], root: Path, role: str) -> list[str]:
 
 def main() -> int:
     mode = sys.argv[1] if len(sys.argv) > 1 else ""
-    role = os.environ.get("CADLOOP_ROLE", "").strip()
+    role = os.environ.get("CEE_ROLE", "").strip()
     cwd = Path.cwd()
 
     if mode in ("claude-pre", "claude-stop"):

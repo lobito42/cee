@@ -11,7 +11,7 @@ Veröffentlichte Elemente müssen projektübergreifend referenzierbar sein.
 
 ## Entscheidung
 
-Jedes veröffentlichte Element ist unter `cadloop://<repo>/<bauteil>@<version>#<name>` erreichbar (MCP, Extension, STEP-Attribut). Querverweise nur auf veröffentlichte Elemente.
+Jedes veröffentlichte Element ist unter `cee://<repo>/<bauteil>@<version>#<name>` erreichbar (MCP, Extension, STEP-Attribut). Querverweise nur auf veröffentlichte Elemente.
 
 ## Alternativen
 

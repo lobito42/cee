@@ -11,8 +11,8 @@ guard = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(guard)
 
 ALLOWED = [
-    ("packages/cadloop-core/ids.py", "main"),
-    ("packages/cadloop-core/ids.py", "change/ap-17-identitaet"),
+    ("packages/cee-core/ids.py", "main"),
+    ("packages/cee-core/ids.py", "change/ap-17-identitaet"),
     ("openspec/changes/ap-17-identitaet/tasks.md", "change/ap-17-identitaet"),
     ("openspec/changes/ap-17-identitaet/proposal.md", "spec/ap-17-identitaet"),
     ("openspec/changes/ap-17-identitaet/specs/identitaet/spec.md", "spec/ap-17-identitaet"),
@@ -21,7 +21,7 @@ ALLOWED = [
     ("tests/unit/test_x.py", "tests/ap-17-identitaet"),
     ("packages/x.py", "claude/change/ap-17-identitaet"),  # Präfix der Cloud-Routinen
     ("crates/graph/src/lib.rs", "change/ap-01-spike-datenmodell"),
-    ("server/lib/cadloop_server.ex", "change/ap-01-spike-datenmodell"),
+    ("server/lib/cee_server.ex", "change/ap-01-spike-datenmodell"),
     ("format/schema/element.json", "change/ap-01-spike-datenmodell"),
 ]
 
@@ -75,7 +75,7 @@ def test_stop_hook_sees_unstaged_change_in_first_status_line(tmp_path, monkeypat
     subprocess.run([*git, "commit", "-qm", "init"], check=True)
     adr.write_text("b\n")  # unstaged → Statuszeile " M docs/adr/ADR-001.md"
 
-    monkeypatch.delenv("CADLOOP_ROLE", raising=False)
+    monkeypatch.delenv("CEE_ROLE", raising=False)
     monkeypatch.setattr("sys.argv", ["guard.py", "claude-stop"])
     monkeypatch.setattr("sys.stdin", __import__("io").StringIO(json.dumps({"cwd": str(tmp_path)})))
     assert guard.main() == 0

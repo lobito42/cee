@@ -19,4 +19,4 @@ CadQuery (gleicher Kernel, lange Method-Chains, fehleranfälliger für LLMs); Op
 
 ## Konsequenzen
 
-Verbesserungen werden upstream beigetragen. Eigene Erweiterungen liegen in `cadloop-core`.
+Verbesserungen werden upstream beigetragen. Eigene Erweiterungen liegen in `cee-core`.

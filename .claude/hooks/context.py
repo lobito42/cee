@@ -15,7 +15,7 @@ root = Path(os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd())
 branch = subprocess.run(
     ["git", "-C", str(root), "rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, text=True
 ).stdout.strip()
-role = os.environ.get("CADLOOP_ROLE") or "agent"
+role = os.environ.get("CEE_ROLE") or "agent"
 lines = [f"Rolle: {role} · Branch: {branch or 'unbekannt'}"]
 
 match = re.match(r"^(?:claude/)?(spec|tests|change)/([a-z0-9-]+)$", branch)

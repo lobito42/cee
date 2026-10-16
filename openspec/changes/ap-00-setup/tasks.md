@@ -4,7 +4,7 @@
 - [ ] 1.2 Phoenix-Anwendung in `server/` mit `GET /health` → 200 und Test – Prüfung: AK-2
 - [ ] 1.3 Client mit Vite, TypeScript strict, ESLint, Prettier, Vitest; echte `lint`- und `test`-Skripte – Prüfung: AK-3
 - [ ] 1.4 Tauri-2-Hülle in `client/src-tauri/` plus CI-Job für Linux, Windows, macOS – Prüfung: AK-1, AK-3
-- [ ] 1.5 Worker `cadloop_worker` beantwortet `ping` über stdio – Prüfung: AK-4
+- [ ] 1.5 Worker `cee_worker` beantwortet `ping` über stdio – Prüfung: AK-4
 - [ ] 1.6 Beispiel-Script-Element `parts/examples/halter.py` baut gültig in < 3 s – Prüfung: AK-5
 
 ## 2. Regeln

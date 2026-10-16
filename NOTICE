@@ -1,4 +1,4 @@
-Copyright 2026 CADLoop contributors
+Copyright 2026 CEE contributors
 
 Kern (crates/, server/, client/, worker/): Mozilla Public License 2.0, siehe LICENSE.
 SDK und Format (sdk/, format/): Apache License 2.0, siehe sdk/LICENSE und format/LICENSE.

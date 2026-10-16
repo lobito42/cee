@@ -80,7 +80,7 @@ wheels = [
 ]
 
 [[package]]
-name = "cadloop"
+name = "cee"
 version = "0.0.1"
 source = { virtual = "." }
 

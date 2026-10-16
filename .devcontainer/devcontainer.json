@@ -1,5 +1,5 @@
 {
-  "name": "CADLoop",
+  "name": "CEE",
   "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bookworm",
   "features": {
     "ghcr.io/devcontainers/features/node:1": { "version": "22" },
@@ -22,6 +22,6 @@
     }
   },
   "remoteEnv": {
-    "CADLOOP_ROLE": "${localEnv:CADLOOP_ROLE}"
+    "CEE_ROLE": "${localEnv:CEE_ROLE}"
   }
 }

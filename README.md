@@ -1,6 +1,7 @@
-# CADLoop (Arbeitsname)
+# CEE – Collaborative Engineering Environment
 
-Offene, kollaborative Plattform für Produktdefinition. Ein Projekt ist ein **Graph aus Elementen** – ein
+Offene, kollaborative Plattform für Produktdefinition. Name und Logo (ein C mit Strich in der Mitte)
+stehen unter Markenvorbehalt, bis die Recherche abgeschlossen ist. Ein Projekt ist ein **Graph aus Elementen** – ein
 Achsenursprung genauso wie ein ganzes Bauteil. Alle sehen online denselben Stand; offline geht es weiter
 wie bei Git. Bearbeitet wird in 3D, im Knoten-Editor oder als Text, Menschen und KI-Agenten gemeinsam.
 
@@ -47,7 +48,7 @@ Konzept als Markdown nach `docs/konzept.md` exportieren.
 | 6. Archivieren | `main` | Kernteam | `/opsx:archive <id>`, `phase: done` |
 
 Was auf welchem Branch erlaubt ist, erzwingt `tools/guard.py` – im Werkzeug, beim Commit und in der CI.
-Das Kernteam arbeitet mit `CADLOOP_ROLE=core` ohne diese Einschränkung.
+Das Kernteam arbeitet mit `CEE_ROLE=core` ohne diese Einschränkung.
 
 ## Unbeaufsichtigt arbeiten (Nachtschicht)
 
@@ -74,7 +75,6 @@ Anweisungen, Aufträge und Schutzregeln: `docs/werkzeuge.md`.
 | --- | --- |
 | Agenten, Regeln oder Skills geändert | `python3 tools/sync_agents.py` |
 | OpenSpec aktualisiert | `openspec update` |
-| Projektnamen festlegen | `python3 tools/rename_project.py "Name" --apply` |
 
 ## Inhalt
 

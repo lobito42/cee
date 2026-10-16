@@ -1,5 +1,5 @@
 [package]
-name = "cadloop-graph"
+name = "cee-graph"
 version = "0.0.1"
 description = "Element-Graph: Schema, Abhängigkeiten, CRDT-Dokument, Textprojektion (ADR-028/029)"
 edition.workspace = true

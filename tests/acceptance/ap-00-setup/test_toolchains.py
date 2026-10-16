@@ -48,7 +48,7 @@ def test_ak3_client_has_real_lint_and_tests():
 def test_ak4_worker_answers_ping():
     """AK-4: Der Worker beantwortet {"op": "ping"} über stdio in unter 2 s mit Kernel und Version."""
     start = time.perf_counter()
-    res = sh(["uv", "run", "--quiet", "python", "-m", "cadloop_worker"], stdin='{"op": "ping"}\n', timeout=60)
+    res = sh(["uv", "run", "--quiet", "python", "-m", "cee_worker"], stdin='{"op": "ping"}\n', timeout=60)
     elapsed = time.perf_counter() - start
     assert res.returncode == 0, res.stderr[-2000:]
     answer = json.loads(res.stdout.strip().splitlines()[0])
