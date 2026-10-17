@@ -41,7 +41,21 @@
       "Bash(gh pr view *)",
       "Bash(gh pr diff *)",
       "Bash(gh pr list *)",
-      "Bash(gh pr comment *)"
+      "Bash(gh pr comment *)",
+      "Bash(git fetch *)",
+      "Bash(git pull *)",
+      "Bash(git ls-remote *)",
+      "Bash(git push origin tests/*)",
+      "Bash(git push origin change/*)",
+      "Bash(gh pr edit *)",
+      "Bash(gh pr ready *)",
+      "Bash(gh pr checks *)",
+      "Bash(gh run view *)",
+      "Bash(gh run list *)",
+      "Bash(gh issue list *)",
+      "Bash(gh issue comment *)",
+      "Bash(gh issue create *)",
+      "Bash(gh label create *)"
     ],
     "deny": [
       "Bash(git push --force *)",

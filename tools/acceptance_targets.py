@@ -1,6 +1,7 @@
 """Gibt die fälligen Abnahmetest-Verzeichnisse aus (eine Zeile, leerzeichengetrennt).
 
-Fällig sind: archivierte Changes (Regressionsschutz), Changes in der Warteschlange mit phase done, und der
+Fällig sind: archivierte Changes (Regressionsschutz), Changes in der Warteschlange mit phase done, Changes
+mit Abnahmetests, deren Tasks alle abgehakt sind (fertig, auch wenn phase noch nicht umgestellt ist), und der
 Change des aktuellen Branches (spec/, tests/ oder change/<id>). So bleibt main grün, während offene Changes
 rot sein dürfen.
 """
@@ -43,6 +44,10 @@ def change_ids() -> set[str]:
                 current = m.group(1)
             elif current and re.match(r"\s*phase:\s*done\b", line):
                 ids.add(current)
+    for tasks in (ROOT / "openspec" / "changes").glob("*/tasks.md"):
+        text = tasks.read_text(encoding="utf-8")
+        if re.search(r"^\s*- \[[xX]\]", text, re.M) and not re.search(r"^\s*- \[ \]", text, re.M):
+            ids.add(tasks.parent.name)
     if m := BRANCH_RE.match(branch()):
         ids.add(m.group(1))
     return ids

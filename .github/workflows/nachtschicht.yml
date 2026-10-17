@@ -1,0 +1,129 @@
+name: Nachtschicht
+
+# Unbeaufsichtigter Lauf (Skill /nachtschicht) auf einem GitHub-Runner: gleiche Werkzeugkette wie die CI,
+# freier Netzzugang für Paketregistries (hex.pm, crates.io, static.rust-lang.org), kein Cloud-Allowlist-Problem.
+#
+# Einschalten: Repository-Variable NACHTSCHICHT=an (Settings → Secrets and variables → Actions → Variables).
+# Voraussetzungen: Secret CLAUDE_CODE_OAUTH_TOKEN (Abo, `claude setup-token`) und die Claude-GitHub-App für
+# dieses Repository – nur mit ihr lösen Pushes und PRs des Agenten die CI aus.
+# Kontingent: Ist nichts zu tun, startet Claude gar nicht (tools/next_step.py entscheidet ohne KI).
+
+on:
+  schedule:
+    - cron: "7 23 * * 0-4"   # So–Do 23:07 UTC = werktags 01:07 Sommerzeit bzw. 00:07 Winterzeit
+  workflow_dispatch:
+
+concurrency:
+  group: nachtschicht
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  actions: read
+  checks: read
+  id-token: write
+
+jobs:
+  schicht:
+    if: vars.NACHTSCHICHT == 'an'
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    env:
+      CEE_STRICT: "1"
+      GH_TOKEN: ${{ github.token }}
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Nächster Schritt (ohne KI)
+        id: next
+        shell: bash
+        run: |
+          out=$(python3 tools/next_step.py)
+          echo "$out"
+          echo "json=$out" >> "$GITHUB_OUTPUT"
+          echo "step=$(jq -r .step <<<"$out")" >> "$GITHUB_OUTPUT"
+          echo "model=$(jq -r '.model // "sonnet"' <<<"$out")" >> "$GITHUB_OUTPUT"
+
+      - name: Protokoll-Issue finden oder anlegen
+        id: issue
+        shell: bash
+        run: |
+          gh label create nachtschicht --color 5319e7 --description "Protokoll der Nachtschicht" 2>/dev/null || true
+          for l in blocked fix-1 fix-2; do gh label create "$l" --color b60205 2>/dev/null || true; done
+          nr=$(gh issue list --label nachtschicht --state open --json number --jq '.[0].number')
+          if [ -z "$nr" ]; then
+            nr=$(gh issue create --title "Nachtschicht-Protokoll" --label nachtschicht \
+              --body "Jeder Lauf der Nachtschicht schreibt hier einen Kommentar." | grep -o '[0-9]*$')
+          fi
+          echo "nr=$nr" >> "$GITHUB_OUTPUT"
+
+      - name: Nichts zu tun oder Halt – nur protokollieren
+        if: steps.next.outputs.step == 'stop'
+        shell: bash
+        env:
+          NEXT: ${{ steps.next.outputs.json }}
+          RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          reason=$(jq -r .reason <<<"$NEXT")
+          gh issue comment ${{ steps.issue.outputs.nr }} --body "$(date -u +%F) · gestoppt: ${reason} · [Lauf]($RUN)"
+
+      # Ab hier nur, wenn es etwas zu tun gibt
+      - if: steps.next.outputs.step != 'stop'
+        uses: astral-sh/setup-uv@v6
+      - if: steps.next.outputs.step != 'stop'
+        run: rustup toolchain install  # rust-toolchain.toml
+      - if: steps.next.outputs.step != 'stop'
+        uses: erlef/setup-beam@v1
+        with:
+          version-file: .tool-versions
+          version-type: strict
+      - if: steps.next.outputs.step != 'stop'
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .tool-versions
+      - if: steps.next.outputs.step != 'stop'
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-deny
+      - if: steps.next.outputs.step != 'stop'
+        name: Werkzeuge
+        run: |
+          uv sync --extra cad
+          npm install -g @fission-ai/openspec@1.14.2
+          git config core.hooksPath .githooks
+          if [ -f server/mix.exs ]; then (cd server && mix local.hex --force && mix local.rebar --force && mix deps.get); fi
+
+      - if: steps.next.outputs.step != 'stop'
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            Führe den Skill /nachtschicht aus. Der Schrittplaner hat bereits entschieden:
+            ${{ steps.next.outputs.json }}
+            Protokoll-Issue: #${{ steps.issue.outputs.nr }}. Halte dich strikt an die Grenzen des Skills.
+          claude_args: |
+            --model ${{ steps.next.outputs.model }}
+            --max-turns 200
+
+      - name: Abbruch protokollieren
+        if: (failure() || cancelled()) && steps.issue.outputs.nr != ''
+        shell: bash
+        env:
+          NEXT: ${{ steps.next.outputs.json }}
+          RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh issue comment ${{ steps.issue.outputs.nr }} --body "$(date -u +%F) · \`$NEXT\` · **abgebrochen** \
+          (Zeitlimit, Kontingent oder Fehler) · [Lauf]($RUN) · Die nächste Nacht setzt auf dem Branch fort."

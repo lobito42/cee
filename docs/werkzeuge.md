@@ -18,7 +18,7 @@ Gemeint sind die Werkzeuge **zum Entwickeln**. Das Produkt selbst ist eine Web- 
 | Pfadregeln | `.claude/rules/` (generiert) | wie CLI | `.claude/rules/` | Verweis in `AGENTS.md` | Verweis in `AGENTS.md` |
 | Vertragsschutz beim Schreiben | Hook (Branch-Regeln) | Hook | Hook | Berechtigungen in `opencode.json` (statisch) | Extension `.pi/extensions/guard.ts` (Branch-Regeln) |
 | Schutz beim Commit/PR | Git-Hook + CI | Git-Hook + CI | Git-Hook + CI | Git-Hook + CI | Git-Hook + CI |
-| Unbeaufsichtigt | – | Routinen (lokal oder Cloud) | `/schedule`, `claude -p` | – | `pi -p` |
+| Unbeaufsichtigt | – | Routinen (lokal oder Cloud) | GitHub-Action `nachtschicht.yml` (empfohlen), `/schedule`, `claude -p` | – | `pi -p` |
 
 Einmal pro Klon: `git config core.hooksPath .githooks` – damit greift der Schutz in jedem Werkzeug.
 
@@ -32,8 +32,8 @@ Einmal pro Klon: `git config core.hooksPath .githooks` – damit greift der Schu
 
 1. Linux-Version installieren (Beta), im Tab **Code** eine lokale Sitzung im Repo-Ordner starten.
 2. Gleiche Konfiguration wie die CLI. Parallele Sitzungen über die Sitzungsliste; jede auf eigenem Branch.
-3. Unter **Routines** lassen sich die Nachtschicht als **Cloud**- oder **Local**-Routine anlegen
-   (siehe `docs/betrieb/routine-nachtschicht.md`).
+3. Unter **Routines** lässt sich die Nachtschicht auch als **Local**-Routine anlegen; empfohlen ist die
+   GitHub-Action (siehe `docs/betrieb/routine-nachtschicht.md`).
 
 ## Claude Code CLI
 

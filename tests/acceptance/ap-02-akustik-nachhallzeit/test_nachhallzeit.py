@@ -2,9 +2,12 @@
 
 import json
 import math
+import statistics
+import subprocess
+import time
 
 import pytest
-from conftest import sh
+from conftest import ROOT, sh
 
 BANDS = ["125", "250", "500", "1000", "2000", "4000"]
 CLI = ["cargo", "run", "-q", "--release", "-p", "cee-acoustics", "--bin", "cee-acoustics", "--"]
@@ -121,3 +124,31 @@ def test_ak5_thousand_surfaces_within_budget():
     assert code == 0, err[-2000:]
     assert out["surfaces"] == 1000 and out["runs"] >= 100
     assert out["mean_us"] <= 1000, f"{out['mean_us']} µs"
+
+
+def test_ak5_thousand_surfaces_measured_independently():
+    """AK-5: 1.000 Flächen über das Release-Binary, vom Test gemessen: richtig, Median ≤ 50 ms."""
+    code, _, err = run(ROOM)  # baut das Release-Binary
+    assert code == 0, err[-2000:]
+    binary = ROOT / "target" / "release" / "cee-acoustics"
+    assert binary.exists() or binary.with_suffix(".exe").exists(), "Release-Binary fehlt"
+    if not binary.exists():
+        binary = binary.with_suffix(".exe")
+    surfaces = [
+        {"area_m2": 0.5 + (i % 7) * 0.1, "alpha": bands(*(0.02 + ((i + k) % 9) * 0.01 for k in range(6)))}
+        for i in range(1000)
+    ]
+    room = {"volume_m3": 900.0, "surfaces": surfaces}
+    payload = json.dumps(room)
+    sab, eyr = expected(room)
+    times = []
+    for _ in range(11):
+        start = time.perf_counter()
+        res = subprocess.run([str(binary), "rt"], input=payload, capture_output=True, text=True, timeout=60)
+        times.append(time.perf_counter() - start)
+        assert res.returncode == 0, res.stderr[-2000:]
+        out = json.loads(res.stdout)
+        assert_close(out["sabine_s"], sab)
+        assert_close(out["eyring_s"], eyr)
+    median_ms = statistics.median(times) * 1000
+    assert median_ms <= 50, f"Median {median_ms:.1f} ms"

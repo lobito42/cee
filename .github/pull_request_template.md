@@ -20,6 +20,13 @@
 | --- | --- | --- |
 | | ja / nein | `tests/acceptance/<change-id>/…` |
 
+## Menschliche Abnahme
+
+<!-- Nur bei Kriterien mit [mensch] im Change (Augenschein, Nutzertest, Firmenurteil). Abhaken nur durch
+     Menschen. Sonst „keine“. -->
+
+- keine
+
 ## Neue Abhängigkeiten (mit Lizenz)
 
 - keine
@@ -31,5 +38,5 @@
 ## Checkliste
 
 - [ ] Branch-Typ passt zum Schritt (spec/, tests/, change/)
-- [ ] Tests grün, Tasks abgehakt (bei change/)
+- [ ] Tests streng grün (`CEE_STRICT=1`, nichts übersprungen), Tasks abgehakt (bei change/)
 - [ ] Für ein Review das Label `review` setzen

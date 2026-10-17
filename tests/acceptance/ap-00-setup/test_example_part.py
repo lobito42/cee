@@ -5,10 +5,10 @@ import sys
 import time
 from pathlib import Path
 
-import pytest
+from conftest import need_module
 
 ROOT = Path(__file__).resolve().parents[3]
-build123d = pytest.importorskip("build123d", reason="build123d nicht installiert (uv sync --extra cad)")
+build123d = need_module("build123d")
 
 
 def _load_part():

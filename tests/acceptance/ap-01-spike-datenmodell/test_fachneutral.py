@@ -2,8 +2,7 @@
 
 import json
 
-import pytest
-from conftest import ROOT
+from conftest import ROOT, need_module
 from test_textprojektion import canonical, cli
 
 SCHEMA = ROOT / "format" / "schema" / "element.schema.json"
@@ -23,7 +22,7 @@ TYPES = {
 }
 ROOM_TYPES = {"level", "wall", "slab", "opening", "furniture", "absorber"}
 STATES = {"in_work", "in_review", "released", "superseded", "blocked"}
-jsonschema = pytest.importorskip("jsonschema", reason="jsonschema fehlt (uv sync)")
+jsonschema = need_module("jsonschema")
 
 
 def _walk(elements):

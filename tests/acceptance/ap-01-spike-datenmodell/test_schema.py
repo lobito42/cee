@@ -2,8 +2,7 @@
 
 import json
 
-import pytest
-from conftest import ROOT
+from conftest import ROOT, need_module
 
 SCHEMA = ROOT / "format" / "schema" / "element.schema.json"
 EXAMPLE = ROOT / "format" / "examples" / "raum.json"
@@ -26,7 +25,7 @@ TYPES = {
 }
 BANDS = {"125", "250", "500", "1000", "2000", "4000"}
 NEEDS_MATERIAL = {"wall", "slab", "absorber"}
-jsonschema = pytest.importorskip("jsonschema", reason="jsonschema fehlt (uv sync)")
+jsonschema = need_module("jsonschema")
 
 
 def _walk(elements):

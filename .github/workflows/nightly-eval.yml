@@ -12,12 +12,40 @@ on:
 jobs:
   eval:
     runs-on: ubuntu-latest
+    # Gleiche Werkzeugkette wie der CI-Job "abnahme", damit ein rotes main echt ist und kein Fehlalarm.
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
+      - run: rustup toolchain install  # rust-toolchain.toml
+      - uses: erlef/setup-beam@v1
+        with:
+          version-file: .tool-versions
+          version-type: strict
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .tool-versions
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-deny
       - run: uv sync --extra cad
+      - name: Abhängigkeiten von Server und Client (sobald vorhanden)
+        shell: bash
+        run: |
+          if [ -f server/mix.exs ]; then (cd server && mix local.hex --force && mix local.rebar --force && mix deps.get); fi
+          if [ -f client/package.json ]; then (cd client && npm install --no-audit --no-fund); fi
       - name: Testsuite
         shell: bash
+        env:
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
         run: |
           uv run pytest -q
           targets=$(uv run python tools/acceptance_targets.py)

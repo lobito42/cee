@@ -6,7 +6,11 @@ Gilt für das automatische Review jedes Pull Requests und für den Reviewer-Agen
 
 - Meldungen von `python3 tools/guard.py range origin/main` (Vertrag auf falschem Branch geändert:
   ADRs, OpenSpec-Specs, Proposals, Abnahmetests, Werkzeug-Konfiguration).
-- Abgeschwächte, übersprungene (`skip`, `xfail`) oder gelöschte Tests.
+- Abgeschwächte, übersprungene (`skip`, `xfail`) oder gelöschte Tests; Abnahmetests, die im strengen
+  Modus (`CEE_STRICT=1` bzw. CI) übersprungen werden.
+- Abnahmetest, der nur Werte prüft, die der Change selbst in eine Datei schreibt, statt sie nachzumessen
+  oder nachzurechnen; Testkorpus bzw. Referenzdaten, die der Agent selbst erzeugt hat (gehören vom
+  Kernteam nach `tests/golden/<id>/`).
 - Neue Abhängigkeit unter GPL/AGPL oder ohne geklärte Lizenz (ADR-034).
 - Topologie-Referenzen über Indizes statt Element-ID oder veröffentlichtem Namen (ADR-016).
 - Datenmodell-Logik außerhalb des Rust-Kerns nachgebaut (Server, Client, SDK) (ADR-029).
@@ -25,7 +29,8 @@ Gilt für das automatische Review jedes Pull Requests und für den Reviewer-Agen
 - Elixir: Typespecs an öffentlichen Funktionen, `mix dialyzer` ohne Befund. Rust: kein `unwrap()`/`expect()`
   außerhalb von Tests.
 
-- Jedes Scenario des OpenSpec-Changes ist durch einen Test belegt; alle Tasks sind abgehakt.
+- Jedes Scenario des OpenSpec-Changes ist durch einen Test belegt; alle Tasks sind abgehakt. Kriterien mit
+  `[mensch]` stehen in der Checkliste „Menschliche Abnahme“ und sind nicht vom Agenten abgehakt.
 - Fehler aus Kern und Worker werden strukturiert weitergegeben (Element-ID, Hinweis), nicht verschluckt.
 - Schemaänderung mit neuer `SCHEMA_VERSION`, Migration und Test mit altem Dokument.
 - MCP-Antworten bleiben kompakt (< 2.000 Tokens typisch), mit Schema.

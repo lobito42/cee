@@ -75,6 +75,7 @@ def test_ak6_npm_dependencies():
     res = sh(["npx", "--yes", "license-checker", "--json", "--production"], cwd=ROOT / "client", timeout=300)
     assert res.returncode == 0, res.stderr[-1500:]
     pkgs = json.loads(res.stdout).items()
+    assert pkgs, "license-checker fand keine Abhängigkeiten – fehlt npm install in client/?"
     offenders = [
         f"{k} ({v.get('licenses')})"
         for k, v in pkgs
@@ -88,7 +89,9 @@ def test_ak6_hex_dependencies():
     res = sh(["mix", "deps.get"], cwd=ROOT / "server", timeout=300)
     assert res.returncode == 0, (res.stdout + res.stderr)[-1500:]
     offenders = []
-    for meta in (ROOT / "server" / "deps").glob("*/hex_metadata.config"):
+    metas = list((ROOT / "server" / "deps").glob("*/hex_metadata.config"))
+    assert metas, "Keine Hex-Abhängigkeiten gefunden – mix deps.get ohne Ergebnis?"
+    for meta in metas:
         text = meta.read_text(encoding="utf-8", errors="replace")
         match = re.search(r'\{<<"licenses">>,\[(.*?)\]\}', text, re.S)
         lic = match.group(1) if match else ""

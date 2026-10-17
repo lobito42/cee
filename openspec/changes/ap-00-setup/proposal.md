@@ -2,7 +2,8 @@
 
 Bevor Agenten Produktfunktionen bauen, muss das Repository in allen vier Sprachen lauffähig sein: Rust-Kern,
 Elixir-Server, TypeScript-Client (Web und Tauri) und Python-Worker. Die CI muss jede Sprache prüfen, die
-Lizenzregeln aus ADR-034 durchsetzen und einmal einen kompletten Durchlauf der Agenten-Pipeline zeigen.
+Lizenzregeln aus ADR-034 durchsetzen. Dieser Change ist zugleich der erste echte Durchlauf der
+Agenten-Pipeline (Abnahmetests → Umsetzung über mehrere Nächte → Review → Merge).
 Sonst bauen viele Agenten parallel auf einem Gerüst, das noch nicht trägt.
 
 ## What Changes
@@ -12,7 +13,6 @@ Sonst bauen viele Agenten parallel auf einem Gerüst, das noch nicht trägt.
 - Client in `client/`: Vite, TypeScript strict, ESLint, Prettier, Vitest; Tauri-2-Hülle in `client/src-tauri/`
 - Python-Worker in `worker/` als uv-Workspace-Mitglied, beantwortet `{"op": "ping"}` über stdio
 - Lizenzprüfung für Python, Cargo, npm und Mix
-- Ein vollständiger Durchlauf eines Mini-Changes durch die Pipeline (spec → tests → change → Review → Merge)
 
 ## Capabilities
 

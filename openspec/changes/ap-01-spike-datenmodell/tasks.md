@@ -14,10 +14,11 @@
 - [ ] 2.4 Rustler-NIF-Prototyp unter `spikes/datenmodell/nif/` und WASM-Build für Node – Prüfung: Kennzahlen `nif_op_p95_ms`, `wasm_op_p95_ms`, `hash_equal_native_nif_wasm`
 
 - [ ] 2.5 Auflösung von Instanzen und Weitergabe von Definitionsänderungen – Prüfung: Kennzahlen `component_propagate_1000_ms`, `overrides_kept_pct`
+- [ ] 2.6 `hash`-Befehl nativ, `nif/hash.exs`, `wasm/hash.mjs` und `build.sh` – Prüfung: AK-7
 
 ## 3. Messen und berichten
 
-- [ ] 3.1 `bench --json` erzeugt `docs/spikes/datenmodell.json` mit allen Kennzahlen – Prüfung: AK-2
+- [ ] 3.1 `bench --json` erzeugt `docs/spikes/datenmodell.json` mit allen Kennzahlen – Prüfung: AK-2, AK-8
 - [ ] 3.2 Bericht `docs/spikes/datenmodell.md` mit Textformat-Vergleich und Empfehlung – Prüfung: AK-1
 
 ## Workflow follow-up

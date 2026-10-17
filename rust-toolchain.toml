@@ -1,0 +1,7 @@
+# Feste Rust-Version für alle Umgebungen (CI, Nachtschicht, Devcontainer, lokal).
+# Anheben nur durch das Kernteam, zusammen mit cargo clippy auf dem ganzen Workspace.
+# Zusätzliche Ziele (z. B. wasm32-unknown-unknown für ap-01) installiert der jeweilige Change.
+[toolchain]
+channel = "1.97.0"
+components = ["rustfmt", "clippy"]
+profile = "minimal"

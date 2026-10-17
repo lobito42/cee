@@ -49,20 +49,22 @@ Konzept als Markdown nach `docs/konzept.md` exportieren.
 | Schritt | Branch | Wer | Befehl |
 | --- | --- | --- | --- |
 | 1. Change entwerfen | `spec/<id>` | Agent spec-writer oder Mensch | `/opsx:propose` (OpenCode/Pi: `/opsx-propose`) |
-| 2. Freigeben | `main` | Kernteam | Eintrag in `openspec/queue.yaml`, `phase: tests` |
+| 2. Freigeben | `main` | Kernteam | Eintrag in `openspec/queue.yaml` (Phase ergibt sich danach aus dem Repo) |
 | 3. Abnahmetests | `tests/<id>` | Agent test-author oder Nachtschicht | – |
 | 4. Umsetzen | `change/<id>` | Agent implementer oder Nachtschicht | `/implement-change <id>` |
 | 5. Review | PR | Reviewer-Agent | Label `review` oder `/review-change <nr>` |
-| 6. Archivieren | `main` | Kernteam | `/opsx:archive <id>`, `phase: done` |
+| 6. Archivieren | `main` | Kernteam | `/opsx:archive <id>` |
 
 Was auf welchem Branch erlaubt ist, erzwingt `tools/guard.py` – im Werkzeug, beim Commit und in der CI.
 Das Kernteam arbeitet mit `CEE_ROLE=core` ohne diese Einschränkung.
 
 ## Unbeaufsichtigt arbeiten (Nachtschicht)
 
-Eine Claude-Code-Routine in der Cloud läuft werktags nachts, nimmt genau einen offenen Schritt aus
-`openspec/queue.yaml` (Einträge mit `night: true`) und öffnet einen PR. Sie verbraucht nur das
-Abo-Kontingent. Einrichtung: `docs/betrieb/routine-nachtschicht.md`.
+Eine GitHub-Action (`.github/workflows/nachtschicht.yml`) läuft werktags nachts. `tools/next_step.py`
+bestimmt ohne KI genau einen Schritt (Tests schreiben, umsetzen oder roten Agenten-PR reparieren); nur dann
+arbeitet Claude, sichert nach jeder Task und öffnet einen PR. Jeder Lauf schreibt ins Issue
+„Nachtschicht-Protokoll“. Sie verbraucht nur das Abo-Kontingent. Einrichtung und Morgenroutine:
+`docs/betrieb/routine-nachtschicht.md`.
 
 ## Sparsam mit dem Pro-Abo
 

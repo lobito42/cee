@@ -51,3 +51,8 @@ Mittel in höchstens 1.000 µs berechnen.
 #### Scenario: Benchmark mit 1.000 Flächen
 - **WHEN** der Benchmark mit 1.000 Flächen läuft
 - **THEN** ist der gemeldete Mittelwert höchstens 1.000 µs
+
+#### Scenario: Unabhängig gemessener Aufruf mit 1.000 Flächen
+- **WHEN** der Test einen Raum mit 1.000 Flächen erzeugt und `rt` elfmal über das Release-Binary aufruft
+- **THEN** stimmt jedes Ergebnis innerhalb 0,1 % mit der Formel überein
+- **AND** dauert ein Aufruf einschließlich Prozessstart im Median höchstens 50 ms

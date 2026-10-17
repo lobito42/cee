@@ -2,6 +2,8 @@
 # Reihenfolge nach Meilensteinen (ADR-059): M0 Klären → M1 Werkbank → M2 Zusammen → M3 Beta.
 # Ein Eintrag hier ist die Freigabe. Die Nachtschicht nimmt den ersten Eintrag, dessen nächster Schritt offen ist.
 #
+# phase ist nur noch eine Untergrenze: tools/next_step.py leitet den Zustand aus dem Repo ab
+#          (Tests auf main → Umsetzung; alle Tasks abgehakt → fertig). Umstellen von Hand ist nicht nötig.
 # phase:   tests   → Abnahmetests fehlen noch (Branch tests/<id>)
 #          build   → Tests sind gemergt, Umsetzung steht an (Branch change/<id>)
 #          review  → PR offen, wartet auf Kernteam

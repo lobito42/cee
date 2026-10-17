@@ -27,10 +27,13 @@ rules:
     - Nicht-Ziele nennen, besonders Themen aus späteren Meilensteinen (ADR-059)
   specs:
     - Jedes Requirement braucht mindestens ein messbares Scenario (Zahl, Toleranz, Zeit oder Ja/Nein)
+    - Jedes Scenario ist [auto] (automatisch prüfbar, wird Abnahmetest) oder [mensch] (Augenschein, Nutzertest, Firmenurteil; wird Punkt der PR-Checkliste „Menschliche Abnahme“); ohne Kennzeichnung gilt [auto]
+    - Meldet der Change Messwerte, muss der Test sie selbst nachmessen oder nachrechnen können (Befehl im Design nennen)
+    - Braucht ein Scenario einen Testkorpus oder Referenzdaten (Identitätsfälle, Konfliktfälle, Kataloge), liefert sie das Kernteam unter tests/golden/<change-id>/, bevor Abnahmetests geschrieben werden; im Proposal unter Impact nennen
   design:
     - Performance-Budgets und Toleranzen als Zahlen angeben
   tasks:
-    - Jede Aufgabe passt in eine Agenten-Sitzung (höchstens ca. 2 Stunden)
+    - Jede Aufgabe passt in eine Agenten-Sitzung (höchstens ca. 2 Stunden); der ganze Change in höchstens etwa drei Nächte
     - Jede Aufgabe nennt den Test oder Befehl, der sie belegt
 
 operations:

@@ -40,3 +40,19 @@ Beta mit allen Funktionen (32 Pakete); Live-Zusammenarbeit schon in M1; Knoten-E
 M1 ist für eine Person; das Datenmodell bleibt von Anfang an auf Zusammenarbeit ausgelegt. Der Knoten-Editor ist
 in der Beta eine lesende Ansicht; bearbeitet wird über 3D, Text und KI. Richtwerte: G1 Monat 1–2, G2 Monat 3–4,
 G3 Monat 6, danach Ausbau.
+
+## Nachtrag (2026-10-17): Machbarkeit und Autonomie (dritte Prüfschleife)
+
+- **Zeitplan:** Die Richtwerte halten nur, wenn PRs meist am selben Werktag gemergt werden. Engpass ist nicht
+  das Abo-Kontingent, sondern die Wartezeit auf Menschen (höchstens ein offener Agenten-PR). Bei zwei bis drei
+  Reviews pro Woche ergibt die Schätzung G2 etwa im Monat 5–6 und G3 im Monat 9–10. Gegenmittel ohne mehr
+  menschliche Zeit: Zustand aus dem Repository ableiten, rote PRs automatisch reparieren, nach jeder Task
+  sichern (`tools/next_step.py`, `.github/workflows/nachtschicht.yml`).
+- **Nachttauglich:** etwa die Hälfte der 35 Changes vollständig, ein Drittel teilweise (Logik nachts,
+  Abnahme durch Menschen), einige gar nicht (ap-04 GPU, ap-41 UX-Test, ap-14 Bildurteil, ap-20 Normwerte).
+  Scenarios werden deshalb als `[auto]` oder `[mensch]` gekennzeichnet (`openspec/config.yaml`).
+- **Offen bis zum Einstieg der Firma** (bewusst zurückgestellt, Schnitt bleibt vorerst wie oben): Ob für G2
+  „Erstes Angebot“ Zielwerte nach DIN 18041 (bisher ap-20, M3), Angebotsfelder (Kunde, Positionen, Rabatt,
+  MwSt., Nummer, Briefkopf) in ap-19 und ein Grundriss als PDF/DXF im Hintergrund nötig sind, und ob dafür
+  ap-39/ap-12 vom kritischen Pfad zu G2 sowie PyO3/SDK, Tauri und Englisch nach M2 rücken.
+

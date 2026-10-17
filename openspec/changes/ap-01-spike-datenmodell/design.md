@@ -66,6 +66,27 @@ Messrechner und Versionen im Bericht nennen. Jede Kennzahl in `datenmodell.json`
 - `to-text <json-datei>` – Textprojektion auf stdout
 - `from-text <text-datei>` – JSON (kanonisch: sortierte Schlüssel, 2 Leerzeichen Einzug) auf stdout
 - `bench --json` – führt alle Messungen aus und gibt `datenmodell.json` aus
+- `hash <projekt.json> <ops.json>` – lädt das Projekt, wendet die Operationen an und gibt
+  `{"hash": "<hex>"}` aus (Inhalts-Hash über die kanonische Form, unabhängig von der Historie)
+
+`ops.json` ist eine Liste von `{"op": "set_param", "id": "<element-id>", "name": "<param>", "value": <wert>}`.
+Dieselbe Ausgabe liefern die beiden anderen Laufzeiten:
+
+- NIF: `mix run --no-start hash.exs <projekt.json> <ops.json>` im Verzeichnis `spikes/datenmodell/nif/`
+- WASM: `node spikes/datenmodell/wasm/hash.mjs <projekt.json> <ops.json>`
+- `bash spikes/datenmodell/build.sh` baut vorher NIF und WASM (installiert bei Bedarf das Ziel
+  `wasm32-unknown-unknown`; die feste Rust-Version steht in `rust-toolchain.toml`)
+
+### Nachmessen statt Glauben (AK-7, AK-8)
+
+Die Abnahmetests verlassen sich nicht auf die gemeldeten Werte in `datenmodell.json`:
+
+- AK-7: Der Test erzeugt selbst zwei Operationsfolgen A und B (B weicht in einem Wert ab) und ruft `hash` nativ,
+  über die NIF und über WASM auf. Gefordert: drei gleiche Hashes für A, Hash(A) ≠ Hash(B), Hash(A) ≠ Hash
+  ohne Operationen.
+- AK-8: Der Test führt `bench --json` selbst aus. Zählwerte (`schema_special_cases`,
+  `conflicts_detected_pct`, `overrides_kept_pct`, `hash_equal_native_nif_wasm`) müssen exakt mit der Datei
+  übereinstimmen, `size_100k_mb` auf 10 %, Zeitwerte höchstens um den Faktor 3 abweichen (anderer Rechner).
 
 Das Textformat wählt der Spike (Kandidaten: KDL, TOML, eigenes zeilenorientiertes Format). Bedingungen:
 eine Zeile je Parameter, stabile Reihenfolge nach Element-ID, verlustfrei.

@@ -18,4 +18,5 @@
 
 ## Workflow follow-up
 
+- Durchlauf der Pipeline auswerten: Wie viele Nächte, wo hing es, was am Harness ändern? (Kernteam, Notiz im PR)
 - Change archivieren mit `/opsx:archive ap-00-setup` (Kernteam)

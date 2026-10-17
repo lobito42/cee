@@ -1095,6 +1095,8 @@ Die Roadmap wird über Meilensteine und Gates gesteuert, nicht über Termine (AD
 | G3 Öffentliche Beta (Ende M3) | Monat 6 | Mehrere Personen live und offline, Entwürfe, Freigabe mit Revisionen, Suche; KI über MCP mit lokalem und Cloud-Modell; Textprojektion, Regeln, Knoten-Ansicht, öffentliche Fachpaket-API; die Firma nutzt CEE für alle Angebote |
 | G4 Ökosystem | ab Monat 7 | Knoten-Editor, Apps und Studien, IFC und DXF, Möbel aus glTF, Änderungswesen, PLM/ERP-Schnittstelle, Lernschleife, Hosting, WebXR, geometrische Akustik, Fertigung, externe Beiträge |
 
+**Machbarkeit (dritte Prüfschleife, ADR-059 Nachtrag):** Die Monate gelten nur, wenn Agenten-PRs meist am selben Werktag gemergt werden; bei zwei bis drei Reviews pro Woche liegt G2 eher im Monat 5–6 und G3 im Monat 9–10. Engpass ist die Wartezeit auf Menschen, nicht das Abo-Kontingent. Deshalb bestimmt `tools/next_step.py` den nächsten Schritt aus dem Repository, rote PRs werden automatisch bis zu zweimal repariert, und die Nachtschicht läuft als GitHub-Action mit derselben Werkzeugkette wie die CI. Scenarios sind `[auto]` (Abnahmetest) oder `[mensch]` (Checkliste im PR); Testkorpora liefert das Kernteam. Ob für G2 Zielwerte nach DIN 18041, Angebotsfelder und ein Grundriss-Hintergrund nötig sind, klären wir, sobald die Firma dazukommt.
+
 ## Risiken und Gegenmaßnahmen
 
 Die größten Risiken liegen jetzt im Datenmodell (Größe und Merge-Verhalten des CRDT), in der persistenten Identität und in der Breite des Stacks für zwei Personen. Die ersten beiden klären die Spikes in M0, das dritte begrenzen klare Schichtgrenzen und Regeln je Sprache.
