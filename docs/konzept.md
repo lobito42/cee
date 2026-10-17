@@ -160,7 +160,7 @@ Daraus folgen vier Eigenschaften:
 
 - **Gleich adressierbar:** Veröffentlichen, kommentieren, verknüpfen, exportieren und versionieren funktioniert für jedes Element gleich, ohne Sonderfall je Typ.
 - **Rekursiv:** Ein Bauteil ist ein Element mit Untergraph, eine Baugruppe ebenso. Ein Untergraph kann als wiederverwendbarer Baustein in andere Projekte eingebunden werden, das ist zugleich das Modell für Bibliotheken und Plugins.
-- **Drei Ansichten, eine Wahrheit:** 3D-Arbeitsfläche, Knoten-Editor (Visual Programming wie Synera) und Textprojektion zeigen denselben Graphen; eine Änderung in einer Ansicht ist sofort in allen sichtbar (ADR-035). Python mit build123d bleibt als Elementtyp `script` mit deklarierten Ein- und Ausgängen.
+- **Drei Ansichten, eine Wahrheit:** 3D-Arbeitsfläche, Knoten-Editor (Visual Programming wie Synera) und Textprojektion zeigen denselben Graphen, dazu der Stapel als einfachste Sicht (ADR-044); eine Änderung in einer Ansicht ist sofort in allen sichtbar (ADR-035). Python mit build123d bleibt als Elementtyp `script` mit deklarierten Ein- und Ausgängen.
 - **Rezept statt Geometrie:** Gespeichert und synchronisiert wird nur der Graph als CRDT-Dokument (Automerge). Geometrie ist ein Cache, berechnet aus Element, Eingängen und Kernel-Version (ADR-032, ADR-033).
 
 Die Textprojektion ist deterministisch und verlustfrei: eine Zeile je Parameter, sortiert nach Element-ID. Eine geänderte Wandstärke ist im Review genau eine Zeile. Damit lassen sich Projekte auch in normale Git-Repositories exportieren und wieder importieren.
@@ -264,6 +264,7 @@ Es gibt keine Menüleiste und kein Ribbon. Befunde erscheinen als Markierung dir
 | Ansicht wechseln (oben rechts) | 3D, Knoten oder Text für dieselbe Auswahl; geteilte Ansicht nebeneinander |
 | Kommentare (am Element) | Faden an jedem Element, mit Erwähnungen; offene Fäden als Markierung am Modell |
 | Bibliothek (Reiter neben dem Featurebaum) | Komponenten und Varianten zum Hineinziehen; Hinweis auf neue Versionen mit Vorschau; „Zur Komponente machen“ an jeder Auswahl |
+| Arbeitsbereiche (Reiter in der Kopfzeile) | Raum, Akustik, Präsentation, Bericht – gleiche Auswahl und gleiches Modell, nur andere Panels und Werkzeuge |
 
 **Gestaltungsregeln**
 
@@ -277,6 +278,18 @@ Es gibt keine Menüleiste und kein Ribbon. Befunde erscheinen als Markierung dir
 8. **Knoten und Text auf Wunsch.** Wer räumlich denkt, arbeitet in 3D; ein Klick zeigt dieselbe Auswahl als Knoten oder als Text daneben.
 9. **Wenige Tastenkürzel.** Unter 15 Kürzel, alle in der Befehlssuche sichtbar; vollständig per Maus, Trackpad oder Stift bedienbar.
 10. **Schnell und ruhig.** Reaktion unter 100 ms, keine modalen Dialoge, viel Weißraum, eine Akzentfarbe nur für Auswahl und KI, Hell- und Dunkelmodus.
+
+**Von Blender übernommen (ADR-044)**
+
+| Muster | So in CEE |
+| --- | --- |
+| Werte beim Ziehen tippen | Deckensegel ziehen, „X“ für die Achse, „1200“ tippen – Präzision ohne Dialog, auch Einheiten und Formeln |
+| Arbeitsbereiche | Reiter **Raum · Akustik · Präsentation · Bericht**; jeder zeigt nur, was für die Aufgabe nötig ist |
+| Modifier-Stapel | Stapel im Eigenschaften-Panel, z. B. Absorber → Raster 3 × 4 → Abstand 300 mm; Schritte umsortieren oder abschalten |
+| Befehl als Python im Tooltip | Jede Aktion als Textzeile sichtbar und kopierbar; dieselbe Form nutzen Agenten |
+| Denoiser in Cycles | Fotomodus liefert mit wenigen Samples ein sauberes Bild |
+
+Weitere Anregungen (Fangmodi, Annotationen im 3D-Raum, Materialvorschau mit α-Kurve, Licht-Vorlagen, Stiftung und Development Fund) liegen im Ideenspeicher.
 
 **Skizzieren**
 
@@ -302,7 +315,7 @@ Es gibt keine Menüleiste und kein Ribbon. Befunde erscheinen als Markierung dir
 
 ## Architecture Decision Records
 
-Dreiundvierzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-043 beschreiben die neue Richtung (Element-Graph, Rust-Kern, Elixir-Server, Web und Desktop, Lizenz, offene und lokale KI, Raumakustik, Material, Rendering, Austauschformate, Komponenten) und sind akzeptiert; sie ersetzen ADR-003, 005, 013 und 024. Die übrigen stehen auf „Vorgeschlagen“ und werden mit den Spikes bestätigt. Jedes ADR liegt zusätzlich als Markdown-Datei unter `docs/adr/` im Repository.
+Vierundvierzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-044 beschreiben die neue Richtung (Element-Graph, Rust-Kern, Elixir-Server, Web und Desktop, Lizenz, offene und lokale KI, Raumakustik, Material, Rendering, Austauschformate, Komponenten, Bedienmuster aus Blender) und sind akzeptiert; sie ersetzen ADR-003, 005, 013 und 024. Die übrigen stehen auf „Vorgeschlagen“ und werden mit den Spikes bestätigt. Jedes ADR liegt zusätzlich als Markdown-Datei unter `docs/adr/` im Repository.
 
 | ADR | Entscheidung | Wichtigste Alternative |
 | --- | --- | --- |
@@ -349,6 +362,7 @@ Dreiundvierzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-043 be
 | 041 | Nachhallzeit nach Sabine und Eyring je Oktavband im Rust-Kern; Ergebnisse als Analyse-Elemente | Berechnung im Python-Worker, externe Akustiksoftware |
 | 042 | Austausch: IFC- und DXF-Import, glTF in beide Richtungen, PDF-Bericht, STEP für Bauteile | Nur STEP (ADR-004) |
 | 043 | Komponenten mit Parametern und Varianten, Instanzen mit Überschreibungen, versionierte Bibliotheken mit Aktualisierung und Vorschau | Kopieren statt Instanzen |
+| 044 | Bedienmuster aus Blender: Werte beim Ziehen tippen, vier Arbeitsbereiche, Stapel als Sicht auf den Graphen, Aktion als Code, Denoiser im Fotomodus | Dialoge für exakte Werte, eine Oberfläche für alles |
 
 ### ADR-001: Geometriekernel OpenCascade
 
@@ -644,6 +658,12 @@ Dreiundvierzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-043 be
 
 **Konsequenzen:** Der Absorber-Katalog ist eine Komponentenbibliothek mit Varianten. ap-01 misst die Weitergabe an 1.000 Instanzen (≤ 50 ms) und den Erhalt der Überschreibungen.
 
+### ADR-044: Bedienmuster aus Blender
+
+**Entscheidung:** (1) Während einer Bewegung Achse sperren und Wert tippen, ohne Dialog. (2) Vier Arbeitsbereiche Raum, Akustik, Präsentation, Bericht als Reiter; jeder zeigt nur passende Panels. (3) Stapel nicht-destruktiver Schritte im Eigenschaften-Panel als einfachste Sicht auf den Graphen. (4) Jede Aktion als Graph-Operation bzw. Textzeile sichtbar und kopierbar. (5) Fotomodus mit Denoiser (Open Image Denoise, Apache-2.0, oder gleichwertig im Browser).
+
+**Konsequenzen:** Ändert ADR-022, ergänzt ADR-035 und ADR-040. Weitere Anregungen im Ideenspeicher.
+
 ## Regelwerk und Verifikationsschleife
 
 Erstes Regelpaket ist die Raumakustik: Zielbänder für die Nachhallzeit je Raumart, geprüft von der Firma (ap-20). Die Fertigungsregeln unten folgen nach der Beta.
@@ -683,17 +703,17 @@ Die Arbeit ist in 33 Arbeitspakete in vier Phasen geschnitten, ausgerichtet auf 
 | ap-01-spike-datenmodell | 0 | Elementschema, Automerge, Textprojektion, NIF und WASM, Komponenten und Instanzen; Beispiel: Raum mit Absorbern | 12 Kennzahlen gemessen, Go oder No-Go | – |
 | ap-02-akustik-nachhallzeit | 0 | Crate `crates/acoustics`: Sabine und Eyring je Oktavband, Fehler, Kommandozeile | ≤ 0,1 % zur Formel; 1.000 Flächen ≤ 1 ms | – |
 | ap-03-spike-sync | 0 | Phoenix Channels mit Rust-Kern: zwei Browser live, einer offline, Zusammenführen | Änderung bei beiden < 200 ms; Merge ohne Datenverlust | ap-01 |
-| ap-04-spike-rendering | 0 | Echtzeit-PBR und Fotomodus (Path Tracing) in Browser und Tauri auf drei Systemen | Raum mit 50 Objekten ≥ 30 fps; Fotomodus 1920 × 1080 in ≤ 60 s auf Mittelklasse-GPU | ap-00 |
+| ap-04-spike-rendering | 0 | Echtzeit-PBR und Fotomodus (Path Tracing mit Denoiser) in Browser und Tauri auf drei Systemen | Raum mit 50 Objekten ≥ 30 fps; Fotomodus 1920 × 1080 in ≤ 60 s auf Mittelklasse-GPU | ap-00 |
 | ap-05-graph-kern | 1 | Graph-Kern produktiv: Schema v1, Validierung, Abhängigkeiten, Migrationen | 100.000 Elemente laden ≤ 2 s | ap-01 |
 | ap-06-kernel-worker | 1 | Kernel-Protokoll, Python-Worker mit OCCT, Cache nach Inhalts-Hash | Raum mit 6 Wänden und 2 Öffnungen baut < 1 s; Worker-Absturz ohne Serverausfall | ap-05 |
 | ap-07-server-sync | 1 | Dokumentprozesse, Channels, Presence, Rechte, PostgreSQL | 20 gleichzeitige Nutzer je Dokument, Änderung < 200 ms | ap-03, ap-05 |
-| ap-08-arbeitsflaeche | 1 | Arbeitsfläche mit 3D und 2D-Grundriss, Featurebaum, Eigenschaften, Befehlssuche, Avatare | 4 von 5 Testpersonen der Firma lösen Kernabläufe; Auswahl < 100 ms | ap-04 |
+| ap-08-arbeitsflaeche | 1 | Arbeitsfläche mit 3D und 2D-Grundriss, Featurebaum, Eigenschaften mit Stapel, Befehlssuche, Avatare, Arbeitsbereiche, Werte beim Ziehen tippen, Aktionsprotokoll | 4 von 5 Testpersonen der Firma lösen Kernabläufe; Auswahl < 100 ms | ap-04 |
 | ap-09-raum-elemente | 1 | Geschoss, Wand, Boden, Decke, Fenster, Tür; Wände im Grundriss zeichnen | Besprechungsraum in ≤ 5 min modelliert; Öffnungen schneiden Wände korrekt | ap-06, ap-08 |
 | ap-10-materialbibliothek | 1 | Material-Elemente mit allen Eigenschaftsgruppen, Import von Herstellerdaten (CSV) | 20 Materialien der Firma importiert, αw und Absorberklasse korrekt | ap-05 |
 | ap-11-akustik-live | 1 | Analyse-Element Nachhallzeit, Live-Anzeige je Band, Zielband, Kern als WASM | Aktualisierung beim Verschieben < 100 ms | ap-02, ap-09, ap-10 |
 | ap-12-skizze-extrusion | 1 | Skizzen mit PlaneGCS, Extrusion, Identität der Flächen | Absorber-Form per Skizze in ≤ 3 Schritten; IDs stabil über 50 Parameteränderungen | ap-06, ap-08 |
 | ap-13-komponenten-katalog | 1 | Komponenten mit Varianten und Instanzen (ADR-043), versionierte Bibliotheken mit Aktualisierung und Vorschau; Absorber-Katalog der Firma als Bibliothek; Platzieren an Wand und Decke, abgehängt, Reihen und Raster | 12 Deckensegel als Raster in einem Schritt; Wirkung sofort in der Nachhallzeit; ein Katalog-Update erreicht alle Instanzen, Überschreibungen bleiben | ap-10, ap-11, ap-12 |
-| ap-14-rendering-fotomodus | 1 | Echtzeit-PBR, HDRI, Fotomodus produktiv, Bild als PNG | Referenzraum fotorealistisch; Materialien entsprechen Mustern der Firma | ap-04, ap-10 |
+| ap-14-rendering-fotomodus | 1 | Echtzeit-PBR, HDRI, Fotomodus mit Denoiser produktiv, Bild als PNG | Referenzraum fotorealistisch; Materialien entsprechen Mustern der Firma | ap-04, ap-10 |
 | ap-15-mcp-ki | 1 | MCP-Endpunkt, Anbieter-Schnittstelle (lokal und Cloud), Änderungssätze, Eval-Suite | Agent bringt die Nachhallzeit eines Referenzraums in das Zielband, mit Cloud- und lokalem Modell | ap-07, ap-13 |
 | ap-16-selbstbetrieb | 1 | Container mit Server, Datenbank und lokalem Modell, Backups | Installation in < 15 min | ap-07 |
 | ap-17-desktop-offline | 1 | Tauri-App mit Kern, Speicher und Worker; offline, Abgleich beim Verbinden | Einen Tag offline gearbeitet, Merge ohne Datenverlust | ap-06, ap-07 |
