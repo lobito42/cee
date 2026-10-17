@@ -88,6 +88,7 @@ Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `opens
 - Einfach und fehlerarm (ADR-051/052): Oberfläche ohne Git-Begriffe (Entwurf, Meilenstein, Übernehmen),
   Verwerfen statt Löschen, Ordnung aus dem Graphen (Facetten, Suche, Rückverweise) statt Ordnerpflege.
 - Lernschleife für lokale Modelle nur mit Prüfern als Bewertung, nie Selbstbewertung (ADR-053).
+- Reihenfolge nach Meilensteinen M0 bis M3 (ADR-059); nichts aus einem späteren Meilenstein vorziehen.
 - Rechte prüft der Server; Agenten laufen als Dienstkonto ohne Freigaberecht (ADR-055). Datensparsam: keine
   gespeicherte Anwesenheit, Verlauf nur mit Konto-IDs (ADR-056). Jede Zahl ist eine Größe mit Einheit
   (ADR-057). Adressen beruhen auf der Element-ID (ADR-058). Begriffe: `docs/glossar.md`.

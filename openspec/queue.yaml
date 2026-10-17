@@ -1,4 +1,5 @@
 # Warteschlange freigegebener Changes – nur das Kernteam ändert diese Datei.
+# Reihenfolge nach Meilensteinen (ADR-059): M0 Klären → M1 Werkbank → M2 Zusammen → M3 Beta.
 # Ein Eintrag hier ist die Freigabe. Die Nachtschicht nimmt den ersten Eintrag, dessen nächster Schritt offen ist.
 #
 # phase:   tests   → Abnahmetests fehlen noch (Branch tests/<id>)

@@ -62,3 +62,4 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-056](ADR-056-datenschutz.md) | Datenschutz | akzeptiert |
 | [ADR-057](ADR-057-einheiten-und-groessen.md) | Einheiten und Größen | akzeptiert |
 | [ADR-058](ADR-058-adressen-auf-id-basis.md) | Adressen auf ID-Basis | akzeptiert |
+| [ADR-059](ADR-059-meilensteine-und-beta-umfang.md) | Meilensteine und Beta-Umfang | akzeptiert |
