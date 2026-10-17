@@ -291,6 +291,19 @@ Es gibt keine Menüleiste und kein Ribbon. Befunde erscheinen als Markierung dir
 
 Weitere Anregungen (Fangmodi, Annotationen im 3D-Raum, Materialvorschau mit α-Kurve, Licht-Vorlagen, Stiftung und Development Fund) liegen im Ideenspeicher.
 
+**Von VS Code übernommen (ADR-045)**
+
+| Muster | So in CEE |
+| --- | --- |
+| Befehlsregister | Jede Funktion ist ein Befehl mit ID; Befehlssuche, Tastenkürzel, Plugins, Aktionsprotokoll und die MCP-Werkzeuge der KI nutzen dasselbe Register – was ein Mensch kann, kann ein Agent |
+| Erweiterungsmodell | Plugins deklarieren im Manifest Befehle, Elementtypen, Knoten, Panels, Regeln und Einstellungen; laufen isoliert mit ausdrücklichen Rechten; offenes, selbst hostbares Verzeichnis |
+| Workspace Trust | Fremde Projekte und Bibliotheken öffnen ohne Ausführung von Script-Elementen und Plugin-Code, bis man ihnen vertraut |
+| Problems und Quick Fixes | Befunde am Modell und als Liste mit Sprung zur Stelle; feste Korrekturen aus Regeln als Änderungssatz mit Vorschau |
+| Einstellungen in Ebenen | Standard < Organisation < Benutzer < Projekt; durchsuchbar, als Oberfläche und als Text |
+| Diff und Timeline | Zwei Stände visuell vergleichen: Geometrie überlagert, Parameter als Liste, Nachhallzeit und Kosten vorher/nachher; Verlauf je Element |
+
+Nicht übernommen: Telemetrie standardmäßig an, ein proprietäres offizielles Produkt neben dem offenen Code, die Fülle an Panels. Weitere Anregungen (Breadcrumbs, Walkthroughs, Keymaps zum Umsteigen, offenes Analyse-Protokoll nach Vorbild des LSP, Remote-Rechnen, Stable und Insiders) liegen im Ideenspeicher.
+
 **Skizzieren**
 
 - **Starten:** Fläche oder Ebene anklicken, „Skizze“ wählen; die Ansicht dreht sich senkrecht darauf, das Modell tritt halbtransparent zurück.
@@ -315,7 +328,7 @@ Weitere Anregungen (Fangmodi, Annotationen im 3D-Raum, Materialvorschau mit α-K
 
 ## Architecture Decision Records
 
-Vierundvierzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-044 beschreiben die neue Richtung (Element-Graph, Rust-Kern, Elixir-Server, Web und Desktop, Lizenz, offene und lokale KI, Raumakustik, Material, Rendering, Austauschformate, Komponenten, Bedienmuster aus Blender) und sind akzeptiert; sie ersetzen ADR-003, 005, 013 und 024. Die übrigen stehen auf „Vorgeschlagen“ und werden mit den Spikes bestätigt. Jedes ADR liegt zusätzlich als Markdown-Datei unter `docs/adr/` im Repository.
+Fünfundvierzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-045 beschreiben die neue Richtung (Element-Graph, Rust-Kern, Elixir-Server, Web und Desktop, Lizenz, offene und lokale KI, Raumakustik, Material, Rendering, Austauschformate, Komponenten, Bedienmuster aus Blender und VS Code) und sind akzeptiert; sie ersetzen ADR-003, 005, 013 und 024. Die übrigen stehen auf „Vorgeschlagen“ und werden mit den Spikes bestätigt. Jedes ADR liegt zusätzlich als Markdown-Datei unter `docs/adr/` im Repository.
 
 | ADR | Entscheidung | Wichtigste Alternative |
 | --- | --- | --- |
@@ -363,6 +376,7 @@ Vierundvierzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-044 be
 | 042 | Austausch: IFC- und DXF-Import, glTF in beide Richtungen, PDF-Bericht, STEP für Bauteile | Nur STEP (ADR-004) |
 | 043 | Komponenten mit Parametern und Varianten, Instanzen mit Überschreibungen, versionierte Bibliotheken mit Aktualisierung und Vorschau | Kopieren statt Instanzen |
 | 044 | Bedienmuster aus Blender: Werte beim Ziehen tippen, vier Arbeitsbereiche, Stapel als Sicht auf den Graphen, Aktion als Code, Denoiser im Fotomodus | Dialoge für exakte Werte, eine Oberfläche für alles |
+| 045 | Nach VS Code: ein Befehlsregister für Mensch, Plugins und KI; Plugins mit Manifest in der Sandbox; Projekt-Vertrauen; Befunde mit Korrekturen; Einstellungen in Ebenen; visueller Vergleich | Plugins im selben Prozess, getrennte Werkzeuge für Mensch und KI |
 
 ### ADR-001: Geometriekernel OpenCascade
 
@@ -664,6 +678,12 @@ Vierundvierzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-044 be
 
 **Konsequenzen:** Ändert ADR-022, ergänzt ADR-035 und ADR-040. Weitere Anregungen im Ideenspeicher.
 
+### ADR-045: Befehle, Erweiterungen und Vertrauen nach dem Vorbild von VS Code
+
+**Entscheidung:** (1) Jede Funktion ist ein Befehl mit stabiler ID und Parameter-Schema; Befehlssuche, Tastenkürzel, Plugins, Aktionsprotokoll und MCP-Werkzeuge kommen aus diesem Register. (2) Plugins deklarieren ihre Beiträge im Manifest, laufen isoliert mit ausdrücklichen Rechten über eine versionierte API; offenes, selbst hostbares Verzeichnis. (3) Fremde Projekte und Bibliotheken öffnen im eingeschränkten Modus ohne Script- und Plugin-Ausführung, bis man ihnen vertraut. (4) Regeln liefern Befunde mit Ort und optional festen Korrekturen als Änderungssatz. (5) Einstellungen in Ebenen Standard, Organisation, Benutzer, Projekt, mit Schema. (6) Visueller Vergleich zweier Stände und Verlauf je Element.
+
+**Konsequenzen:** Ändert ADR-007 und ADR-022, ergänzt ADR-008 und ADR-044. Nicht übernommen: Telemetrie standardmäßig an, proprietäres offizielles Produkt. Weitere Anregungen im Ideenspeicher.
+
 ## Regelwerk und Verifikationsschleife
 
 Erstes Regelpaket ist die Raumakustik: Zielbänder für die Nachhallzeit je Raumart, geprüft von der Firma (ap-20). Die Fertigungsregeln unten folgen nach der Beta.
@@ -707,7 +727,7 @@ Die Arbeit ist in 33 Arbeitspakete in vier Phasen geschnitten, ausgerichtet auf 
 | ap-05-graph-kern | 1 | Graph-Kern produktiv: Schema v1, Validierung, Abhängigkeiten, Migrationen | 100.000 Elemente laden ≤ 2 s | ap-01 |
 | ap-06-kernel-worker | 1 | Kernel-Protokoll, Python-Worker mit OCCT, Cache nach Inhalts-Hash | Raum mit 6 Wänden und 2 Öffnungen baut < 1 s; Worker-Absturz ohne Serverausfall | ap-05 |
 | ap-07-server-sync | 1 | Dokumentprozesse, Channels, Presence, Rechte, PostgreSQL | 20 gleichzeitige Nutzer je Dokument, Änderung < 200 ms | ap-03, ap-05 |
-| ap-08-arbeitsflaeche | 1 | Arbeitsfläche mit 3D und 2D-Grundriss, Featurebaum, Eigenschaften mit Stapel, Befehlssuche, Avatare, Arbeitsbereiche, Werte beim Ziehen tippen, Aktionsprotokoll | 4 von 5 Testpersonen der Firma lösen Kernabläufe; Auswahl < 100 ms | ap-04 |
+| ap-08-arbeitsflaeche | 1 | Arbeitsfläche mit 3D und 2D-Grundriss, Featurebaum, Eigenschaften mit Stapel, Befehlsregister mit Befehlssuche, Einstellungen, Avatare, Arbeitsbereiche, Werte beim Ziehen tippen, Aktionsprotokoll | 4 von 5 Testpersonen der Firma lösen Kernabläufe; Auswahl < 100 ms | ap-04 |
 | ap-09-raum-elemente | 1 | Geschoss, Wand, Boden, Decke, Fenster, Tür; Wände im Grundriss zeichnen | Besprechungsraum in ≤ 5 min modelliert; Öffnungen schneiden Wände korrekt | ap-06, ap-08 |
 | ap-10-materialbibliothek | 1 | Material-Elemente mit allen Eigenschaftsgruppen, Import von Herstellerdaten (CSV) | 20 Materialien der Firma importiert, αw und Absorberklasse korrekt | ap-05 |
 | ap-11-akustik-live | 1 | Analyse-Element Nachhallzeit, Live-Anzeige je Band, Zielband, Kern als WASM | Aktualisierung beim Verschieben < 100 ms | ap-02, ap-09, ap-10 |
@@ -726,7 +746,7 @@ Die Arbeit ist in 33 Arbeitspakete in vier Phasen geschnitten, ausgerichtet auf 
 | ap-24-textprojektion-git | 2 | Textprojektion produktiv, Git-Export und -Import | Roundtrip verlustfrei; eine Parameteränderung = eine Zeile | ap-05 |
 | ap-25-zweige-freigabe | 2 | Zweige, Änderungsanfragen, Review, Freigabe, semantische Konflikte | 100 % der Konflikte im Testkorpus erkannt | ap-07 |
 | ap-26-publikation | 2 | Publikationsstatus, Manifest, URIs, semantischer Diff | Schnittstellen-Diff an 3 Referenzräumen korrekt | ap-05 |
-| ap-27-plugin-sdk | 2 | Plugin-SDK für TypeScript und Python, Beispielplugin | Fremd-Plugin ohne Änderung am Kern | ap-05, ap-23 |
+| ap-27-plugin-sdk | 2 | Plugin-SDK für TypeScript und Python mit Manifest, Sandbox und Rechten, Projekt-Vertrauen, Beispielplugin | Fremd-Plugin ohne Änderung am Kern | ap-05, ap-23 |
 | ap-28-hosting | 3 | Gehosteter Dienst mit Organisationen | Erste externe Organisation | ap-16 |
 | ap-29-webxr | 3 | Begehung des Raums in Originalgröße, mit Anwesenheit und Kommentaren | Review-Sitzung mit 3 Personen in XR | ap-14 |
 | ap-30-akustik-geometrisch | 3 | Spiegelquellen bzw. Strahlverfolgung, Auralisation (hörbar machen) | Abweichung zu Messung in 3 Räumen dokumentiert | ap-11 |
