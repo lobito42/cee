@@ -16,6 +16,7 @@ spielen keine Rolle.
 4. Den nächsten Schritt nennen und mit dem Menschen abstimmen (interaktiv) bzw. `/nachtschicht` folgen (unbeaufsichtigt).
 
 Hintergrund: `docs/konzept.md` (Export des Konzepts, nur gezielt lesen), Entscheidungen in `docs/adr/`.
+`docs/ideen/` ist ein Ideenspeicher: nicht umsetzen, solange es keinen freigegebenen Change dazu gibt.
 
 ## Arbeitsweise: Spec-driven mit OpenSpec
 
