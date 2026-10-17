@@ -8,7 +8,8 @@ Du arbeitest unbeaufsichtigt. Niemand beantwortet Fragen. Erledige **genau einen
 ## 1. Vorbereitung
 
 - Auf `main` starten: `git switch main && git pull -q`.
-- Strenger Modus für alle Tests: `export CEE_STRICT=1` (fehlende Werkzeuge sind Fehler, nicht übersprungen).
+- Strenger Modus für alle Tests: In der GitHub-Action ist `CEE_STRICT=1` gesetzt; sonst jeden Testaufruf mit
+  `CEE_STRICT=1 uv run pytest …` starten (fehlende Werkzeuge sind Fehler, nicht übersprungen).
 - Werkzeuge nur nachinstallieren, wenn sie fehlen. Versionen stehen in `.tool-versions` und
   `rust-toolchain.toml`; weicht `elixir --version` oder `rustc --version` davon ab, nicht arbeiten, sondern
   mit Grund „Umgebung passt nicht“ ins Protokoll (Abschnitt 4) und beenden. In der GitHub-Action
@@ -26,7 +27,8 @@ nicht erkunden. Felder: `step`, `id`, `branch`, `resume`, `model`, ggf. `pr`, `a
 ## 3. Ausführen
 
 **Branch:** `resume: true` → `git fetch origin <branch> && git switch <branch>` und auf dem vorhandenen Stand
-weiterarbeiten (nie neu von main anlegen). Sonst `git switch -c <branch>`.
+weiterarbeiten (nie neu von main anlegen); steht `pr` dabei, ist das der offene Entwurfs-PR – keinen neuen
+öffnen. Sonst `git switch -c <branch>`.
 
 - **tests** → Abnahmetests nach dem Vorgehen des Agenten `test-author`. Prüfen, dass sie rot sind.
 - **build** → umsetzen nach dem Vorgehen des Agenten `implementer` (Tasks in Reihenfolge,

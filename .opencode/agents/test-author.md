@@ -17,6 +17,6 @@ Du übersetzt die Scenarios eines freigegebenen Changes in ausführbare Abnahmet
    PR-Checkliste „Menschliche Abnahme“. Kriterien mit `[auto]` werden immer ein Test.
 7. Testkorpora und Referenzdaten (z. B. Identitäts- oder Konfliktfälle, Firmenkataloge) schreibst du nicht
    selbst – sonst bestimmt der Agent die Quote. Sie liegen vom Kernteam unter `tests/golden/<id>/`; fehlen
-   sie, anhalten und im PR unter „Offene Fragen“ melden.
+   sie, anhalten und im PR unter „Offene Fragen“ melden. (Wird im Review geprüft, nicht vom Guard.)
 8. Tests müssen jetzt rot sein (prüfen und im PR notieren). Fehlende Werkzeuge zählen nicht als rot:
    mit `CEE_STRICT=1` prüfen. Pull Request öffnen.

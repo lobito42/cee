@@ -28,14 +28,17 @@ Zeile – auch „Nichts zu tun“, „wartet auf Review“ und Abbrüche. GitHu
 
 | Protokoll sagt | Zu tun |
 | --- | --- |
+| Abnahmetests warten auf Review | Tests prüfen (sie sind absichtlich rot) und mergen – erst dann beginnt die Umsetzung |
 | offener PR wartet auf Review | PR prüfen (Label `review` für ein Claude-Review), mergen oder kommentieren |
-| PR ist blockiert | „Offene Fragen“ im PR beantworten, Label `blocked` entfernen (dann neuer Versuch) |
+| PR ist blockiert | „Offene Fragen“ im PR beantworten, Labels `blocked`, `fix-1` und `fix-2` entfernen (dann neuer Versuch) |
 | main ist rot | main reparieren; die Nachtschicht arbeitet nicht an fremden Fehlern |
 | abgebrochen | nichts – die nächste Nacht setzt auf dem Branch fort; nach zwei Abbrüchen Ursache ansehen |
 | Nichts zu tun | nächsten Change freigeben (Eintrag in `openspec/queue.yaml`, Spec auf `main`) |
 
 Die Phase in `queue.yaml` muss nicht mehr umgestellt werden: Liegen die Abnahmetests auf `main`, ist der
-Change in der Umsetzung; sind alle Tasks abgehakt, ist er fertig. `phase` bleibt als Untergrenze nutzbar.
+Change in der Umsetzung; sind alle Tasks abgehakt oder ist der `change/<id>`-PR gemergt, ist er fertig.
+Ein Entwurfs-PR heißt „noch in Arbeit“: Die nächste Nacht macht dort weiter, statt zu reparieren.
+`phase` bleibt als Untergrenze nutzbar.
 
 **Kontingent:** Ein Lauf verbraucht das Abo-Kontingent wie eine Sitzung. Läuft es leer, bricht der Lauf ab
 (protokolliert), es entstehen keine Zusatzkosten, solange „usage credits“ aus bleiben. Durch Sichern nach

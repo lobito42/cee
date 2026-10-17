@@ -50,6 +50,8 @@ CORE_ONLY = (
     "tests/unit/",
     "pytest.ini",
     "deny.toml",
+    ".tool-versions",
+    "rust-toolchain.toml",
     ".devcontainer/",
     "LICENSE",
     "NOTICE",

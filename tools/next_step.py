@@ -13,11 +13,12 @@ Reihenfolge der Regeln:
 
 1. main ist rot → anhalten (nicht an fremden Fehlern arbeiten).
 2. Es gibt einen offenen Agenten-PR (Branch ``tests/…`` oder ``change/…``):
-   Label ``blocked`` → anhalten; CI rot und weniger als zwei Reparaturversuche (Labels ``fix-1``, ``fix-2``)
-   → Schritt ``fix``; CI läuft → anhalten; sonst wartet der PR auf Review → anhalten.
+   Label ``blocked`` → anhalten; Entwurf → dort weiterarbeiten (``resume``); Abnahmetest-PR (absichtlich rot)
+   → wartet auf Review; CI rot und weniger als zwei Reparaturversuche (Labels ``fix-1``, ``fix-2``) → Schritt
+   ``fix``, danach ``label: blocked``; CI läuft → anhalten; sonst wartet der PR auf Review → anhalten.
 3. Erster freigegebener Change (``night: true``), der nicht fertig ist und dessen Abhängigkeiten fertig sind:
-   Schritt ``tests`` oder ``build``. Gibt es den Branch schon auf GitHub, wird dort weitergearbeitet
-   (``resume: true``), statt neu von main anzufangen.
+   Schritt ``tests`` oder ``build``. Gibt es den Branch schon auf GitHub (und ist er nicht in main gemergt),
+   wird dort weitergearbeitet (``resume: true``). Ein gemergter ``change/<id>``-PR gilt als fertig.
 4. Sonst: „Nichts zu tun“.
 
 Aufruf: ``python3 tools/next_step.py`` (fragt GitHub über ``gh`` ab) oder mit ``--offline`` und Dateien
@@ -96,8 +97,20 @@ def checks(pr: dict) -> str:
     return "pending" if pending or not rollup else "success"
 
 
-def decide(entries: list[dict], states: dict[str, str], prs: list[dict], remote: set[str], main: str) -> dict:
-    """Die eigentliche Entscheidung – reine Funktion, damit sie testbar ist."""
+def decide(
+    entries: list[dict],
+    states: dict[str, str],
+    prs: list[dict],
+    remote: set[str],
+    main: str,
+    merged: set[str] = frozenset(),
+) -> dict:
+    """Die eigentliche Entscheidung – reine Funktion, damit sie testbar ist.
+
+    `remote`: Branches auf GitHub, die noch nicht in main enthalten sind.
+    `merged`: Head-Branches gemergter PRs; ein gemergter
+    `change/<id>` gilt als fertig, auch wenn Tasks offen sind (z. B. [mensch]-Kriterien).
+    """
     if main == "failure":
         return {"step": "stop", "reason": "main ist rot – erst reparieren (Kernteam)"}
     by_id = {e["id"]: e for e in entries}
@@ -110,20 +123,29 @@ def decide(entries: list[dict], states: dict[str, str], prs: list[dict], remote:
         base = {"pr": pr.get("number"), "branch": branch, "id": change_id}
         if "blocked" in labels:
             return {"step": "stop", "reason": "PR ist blockiert und wartet auf einen Menschen", **base}
+        model = by_id.get(change_id, {}).get("model", "sonnet")
+        step = "tests" if branch.startswith("tests/") else "build"
+        if pr.get("isDraft"):
+            # Entwurf = Arbeit unfertig (z. B. abgebrochene Nacht): weitermachen, nicht „reparieren“.
+            return {"step": step, "resume": True, "model": model, **base}
+        if step == "tests":
+            # Abnahmetest-PRs sind absichtlich rot (Tests vor der Umsetzung) – sie warten auf Review.
+            return {"step": "stop", "reason": "Abnahmetests warten auf Review", **base}
         status = checks(pr)
         if status == "failure":
             if "fix-2" in labels:
                 return {
                     "step": "stop",
-                    "reason": "zwei Reparaturversuche erfolglos – Label blocked setzen",
+                    "reason": "zwei Reparaturversuche erfolglos – PR wird blockiert",
+                    "label": "blocked",
                     **base,
                 }
             attempt = 2 if "fix-1" in labels else 1
-            model = by_id.get(change_id, {}).get("model", "sonnet")
             return {"step": "fix", "attempt": attempt, "model": model, "resume": True, **base}
         if status == "pending":
             return {"step": "stop", "reason": "CI des offenen PRs läuft noch", **base}
         return {"step": "stop", "reason": "offener PR wartet auf Review", **base}
+    states = {**states, **{m.split("/", 1)[1]: "done" for m in merged if m.startswith("change/")}}
     for entry in entries:
         cid = entry["id"]
         if not entry["night"] or states.get(cid) == "done":
@@ -149,7 +171,23 @@ def _gh(args: list[str]) -> str:
     return res.stdout
 
 
-def gather_online() -> tuple[list[dict], set[str], str]:
+def _unmerged(branches: set[str]) -> set[str]:
+    """Nur Agenten-Branches, die noch nicht in origin/main enthalten sind."""
+    out = set()
+    for b in branches:
+        if not AGENT_BRANCH.match(b):
+            continue
+        res = subprocess.run(
+            ["git", "merge-base", "--is-ancestor", f"origin/{b}", "origin/main"],
+            cwd=ROOT,
+            capture_output=True,
+        )
+        if res.returncode != 0:
+            out.add(b)
+    return out
+
+
+def gather_online() -> tuple[list[dict], set[str], str, set[str]]:
     prs = json.loads(
         _gh(
             ["pr", "list", "--state", "open", "--json", "number,headRefName,labels,isDraft,statusCheckRollup"]
@@ -158,7 +196,13 @@ def gather_online() -> tuple[list[dict], set[str], str]:
     res = subprocess.run(
         ["git", "ls-remote", "--heads", "origin"], cwd=ROOT, capture_output=True, text=True, timeout=120
     )
-    remote = {ln.split("refs/heads/", 1)[1] for ln in res.stdout.splitlines() if "refs/heads/" in ln}
+    heads = {ln.split("refs/heads/", 1)[1] for ln in res.stdout.splitlines() if "refs/heads/" in ln}
+    subprocess.run(["git", "fetch", "-q", "origin"], cwd=ROOT, capture_output=True, timeout=300)
+    remote = _unmerged(heads)
+    merged_prs = json.loads(
+        _gh(["pr", "list", "--state", "merged", "--limit", "200", "--json", "headRefName"])
+    )
+    merged = {p["headRefName"] for p in merged_prs}
     runs = json.loads(
         _gh(
             [
@@ -176,7 +220,7 @@ def gather_online() -> tuple[list[dict], set[str], str]:
         )
     )
     main = (runs[0].get("conclusion") or "pending") if runs else "unknown"
-    return prs, remote, main
+    return prs, remote, main, merged
 
 
 def main() -> None:
@@ -185,6 +229,7 @@ def main() -> None:
     parser.add_argument("--prs", type=Path, help="JSON wie gh pr list --json … (offline)")
     parser.add_argument("--remote", default="", help="kommagetrennte Remote-Branches (offline)")
     parser.add_argument("--main", default="success", help="Status von main (offline)")
+    parser.add_argument("--merged", default="", help="kommagetrennte Head-Branches gemergter PRs (offline)")
     args = parser.parse_args()
     entries = parse_queue((ROOT / "openspec" / "queue.yaml").read_text(encoding="utf-8"))
     states = {e["id"]: derived_state(ROOT, e["id"], e["phase"]) for e in entries}
@@ -192,9 +237,10 @@ def main() -> None:
         prs = json.loads(args.prs.read_text(encoding="utf-8")) if args.prs else []
         remote = {b for b in args.remote.split(",") if b}
         main_status = args.main
+        merged = {b for b in args.merged.split(",") if b}
     else:
-        prs, remote, main_status = gather_online()
-    print(json.dumps(decide(entries, states, prs, remote, main_status), ensure_ascii=False))
+        prs, remote, main_status, merged = gather_online()
+    print(json.dumps(decide(entries, states, prs, remote, main_status, merged), ensure_ascii=False))
 
 
 if __name__ == "__main__":

@@ -131,6 +131,27 @@ def test_human_pr_does_not_block():
     assert out["step"] == "build"
 
 
+def test_draft_pr_resumes_instead_of_fix():
+    draft = pr("change/ap-a", checks=("FAILURE",))
+    draft["isDraft"] = True
+    out = ns.decide(entries(), {}, [draft], set(), "success")
+    assert out["step"] == "build" and out["resume"] is True and out["pr"] == 7
+
+
+def test_red_tests_pr_waits_for_review():
+    out = ns.decide(entries(), {}, [pr("tests/ap-b", checks=("FAILURE",))], set(), "success")
+    assert out["step"] == "stop" and "Review" in out["reason"]
+    draft = pr("tests/ap-b", checks=("FAILURE",))
+    draft["isDraft"] = True
+    assert ns.decide(entries(), {}, [draft], set(), "success")["step"] == "tests"
+
+
+def test_merged_change_counts_as_done():
+    states = {"ap-a": "build", "ap-b": "tests", "ap-c": "tests", "ap-d": "tests"}
+    out = ns.decide(entries(), states, [], set(), "success", merged={"change/ap-a"})
+    assert out["id"] == "ap-b"  # ap-a fertig, damit ist ap-b frei
+
+
 def test_red_pr_gets_fixed_twice_then_stops():
     red = ("SUCCESS", "FAILURE")
     first = ns.decide(entries(), {}, [pr("change/ap-a", checks=red)], set(), "success")
@@ -138,12 +159,12 @@ def test_red_pr_gets_fixed_twice_then_stops():
     second = ns.decide(entries(), {}, [pr("change/ap-a", ["fix-1"], red)], set(), "success")
     assert second["step"] == "fix" and second["attempt"] == 2
     third = ns.decide(entries(), {}, [pr("change/ap-a", ["fix-1", "fix-2"], red)], set(), "success")
-    assert third["step"] == "stop"
+    assert third["step"] == "stop" and third["label"] == "blocked"
 
 
 def test_blocked_and_pending():
     assert ns.decide(entries(), {}, [pr("tests/ap-b", ["blocked"])], set(), "success")["step"] == "stop"
-    pending = pr("tests/ap-b")
+    pending = pr("change/ap-a")
     pending["statusCheckRollup"] = [{"status": "IN_PROGRESS", "conclusion": None}]
     out = ns.decide(entries(), {}, [pending], set(), "success")
     assert out["step"] == "stop" and "läuft" in out["reason"]

@@ -47,16 +47,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Nächster Schritt (ohne KI)
-        id: next
-        shell: bash
-        run: |
-          out=$(python3 tools/next_step.py)
-          echo "$out"
-          echo "json=$out" >> "$GITHUB_OUTPUT"
-          echo "step=$(jq -r .step <<<"$out")" >> "$GITHUB_OUTPUT"
-          echo "model=$(jq -r '.model // "sonnet"' <<<"$out")" >> "$GITHUB_OUTPUT"
-
       - name: Protokoll-Issue finden oder anlegen
         id: issue
         shell: bash
@@ -70,6 +60,16 @@ jobs:
           fi
           echo "nr=$nr" >> "$GITHUB_OUTPUT"
 
+      - name: Nächster Schritt (ohne KI)
+        id: next
+        shell: bash
+        run: |
+          out=$(python3 tools/next_step.py)
+          echo "$out"
+          echo "json=$out" >> "$GITHUB_OUTPUT"
+          echo "step=$(jq -r .step <<<"$out")" >> "$GITHUB_OUTPUT"
+          echo "model=$(jq -r '.model // "sonnet"' <<<"$out")" >> "$GITHUB_OUTPUT"
+
       - name: Nichts zu tun oder Halt – nur protokollieren
         if: steps.next.outputs.step == 'stop'
         shell: bash
@@ -78,6 +78,8 @@ jobs:
           RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           reason=$(jq -r .reason <<<"$NEXT")
+          label=$(jq -r '.label // empty' <<<"$NEXT"); pr=$(jq -r '.pr // empty' <<<"$NEXT")
+          if [ -n "$label" ] && [ -n "$pr" ]; then gh pr edit "$pr" --add-label "$label"; fi
           gh issue comment ${{ steps.issue.outputs.nr }} --body "$(date -u +%F) · gestoppt: ${reason} · [Lauf]($RUN)"
 
       # Ab hier nur, wenn es etwas zu tun gibt
@@ -119,7 +121,7 @@ jobs:
             --max-turns 200
 
       - name: Abbruch protokollieren
-        if: (failure() || cancelled()) && steps.issue.outputs.nr != ''
+        if: failure() || cancelled()
         shell: bash
         env:
           NEXT: ${{ steps.next.outputs.json }}
