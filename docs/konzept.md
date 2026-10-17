@@ -707,7 +707,7 @@ Beide haben keine Erfahrung mit Rust und Elixir; den Code schreiben und prüfen 
 ### Fokus bis zur Beta
 
 - Im Fokus bis zur Beta: Datenmodell, Raum, Materialien, Nachhallzeit, Absorber-Katalog, Rendering mit Fotomodus, Mengen, Kosten, CO₂, Bericht, Zusammenarbeit live und offline, KI über MCP, Plugin-SDK.
-- Phase 3: gehosteter Dienst, WebXR, öffentliche Bibliothek, FEM, zweiter Kernel; geometrische Akustik, Fertigung (Fräsen, 3D-Druck, Blech).
+- Phase 3: gehosteter Dienst, WebXR, öffentliche Bibliothek, FEM, zweiter Kernel; geometrische Akustik, Fertigung (Fräsen, 3D-Druck, Blech). Im Ideenspeicher (\`docs/ideen/\`): 3D-gedruckte, auf den Raum optimierte Resonator-Absorber, ausgelegt aus dem Defizit der Nachhallzeit.
 - Prinzip: Das Datenmodell zuerst und richtig. Alles andere lässt sich später verbessern, ein falsches Datenmodell nicht.
 
 ## Entwicklungsumgebung und Agenten-Setup
