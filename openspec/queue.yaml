@@ -18,5 +18,5 @@ changes:
   - id: ap-01-spike-datenmodell
     phase: build
     model: opus    # Agent kern-specialist
-    night: false   # Ergebnis entscheidet über ADR-028/029/033, Bewertung durch das Kernteam
+    night: true    # Testfeld für autonomes Arbeiten; Bewertung des Ergebnisses durch das Kernteam im PR
     depends_on: []

@@ -57,6 +57,8 @@ Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `opens
 - Geometrie nur im Worker hinter der Kernel-Schnittstelle (ADR-032). Topologie nie über Indizes (ADR-016).
 - Export und Querverweise nur über veröffentlichte Elemente, nie über Sichtbarkeit (ADR-015/018).
 - KI-Änderungen nur als Änderungssatz mit Vorschau (ADR-021).
+- Kein fester KI-Anbieter: Modelle nur über die Anbieter-Schnittstelle oder MCP; lokale Modelle müssen
+  funktionieren; keine Daten an Dritte ohne ausdrückliche Wahl, keine Telemetrie (ADR-037).
 - Lizenzen: Kern MPL-2.0, `sdk/` und `format/` Apache-2.0. Abhängigkeiten nur MPL/Apache/MIT/BSD/ISC/Zlib;
   LGPL nur dynamisch oder im Worker-Prozess; kein GPL/AGPL (ADR-034).
 

@@ -74,6 +74,13 @@ pi -p "/skill:nachtschicht"
 - Nicht per Claude-Login anmelden: Pi verbraucht dann kostenpflichtiges Zusatzkontingent statt Abo-Limits.
 - Keine Subagenten: `implement-change` und `review-change` arbeiten dann alle Schritte selbst ab.
 
+## Lokale Modelle
+
+OpenCode und Pi können statt eines API-Keys auch lokale Modelle nutzen, z. B. über Ollama
+(OpenAI-kompatible Schnittstelle). Das passt zu ADR-037 und kostet nichts außer Hardware. Für
+unbeaufsichtigte Läufe an Produktcode bleiben die Claude-Modelle Standard; lokale Modelle eignen sich zum
+Ausprobieren und für kleine Aufgaben. Ergebnisse je Modell im PR vermerken, damit der Vergleich sichtbar wird.
+
 ## Kosten im Blick
 
 - Abo-Werkzeuge (VS Code, Desktop, CLI, Routinen, Review-Action mit `CLAUDE_CODE_OAUTH_TOKEN`) kosten nichts
