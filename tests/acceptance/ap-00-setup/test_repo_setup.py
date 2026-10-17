@@ -43,9 +43,9 @@ def test_ak1_required_files_exist():
 
 
 def test_ak1_all_adrs_present():
-    """AK-1: Alle 43 ADRs liegen als Einzeldatei vor."""
+    """AK-1: Alle 44 ADRs liegen als Einzeldatei vor."""
     adrs = sorted((ROOT / "docs" / "adr").glob("ADR-0*.md"))
-    assert len(adrs) == 43, f"Erwartet 43 ADRs, gefunden {len(adrs)}"
+    assert len(adrs) == 44, f"Erwartet 44 ADRs, gefunden {len(adrs)}"
 
 
 def test_ak1_tauri_built_for_three_platforms():

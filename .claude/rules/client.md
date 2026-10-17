@@ -16,6 +16,12 @@ paths:
 - Der Client ändert das Modell nur über Graph-Operationen des Kerns (`crates/graph` als WASM bzw. nativ),
   nie über eigene Datenstrukturen. 3D, Knoten-Editor und Text zeigen denselben Graphen (ADR-035).
 - KI-Änderungen erscheinen immer als Änderungskarte mit Vorschau, nie direkt (ADR-021).
+- Bewegen, Drehen, Skalieren: Achse sperren und Wert tippen ist immer möglich, mit Einheiten und einfachen
+  Formeln; nie ein Dialog für exakte Werte (ADR-044).
+- Vier Arbeitsbereiche (Raum, Akustik, Präsentation, Bericht). Ein neues Panel gehört genau einem
+  Arbeitsbereich; ein fünfter Arbeitsbereich nur per ADR.
+- Jede Aktion erzeugt eine Graph-Operation, die im Aktionsprotokoll als Text sichtbar und kopierbar ist.
+- Der Stapel im Eigenschaften-Panel ist eine Projektion des Graphen, kein eigenes Datenmodell.
 - Derselbe Code für Browser und Tauri. Plattformzugriffe (Dateien, Worker) nur über `client/src/platform/`.
 - Jede sichtbare UI-Änderung braucht einen aktualisierten Referenz-Screenshot unter
   `tests/ui-reference/` – den legt der Test-Autor nach Freigabe durch UX an, nicht der Implementierer.
