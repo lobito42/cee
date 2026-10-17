@@ -19,6 +19,13 @@ paths:
 - Gesperrte Komponenten (ADR-049): Operationen auf ihr Innenleben lehnt der Kern ab; nur freigegebene
   Parameter sind über Instanzen änderbar. Die Sperre ist eine Eigenschaft der Komponente, kein Sonderfall im
   Speicherformat.
+- Komponenten können Referenz-Eingänge mit Typ deklarieren; Instanzen speichern nur die gewählten Verweise
+  (ADR-050). „Ersetzen mit Umhängen“ ist eine Kern-Operation; mehrdeutige Zuordnungen liefert sie als
+  Vorschlag zurück, nie als stille Entscheidung.
+- Jedes Element hat einen Berechnungszustand (aktuell, veraltet, fehlerhaft, pausiert). Ein fehlerhaftes
+  Element blockiert weder Speichern noch Merge noch die Berechnung unabhängiger Zweige des Graphen.
+- Untergraphen müssen einzeln ladbar sein (Teil-Laden): keine Operation darf das vollständige Dokument
+  voraussetzen, wenn sie nur einen Untergraphen betrifft.
 - Instanzen speichern nur `variant` und `overrides`, nie eine Kopie des Untergraphen (ADR-043). Entfällt ein
   überschriebener Parameter, wird das als Befund gemeldet. Zyklen zwischen Komponenten sind ein Fehler.
 - IDs sind stabil und werden nie wiederverwendet. Referenzen gehen auf `<id>.<output>`, nie auf Positionen.

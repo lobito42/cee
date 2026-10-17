@@ -3,7 +3,7 @@
 - Status: akzeptiert
 - Datum: 2026-10-17
 - Entscheider: Kernteam
-- Geändert durch: ADR-049 (Bibliotheksebenen, gesperrte Komponenten)
+- Geändert durch: ADR-049 (Bibliotheksebenen, gesperrte Komponenten), ADR-050 (Referenz-Eingänge)
 
 ## Kontext
 

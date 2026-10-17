@@ -10,6 +10,12 @@
 - Toleranzen immer explizit: `TOL_LINEAR = 1e-6` mm und `TOL_ANGULAR = 1e-9` rad.
 - Kernel-Fehler (`StdFail_NotDone`, ungültige Shapes) als strukturierte Antwort mit Element-ID und
   Hinweis zurückgeben; nie verschlucken. Ein Absturz darf nur den Worker treffen.
+- Robuste Neuberechnung (ADR-050): Fehler eines Elements beenden nie den ganzen Auftrag. Der Worker liefert
+  für unabhängige Elemente weiter Ergebnisse und für das fehlerhafte einen Befund mit Korrekturvorschlag.
+- Detailstufen `hull`, `simplified`, `full` mit eigenem Inhalts-Hash; Ansicht und Analyse fordern nur die
+  nötige Stufe an.
+- Direkte Bearbeitung (Fläche verschieben, versetzen, löschen, ersetzen) ist eine Kernel-Operation mit
+  Topologie-Historie wie jede andere, auch auf importierter Geometrie ohne Features.
 - Neue Geometrie-Funktion = mindestens ein Golden-Test (Volumen, Fläche, Schwerpunkt, Topologie-Zählung).
 - Performance: kein Ray-Casting oder Tessellieren in Schleifen über Flächen ohne Cache.
 - Script-Elemente und Plugin-Code in Python laufen nur im Worker und nur für vertraute Projekte (ADR-045).

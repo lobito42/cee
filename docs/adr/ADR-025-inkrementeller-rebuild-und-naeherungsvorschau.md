@@ -3,7 +3,7 @@
 - Status: vorgeschlagen
 - Datum: 2026-10-16
 - Entscheider: Kernteam
-- Geändert durch: ADR-032
+- Geändert durch: ADR-032, ADR-050 (robuste Neuberechnung, Detailstufen)
 
 ## Kontext
 

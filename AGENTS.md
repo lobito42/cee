@@ -79,6 +79,8 @@ Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `opens
   (ADR-047). PLM und ERP nur über offenes Format, API und Ereignisse (ADR-048).
 - Automatisierung ist Teil des Graphen: veröffentlichte Untergraphen werden Befehl, Knoten, MCP-Werkzeug und
   App; Studien rechnen Varianten im Worker durch, der Mensch wählt (ADR-049).
+- Robust und groß (ADR-050): Fehler eines Elements zerbrechen nie das Modell; Untergraphen und Detailstufen
+  werden bei Bedarf geladen; Komponenten haben Referenz-Eingänge; direktes Bearbeiten ist ein Element.
 - Erster Anwendungsfall: Räume mit Schallabsorbern (ADR-038). Material ist ein Element mit Aussehen, Akustik,
   Physik, Kosten und CO₂ (ADR-039); Nachhallzeit rechnet `crates/acoustics` (ADR-041); Rendering im Client
   mit Echtzeit und Fotomodus (ADR-040).
