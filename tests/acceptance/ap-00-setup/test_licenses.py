@@ -5,12 +5,32 @@ import re
 
 from conftest import ROOT, need, sh
 
-FORBIDDEN = re.compile(r"\b(A?GPL)")
-ALLOWED_EXCEPTIONS = ("LGPL",)  # LGPL nur dynamisch bzw. im Worker-Prozess (ADR-034)
+# Positivliste nach ADR-034 (freizügige Lizenzen). Unbekannte oder fehlende Lizenzen gelten als Verstoß.
+PERMISSIVE = re.compile(
+    r"\b(MIT|Apache|BSD|0BSD|ISC|MPL|Mozilla Public|Zlib|CC0|Unicode|PSF"
+    r"|Python Software Foundation|BSL-1\.0|Boost)",
+    re.I,
+)
+LGPL = re.compile(r"\bLGPL|Lesser General Public", re.I)
 
 
-def _bad(lic: str) -> bool:
-    return bool(FORBIDDEN.search(lic)) and not any(e in lic for e in ALLOWED_EXCEPTIONS)
+def _ok_single(lic: str, allow_lgpl: bool) -> bool:
+    if LGPL.search(lic):
+        return allow_lgpl
+    if re.search(r"\bA?GPL|General Public License", lic, re.I):
+        return False
+    return bool(PERMISSIVE.search(lic))
+
+
+def _ok(lic: str, allow_lgpl: bool = False) -> bool:
+    """SPDX-Ausdrücke grob auswerten: bei OR genügt eine erlaubte Alternative, bei AND müssen alle passen."""
+    lic = (lic or "").strip().strip("[]'\" ")
+    if not lic or lic.upper() == "UNKNOWN":
+        return False
+    alternatives = re.split(r"\s+OR\s+|\s*;\s*", lic)
+    return any(
+        all(_ok_single(part, allow_lgpl) for part in re.split(r"\s+AND\s+", alt)) for alt in alternatives
+    )
 
 
 def test_ak6_own_components_licensed():
@@ -23,11 +43,17 @@ def test_ak6_own_components_licensed():
 
 
 def test_ak6_python_dependencies():
-    """AK-6: Keine GPL/AGPL-Abhängigkeit in der Python-Umgebung."""
-    res = sh(["uv", "run", "--with", "pip-licenses", "pip-licenses", "--format=json"], timeout=300)
+    """AK-6: Nur freizügige Lizenzen in Python; LGPL nur hier, weil sie im Worker-Prozess läuft."""
+    res = sh(
+        ["uv", "run", "--with", "pip-licenses", "pip-licenses", "--from=mixed", "--format=json"], timeout=300
+    )
     assert res.returncode == 0, res.stderr[-1500:]
     pkgs = json.loads(res.stdout)
-    offenders = [f"{p['Name']} ({p['License']})" for p in pkgs if _bad(p.get("License", ""))]
+    offenders = [
+        f"{p['Name']} ({p['License']})"
+        for p in pkgs
+        if p["Name"] != "pip-licenses" and not _ok(p.get("License", ""), allow_lgpl=True)
+    ]
     assert not offenders, f"Unzulässige Lizenzen: {offenders}"
 
 
@@ -39,16 +65,20 @@ def test_ak6_rust_dependencies():
 
 
 def test_ak6_npm_dependencies():
-    """AK-6: Keine GPL/AGPL-Abhängigkeit im Client."""
+    """AK-6: Nur freizügige Lizenzen im Client (ohne LGPL, weil der Client gebündelt wird)."""
     res = sh(["npx", "--yes", "license-checker", "--json", "--production"], cwd=ROOT / "client", timeout=300)
     assert res.returncode == 0, res.stderr[-1500:]
     pkgs = json.loads(res.stdout).items()
-    offenders = [f"{k} ({v.get('licenses')})" for k, v in pkgs if _bad(str(v.get("licenses")))]
+    offenders = [
+        f"{k} ({v.get('licenses')})"
+        for k, v in pkgs
+        if not k.startswith("@cee/") and not _ok(str(v.get("licenses")))
+    ]
     assert not offenders, f"Unzulässige Lizenzen: {offenders}"
 
 
 def test_ak6_hex_dependencies():
-    """AK-6: Keine GPL/AGPL-Abhängigkeit im Server (Lizenzfelder aus deps/*/hex_metadata.config)."""
+    """AK-6: Nur freizügige Lizenzen im Server (Lizenzfelder aus deps/*/hex_metadata.config)."""
     res = sh(["mix", "deps.get"], cwd=ROOT / "server", timeout=300)
     assert res.returncode == 0, (res.stdout + res.stderr)[-1500:]
     offenders = []
@@ -56,6 +86,6 @@ def test_ak6_hex_dependencies():
         text = meta.read_text(encoding="utf-8", errors="replace")
         match = re.search(r'\{<<"licenses">>,\[(.*?)\]\}', text, re.S)
         lic = match.group(1) if match else ""
-        if not lic or _bad(lic):
+        if not _ok(lic.replace('<<"', "").replace('">>', "").replace(",", " OR ")):
             offenders.append(f"{meta.parent.name} ({lic or 'ohne Lizenzangabe'})")
     assert not offenders, f"Unzulässige oder fehlende Lizenzen: {offenders}"

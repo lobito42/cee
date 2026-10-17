@@ -1,6 +1,6 @@
 # Architecture Decision Records
 
-Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgeschlagen, akzeptiert, ersetzt durch ADR-xxx, verworfen. Neue ADRs mit der nächsten freien Nummer nach demselben Aufbau.
+Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgeschlagen, akzeptiert, zurückgestellt, ersetzt durch ADR-xxx, verworfen; Zusatz „geändert durch ADR-xxx“, wenn ein späteres ADR Teile ändert. Ältere ADRs (001–027) haben einen Abschnitt „Aktuell gilt“, der sie in die heutige Richtung einordnet. Neue ADRs mit der nächsten freien Nummer nach demselben Aufbau.
 
 | ADR | Titel | Status |
 | --- | --- | --- |
@@ -10,9 +10,9 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-004](ADR-004-step-ap242-als-bruecke-zu-allen-cad-systemen.md) | STEP AP242 als Brücke zu allen CAD-Systemen | vorgeschlagen, geändert durch ADR-042 |
 | [ADR-005](ADR-005-extension-plus-lokaler-geometrie-dienst.md) | Extension plus lokaler Geometrie-Dienst | ersetzt durch ADR-031 |
 | [ADR-006](ADR-006-bestehende-viewer-komponenten-wiederverwenden.md) | Bestehende Viewer-Komponenten wiederverwenden | vorgeschlagen |
-| [ADR-007](ADR-007-mcp-server-als-einzige-ki-schnittstelle.md) | MCP-Server als einzige KI-Schnittstelle | vorgeschlagen, geändert durch ADR-030 und ADR-045 |
+| [ADR-007](ADR-007-mcp-server-als-einzige-ki-schnittstelle.md) | MCP-Server als einzige KI-Schnittstelle | ersetzt durch ADR-030, ADR-037 und ADR-045 |
 | [ADR-008](ADR-008-ausfuehrbare-regelpakete.md) | Ausführbare Regelpakete | vorgeschlagen, geändert durch ADR-041 |
-| [ADR-009](ADR-009-strukturierte-anforderungsdatei.md) | Strukturierte Anforderungsdatei | vorgeschlagen |
+| [ADR-009](ADR-009-strukturierte-anforderungsdatei.md) | Strukturierte Anforderungsdatei | ersetzt durch ADR-028 |
 | [ADR-010](ADR-010-visuelle-selbstpruefung.md) | Visuelle Selbstprüfung | vorgeschlagen |
 | [ADR-011](ADR-011-eigene-blech-schicht.md) | Eigene Blech-Schicht | zurückgestellt (nach der Beta) |
 | [ADR-012](ADR-012-optionale-fem.md) | Optionale FEM | vorgeschlagen |
@@ -20,18 +20,18 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-014](ADR-014-zwei-testebenen.md) | Zwei Testebenen | vorgeschlagen |
 | [ADR-015](ADR-015-explizite-publikation-statt-sichtbarkeit.md) | Explizite Publikation statt Sichtbarkeit | vorgeschlagen, geändert durch ADR-028 |
 | [ADR-016](ADR-016-persistente-identitaet.md) | Persistente Identität | vorgeschlagen, geändert durch ADR-028 |
-| [ADR-017](ADR-017-manifest-als-lockfile-mit-semantischer-versionieru.md) | Manifest als Lockfile mit semantischer Versionierung | vorgeschlagen, geändert durch ADR-028 und ADR-047 |
+| [ADR-017](ADR-017-manifest-als-lockfile-mit-semantischer-versionieru.md) | Manifest als Lockfile mit semantischer Versionierung | ersetzt durch ADR-047 |
 | [ADR-018](ADR-018-adressierung-per-uri.md) | Adressierung per URI | vorgeschlagen, geändert durch ADR-028 |
 | [ADR-019](ADR-019-semantische-pmi-im-code.md) | Semantische PMI im Code | vorgeschlagen, geändert durch ADR-028 |
-| [ADR-020](ADR-020-zeichnungsblaetter-als-code.md) | Zeichnungsblätter als Code | vorgeschlagen, geändert durch ADR-028 |
+| [ADR-020](ADR-020-zeichnungsblaetter-als-code.md) | Zeichnungsblätter als Code | ersetzt durch ADR-028 |
 | [ADR-021](ADR-021-ki-aenderungen-als-pruefbare-aenderungssaetze.md) | KI-Änderungen als prüfbare Änderungssätze | vorgeschlagen, geändert durch ADR-035 |
 | [ADR-022](ADR-022-eine-cad-arbeitsflaeche-mit-figma-bedienkonzept.md) | Eine CAD-Arbeitsfläche mit Figma-Bedienkonzept | vorgeschlagen, geändert durch ADR-031, ADR-044 und ADR-045 |
 | [ADR-023](ADR-023-entwicklung-durch-agenten.md) | Entwicklung durch Agenten | vorgeschlagen |
 | [ADR-024](ADR-024-code-transformation-ueber-den-syntaxbaum.md) | Code-Transformation über den Syntaxbaum | ersetzt durch ADR-028 und ADR-035 |
 | [ADR-025](ADR-025-inkrementeller-rebuild-und-naeherungsvorschau.md) | Inkrementeller Rebuild und Näherungsvorschau | vorgeschlagen, geändert durch ADR-032 und ADR-050 |
 | [ADR-026](ADR-026-eigene-interaktionsschicht-auf-three-js.md) | Eigene Interaktionsschicht auf three.js | vorgeschlagen, geändert durch ADR-040 |
-| [ADR-027](ADR-027-parametrische-skizzen-mit-planegcs.md) | Parametrische Skizzen mit PlaneGCS | vorgeschlagen |
-| [ADR-028](ADR-028-element-graph-als-quelle-der-wahrheit.md) | Element-Graph als Quelle der Wahrheit | akzeptiert |
+| [ADR-027](ADR-027-parametrische-skizzen-mit-planegcs.md) | Parametrische Skizzen mit PlaneGCS | vorgeschlagen, Lizenzfrage offen |
+| [ADR-028](ADR-028-element-graph-als-quelle-der-wahrheit.md) | Element-Graph als Quelle der Wahrheit | akzeptiert, geändert durch ADR-043, ADR-046, ADR-047 und ADR-049 |
 | [ADR-029](ADR-029-rust-kern-fuer-das-datenmodell.md) | Rust-Kern für das Datenmodell | akzeptiert |
 | [ADR-030](ADR-030-elixir-phoenix-fuer-den-server.md) | Elixir und Phoenix für den Server | akzeptiert |
 | [ADR-031](ADR-031-web-app-und-desktop-app-mit-tauri.md) | Web-App und Desktop-App mit Tauri | akzeptiert |

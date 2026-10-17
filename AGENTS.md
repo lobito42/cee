@@ -75,7 +75,7 @@ Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `opens
 - Jede Funktion ist ein Befehl im Befehlsregister; Befehlssuche, Tastenkürzel, Plugins und MCP-Tools nutzen
   dasselbe Register. Plugins laufen isoliert; fremde Projekte führen Code erst nach Vertrauen aus (ADR-045).
 - Kein fester KI-Anbieter: Modelle nur über die Anbieter-Schnittstelle oder MCP; lokale Modelle müssen
-  funktionieren; keine Daten an Dritte ohne ausdrückliche Wahl, keine Telemetrie (ADR-037).
+  funktionieren; keine Daten an Dritte ohne ausdrückliche Wahl, keine Telemetrie ohne ausdrückliche Zustimmung (ADR-037).
 - Der Kern ist fachneutral, Raum und Akustik sind das erste Fachpaket über das Plugin-SDK (ADR-046).
   Freigaben mit Item, Revision und Lebenszyklus; Freigabestände sind unveränderlich, nur Menschen geben frei
   (ADR-047). PLM und ERP nur über offenes Format, API und Ereignisse (ADR-048).

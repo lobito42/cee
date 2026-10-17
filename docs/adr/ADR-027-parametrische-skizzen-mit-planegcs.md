@@ -1,8 +1,12 @@
 # ADR-027: Parametrische Skizzen mit PlaneGCS
 
-- Status: vorgeschlagen
+- Status: vorgeschlagen, Lizenzfrage offen
 - Datum: 2026-10-16
 - Entscheider: Kernteam
+
+## Aktuell gilt (Stand 2026-10-17)
+
+Lizenzfrage offen. PlaneGCS steht unter LGPL-2.1-or-later; ADR-034 erlaubt LGPL nur dynamisch gebunden bzw. im Worker-Prozess. Bis zur Klärung (vor ap-12) gilt: im Client nur als eigenes, separat geladenes und austauschbares WebAssembly-Modul mit Quellcode-Angebot und Hinweis in `NOTICE` (entspricht dynamischem Binden); falls die Prüfung das nicht trägt, löst der Worker die Skizzen und der Client zeigt eine Näherung. Skizzen sind Elemente im Graphen (ADR-028), kein Code. Die Begründung bei SolveSpace lautet richtig: GPL-3 ist mit unserer Lizenzpolitik (ADR-034) unvereinbar.
 
 ## Kontext
 
@@ -14,7 +18,7 @@ PlaneGCS (FreeCAD, LGPL-2.1-or-later) zweimal mit identischem Kern: WebAssembly 
 
 ## Alternativen
 
-SolveSpace (GPL-3, unvereinbar mit Apache-2.0); Skizzen ohne Bedingungen; eigener Solver.
+SolveSpace (GPL-3, nach ADR-034 ausgeschlossen); Skizzen ohne Bedingungen; eigener Solver.
 
 ## Konsequenzen
 

@@ -24,7 +24,7 @@ mit Korrekturen, Einstellungen in Ebenen, Vergleich und Verlauf.
 | Settings Sync | Persönliche Einstellungen und Plugins auf allen Geräten, über den eigenen Server statt einen Cloud-Dienst | mit ap-17 |
 | Stable und Insiders | Zwei Kanäle: stabile Version und tägliche Vorabversion für Neugierige | mit der Beta |
 | Open VSX | Offenes, selbst hostbares Plugin-Verzeichnis unter neutraler Trägerschaft | nach ap-27 |
-| Live Share mit Folgen | „Folgen“ einer Person: die eigene Kamera folgt deren Sicht, z. B. für Schulungen | mit ap-07 |
+| Live Share mit Folgen | Siehe Folgen-Modus in den Onshape-Anregungen | mit ap-07 |
 
 ## Bewusst nicht
 

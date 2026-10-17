@@ -1,9 +1,13 @@
 # ADR-017: Manifest als Lockfile mit semantischer Versionierung
 
-- Status: vorgeschlagen
+- Status: ersetzt durch ADR-047
 - Datum: 2026-10-16
 - Entscheider: Kernteam
 - Geändert durch: ADR-028, ADR-047 (Manifest im Freigabestand)
+
+## Aktuell gilt (Stand 2026-10-17)
+
+Ersetzt durch ADR-047. Das Manifest bleibt (veröffentlichte Elemente mit ID, Typ, Hash, Bezügen), ist aber Teil jedes Freigabestands im Server. Versioniert wird über die CRDT-Historie, Meilensteine und Revisionen (ADR-033, ADR-051), nicht nur über Git; Git ist ein Export (Textprojektion, ADR-035).
 
 ## Kontext
 

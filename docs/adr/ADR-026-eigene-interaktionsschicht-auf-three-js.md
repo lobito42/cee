@@ -19,4 +19,4 @@ three-cad-viewer unverändert erweitern.
 
 ## Konsequenzen
 
-Mehr eigener Code, volle Kontrolle über Bedienqualität; Spike S3.
+Mehr eigener Code, volle Kontrolle über Bedienqualität; geprüft in ap-04.

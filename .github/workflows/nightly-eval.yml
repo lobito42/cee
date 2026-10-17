@@ -1,7 +1,8 @@
 name: Nightly Eval
 
-# Läuft nächtlich die KI-Eval-Suite (ap-13) und Identitäts-Stresstests.
-# Bis ap-13 umgesetzt ist, führt der Job nur die vollständige Testsuite aus.
+# Läuft nächtlich die KI-Eval-Suite (ap-15, ADR-053) und Identitäts-Stresstests.
+# Bis ap-15 umgesetzt ist, führt der Job nur die Unit-Tests und die fälligen Abnahmetests aus.
+# Die Eval läuft mit einem lokalen Modell (Ollama) und optional einem Cloud-Modell (ADR-037).
 
 on:
   schedule:
@@ -16,12 +17,20 @@ jobs:
       - uses: astral-sh/setup-uv@v6
       - run: uv sync --extra cad
       - name: Testsuite
-        run: uv run pytest -q
+        shell: bash
+        run: |
+          uv run pytest -q
+          targets=$(uv run python tools/acceptance_targets.py)
+          if [ -n "$targets" ]; then uv run pytest -q $targets; fi
       - name: Eval-Suite
         if: ${{ hashFiles('evals/run.py') != '' }}
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: uv run python evals/run.py --report eval-report.md
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}  # optional; ohne Schlüssel nur lokal
+          CEE_EVAL_LOCAL_MODEL: qwen2.5:7b
+        run: |
+          curl -fsSL https://ollama.com/install.sh | sh
+          ollama pull "$CEE_EVAL_LOCAL_MODEL"
+          uv run python evals/run.py --local "$CEE_EVAL_LOCAL_MODEL" --report eval-report.md
       - uses: actions/upload-artifact@v4
         if: always()
         with:

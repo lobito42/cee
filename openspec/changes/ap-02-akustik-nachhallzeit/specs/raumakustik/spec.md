@@ -1,53 +1,53 @@
 ## ADDED Requirements
 
 ### Requirement: Nachhallzeit nach Sabine
-The system SHALL compute the reverberation time per octave band 125, 250, 500, 1000, 2000 and 4000 Hz as
-T = 0.161 · V / (Σ Sᵢ·αᵢ + Σ Aₒ), where V is the room volume in m³, Sᵢ the surface areas in m², αᵢ the
-absorption coefficients and Aₒ the equivalent absorption areas of objects in m².
+Das System SHALL die Nachhallzeit je Oktavband 125, 250, 500, 1000, 2000 und 4000 Hz berechnen als
+T = 0,161 · V / (Σ Sᵢ·αᵢ + Σ Aₒ); dabei ist V das Raumvolumen in m³, Sᵢ die Flächen in m², αᵢ die
+Absorptionsgrade und Aₒ die äquivalenten Absorptionsflächen von Objekten in m².
 
 #### Scenario: Leerer Besprechungsraum
-- **WHEN** a room of 60 m³ with surfaces and absorption coefficients is calculated
-- **THEN** each band's Sabine time deviates at most 0.1 % from the formula
+- **WHEN** ein Raum mit 60 m³, Flächen und Absorptionsgraden berechnet wird
+- **THEN** weicht die Sabine-Zeit in jedem Band höchstens 0,1 % von der Formel ab
 
 #### Scenario: Objekte mit äquivalenter Absorptionsfläche
-- **WHEN** objects with equivalent absorption areas are added to the room
-- **THEN** each band's Sabine time decreases and matches the formula within 0.1 %
+- **WHEN** dem Raum Objekte mit äquivalenter Absorptionsfläche hinzugefügt werden
+- **THEN** sinkt die Sabine-Zeit in jedem Band und stimmt auf 0,1 % mit der Formel überein
 
 ### Requirement: Nachhallzeit nach Eyring
-The system SHALL compute the reverberation time per octave band as T = 0.161 · V / (−S · ln(1 − ᾱ) + Σ Aₒ)
-with S = Σ Sᵢ and ᾱ = Σ Sᵢ·αᵢ / S.
+Das System SHALL die Nachhallzeit je Oktavband berechnen als T = 0,161 · V / (−S · ln(1 − ᾱ) + Σ Aₒ) mit
+S = Σ Sᵢ und ᾱ = Σ Sᵢ·αᵢ / S.
 
 #### Scenario: Eyring kürzer als Sabine
-- **WHEN** a room with mean absorption coefficient greater than 0 and less than 1 is calculated
-- **THEN** the Eyring time is shorter than the Sabine time in every band and matches the formula within 0.1 %
+- **WHEN** ein Raum mit mittlerem Absorptionsgrad größer 0 und kleiner 1 berechnet wird
+- **THEN** ist die Eyring-Zeit in jedem Band kürzer als die Sabine-Zeit und stimmt auf 0,1 % mit der Formel überein
 
 #### Scenario: Vollständige Absorption
-- **WHEN** every surface has α = 1 in a band and no objects are present
-- **THEN** the Eyring time in that band is 0 s
+- **WHEN** alle Flächen in einem Band α = 1 haben und keine Objekte vorhanden sind
+- **THEN** ist die Eyring-Zeit in diesem Band 0 s
 
 ### Requirement: Eingabeprüfung
-The system SHALL reject invalid input with a structured error carrying `code`, `message` and `hint`.
+Das System SHALL ungültige Eingaben mit einem strukturierten Fehler mit `code`, `message` und `hint` ablehnen.
 
 #### Scenario: Absorptionsgrad außerhalb des Bereichs
-- **WHEN** a surface has α = 1.2 in any band
-- **THEN** the result is an error with code `alpha_out_of_range`
+- **WHEN** eine Fläche in einem Band α = 1,2 hat
+- **THEN** ist das Ergebnis ein Fehler mit Code `alpha_out_of_range`
 
 #### Scenario: Ungültiges Volumen
-- **WHEN** the volume is 0 or negative
-- **THEN** the result is an error with code `volume_invalid`
+- **WHEN** das Volumen 0 oder negativ ist
+- **THEN** ist das Ergebnis ein Fehler mit Code `volume_invalid`
 
 #### Scenario: Fehlendes Band
-- **WHEN** a surface lacks one of the six octave bands
-- **THEN** the result is an error with code `band_missing`
+- **WHEN** einer Fläche eines der sechs Oktavbänder fehlt
+- **THEN** ist das Ergebnis ein Fehler mit Code `band_missing`
 
 #### Scenario: Keine Absorption
-- **WHEN** all α are 0 and no objects are present
-- **THEN** the result is an error with code `no_absorption`
+- **WHEN** alle α gleich 0 sind und keine Objekte vorhanden sind
+- **THEN** ist das Ergebnis ein Fehler mit Code `no_absorption`
 
 ### Requirement: Rechenzeit
-The system SHALL compute both methods for all six bands for a room with 1,000 surfaces in at most 1,000 µs
-on average in a release build.
+Das System SHALL beide Verfahren für alle sechs Bänder für einen Raum mit 1.000 Flächen im Release-Build im
+Mittel in höchstens 1.000 µs berechnen.
 
 #### Scenario: Benchmark mit 1.000 Flächen
-- **WHEN** the benchmark runs with 1,000 surfaces
-- **THEN** the reported mean is at most 1,000 µs
+- **WHEN** der Benchmark mit 1.000 Flächen läuft
+- **THEN** ist der gemeldete Mittelwert höchstens 1.000 µs

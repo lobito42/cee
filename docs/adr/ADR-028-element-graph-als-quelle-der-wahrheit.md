@@ -3,6 +3,7 @@
 - Status: akzeptiert
 - Datum: 2026-10-17
 - Entscheider: Kernteam
+- Geändert durch: ADR-043, ADR-046, ADR-047, ADR-049 (weitere Grundtypen; Liste in `format/`)
 
 ## Kontext
 

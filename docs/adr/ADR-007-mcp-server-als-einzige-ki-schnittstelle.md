@@ -1,9 +1,13 @@
 # ADR-007: MCP-Server als einzige KI-Schnittstelle
 
-- Status: vorgeschlagen
+- Status: ersetzt durch ADR-030, ADR-037 und ADR-045
 - Datum: 2026-10-16
 - Entscheider: Kernteam
 - Geändert durch: ADR-030 (MCP-Endpunkt im Server), ADR-045 (Werkzeuge aus dem Befehlsregister)
+
+## Aktuell gilt (Stand 2026-10-17)
+
+Ersetzt. MCP ist nicht mehr ein Python-Server über stdio für ein bestimmtes Modell, sondern ein Endpunkt im Elixir-Server (ADR-030) für jedes Modell (ADR-037); die Werkzeuge entstehen aus dem Befehlsregister (ADR-045) und aus veröffentlichten Untergraphen (ADR-049).
 
 ## Kontext
 

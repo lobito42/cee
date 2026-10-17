@@ -16,9 +16,9 @@ Ziehen tippen, Arbeitsbereiche, Stapel als Sicht, Aktion als Code, Denoiser im F
 
 | Blender | Idee für CEE | Wann sinnvoll |
 | --- | --- | --- |
-| Asset Browser mit Katalogen, Tags, Vorschaubildern | Bibliotheks-Reiter mit Ordnern, Tags und automatisch gerenderten Vorschaubildern | mit ap-13 |
+| Asset Browser mit Katalogen, Tags, Vorschaubildern | Bibliotheks-Reiter mit Facetten und Sammlungen (keine Ordner, ADR-052) und automatisch gerenderten Vorschaubildern | mit ap-13 |
 | Drivers (Parameter per Formel gekoppelt) | Formeln über Elementgrenzen, z. B. Segelanzahl aus Raumfläche; im Graphen als Eingänge | mit ap-05 |
-| Node Groups als Assets | Untergraphen des Knoten-Editors als Komponenten veröffentlichen | mit ap-23 |
+| Node Groups als Assets | Erledigt: veröffentlichte Untergraphen werden Befehl, Knoten und Komponente (ADR-049) | – |
 
 ## Materialien und Rendering
 

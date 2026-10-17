@@ -5,6 +5,10 @@
 - Entscheider: Kernteam
 - Geändert durch: ADR-028
 
+## Aktuell gilt (Stand 2026-10-17)
+
+Gilt mit ADR-028: PMI sind Elemente im Graphen (gebunden an Element-IDs), nicht Objekte in einem Python-Modul.
+
 ## Kontext
 
 Maße und Toleranzen müssen modellgebunden, prüfbar und exportierbar sein.

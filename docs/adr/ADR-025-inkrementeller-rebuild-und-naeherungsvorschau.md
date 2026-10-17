@@ -19,4 +19,4 @@ Immer vollständiger Neuaufbau.
 
 ## Konsequenzen
 
-Features müssen deterministisch sein; Spike S2 misst die Zeiten.
+Features müssen deterministisch sein; ap-05 und ap-06 messen die Zeiten.

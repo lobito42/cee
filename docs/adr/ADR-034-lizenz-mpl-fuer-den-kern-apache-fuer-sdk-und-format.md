@@ -10,7 +10,7 @@ Verbesserungen am Kern sollen zurückfließen, Plugins und Anbindungen sollen un
 
 ## Entscheidung
 
-MPL-2.0 für `crates/`, `server/`, `client/` und `worker/`. Apache-2.0 für `sdk/` und `format/` (Spezifikation, Schemas, Plugin-Vorlagen). Developer Certificate of Origin für Beiträge. Die Marke wird angemeldet, sobald der Name feststeht. Erlaubte Abhängigkeiten: MPL, Apache, MIT, BSD, ISC, Zlib; LGPL (OCCT) nur dynamisch gelinkt bzw. im separaten Worker-Prozess; kein GPL, kein AGPL. Forks werden durch Plugin-SDK, offene Governance (RFCs über OpenSpec) und Markenschutz vermieden, nicht durch die Lizenz.
+MPL-2.0 für `crates/`, `server/`, `client/` und `worker/`. Apache-2.0 für `sdk/` und `format/` (Spezifikation, Schemas, Plugin-Vorlagen). Developer Certificate of Origin für Beiträge. Die Marke wird angemeldet, sobald der Name feststeht. Erlaubte Abhängigkeiten: MPL, Apache, MIT, BSD, ISC, Zlib sowie gleichwertig freizügige Lizenzen (CC0-1.0, Unicode-3.0, Unicode-DFS-2016, 0BSD, BSL-1.0, PSF-2.0; Stand 2026-10-17); LGPL (OCCT) nur dynamisch gelinkt bzw. im separaten Worker-Prozess; kein GPL, kein AGPL. Forks werden durch Plugin-SDK, offene Governance (RFCs über OpenSpec) und Markenschutz vermieden, nicht durch die Lizenz.
 
 ## Alternativen
 

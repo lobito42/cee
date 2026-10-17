@@ -15,8 +15,8 @@ Drei Stufen: (1) explizite Feature-IDs im Code; (2) Unter-IDs aus der Topologie-
 
 ## Alternativen
 
-Topologie-Indizes; reines Geometrie-Matching; OCAF/TNaming direkt (im Spike S1 bewertet).
+Topologie-Indizes; reines Geometrie-Matching; OCAF/TNaming direkt (im Spike ap-39 zu bewerten).
 
 ## Konsequenzen
 
-Anspruchsvollstes Arbeitspaket (AP-17, R-10); Grundlage für Publikation, PMI und Zeichnungen.
+Anspruchsvollstes Thema (Spike ap-39-spike-identitaet, umgesetzt in ap-06 und ap-12; Risiko R-10); Grundlage für Publikation, PMI und Zeichnungen.

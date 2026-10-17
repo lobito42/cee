@@ -20,7 +20,7 @@ Du arbeitest unbeaufsichtigt. Niemand beantwortet Fragen. Erledige **genau einen
 
 Fehlende Werkzeuge einmal installieren, Ausgabe knapp halten:
 `command -v uv || pip install -q uv`, `uv sync -q --extra cad`, `command -v openspec || npm i -g -s @fission-ai/openspec@latest`,
-`command -v mix || (apt-get update -qq && apt-get install -y -qq elixir erlang-dev)`, Rust über `cargo` (meist vorhanden).
+`command -v mix || (curl -fsSL https://mise.run | sh && ~/.local/bin/mise use -g erlang@27 elixir@1.18-otp-27)` (Versionen wie `.devcontainer/setup.sh`), Rust über `cargo` (meist vorhanden).
 
 ## Ausführung
 

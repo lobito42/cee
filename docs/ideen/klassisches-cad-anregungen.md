@@ -13,7 +13,7 @@ Modellierrichtlinien als Elemente bzw. Regeln.
 | NX Arrangements | Mehrere Stellungen einer Baugruppe (geöffnet, geschlossen, Transport) | Fachpaket Mechanik |
 | Kinematik, verformbare Teile | Gelenke und Bewegung prüfen; Federn und Schläuche, die sich der Einbaulage anpassen | Fachpaket Mechanik |
 | Creo Layout, CATIA Functional Design | 2D-Konzeptskizze, die das 3D-Modell steuert | nach ap-36 |
-| Kollisions- und Abstandsprüfung | Baugruppe auf Durchdringung und Mindestabstände prüfen, als Regel | mit ap-20 |
+| Kollisions- und Abstandsprüfung | Steht bereits als F-09; hier nur: Mindestabstände als Regel im Regelpaket | mit ap-20 |
 | Positionsnummern in Zeichnungen | Positionsnummern aus der Stückliste, automatisch und verknüpft | mit ap-33 |
 | CATIA Geometrical Sets | Ungeordnete Hilfsgeometrie neben der geordneten Historie | offen |
 | JT und leichte Formate | Leichte Darstellung großer Baugruppen für Viewer und Lieferanten | mit ap-22 |

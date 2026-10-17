@@ -4,6 +4,10 @@
 - Datum: 2026-10-16
 - Entscheider: Kernteam
 
+## Aktuell gilt (Stand 2026-10-17)
+
+Gilt werkzeugoffen: Claude Code, OpenCode und Pi über `AGENTS.md`; unbeaufsichtigte Läufe über die Nachtschicht, höchstens ein offener Agenten-PR. Das Kernteam besteht derzeit aus ein bis zwei Personen.
+
 ## Kontext
 
 Zwei Menschen sollen mit vielen Agenten ein großes Produkt bauen.

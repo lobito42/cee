@@ -5,6 +5,10 @@
 - Entscheider: Kernteam
 - Geändert durch: ADR-031, ADR-044, ADR-045
 
+## Aktuell gilt (Stand 2026-10-17)
+
+Es gilt das Bedienkonzept nach Figma: eine ruhige Arbeitsfläche, Eigenschaften-Panel, fünf Werkzeuge, Befehlssuche, Änderungskarten, keine Menüleisten und Dialoge. Alles VS-Code-Bezogene (Custom Editor, Primary Sidebar, Theme-Variablen) entfällt mit ADR-031. Ergänzt durch ADR-044 (Arbeitsbereiche, siehe ADR-054), ADR-045 und ADR-051.
+
 ## Kontext
 
 Die UI muss auch komplexe Konstruktion lean und ohne 1001 Befehle ermöglichen.

@@ -23,8 +23,9 @@ Revisionen, Prüfung durch eine zweite Person, unveränderliche Freigabestände,
 3. **Lebenszyklus:** In Arbeit → In Prüfung → Freigegeben → Ersetzt bzw. Gesperrt. Übergänge sind Befehle
    (ADR-045) mit Rechten und Bedingungen (alle Regeln mit Schweregrad „Fehler“ bestanden, Pflichtfelder
    gesetzt, alle referenzierten Items freigegeben).
-4. **Freigabe-Workflow:** je Organisation konfigurierbar. Standard ist das Vier-Augen-Prinzip (Prüfer ≠
-   Ersteller); Einzelpersonen können Selbstfreigabe einschalten, sie wird im Freigabestand vermerkt.
+4. **Freigabe-Workflow:** je Organisation konfigurierbar. Solange eine Organisation höchstens zwei Personen
+   mit Freigaberecht hat, ist Selbstfreigabe standardmäßig an; ab drei Personen gilt standardmäßig das
+   Vier-Augen-Prinzip (Prüfer ≠ Ersteller). Eine Selbstfreigabe wird immer im Freigabestand vermerkt.
    KI-Agenten dürfen vorbereiten und prüfen, nie freigeben.
 5. **Freigabestand:** unveränderlicher Schnappschuss des Untergraphen mit Inhalts-Hash, Manifest,
    aufgelöster Stückliste und den abgeleiteten Dokumenten (STEP, PDF-Zeichnung, Bericht). Diese Dokumente

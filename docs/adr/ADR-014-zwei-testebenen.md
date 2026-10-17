@@ -4,6 +4,10 @@
 - Datum: 2026-10-16
 - Entscheider: Kernteam
 
+## Aktuell gilt (Stand 2026-10-17)
+
+Gilt weiter; die KI-Eval-Suite entsteht aus dem Aufgabengenerator mit Prüfern (ADR-053) und läuft mit mindestens einem lokalen und einem Cloud-Modell (ADR-037).
+
 ## Kontext
 
 Geometrie und KI-Verhalten müssen messbar sein.

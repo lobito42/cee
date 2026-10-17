@@ -18,4 +18,4 @@ Blech nur als Volumenkörper.
 
 ## Konsequenzen
 
-Großes technisches Risiko (R-02); früh per Spike S4 abgesichert.
+Großes technisches Risiko (R-02); vor einer Umsetzung per Spike abzusichern.

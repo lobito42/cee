@@ -1,8 +1,12 @@
 # ADR-009: Strukturierte Anforderungsdatei
 
-- Status: vorgeschlagen
+- Status: ersetzt durch ADR-028
 - Datum: 2026-10-16
 - Entscheider: Kernteam
+
+## Aktuell gilt (Stand 2026-10-17)
+
+Ersetzt durch ADR-028: Anforderungen sind Elemente vom Typ `requirement` im Graphen, keine `requirements.yaml`. Freitext übersetzt ein KI-Assistent beliebigen Anbieters (ADR-037), der Mensch bestätigt.
 
 ## Kontext
 

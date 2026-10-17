@@ -12,11 +12,11 @@ paths:
 - Formeln mit Quelle im Kommentar (z. B. Sabine, Eyring). Konstante 0,161 s/m bei 20 °C; Luftabsorption
   nur als optionaler, getrennt ausgewiesener Term.
 - Jede Berechnung hat Tests gegen von Hand nachgerechnete Referenzfälle und Grenzfälle (α = 0, α → 1,
-  leerer Raum, eine Fläche). Toleranz ≤ 1 % gegenüber der Referenzformel.
+  leerer Raum, eine Fläche). Toleranz ≤ 0,1 % gegenüber der Referenzformel (ap-02).
 - Absorptionsgrade liegen zwischen 0 und 1; Werte > 1 aus Herstellerdaten (Messartefakt) werden beim
   Import auf 1 begrenzt und als Hinweis gemeldet, nie still verändert.
 - Materialwerte tragen Einheit und Quelle. Ohne Quelle gilt ein Wert als Schätzung und wird so angezeigt.
 - Keine Normtexte oder Tabellen aus Normen (DIN, EN, ISO) übernehmen. Zielwerte kommen als Regelpaket,
-  das das Kernteam prüft.
+  das die Firma fachlich prüft (ADR-041); das Kernteam gibt es frei.
 - Ergebnisse zeigen ihre Annahmen (z. B. „Diffusfeld nach Sabine“) und Gültigkeitsgrenzen an.
 - Wie im Kern: kein `unsafe`, kein `unwrap()` außerhalb von Tests, Property-Tests für neue Logik.
