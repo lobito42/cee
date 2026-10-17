@@ -3,6 +3,7 @@
 - Status: akzeptiert
 - Datum: 2026-10-17
 - Entscheider: Kernteam
+- Geändert durch: ADR-047 (Exporte von Freigabeständen werden archiviert)
 
 ## Kontext
 

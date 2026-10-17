@@ -20,7 +20,7 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-014](ADR-014-zwei-testebenen.md) | Zwei Testebenen | vorgeschlagen |
 | [ADR-015](ADR-015-explizite-publikation-statt-sichtbarkeit.md) | Explizite Publikation statt Sichtbarkeit | vorgeschlagen, geändert durch ADR-028 |
 | [ADR-016](ADR-016-persistente-identitaet.md) | Persistente Identität | vorgeschlagen, geändert durch ADR-028 |
-| [ADR-017](ADR-017-manifest-als-lockfile-mit-semantischer-versionieru.md) | Manifest als Lockfile mit semantischer Versionierung | vorgeschlagen, geändert durch ADR-028 |
+| [ADR-017](ADR-017-manifest-als-lockfile-mit-semantischer-versionieru.md) | Manifest als Lockfile mit semantischer Versionierung | vorgeschlagen, geändert durch ADR-028 und ADR-047 |
 | [ADR-018](ADR-018-adressierung-per-uri.md) | Adressierung per URI | vorgeschlagen, geändert durch ADR-028 |
 | [ADR-019](ADR-019-semantische-pmi-im-code.md) | Semantische PMI im Code | vorgeschlagen, geändert durch ADR-028 |
 | [ADR-020](ADR-020-zeichnungsblaetter-als-code.md) | Zeichnungsblätter als Code | vorgeschlagen, geändert durch ADR-028 |
@@ -35,13 +35,13 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-029](ADR-029-rust-kern-fuer-das-datenmodell.md) | Rust-Kern für das Datenmodell | akzeptiert |
 | [ADR-030](ADR-030-elixir-phoenix-fuer-den-server.md) | Elixir und Phoenix für den Server | akzeptiert |
 | [ADR-031](ADR-031-web-app-und-desktop-app-mit-tauri.md) | Web-App und Desktop-App mit Tauri | akzeptiert |
-| [ADR-032](ADR-032-geometrie-als-abgeleiteter-cache-hinter-kernel-schnittstelle.md) | Geometrie als abgeleiteter Cache hinter einer Kernel-Schnittstelle | akzeptiert |
+| [ADR-032](ADR-032-geometrie-als-abgeleiteter-cache-hinter-kernel-schnittstelle.md) | Geometrie als abgeleiteter Cache hinter einer Kernel-Schnittstelle | akzeptiert, geändert durch ADR-047 |
 | [ADR-033](ADR-033-local-first-zusammenarbeit-mit-crdt-und-zweigen.md) | Local-first-Zusammenarbeit mit CRDT und Zweigen | akzeptiert |
 | [ADR-034](ADR-034-lizenz-mpl-fuer-den-kern-apache-fuer-sdk-und-format.md) | Lizenz: MPL-2.0 für den Kern, Apache-2.0 für SDK und Format | akzeptiert |
 | [ADR-035](ADR-035-drei-projektionen-3d-knoten-text.md) | Drei Projektionen: 3D, Knoten, Text | akzeptiert, geändert durch ADR-044 |
 | [ADR-036](ADR-036-immersives-review-ueber-webxr.md) | Immersives Review über WebXR | vorgeschlagen |
 | [ADR-037](ADR-037-ki-anbieteroffen-und-lokal.md) | KI anbieteroffen und lokal | akzeptiert |
-| [ADR-038](ADR-038-erster-anwendungsfall-raumakustik.md) | Erster Anwendungsfall: Raumgestaltung und Raumakustik | akzeptiert |
+| [ADR-038](ADR-038-erster-anwendungsfall-raumakustik.md) | Erster Anwendungsfall: Raumgestaltung und Raumakustik | akzeptiert, geändert durch ADR-046 |
 | [ADR-039](ADR-039-material-als-element-mit-eigenschaften.md) | Material als Element mit Eigenschaften | akzeptiert |
 | [ADR-040](ADR-040-rendering-echtzeit-und-fotomodus.md) | Rendering: Echtzeit und Fotomodus im Client | akzeptiert, geändert durch ADR-044 |
 | [ADR-041](ADR-041-akustik-berechnung-im-kern.md) | Akustik-Berechnung im Rust-Kern | akzeptiert |
@@ -49,3 +49,6 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-043](ADR-043-komponenten-instanzen-bibliotheken.md) | Komponenten, Instanzen und Bibliotheken | akzeptiert |
 | [ADR-044](ADR-044-bedienmuster-aus-blender.md) | Bedienmuster aus Blender | akzeptiert |
 | [ADR-045](ADR-045-befehle-erweiterungen-vertrauen-nach-vs-code.md) | Befehle, Erweiterungen und Vertrauen nach dem Vorbild von VS Code | akzeptiert |
+| [ADR-046](ADR-046-fachneutraler-kern-muster-aus-onshape.md) | Fachneutraler Kern und Muster aus Onshape | akzeptiert |
+| [ADR-047](ADR-047-freigabe-revisionen-lebenszyklus.md) | Freigabeprozess, Revisionen und Lebenszyklus | akzeptiert |
+| [ADR-048](ADR-048-schnittstelle-plm-erp.md) | Offene Schnittstelle zu PLM und ERP | akzeptiert |

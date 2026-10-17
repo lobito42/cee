@@ -8,6 +8,7 @@
 - Orte werden immer als Element-ID oder veröffentlichter Name angegeben, nie als Index.
 - Fehler sind strukturiert: `code`, `message`, `element_id`, `hint` (was der Agent als Nächstes tun soll).
 - Schreibende Tools erzeugen Änderungssätze aus Graph-Operationen (ADR-021), nie direkte Änderungen.
+- Kein Tool gibt frei oder sperrt (ADR-047). Agenten dürfen Freigaben vorbereiten und prüfen.
 - Tool-Beschreibungen sind Teil des Produkts: kurz, eindeutig, mit einem Beispiel.
 - Kein Tool setzt ein bestimmtes Modell voraus. Jedes Tool muss mit einem kleinen lokalen Modell bedienbar
   sein: wenige Parameter, Aufzählungen statt Freitext, keine verschachtelten Pflichtobjekte (ADR-037).

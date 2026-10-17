@@ -17,6 +17,11 @@ paths:
 - Presence und Channels: Nachrichten klein halten, keine Geometrie über Channels, nur Operationen,
   Hashes und Vorschau-Verweise.
 - Hintergrundaufgaben (Export, Regelprüfung, KI-Läufe) über Oban, idempotent.
+- Statusübergänge im Lebenszyklus (ADR-047) nur über Befehle mit Rechteprüfung; Freigeben ist Menschen
+  vorbehalten, nie einem Agenten oder MCP-Zugang. Freigabestände und ihre Dokumente werden nie geändert oder
+  gelöscht, nur ersetzt bzw. gesperrt.
+- Ereignisse für PLM und ERP (ADR-048) über eine Outbox in derselben Transaktion wie die Änderung, Zustellung
+  über Oban, mindestens einmal, mit Ereignis-ID. Keine Aufrufe fremder Systeme aus dem Dokumentprozess.
 - Typespecs an jeder öffentlichen Funktion; `mix dialyzer` und `mix credo --strict` ohne Befund. Das Kernteam
   kann Elixir nicht selbst prüfen – Typen und Tests ersetzen das menschliche Code-Review.
 - Prüfen: `mix format --check-formatted`, `mix compile --warnings-as-errors`, `mix credo --strict`,

@@ -19,6 +19,18 @@ Komponenten und Instanzen (ADR-043): Eine `component` hat `params.parameters` (N
 Deckensegel eine Komponente, deren Untergraph einen per Skizze und Extrusion gebauten `absorber` enthält; im
 Raum stehen mindestens drei Instanzen davon, mindestens eine mit Überschreibung.
 
+Fachneutralität (ADR-046, ADR-047): Das Schema zählt keine Fachtypen auf (`type` ist ein freier String).
+Ein zweites Beispiel `format/examples/baugruppe.json` enthält keine Raumtypen, sondern eine `assembly` mit
+mindestens einem `part` (Skizze, Extrusion, Material), eine Komponente (z. B. Schraube mit Varianten) und:
+- `frame` (Verbindungspunkt): Ausgang `frame`, verankert über einen Eingang (z. B. `on`) am Element;
+  Instanzen platzieren sich mit Eingang `at` = `"<frame-id>.frame"` und `params.frame` = ID eines `frame`
+  im Untergraphen der Komponente; mindestens zwei Instanzen so platziert.
+- `variables`: `params` = Name → `{"value": …, "unit": "…"}`, jeder Name zugleich Ausgang; mindestens zwei
+  Eingänge anderer Elemente verweisen darauf.
+- `item`: Eingang `definition`, `params` mit `number`, `revision`, `state` (`in_work`, `in_review`,
+  `released`, `superseded`, `blocked`); mindestens ein freigegebenes Item und eines in Arbeit.
+Die Textprojektion muss auch dieses Beispiel verlustfrei abbilden.
+
 ## Goals / Non-Goals
 
 **Goals:** belastbare Messwerte; Schema-Entwurf; Empfehlung Go oder No-Go je Frage.

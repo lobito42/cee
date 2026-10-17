@@ -11,6 +11,11 @@ paths:
   auf und bauen keine eigene Logik für Elemente, Abhängigkeiten oder Merge nach.
 - Jedes Element hat dieselbe Form (`id`, `type`, `inputs`, `params`, `outputs`, `content`, `meta`) –
   ein Achsenursprung genauso wie eine Baugruppe (ADR-028). Keine Sonderfälle je Elementtyp im Speicherformat.
+- Der Kern ist fachneutral (ADR-046): keine Fachbegriffe (Wand, Absorber, Nachhallzeit, Bohrung) im Code
+  von `crates/graph`, kein Aufzählen von Elementtypen im Schema. Fachtypen definieren Fachpakete über das
+  Plugin-SDK. Ausnahme sind die Grundtypen `frame`, `variables`, `component`, `instance`, `item`.
+- Freigabestände sind unveränderlich: Operationen auf einen freigegebenen Untergraphen werden abgelehnt;
+  Änderungen gehen nur über einen neuen Arbeitsstand bzw. Änderungsauftrag (ADR-047).
 - Instanzen speichern nur `variant` und `overrides`, nie eine Kopie des Untergraphen (ADR-043). Entfällt ein
   überschriebener Parameter, wird das als Befund gemeldet. Zyklen zwischen Komponenten sind ein Fehler.
 - IDs sind stabil und werden nie wiederverwendet. Referenzen gehen auf `<id>.<output>`, nie auf Positionen.
