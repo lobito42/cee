@@ -84,8 +84,8 @@ Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `opens
 - Erster Anwendungsfall: Räume mit Schallabsorbern (ADR-038). Material ist ein Element mit Aussehen, Akustik,
   Physik, Kosten und CO₂ (ADR-039); Nachhallzeit rechnet `crates/acoustics` (ADR-041); Rendering im Client
   mit Echtzeit und Fotomodus (ADR-040).
-- Wiederverwendung über Komponenten und Instanzen (ADR-043): Instanzen speichern nur Variante und
-  Überschreibungen, nie eine Kopie; der Absorber-Katalog ist eine Komponentenbibliothek.
+- Wiederverwendung über Komponenten und Instanzen (ADR-043): Instanzen speichern nur Variante, gewählte
+  Referenzen und Überschreibungen, nie eine Kopie; der Absorber-Katalog ist eine Komponentenbibliothek.
 - Lizenzen: Kern MPL-2.0, `sdk/` und `format/` Apache-2.0. Abhängigkeiten nur MPL/Apache/MIT/BSD/ISC/Zlib;
   LGPL nur dynamisch oder im Worker-Prozess; kein GPL/AGPL (ADR-034).
 

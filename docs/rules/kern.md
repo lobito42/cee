@@ -19,8 +19,9 @@
   Element blockiert weder Speichern noch Merge noch die Berechnung unabhängiger Zweige des Graphen.
 - Untergraphen müssen einzeln ladbar sein (Teil-Laden): keine Operation darf das vollständige Dokument
   voraussetzen, wenn sie nur einen Untergraphen betrifft.
-- Instanzen speichern nur `variant` und `overrides`, nie eine Kopie des Untergraphen (ADR-043). Entfällt ein
-  überschriebener Parameter, wird das als Befund gemeldet. Zyklen zwischen Komponenten sind ein Fehler.
+- Instanzen speichern nur `variant`, `overrides` und gewählte Referenz-Eingänge, nie eine Kopie des
+  Untergraphen (ADR-043). Entfällt ein überschriebener Parameter, wird das als Befund gemeldet. Zyklen
+  zwischen Komponenten sind ein Fehler.
 - IDs sind stabil und werden nie wiederverwendet. Referenzen gehen auf `<id>.<output>`, nie auf Positionen.
 - Schemaänderung = neue `SCHEMA_VERSION` + Migration + Test mit altem Dokument.
 - Kein `unsafe` (Workspace-Lint). Keine Panics über Bindungsgrenzen: öffentliche Funktionen geben

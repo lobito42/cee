@@ -117,6 +117,10 @@ Die Lösung muss alle Fertigungsverfahren abdecken, alle gängigen CAD-Systeme b
 | F-39 | Untergraph als Befehl: veröffentlichte Untergraphen werden ohne Code zu Befehl, Knoten und MCP-Werkzeug | Muss |
 | F-40 | Apps aus dem Graphen: Formular, 3D-Ergebnis und Bericht für Personen ohne Modellrechte, z. B. Vertrieb oder Kunden-Konfigurator | Soll |
 | F-41 | Studien: Parameterbereiche automatisch durchrechnen, Tabelle und Pareto-Diagramm, gewählte Lösung als Änderungssatz | Soll |
+| F-42 | Komponenten mit Referenz-Eingängen (Fläche, Kante, Ebene, Verbindungspunkt), im Kontext gewählt; Ersetzen mit Umhängen | Muss |
+| F-43 | Direktes Bearbeiten von Flächen, auch an importiertem STEP ohne Historie, als Element im Graphen | Soll |
+| F-44 | Robuste Neuberechnung: ein fehlerhaftes Element markiert, das Modell bleibt bedienbar; Skelett mit live oder eingefrorenen Verknüpfungen | Muss |
+| F-45 | Teil-Laden und Detailstufen für Baugruppen mit 5.000 Teilen; Messungen mit Grenzwert und Modellierrichtlinien als Regeln | Muss |
 
 **Nicht-funktionale Anforderungen**
 
@@ -378,6 +382,21 @@ Bei Synera liegt der Workflow neben dem Modell in fremden CAD-Systemen; bei CEE 
 
 Nicht übernommen: Workflow getrennt vom Modell, Agenten nur in einer Cloud, Lizenzpool mit Tokens, tausend Knoten im Kern. Weitere Anregungen (Konnektoren zu Fremdwerkzeugen, Berichte als Word und Excel, Branchenvorlagen, Multi-Agenten, eingebettete Konfiguratoren) liegen im Ideenspeicher.
 
+**Aus klassischem CAD übernommen (ADR-050)**
+
+CATIA, NX und Creo sind schwer zu bedienen, tragen aber 30 Jahre Erfahrung mit großen, realen Produkten. Wir übernehmen die Konzepte, nicht die Bedienung.
+
+| Vorbild | So in CEE |
+| --- | --- |
+| PowerCopy, Engineering Templates, UDF | Komponenten mit Referenz-Eingängen: Bohrungsvorlage an einer Fläche, Absorber an einer Wand; Ersetzen mit Umhängen |
+| Synchronous Technology, Flexible Modeling | Fläche direkt verschieben oder versetzen, auch am STEP eines Lieferanten; jede Bearbeitung ist ein Element |
+| Creo-Fehlerbehebungsmodus | Fehlerhaftes Element markiert, Rest rechnet weiter; Befund mit Korrekturvorschlag |
+| CATIA-Skelett, NX WAVE | Skelett mit veröffentlichten Bezügen steuert die Baugruppe; Verknüpfungen live oder eingefroren |
+| Simplified Representations | Teil-Laden und Detailstufen (Hülle, vereinfacht, voll) |
+| Knowledgeware, Check-Mate | Messung als Element mit Grenzwert; Modellierrichtlinien als Regeln |
+
+Nicht übernommen: Ribbon und Menüs mit tausend Befehlen, Dateien ein- und auschecken, geschlossene Formate, Lizenzen je Modul. Weitere Anregungen (Baum mit Spalten, Rollen, Eltern-Kind-Ansicht, Stellungen, Kinematik, Kollisionsprüfung, Positionsnummern) liegen im Ideenspeicher.
+
 **Skizzieren**
 
 - **Starten:** Fläche oder Ebene anklicken, „Skizze“ wählen; die Ansicht dreht sich senkrecht darauf, das Modell tritt halbtransparent zurück.
@@ -402,7 +421,7 @@ Nicht übernommen: Workflow getrennt vom Modell, Agenten nur in einer Cloud, Liz
 
 ## Architecture Decision Records
 
-Neunundvierzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-049 beschreiben die neue Richtung (Element-Graph, Rust-Kern, Elixir-Server, Web und Desktop, Lizenz, offene und lokale KI, Raumakustik, Material, Rendering, Austauschformate, Komponenten, Bedienmuster aus Blender und VS Code, fachneutraler Kern, Freigabe, PLM- und ERP-Schnittstelle, Automatisierung) und sind akzeptiert; sie ersetzen ADR-003, 005, 013 und 024. Die übrigen stehen auf „Vorgeschlagen“ und werden mit den Spikes bestätigt. Jedes ADR liegt zusätzlich als Markdown-Datei unter `docs/adr/` im Repository.
+Fünfzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-050 beschreiben die neue Richtung (Element-Graph, Rust-Kern, Elixir-Server, Web und Desktop, Lizenz, offene und lokale KI, Raumakustik, Material, Rendering, Austauschformate, Komponenten, Bedienmuster aus Blender und VS Code, fachneutraler Kern, Freigabe, PLM- und ERP-Schnittstelle, Automatisierung, Bewährtes aus klassischem CAD) und sind akzeptiert; sie ersetzen ADR-003, 005, 013 und 024. Die übrigen stehen auf „Vorgeschlagen“ und werden mit den Spikes bestätigt. Jedes ADR liegt zusätzlich als Markdown-Datei unter `docs/adr/` im Repository.
 
 | ADR | Entscheidung | Wichtigste Alternative |
 | --- | --- | --- |
@@ -455,6 +474,7 @@ Neunundvierzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-049 be
 | 047 | Freigabe mit Item, Sachnummer, Revision und Lebenszyklus; Vier-Augen-Prinzip; unveränderliche Freigabestände; Stückliste; Änderungswesen | Freigabe nur als Git-Tag oder nur im PLM |
 | 048 | Offene Schnittstelle zu PLM und ERP: ein führendes System je Feld, offenes Format, API aus dem Befehlsregister, Ereignisse, Anbindungen als Plugins | Feste Anbindung an ein Produkt; CEE als ERP |
 | 049 | Nach Synera: Untergraph als Befehl, Apps aus dem Graphen, Bibliotheksebenen und gesperrte Komponenten, Werte an jeder Kante, Studien | Automatisierung nur als Skript, Apps als eigene Software |
+| 050 | Aus CATIA, NX, Creo: Referenz-Eingänge an Komponenten, direktes Bearbeiten als Element, robuste Neuberechnung, Skelett, Teil-Laden und Detailstufen, Messungen und Richtlinien als Elemente | Nur Parameter an Komponenten, Abbruch beim ersten Fehler, immer alles laden |
 
 ### ADR-001: Geometriekernel OpenCascade
 
@@ -786,6 +806,12 @@ Neunundvierzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-049 be
 
 **Konsequenzen:** Ändert ADR-043, ergänzt ADR-035 und ADR-045. Neues Arbeitspaket ap-35; Werte an Kanten und Untergraph als Befehl kommen mit ap-23.
 
+### ADR-050: Bewährtes aus klassischem CAD (CATIA, NX, Creo)
+
+**Entscheidung:** (1) Komponenten deklarieren Referenz-Eingänge mit Typ, im Kontext gewählt; Ersetzen mit Umhängen, mehrdeutige Zuordnungen nur als Vorschlag. (2) Direktes Bearbeiten von Flächen an jeder Geometrie, als Element im Graphen. (3) Robuste Neuberechnung: Berechnungszustände aktuell, veraltet, fehlerhaft, pausiert; ein Fehler stoppt nie den Rest. (4) Skelett mit veröffentlichten Bezügen, Verknüpfungen live oder eingefroren. (5) Teil-Laden und Detailstufen Hülle, vereinfacht, voll. (6) Messungen mit Grenzwert und Modellierrichtlinien als Regeln.
+
+**Konsequenzen:** Ändert ADR-025 und ADR-043, ergänzt ADR-008, ADR-016 und ADR-032. Betrifft ap-05, ap-06, ap-13, ap-20; neues Arbeitspaket ap-36.
+
 ## Regelwerk und Verifikationsschleife
 
 Erstes Regelpaket ist die Raumakustik: Zielbänder für die Nachhallzeit je Raumart, geprüft von der Firma (ap-20). Die Fertigungsregeln unten folgen nach der Beta.
@@ -826,22 +852,22 @@ Die Arbeit ist in 33 Arbeitspakete in vier Phasen geschnitten, ausgerichtet auf 
 | ap-02-akustik-nachhallzeit | 0 | Crate `crates/acoustics`: Sabine und Eyring je Oktavband, Fehler, Kommandozeile | ≤ 0,1 % zur Formel; 1.000 Flächen ≤ 1 ms | – |
 | ap-03-spike-sync | 0 | Phoenix Channels mit Rust-Kern: zwei Browser live, einer offline, Zusammenführen | Änderung bei beiden < 200 ms; Merge ohne Datenverlust | ap-01 |
 | ap-04-spike-rendering | 0 | Echtzeit-PBR und Fotomodus (Path Tracing mit Denoiser) in Browser und Tauri auf drei Systemen | Raum mit 50 Objekten ≥ 30 fps; Fotomodus 1920 × 1080 in ≤ 60 s auf Mittelklasse-GPU | ap-00 |
-| ap-05-graph-kern | 1 | Graph-Kern produktiv: Schema v1, Validierung, Abhängigkeiten, Migrationen | 100.000 Elemente laden ≤ 2 s | ap-01 |
-| ap-06-kernel-worker | 1 | Kernel-Protokoll, Python-Worker mit OCCT, Cache nach Inhalts-Hash | Raum mit 6 Wänden und 2 Öffnungen baut < 1 s; Worker-Absturz ohne Serverausfall | ap-05 |
+| ap-05-graph-kern | 1 | Graph-Kern produktiv: Schema v1, Validierung, Abhängigkeiten, Migrationen, Teil-Laden, Berechnungszustände | 100.000 Elemente laden ≤ 2 s | ap-01 |
+| ap-06-kernel-worker | 1 | Kernel-Protokoll, Python-Worker mit OCCT, Cache nach Inhalts-Hash, Detailstufen, robuste Neuberechnung | Raum mit 6 Wänden und 2 Öffnungen baut < 1 s; Worker-Absturz ohne Serverausfall | ap-05 |
 | ap-07-server-sync | 1 | Dokumentprozesse, Channels, Presence, Rechte, PostgreSQL | 20 gleichzeitige Nutzer je Dokument, Änderung < 200 ms | ap-03, ap-05 |
 | ap-08-arbeitsflaeche | 1 | Arbeitsfläche mit 3D und 2D-Grundriss, Featurebaum, Eigenschaften mit Stapel, Befehlsregister mit Befehlssuche, Einstellungen, Avatare, Arbeitsbereiche, Werte beim Ziehen tippen, Aktionsprotokoll | 4 von 5 Testpersonen der Firma lösen Kernabläufe; Auswahl < 100 ms | ap-04 |
 | ap-09-raum-elemente | 1 | Geschoss, Wand, Boden, Decke, Fenster, Tür; Wände im Grundriss zeichnen | Besprechungsraum in ≤ 5 min modelliert; Öffnungen schneiden Wände korrekt | ap-06, ap-08 |
 | ap-10-materialbibliothek | 1 | Material-Elemente mit allen Eigenschaftsgruppen, Import von Herstellerdaten (CSV) | 20 Materialien der Firma importiert, αw und Absorberklasse korrekt | ap-05 |
 | ap-11-akustik-live | 1 | Analyse-Element Nachhallzeit, Live-Anzeige je Band, Zielband, Kern als WASM | Aktualisierung beim Verschieben < 100 ms | ap-02, ap-09, ap-10 |
 | ap-12-skizze-extrusion | 1 | Skizzen mit PlaneGCS, Extrusion, Identität der Flächen | Absorber-Form per Skizze in ≤ 3 Schritten; IDs stabil über 50 Parameteränderungen | ap-06, ap-08 |
-| ap-13-komponenten-katalog | 1 | Komponenten mit Varianten und Instanzen (ADR-043), versionierte Bibliotheken mit Aktualisierung und Vorschau; Absorber-Katalog der Firma als Bibliothek; Platzieren an Wand und Decke, abgehängt, Reihen und Raster | 12 Deckensegel als Raster in einem Schritt; Wirkung sofort in der Nachhallzeit; ein Katalog-Update erreicht alle Instanzen, Überschreibungen bleiben | ap-10, ap-11, ap-12 |
+| ap-13-komponenten-katalog | 1 | Komponenten mit Varianten, Referenz-Eingängen und Instanzen (ADR-043, ADR-050), versionierte Bibliotheken mit Aktualisierung und Vorschau; Absorber-Katalog der Firma als Bibliothek; Platzieren an Wand und Decke, abgehängt, Reihen und Raster | 12 Deckensegel als Raster in einem Schritt; Wirkung sofort in der Nachhallzeit; ein Katalog-Update erreicht alle Instanzen, Überschreibungen bleiben | ap-10, ap-11, ap-12 |
 | ap-14-rendering-fotomodus | 1 | Echtzeit-PBR, HDRI, Fotomodus mit Denoiser produktiv, Bild als PNG | Referenzraum fotorealistisch; Materialien entsprechen Mustern der Firma | ap-04, ap-10 |
 | ap-15-mcp-ki | 1 | MCP-Endpunkt, Anbieter-Schnittstelle (lokal und Cloud), Änderungssätze, Eval-Suite | Agent bringt die Nachhallzeit eines Referenzraums in das Zielband, mit Cloud- und lokalem Modell | ap-07, ap-13 |
 | ap-16-selbstbetrieb | 1 | Container mit Server, Datenbank und lokalem Modell, Backups | Installation in < 15 min | ap-07 |
 | ap-17-desktop-offline | 1 | Tauri-App mit Kern, Speicher und Worker; offline, Abgleich beim Verbinden | Einen Tag offline gearbeitet, Merge ohne Datenverlust | ap-06, ap-07 |
 | ap-18-mengen-kosten-co2 | 2 | Mengen, Kosten, Gewicht und CO₂ je Raum; CSV-Mengenliste | Summen stimmen mit Handrechnung für 3 Räume | ap-10, ap-13 |
 | ap-19-bericht-angebot | 2 | PDF-Bericht: Nachhallzeit vorher/nachher, Bilder, Grundriss, Mengen, Kosten, CO₂ | Firma versendet einen echten Bericht ohne Nacharbeit | ap-14, ap-18 |
-| ap-20-regeln-raumakustik | 2 | Zielwerte als Regelpaket (z. B. nach DIN 18041), geprüft durch die Firma | Zielbänder für 5 Raumarten stimmen mit Firmenprüfung | ap-11 |
+| ap-20-regeln-raumakustik | 2 | Zielwerte als Regelpaket (z. B. nach DIN 18041), geprüft durch die Firma; Messungen mit Grenzwert, Modellierrichtlinien | Zielbänder für 5 Raumarten stimmen mit Firmenprüfung | ap-11 |
 | ap-21-import-ifc-dxf | 2 | Import von Räumen aus IFC und Grundrissen aus DXF | 3 Architekturmodelle ohne Nacharbeit übernommen | ap-09 |
 | ap-22-moebel-gltf | 2 | Möbelbibliothek, glTF-Import und -Export | 20 Möbel mit Absorptionsfläche; Szene als glTF exportiert | ap-14 |
 | ap-23-knoten-editor | 2 | Knoten-Editor, Untergraphen als Bausteine und Befehle, Werte an jeder Kante | Absorber-Raster vollständig im Knoten-Editor | ap-08, ap-24 |
@@ -857,6 +883,7 @@ Die Arbeit ist in 33 Arbeitspakete in vier Phasen geschnitten, ausgerichtet auf 
 | ap-33-freigabe-revisionen | 2 | Items, Sachnummern, Revisionen, Lebenszyklus, Vier-Augen-Freigabe, Freigabestände mit Dokumenten, Stückliste, Änderungsantrag und -auftrag, Austauschformat | Baugruppe und Raumangebot freigegeben, geändert und als Revision B erneut freigegeben; Freigabestand bitgleich reproduzierbar | ap-25, ap-26 |
 | ap-34-plm-erp-schnittstelle | 3 | API aus dem Befehlsregister, Ereignisse mit Outbox, Nummernkreis-Plugin, Beispielanbindung an ein selbst gebautes PLM/ERP | Externes System empfängt Freigabe und Stückliste und vergibt Sachnummern, ohne Änderung am Kern | ap-27, ap-33 |
 | ap-35-apps-studien | 2 | Apps aus veröffentlichten Untergraphen, gesperrte Komponenten, Bibliotheksebenen, Studien mit Tabelle und Pareto-Diagramm | Vertrieb erstellt ohne Modellrechte eine Raumbelegung mit Angebot; Studie mit 100 Varianten < 2 min | ap-06, ap-11, ap-23 |
+| ap-36-direkt-skelett | 2 | Direktes Bearbeiten von Flächen (auch an STEP), Skelett mit eingefrorenen Verknüpfungen, Ersetzen mit Umhängen | Lieferanten-STEP ohne Neumodellieren angepasst; Skelettänderung erreicht 20 Teile, eingefrorene erst nach Bestätigung | ap-06, ap-12, ap-13 |
 
 ### Entwicklung mit Agenten
 
