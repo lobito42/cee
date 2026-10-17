@@ -49,6 +49,6 @@ Projekte ohne Rückfrage.
 ## Konsequenzen
 
 Ändert ADR-022 (Befehlssuche aus dem Register) und ADR-007 (MCP-Werkzeuge aus dem Register), ergänzt
-ADR-008 und ADR-044. Das Befehlsregister wird früh gebraucht (ap-08), das Projekt-Vertrauen spätestens mit
+ADR-008 und ADR-044. Das Befehlsregister wird früh gebraucht (ap-08a), das Projekt-Vertrauen spätestens mit
 Script-Elementen und Bibliotheken. Weitere Anregungen liegen im Ideenspeicher
 (`docs/ideen/vscode-anregungen.md`).

@@ -6,7 +6,7 @@
 
 ## Aktuell gilt (Stand 2026-10-17)
 
-Gilt als Kann-Paket nach der Beta (Phase 3), nicht in Phase 2; FEM-Löser laufen nur im Worker.
+Gilt als Kann-Paket nach der Beta (ADR-059); FEM-Löser laufen nur im Worker.
 
 ## Kontext
 
@@ -14,7 +14,7 @@ Eine erste Festigkeitsabschätzung ist hilfreich, aber nicht Kern.
 
 ## Entscheidung
 
-Linear-statische Vorabschätzung über Gmsh und CalculiX als separates, optionales Paket (Phase 2).
+Linear-statische Vorabschätzung über Gmsh und CalculiX als separates, optionales Paket (nach der Beta).
 
 ## Alternativen
 

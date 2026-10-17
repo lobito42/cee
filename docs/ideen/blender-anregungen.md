@@ -8,7 +8,7 @@ Ziehen tippen, Arbeitsbereiche, Stapel als Sicht, Aktion als Code, Denoiser im F
 | Blender | Idee für CEE | Wann sinnvoll |
 | --- | --- | --- |
 | Fangen mit umschaltbaren Modi (Kante, Mitte, Raster) während der Bewegung | Fangmodi für Grundriss und Absorber-Raster, per Taste während des Ziehens wechseln | mit ap-09 und ap-13 |
-| Annotationen (Grease Pencil) | Freihand-Notizen und Skizzen im 3D-Raum, z. B. beim Termin mit dem Kunden; als Kommentar-Elemente | mit Kommentaren, Phase 2 |
+| Annotationen (Grease Pencil) | Freihand-Notizen und Skizzen im 3D-Raum, z. B. beim Termin mit dem Kunden; als Kommentar-Elemente | nach der Beta |
 | Kreismenüs (Pie Menus) | Optionales Radialmenü für Stift und Trackpad, nur für häufige Aktionen | nach Nutzertests |
 | Undo-Verlauf als Liste | Verlauf mit benannten Schritten, Sprung zurück; baut auf der CRDT-Historie auf | mit ap-25 |
 

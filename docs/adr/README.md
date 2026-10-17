@@ -50,15 +50,15 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-044](ADR-044-bedienmuster-aus-blender.md) | Bedienmuster aus Blender | akzeptiert, geändert durch ADR-054 |
 | [ADR-045](ADR-045-befehle-erweiterungen-vertrauen-nach-vs-code.md) | Befehle, Erweiterungen und Vertrauen nach dem Vorbild von VS Code | akzeptiert |
 | [ADR-046](ADR-046-fachneutraler-kern-muster-aus-onshape.md) | Fachneutraler Kern und Muster aus Onshape | akzeptiert, geändert durch ADR-054 |
-| [ADR-047](ADR-047-freigabe-revisionen-lebenszyklus.md) | Freigabeprozess, Revisionen und Lebenszyklus | akzeptiert |
-| [ADR-048](ADR-048-schnittstelle-plm-erp.md) | Offene Schnittstelle zu PLM und ERP | akzeptiert |
-| [ADR-049](ADR-049-automatisierung-apps-studien-nach-synera.md) | Automatisierung, Apps und Studien nach dem Vorbild von Synera | akzeptiert |
+| [ADR-047](ADR-047-freigabe-revisionen-lebenszyklus.md) | Freigabeprozess, Revisionen und Lebenszyklus | akzeptiert, geändert durch ADR-059 |
+| [ADR-048](ADR-048-schnittstelle-plm-erp.md) | Offene Schnittstelle zu PLM und ERP | akzeptiert, geändert durch ADR-059 |
+| [ADR-049](ADR-049-automatisierung-apps-studien-nach-synera.md) | Automatisierung, Apps und Studien nach dem Vorbild von Synera | akzeptiert, geändert durch ADR-059 |
 | [ADR-050](ADR-050-bewaehrtes-aus-klassischem-cad.md) | Bewährtes aus klassischem CAD (CATIA, NX, Creo) | akzeptiert |
 | [ADR-051](ADR-051-versionierung-in-alltagsbegriffen-entwicklungstrichter.md) | Versionierung in Alltagsbegriffen und Entwicklungstrichter | akzeptiert |
-| [ADR-052](ADR-052-ordnungssystem-und-wiederfinden.md) | Ordnungssystem und Wiederfinden | akzeptiert |
+| [ADR-052](ADR-052-ordnungssystem-und-wiederfinden.md) | Ordnungssystem und Wiederfinden | akzeptiert, geändert durch ADR-059 |
 | [ADR-053](ADR-053-lernschleife-fuer-lokale-modelle.md) | Lernschleife für lokale Modelle | akzeptiert |
 | [ADR-054](ADR-054-fachpakete-interne-api-und-arbeitsbereiche.md) | Fachpakete: interne API zuerst, Arbeitsbereiche als Beitrag | akzeptiert |
-| [ADR-055](ADR-055-rechte-rollen-anmeldung.md) | Rechte, Rollen und Anmeldung | akzeptiert |
+| [ADR-055](ADR-055-rechte-rollen-anmeldung.md) | Rechte, Rollen und Anmeldung | akzeptiert, geändert durch ADR-059 |
 | [ADR-056](ADR-056-datenschutz.md) | Datenschutz | akzeptiert |
 | [ADR-057](ADR-057-einheiten-und-groessen.md) | Einheiten und Größen | akzeptiert |
 | [ADR-058](ADR-058-adressen-auf-id-basis.md) | Adressen auf ID-Basis | akzeptiert |

@@ -3,6 +3,7 @@
 - Status: akzeptiert
 - Datum: 2026-10-17
 - Entscheider: Kernteam
+- Geändert durch: ADR-059 (Zuordnung zu Meilensteinen)
 
 ## Kontext
 
@@ -42,5 +43,5 @@ Automatisierung nur über Python-Skripte; Apps als eigene Software neben CEE; Va
 ## Konsequenzen
 
 Ändert ADR-043 (Bibliotheksebenen, gesperrte Komponenten), ergänzt ADR-035 und ADR-045. Neues Arbeitspaket
-ap-35 (Apps und Studien) in Phase 2; Werte an Kanten und Untergraph als Befehl kommen mit ap-23. Weitere
+ap-35 (Apps und Studien) nach der Beta; Werte an Kanten kommen mit ap-23a in der Beta, Untergraph als Befehl mit ap-23 danach (ADR-059). Weitere
 Anregungen liegen im Ideenspeicher (`docs/ideen/synera-anregungen.md`).

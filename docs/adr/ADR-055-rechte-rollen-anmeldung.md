@@ -3,6 +3,7 @@
 - Status: akzeptiert
 - Datum: 2026-10-17
 - Entscheider: Kernteam
+- Geändert durch: ADR-059 (Zuordnung zu Meilensteinen)
 
 ## Kontext
 
@@ -31,4 +32,4 @@ Feingranulare Rechte je Element; nur eigene Konten ohne OIDC; Agenten unter dem 
 
 ## Konsequenzen
 
-Ergänzt ADR-030, ADR-047 und ADR-049. Umgesetzt in ap-07 (Grundlagen) und ap-16 (Selbstbetrieb mit OIDC).
+Ergänzt ADR-030, ADR-047 und ADR-049. Umgesetzt in ap-07a (lokale Anmeldung, M1) und ap-07b (Rollen, Rechte, OIDC, M2), siehe ADR-059.

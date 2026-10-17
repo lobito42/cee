@@ -19,12 +19,12 @@ Wir bauen eine offene, kollaborative Plattform für Produktdefinition: CEE, das 
 | 2 Open Source mit Community statt Forks | Kern MPL-2.0, SDK und Format Apache-2.0; offene RFCs über OpenSpec; geschützte Marke | Beiträge von außen in jedem Release; keine gepflegte Abspaltung |
 | 3 Kollaborativ | Live: alle sehen dasselbe, mit Anwesenheit und Kommentaren am Element. Offline: Entwürfe, Zur Prüfung geben, Übernehmen | Änderung bei allen in < 200 ms; zwei Entwürfe mit je 500 Änderungen ohne Datenverlust zusammengeführt |
 | 4 KI-optimiert | Features as Code (Textprojektion), Visual Programming (Knoten-Editor), MCP für jedes Modell; lokale und selbst gehostete Modelle von Anfang an | Ein Agent baut ein Referenzteil über MCP ohne menschlichen Eingriff, mit einem Cloud- und einem lokalen Modell |
-| 5 Immersiv (optional) | Review in Originalgröße über WebXR | Phase 3 |
+| 5 Immersiv (optional) | Review in Originalgröße über WebXR | nach der Beta |
 | 6 Testfeld für autonome Entwicklung | Agenten setzen freigegebene Changes unbeaufsichtigt um; Menschen schreiben Ziele, prüfen und entscheiden | Anteil der Changes, die ohne Nacharbeit gemergt werden; menschliche Minuten je gemergtem Change, je Gate gemessen |
 
 **Das Fundament ist das atomare Datenmodell.** Jedes Element – Punkt, Achse, Skizze, Feature, Fläche, Körper, Bauteil, Baugruppe, Maß, Zeichnungsblatt, Regel, Anforderung – hat dieselbe Form, eine stabile ID und eine eigene Historie. Deshalb lässt sich alles gleich adressieren, veröffentlichen, kommentieren, versionieren und zusammenführen.
 
-**Ziel bis zur öffentlichen Beta:** Ein kleines Team modelliert einen Raum mit Grundriss, Wänden, Decke, Boden, Fenstern, Türen und Möbeln, platziert Schallabsorber aus dem eigenen Katalog und sieht die Nachhallzeit je Oktavband live. Materialien tragen Aussehen, Akustik, Physik, Kosten und CO₂; daraus entstehen Mengen, Kosten und ein Bericht für das Angebot, dazu ein fotorealistisches Bild. Alle arbeiten live gemeinsam oder offline, Agenten helfen über MCP – auch mit einem lokalen Modell – und alles läuft auf eigener Hardware. Das Tempo bestimmen die Agenten, nicht feste Termine; die Monatsangaben in der Roadmap sind Richtwerte.
+**Ziel bis zur öffentlichen Beta:** Ein kleines Team modelliert einen Raum mit Grundriss, Wänden, Decke, Boden, Fenstern, Türen und Möbeln, platziert Schallabsorber aus dem eigenen Katalog und sieht die Nachhallzeit je Oktavband live. Materialien tragen Aussehen, Akustik, Physik, Kosten und CO₂; daraus entstehen Mengen, Kosten und ein Bericht für das Angebot, dazu ein fotorealistisches Bild. Alle arbeiten live gemeinsam oder offline, Agenten helfen über MCP – auch mit einem lokalen Modell – und alles läuft auf eigener Hardware. Dazu kommen Entwürfe, Freigabe mit Revisionen, Suche, Textprojektion, Regeln und eine Knoten-Ansicht (ADR-059). Das Tempo bestimmen die Agenten, nicht feste Termine; die Monatsangaben in der Roadmap sind Richtwerte.
 
 **Nicht-Ziele bis zur Beta:** Freiformflächen in Class-A-Qualität, native Feature-Bäume in kommerziellen CAD-Systemen, PLM- und ERP-Anbindung (Schnittstelle nach der Beta, ADR-048), FEM, Fertigungsregeln (Fräsen, 3D-Druck, Blech, Spritzguss), vollständiges BIM (Statik, Haustechnik, Bauantrag), ein eigener Geometrie-Kernel, Modellieren in XR, eine VS-Code-Integration, ein eigener KI-Dienst mit Abrechnung, Funktionen für Konzerne (PLM, feingranulare Rechteverwaltung); nach ADR-059 außerdem Bearbeiten im Knoten-Editor, Apps und Studien, IFC- und DXF-Import, Möbel aus glTF und das Änderungswesen.
 
@@ -80,7 +80,7 @@ Die Lösung muss fachneutral sein (jede Branche über Fachpakete), über offene 
 | F-02 | KI-Agenten beliebiger Anbieter, lokal oder in der Cloud, steuern Bauen, Messen, Rendern, Prüfen und Exportieren über MCP-Werkzeuge | Muss |
 | F-03 | Anforderungen strukturiert erfassen (Bauraum, Lasten, Schnittstellen, Werkstoff, Verfahren) als Elemente vom Typ requirement (ap-05, ap-15) | Muss |
 | F-04 | Konstruktionsrichtlinien als ausführbare Regeln: Raumakustik und Modellierrichtlinien vor der Beta (ap-20), Fertigungsverfahren danach (ap-31) | Muss |
-| F-05 | Export STEP AP242 vor der Beta (ap-33); STL/3MF und Zeichnungsansichten als SVG/DXF nach der Beta (ap-31) | Muss |
+| F-05 | Export STEP AP242 vor der Beta (ap-33a); STL/3MF und Zeichnungsansichten als SVG/DXF nach der Beta (ap-31) | Muss |
 | F-06 | Auswahl von Elementen, Flächen und Kanten wird als Kontext an den KI-Assistenten übergeben | Muss |
 | F-07 | Parametrische Bibliothek geprüfter Komponenten (ap-13); Normteile mit einem Fachpaket Mechanik nach der Beta | Muss |
 | F-08 | Blech: Abwicklung mit K-Faktor, Biegeradien, Freischnitte (nach der Beta) | Soll |
@@ -91,10 +91,10 @@ Die Lösung muss fachneutral sein (jede Branche über Fachpakete), über offene 
 | F-13 | Konstrukteur entscheidet per Klick oder Code, welche Elemente veröffentlicht sind; alles andere gilt als Hilfsfeature; unabhängig von Sichtbarkeit | Muss |
 | F-14 | Jedes veröffentlichte Element einzeln exportierbar und über eine stabile Adresse referenzierbar | Muss |
 | F-15 | Versionierung der Bauteil-Schnittstelle mit semantischem Diff je Element | Muss |
-| F-16 | Rückverfolgung Anforderung → Element → Regelbefund → Zeichnungsblatt (ap-26, ap-37) | Muss |
+| F-16 | Rückverfolgung Anforderung → Element → Regelbefund → Zeichnungsblatt (ap-26, ap-37a) | Muss |
 | F-17 | Semantische PMI (Maße, Toleranzen, Bezüge, Oberflächen) an Element-IDs gebunden (nach der Beta, ap-31) | Muss |
 | F-18 | Zeichnungsblätter als Elemente, aus dem Modell abgeleitet, mit eigener Revision und an Element-IDs gebunden (nach der Beta, ap-31) | Muss |
-| F-19 | Parametrische 2D-Skizzen mit Zwangsbedingungen und Maßen auf Flächen und Ebenen; interaktiv zeichnen, per Text beschreiben oder aus Handskizze, Foto oder DXF ableiten | Muss |
+| F-19 | Parametrische 2D-Skizzen mit Zwangsbedingungen und Maßen auf Flächen und Ebenen; interaktiv zeichnen, per Text beschreiben oder aus Handskizze, Foto oder DXF ableiten (Zwangsbedingungen nach Lizenzklärung, ap-12; Foto und DXF nach der Beta, ap-21) | Muss |
 | F-20 | Gleichzeitiges Arbeiten am selben Projekt: Änderungen, Auswahl und Cursor der anderen live sichtbar; Kommentare an jedem Element | Muss |
 | F-21 | Offline weiterarbeiten; Entwürfe, Zur Prüfung geben und Übernehmen – Git-Mechanik ohne Git-Begriffe (ADR-051); semantische Konflikte als Befund | Muss |
 | F-22 | Drei gleichwertige Ansichten desselben Graphen: 3D, Knoten-Editor, Text (Knoten in der Beta nur lesend, Bearbeiten danach) | Muss |
@@ -110,20 +110,20 @@ Die Lösung muss fachneutral sein (jede Branche über Fachpakete), über offene 
 | F-32 | Mengen, Kosten, Gewicht und CO₂ je Raum; PDF-Bericht mit Nachhallzeit vorher/nachher; CSV-Mengenliste | Muss |
 | F-33 | Import von IFC und DXF; Möbel und Szenen als glTF | Soll |
 | F-34 | Komponenten wie in Figma: Auswahl zur Vorlage machen, Parameter und Varianten festlegen, Instanzen mit Überschreibungen, Bibliotheken mit Versionen und Aktualisierung mit Vorschau, Lösen | Muss |
-| F-35 | Freigabeprozess: Items mit Sachnummer, Revision und Status; Prüfen und Freigeben (Selbstfreigabe bis zwei Personen, danach Vier-Augen-Prinzip); unveränderliche Freigabestände mit Manifest, Stückliste, STEP und PDF | Muss |
-| F-36 | Stückliste und Verwendungsnachweis aus dem Graphen; Änderungsantrag und Änderungsauftrag auf Basis von Entwürfen, mit Folgen für alle Verwender | Muss |
+| F-35 | Freigabeprozess: Items mit Sachnummer, Revision und Status; Prüfen und Freigeben (Selbstfreigabe bis zwei Personen, danach Vier-Augen-Prinzip); unveränderliche Freigabestände mit Manifest, Mengenliste als Stückliste, STEP und Bericht (ap-33a) | Muss |
+| F-36 | Stückliste und Verwendungsnachweis aus dem Graphen; Änderungsantrag und Änderungsauftrag auf Basis von Entwürfen, mit Folgen für alle Verwender (nach der Beta, ap-33b) | Muss |
 | F-37 | Verbindungspunkte zum Platzieren von Teilen und Produkten; Projektvariablen mit Einheiten an einer Stelle | Muss |
 | F-38 | Offene Schnittstelle zu PLM und ERP: Austauschformat, API, Ereignisse, Nummernkreise (nach der Beta) | Soll |
-| F-39 | Untergraph als Befehl: veröffentlichte Untergraphen werden ohne Code zu Befehl, Knoten und MCP-Werkzeug | Muss |
+| F-39 | Untergraph als Befehl: veröffentlichte Untergraphen werden ohne Code zu Befehl, Knoten und MCP-Werkzeug (nach der Beta, ap-23) | Muss |
 | F-40 | Apps aus dem Graphen: Formular, 3D-Ergebnis und Bericht für Personen ohne Modellrechte, z. B. Vertrieb oder Kunden-Konfigurator | Soll |
 | F-41 | Studien: Parameterbereiche automatisch durchrechnen, Tabelle und Pareto-Diagramm, gewählte Lösung als Änderungssatz | Soll |
-| F-42 | Komponenten mit Referenz-Eingängen (Fläche, Kante, Ebene, Verbindungspunkt), im Kontext gewählt; Ersetzen mit Umhängen | Muss |
+| F-42 | Komponenten mit Referenz-Eingängen (Fläche, Kante, Ebene, Verbindungspunkt), im Kontext gewählt; Ersetzen mit Umhängen (M2, ap-13b) | Muss |
 | F-43 | Direktes Bearbeiten von Flächen, auch an importiertem STEP ohne Historie, als Element im Graphen | Soll |
-| F-44 | Robuste Neuberechnung: ein fehlerhaftes Element markiert, das Modell bleibt bedienbar; Skelett mit live oder eingefrorenen Verknüpfungen | Muss |
+| F-44 | Robuste Neuberechnung: ein fehlerhaftes Element markiert, das Modell bleibt bedienbar; Skelett mit live oder eingefrorenen Verknüpfungen (Skelett nach der Beta, ap-36) | Muss |
 | F-45 | Teil-Laden und Detailstufen für Baugruppen mit 5.000 Teilen; Messungen mit Grenzwert und Modellierrichtlinien als Regeln | Muss |
 | F-46 | Versionierung ohne Git-Begriffe: automatisch gesichert; Entwurf, Meilenstein, Übernehmen, Zur Prüfung geben, Zurückholen, Ableiten, Verlauf; Konflikte als Entscheidungskarten | Muss |
-| F-47 | Entwicklungstrichter: Idee, In Arbeit, Ergebnis, Verworfen mit Begründung; ruhige Standardansicht mit Ergebnissen, Werkstatt mit allen Entwürfen; Herkunft und Entscheidungsprotokoll | Muss |
-| F-48 | Ordnung und Wiederfinden: feste schlanke Struktur, automatische Facetten, eine Suche für alles, Links ohne Bruch, Rückverweise, Sammlungen, Startseite, Doppelteil-Hinweis | Muss |
+| F-47 | Entwicklungstrichter: Idee, In Arbeit, Ergebnis, Verworfen mit Begründung; ruhige Standardansicht mit Ergebnissen, Werkstatt mit allen Entwürfen; Herkunft und Entscheidungsprotokoll (Protokoll nach der Beta, ap-37b) | Muss |
+| F-48 | Ordnung und Wiederfinden: feste schlanke Struktur, automatische Facetten, eine Suche für alles, Links ohne Bruch, Rückverweise, Sammlungen, Startseite, Doppelteil-Hinweis (Sammlungen und Doppelteil-Hinweis nach der Beta, ap-37b) | Muss |
 | F-49 | Lernschleife für lokale Modelle: Aufgabengenerator, Prüfer, Erfahrungsspeicher, LoRA-Adapter aus geprüften Erfolgen (nach der Beta) | Kann |
 | F-50 | Rechte, Rollen und Anmeldung: OIDC, Rollen je Organisation, Bereich und Projekt, Gäste für Kunden und Lieferanten, Dienstkonten für Agenten | Muss |
 
@@ -500,7 +500,7 @@ Die frühen ADRs 001 bis 027 stammen aus einer früheren Richtung (VS-Code-Erwei
 | 033 | Local-first mit CRDT (Automerge), Zweige und Änderungsanfragen wie bei Git | Zentraler Server mit OT, nur Git |
 | 034 | Kern MPL-2.0, SDK und Format Apache-2.0 | Apache-2.0 für alles, GPL/AGPL |
 | 035 | Drei gleichwertige Projektionen: 3D, Knoten, Text | Code mit Rückübersetzung (ADR-024) |
-| 036 | Immersives Review über WebXR (vorgeschlagen, Phase 3) | Native XR-Apps |
+| 036 | Immersives Review über WebXR (vorgeschlagen, nach der Beta) | Native XR-Apps |
 | 037 | KI anbieteroffen und lokal: MCP und Anbieter-Schnittstelle, lokale Modelle ab Tag 1, eigener Schlüssel, keine Telemetrie | Bindung an einen Anbieter, eigener KI-Dienst |
 | 038 | Erster Anwendungsfall Raumgestaltung und Raumakustik: Geschoss, Wand, Decke, Boden, Öffnung, Möbel, Absorber als Elemente | Fräs- und Blechteile zuerst, volles BIM |
 | 039 | Material als Element mit Aussehen, Akustik, Physik, Brandverhalten, Kosten, CO₂ – jeder Wert mit Einheit und Quelle | Material als Attribut je Bauteil |
@@ -518,7 +518,7 @@ Die frühen ADRs 001 bis 027 stammen aus einer früheren Richtung (VS-Code-Erwei
 | 051 | Versionierung in Alltagsbegriffen (Entwurf, Meilenstein, Übernehmen); Entwicklungstrichter mit Ergebnis und Verwerfen mit Begründung; Herkunft; Entscheidungsprotokoll | Git-Begriffe zeigen, Löschen statt Verwerfen |
 | 052 | Ordnungssystem: schlanke Struktur, automatische Facetten, eine Suche, feste Adressen, Rückverweise, Sammlungen, Startseite, Hygiene | Freie Ordnerbäume, externes Wiki |
 | 053 | Lernschleife für lokale Modelle: Prüfer bewerten, Aufgabengenerator, Erfahrungsspeicher, LoRA aus geprüften Erfolgen, Schutz gegen Schummeln | Selbstbewertung, Training nur in der Cloud |
-| 054 | Fachpakete: interne Fachpaket-API ab Phase 1, öffentliches SDK später; Akustik als Fachpaket-Crate; Arbeitsbereiche als Beitrag der Fachpakete | Fachpakete bis zum SDK im Kern, feste Arbeitsbereiche |
+| 054 | Fachpakete: interne Fachpaket-API ab M1, öffentliches SDK später; Akustik als Fachpaket-Crate; Arbeitsbereiche als Beitrag der Fachpakete | Fachpakete bis zum SDK im Kern, feste Arbeitsbereiche |
 | 055 | Rechte, Rollen, Anmeldung: OIDC, wenige Rollen, Gäste, Dienstkonten für Agenten, Prüfung im Server | Rechte je Element, Agenten unter dem Konto des Menschen |
 | 056 | Datenschutz: Anwesenheit nie speichern, Verlauf mit Konto-IDs, Export, keine Weitergabe ohne Wahl | Vollständiger Verlauf mit Klarnamen |
 | 057 | Einheiten und Größen: jede Zahl mit Dimension, kanonisch mm, rad, kg, s; Geld als Dezimalzahl mit Währung | Einheitenlose Zahlen nach Konvention |
@@ -553,7 +553,7 @@ Die frühen ADRs 001 bis 027 stammen aus einer früheren Richtung (VS-Code-Erwei
 
 **Kontext:** Ergebnisse müssen in SolidWorks, NX, CATIA, Creo, Inventor und Fusion weiterfließen.
 
-**Entscheidung:** Export als STEP AP242 mit Farben, Namen, Baugruppenstruktur, den Namen und Adressen veröffentlichter Elemente sowie semantischer PMI; STL/3MF für additive Fertigung; DXF für Blechabwicklungen. Native Makro-Generatoren pro CAD-System sind ein Kandidat für Phase 2.
+**Entscheidung:** Export als STEP AP242 mit Farben, Namen, Baugruppenstruktur, den Namen und Adressen veröffentlichter Elemente sowie semantischer PMI; STL/3MF für additive Fertigung; DXF für Blechabwicklungen. Native Makro-Generatoren pro CAD-System sind ein Kandidat nach der Beta.
 
 **Konsequenzen:** Im Ziel-CAD gibt es keinen Feature-Baum; Änderungen erfolgen im Code oder per Direktmodellierung.
 
@@ -747,7 +747,7 @@ Die frühen ADRs 001 bis 027 stammen aus einer früheren Richtung (VS-Code-Erwei
 
 ### ADR-032: Geometrie als abgeleiteter Cache
 
-**Entscheidung:** Synchronisiert wird nur das Rezept. Geometrie entsteht in zustandslosen Workern hinter einer versionierten Kernel-Schnittstelle und wird nach Inhalts-Hash gecacht. Erste Implementierung: OpenCascade über build123d/OCP. Ein eigener Kernel ist nur als spezialisierter Zusatz denkbar (implizite Modelle, Gitter), frühestens in Phase 3.
+**Entscheidung:** Synchronisiert wird nur das Rezept. Geometrie entsteht in zustandslosen Workern hinter einer versionierten Kernel-Schnittstelle und wird nach Inhalts-Hash gecacht. Erste Implementierung: OpenCascade über build123d/OCP. Ein eigener Kernel ist nur als spezialisierter Zusatz denkbar (implizite Modelle, Gitter), frühestens nach der Beta.
 
 **Konsequenzen:** Ein zweiter Kernel kann später hinzukommen, ohne Datenmodell oder Synchronisation zu ändern.
 
@@ -771,7 +771,7 @@ Die frühen ADRs 001 bis 027 stammen aus einer früheren Richtung (VS-Code-Erwei
 
 ### ADR-036: Immersives Review über WebXR
 
-**Entscheidung:** Modell in Originalgröße betrachten, auswählen, kommentieren, gemeinsam mit Anwesenheit; kein Modellieren in XR. Status vorgeschlagen, frühestens Phase 3.
+**Entscheidung:** Modell in Originalgröße betrachten, auswählen, kommentieren, gemeinsam mit Anwesenheit; kein Modellieren in XR. Status vorgeschlagen, frühestens nach der Beta.
 
 ### ADR-037: KI anbieteroffen und lokal
 
@@ -779,7 +779,7 @@ Die frühen ADRs 001 bis 027 stammen aus einer früheren Richtung (VS-Code-Erwei
 
 **Entscheidung:** Agenten greifen über MCP zu, der eingebaute Assistent über eine Anbieter-Schnittstelle (OpenAI-kompatibel für Ollama, llama.cpp, vLLM, LM Studio; Anthropic; weitere als Plugin). Kein Anbieter ist vorkonfiguriert, lokale Modelle werden erkannt. Schlüssel bringt der Nutzer mit. Daten gehen nur an den ausdrücklich gewählten Anbieter, je Projekt einstellbar; keine Telemetrie ohne Zustimmung. Tools sind so einfach, dass auch kleine lokale Modelle sie bedienen.
 
-**Konsequenzen:** Die Eval-Suite misst jede Version mit einem Cloud- und einem lokalen Modell. Selbstbetrieb wird in Phase 1 vorgezogen.
+**Konsequenzen:** Die Eval-Suite misst jede Version mit einem Cloud- und einem lokalen Modell. Selbstbetrieb kommt in M1, lokale Modelle mit ap-15 in M3.
 
 ### ADR-038: Erster Anwendungsfall Raumgestaltung und Raumakustik
 
@@ -841,19 +841,19 @@ Die frühen ADRs 001 bis 027 stammen aus einer früheren Richtung (VS-Code-Erwei
 
 **Entscheidung:** (1) Item mit Sachnummer, Revision und Status. (2) Versionen jederzeit, Revisionen nur durch Freigabe. (3) Lebenszyklus In Arbeit → In Prüfung → Freigegeben → Ersetzt bzw. Gesperrt, Übergänge als Befehle mit Bedingungen. (4) Selbstfreigabe standardmäßig an bis zwei Personen mit Freigaberecht, danach Vier-Augen-Prinzip; Agenten geben nie frei. (5) Unveränderliche, signierte Freigabestände mit archivierten Dokumenten. (6) Stückliste aus dem Graphen. (7) Änderungsantrag und Änderungsauftrag auf Basis von Entwürfen.
 
-**Konsequenzen:** Ändert ADR-017 und ADR-032, ergänzt ADR-015. Arbeitspaket ap-33 vor der Beta.
+**Konsequenzen:** Ändert ADR-017 und ADR-032, ergänzt ADR-015. ap-33a vor der Beta, ap-33b danach (ADR-059).
 
 ### ADR-048: Offene Schnittstelle zu PLM und ERP
 
 **Entscheidung:** (1) Ein führendes System je Feld: CEE für die Produktdefinition, PLM bzw. ERP für Materialstamm, MBOM, Lager und Aufträge. (2) Offenes Austauschformat in `format/`. (3) API aus dem Befehlsregister. (4) Ereignisse über eine Outbox, mindestens einmal zugestellt. (5) Nummernkreise und Abgleiche als Plugins.
 
-**Konsequenzen:** Ergänzt ADR-017, ADR-030 und ADR-047. Format mit ap-33, API und Ereignisse mit ap-34 nach der Beta.
+**Konsequenzen:** Ergänzt ADR-017, ADR-030 und ADR-047. Format mit ap-33b, API und Ereignisse mit ap-34, beide nach der Beta.
 
 ### ADR-049: Automatisierung, Apps und Studien nach dem Vorbild von Synera
 
 **Entscheidung:** (1) Veröffentlichte Untergraphen mit deklarierten Ein- und Ausgängen werden ohne Code Befehl, Knoten und MCP-Werkzeug, versioniert und freigebbar. (2) Apps aus dem Graphen: Formular, 3D-Ergebnis, Kennzahlen und Bericht für Personen ohne Modellrechte; Ergebnisse als Änderungssatz. (3) Bibliotheken für Person, Projekt und Organisation; gesperrte Komponenten. (4) Zwischenergebnisse an jedem Knoten und jeder Kante. (5) Studien (`study`) rechnen Parameterbereiche im Worker durch; Tabelle und Pareto-Diagramm; der Mensch wählt.
 
-**Konsequenzen:** Ändert ADR-043, ergänzt ADR-035 und ADR-045. Neues Arbeitspaket ap-35; Werte an Kanten und Untergraph als Befehl kommen mit ap-23.
+**Konsequenzen:** Ändert ADR-043, ergänzt ADR-035 und ADR-045. ap-35 nach der Beta; Werte an Kanten mit ap-23a in der Beta, Untergraph als Befehl mit ap-23 danach (ADR-059).
 
 ### ADR-050: Bewährtes aus klassischem CAD (CATIA, NX, Creo)
 
@@ -865,13 +865,13 @@ Die frühen ADRs 001 bis 027 stammen aus einer früheren Richtung (VS-Code-Erwei
 
 **Entscheidung:** (1) Oberfläche ohne Git-Begriffe, automatisch gesichert: Entwurf, Meilenstein, Übernehmen, Zur Prüfung geben, Zurückholen, Ableiten, Verlauf. (2) Konflikte als Entscheidungskarten. (3) Zustände Idee, In Arbeit, Ergebnis, dann ADR-047; Verwerfen archiviert mit Begründung, löscht nie. (4) Standardansicht zeigt Ergebnisse, die Werkstatt alle Entwürfe. (5) Herkunft beim Ableiten. (6) Entscheidungsprotokoll je Projekt.
 
-**Konsequenzen:** Ändert ADR-033, ergänzt ADR-047. Betrifft ap-08, ap-17, ap-25.
+**Konsequenzen:** Ändert ADR-033, ergänzt ADR-047. Betrifft ap-08b, ap-17, ap-25.
 
 ### ADR-052: Ordnungssystem und Wiederfinden
 
 **Entscheidung:** Organisation › Bereich › Projekt; Facetten automatisch aus dem Graphen; eine Suche für Befehle und Inhalte mit Parameterbedingungen und semantischer Suche; feste Adressen mit Weiterleitung; Rückverweise; gespeicherte Sammlungen; Startseite je Person; Kontext am Element; Hygiene für verwaiste Entwürfe und Doppelteile.
 
-**Konsequenzen:** Ergänzt ADR-018 und ADR-045. Suchindex ist abgeleitet und wird nie synchronisiert. Arbeitspaket ap-37.
+**Konsequenzen:** Ergänzt ADR-018 und ADR-045. Suchindex ist abgeleitet und wird nie synchronisiert. ap-37a in M2, ap-37b nach der Beta (ADR-059).
 
 ### ADR-053: Lernschleife für lokale Modelle
 
@@ -883,13 +883,13 @@ Die frühen ADRs 001 bis 027 stammen aus einer früheren Richtung (VS-Code-Erwei
 
 **Entscheidung:** (1) Ab ap-05 bzw. ap-08 eine interne Fachpaket-API mit Manifest und Beitragsarten; mitgelieferte Fachpakete nutzen nur sie; das öffentliche SDK (ap-27) ist dieselbe API, stabil versioniert. (2) Fachpakete unter `packages/<name>/`, rechenintensive Teile als Crate `crates/<name>` (z. B. Akustik); Fachpakete hängen vom Kern ab, nie umgekehrt. (3) Der Kern bringt den Arbeitsbereich Modell; weitere Arbeitsbereiche steuern Fachpakete bei, höchstens fünf gleichzeitig sichtbar.
 
-**Konsequenzen:** Ändert ADR-041, ADR-044 und präzisiert ADR-046. ap-09 bis ap-11 hängen von ap-05 und ap-08 ab.
+**Konsequenzen:** Ändert ADR-041, ADR-044 und präzisiert ADR-046. ap-09 bis ap-11 hängen von ap-05 und ap-08a/b ab.
 
 ### ADR-055: Rechte, Rollen und Anmeldung
 
 **Entscheidung:** Anmeldung über OpenID Connect (eigene Konten mit zweitem Faktor oder externer Anbieter); Rollen Betrachten, Kommentieren, Bearbeiten, Prüfen, Freigeben, Verwalten, dazu App-Nutzer und Gast; vererbt über Organisation, Bereich, Projekt, keine Rechte je Element; Prüfung im Server, offline Entstandenes außerhalb der Rechte als Entscheidungskarte; Agenten als Dienstkonto ohne Freigaberecht.
 
-**Konsequenzen:** Ergänzt ADR-030, ADR-047 und ADR-049. Umgesetzt in ap-07 und ap-16.
+**Konsequenzen:** Ergänzt ADR-030, ADR-047 und ADR-049. Umgesetzt in ap-07a (lokale Anmeldung) und ap-07b (Rollen, Rechte, OIDC).
 
 ### ADR-056: Datenschutz
 
@@ -948,7 +948,7 @@ Die Zahlen sind Platzhalter aus gängigen Konstruktionsrichtlinien; jedes Untern
 
 ## Arbeitspakete
 
-Die Arbeit ist in Arbeitspakete geschnitten und nach vier Meilensteinen bis zur Beta geordnet (ADR-059): **M0 Klären**, **M1 Werkbank** (die Firma erstellt allein ein echtes Angebot), **M2 Zusammen**, **M3 Beta**; danach folgt der Ausbau. Jedes Paket ist ein OpenSpec-Change mit Abnahmetests (`ap-xx-kurzname`); große Pakete sind in Teil-Changes (a, b) geteilt, damit jeder in eine Nacht passt. Die Tabelle steht in Umsetzungsreihenfolge; bis zur Beta sind es 33 Changes.
+Die Arbeit ist in Arbeitspakete geschnitten und nach vier Meilensteinen bis zur Beta geordnet (ADR-059): **M0 Klären**, **M1 Werkbank** (die Firma erstellt allein ein echtes Angebot), **M2 Zusammen**, **M3 Beta**; danach folgt der Ausbau. Jedes Paket ist ein OpenSpec-Change mit Abnahmetests (`ap-xx-kurzname`); große Pakete sind in Teil-Changes (a, b) geteilt, damit jeder in eine Nacht passt. Die Tabelle steht in Umsetzungsreihenfolge; bis zur Beta sind es 35 Changes.
 
 | AP | Meilenstein | Inhalt | Abnahme | Abhängig von |
 | --- | --- | --- | --- | --- |
@@ -961,33 +961,35 @@ Die Arbeit ist in Arbeitspakete geschnitten und nach vier Meilensteinen bis zur 
 | ap-41-ux-prototyp | M0 | Klickbarer Prototyp: Arbeitsfläche, Akustik-Panel, Entwürfe und Suche; Test mit der Firma | 4 von 5 Testpersonen lösen drei Kernabläufe ohne Einweisung | – |
 | ap-05-graph-kern | M1 | Graph-Kern produktiv: Schema v1, Validierung, Abhängigkeiten, Migrationen, Teil-Laden, Berechnungszustände | 100.000 Elemente laden ≤ 2 s | ap-01 |
 | ap-40-bindungen-sdk | M1 | Produktive Bindungen des Kerns: Rustler-NIF, WASM, PyO3; Python-SDK; dieselben Bindungen für Fachpaket-Crates | Gleicher Inhalts-Hash in Rust, Elixir, Browser und Python; Operation ≤ 1 ms (NIF) bzw. ≤ 5 ms (WASM) | ap-05 |
-| ap-06-kernel-worker | M1 | Kernel-Protokoll, Python-Worker mit OCCT, Cache nach Inhalts-Hash, Detailstufen, robuste Neuberechnung | Raum mit 6 Wänden und 2 Öffnungen baut < 1 s; Worker-Absturz ohne Serverausfall | ap-05, ap-39 |
-| ap-07a-server-dokument | M1 | Dokumentprozess, Speichern in PostgreSQL, Channels für eine Person, lokale Anmeldung | Dokument mit 10.000 Elementen speichern und laden ≤ 2 s; Absturz ohne Datenverlust | ap-03, ap-05, ap-40 |
-| ap-08a-arbeitsflaeche | M1 | Arbeitsfläche mit 3D und 2D-Grundriss, Featurebaum, Eigenschaften, Befehlsregister mit Befehlssuche, Einstellungen, Werte beim Ziehen tippen, interne Fachpaket-API (ADR-054) | 4 von 5 Testpersonen der Firma lösen Kernabläufe; Auswahl < 100 ms | ap-04, ap-05, ap-41 |
-| ap-09-raum-elemente | M1 | Geschoss, Wand, Boden, Decke, Fenster, Tür, einfache Möbel (Quader mit Absorptionsfläche); Wände im Grundriss zeichnen | Besprechungsraum in ≤ 5 min modelliert; Öffnungen schneiden Wände korrekt | ap-06, ap-08a |
-| ap-10-materialbibliothek | M1 | Material-Elemente mit allen Eigenschaftsgruppen, Import von Herstellerdaten (CSV) | 20 Materialien der Firma importiert, αw und Absorberklasse korrekt | ap-05, ap-08a |
+| ap-06-kernel-worker | M1 | Kernel-Protokoll, Python-Worker mit OCCT, Cache nach Inhalts-Hash, Detailstufen, robuste Neuberechnung | Raum mit 6 Wänden und 2 Öffnungen baut < 1 s; Worker-Absturz ohne Serverausfall | ap-05, ap-39, ap-40 |
+| ap-07a-server-dokument | M1 | Dokumentprozess, Speichern in PostgreSQL, Channels für eine Person, lokale Anmeldung, Export aller Projektdaten im offenen Format | Dokument mit 10.000 Elementen speichern und laden ≤ 2 s; Absturz ohne Datenverlust | ap-03, ap-05, ap-40 |
+| ap-08a-grundlagen | M1 | Befehlsregister mit Befehlssuche, Einstellungen, interne Fachpaket-API (ADR-054), Übersetzungen Deutsch und Englisch, Einheiten in Ein- und Ausgabe (ADR-057) | Jede Funktion über die Befehlssuche erreichbar; keine festen Texte im Code; ein Beispiel-Fachpaket lädt über die API | ap-05, ap-40 |
+| ap-08b-arbeitsflaeche | M1 | Arbeitsfläche mit 3D und 2D-Grundriss, Featurebaum, Eigenschaften, Werte beim Ziehen tippen; Bedienelemente nach WCAG 2.2 AA | 4 von 5 Testpersonen der Firma lösen Kernabläufe; Auswahl < 100 ms; vollständig per Tastatur bedienbar | ap-04, ap-07a, ap-08a, ap-41 |
+| ap-09-raum-elemente | M1 | Geschoss, Wand, Boden, Decke, Fenster, Tür, einfache Möbel (Quader mit Absorptionsfläche); Wände im Grundriss zeichnen | Besprechungsraum in ≤ 5 min modelliert; Öffnungen schneiden Wände korrekt | ap-06, ap-08b |
+| ap-10-materialbibliothek | M1 | Material-Elemente mit allen Eigenschaftsgruppen, Import von Herstellerdaten (CSV) | 20 Materialien der Firma importiert, αw und Absorberklasse korrekt | ap-05, ap-08b |
 | ap-11-akustik-live | M1 | Analyse-Element Nachhallzeit, Live-Anzeige je Band, Zielband, Kern als WASM | Aktualisierung beim Verschieben < 100 ms | ap-02, ap-09, ap-10, ap-40 |
-| ap-12-skizze-extrusion | M1 | Skizzen und Extrusion für Absorberformen, Identität der Flächen; Zwangsbedingungen mit PlaneGCS erst nach Lizenzklärung (ADR-027) | Absorber-Form per Skizze in ≤ 3 Schritten; IDs stabil über 50 Parameteränderungen | ap-06, ap-08a, ap-39 |
-| ap-13-komponenten-katalog | M1 | Komponenten mit Varianten, Referenz-Eingängen und Instanzen (ADR-043, ADR-050), Bibliotheken mit Versionen im Projekt (Aktualisierung über Projektgrenzen mit ap-26); Absorber-Katalog der Firma als Bibliothek; Platzieren an Wand und Decke, abgehängt, Reihen und Raster | 12 Deckensegel als Raster in einem Schritt; Wirkung sofort in der Nachhallzeit; ein Katalog-Update erreicht alle Instanzen, Überschreibungen bleiben | ap-10, ap-11, ap-12 |
+| ap-12-skizze-extrusion | M1 | Skizzen und Extrusion für Absorberformen, Identität der Flächen; Zwangsbedingungen mit PlaneGCS erst nach Lizenzklärung (ADR-027) | Absorber-Form per Skizze in ≤ 3 Schritten; IDs stabil über 50 Parameteränderungen | ap-06, ap-08b, ap-39 |
+| ap-13a-komponenten-katalog | M1 | Komponenten mit Varianten und Instanzen (ADR-043); Absorber-Katalog der Firma als Bibliothek im selben Projekt; Platzieren an Wand und Decke über Verbindungspunkte, abgehängt, Reihen und Raster | 12 Deckensegel als Raster in einem Schritt; Wirkung sofort in der Nachhallzeit; eine Katalogänderung erreicht alle Instanzen, Überschreibungen bleiben | ap-10, ap-11, ap-12 |
 | ap-14-rendering-fotomodus | M1 | Echtzeit-PBR, HDRI, Fotomodus mit Denoiser produktiv, Bild als PNG | Referenzraum fotorealistisch; Materialien entsprechen Mustern der Firma | ap-04, ap-10 |
-| ap-18-mengen-kosten-co2 | M1 | Mengen, Kosten, Gewicht und CO₂ je Raum; CSV-Mengenliste | Summen stimmen mit Handrechnung für 3 Räume | ap-10, ap-13 |
+| ap-18-mengen-kosten-co2 | M1 | Mengen, Kosten, Gewicht und CO₂ je Raum; CSV-Mengenliste | Summen stimmen mit Handrechnung für 3 Räume | ap-10, ap-13a |
 | ap-19-bericht-angebot | M1 | PDF-Bericht: Nachhallzeit vorher/nachher, Bilder, Grundriss, Mengen, Kosten, CO₂ | Firma versendet einen echten Bericht ohne Nacharbeit | ap-14, ap-18 |
-| ap-16-selbstbetrieb | M1 | Container mit Server, Datenbank und lokalem Modell, Backups mit Wiederherstellungstest (Anmeldung über OIDC mit ap-07b) | Installation in < 15 min | ap-07a |
-| ap-07b-server-zusammenarbeit | M2 | Mehrere Personen live: Presence, Cursor, Rollen und Rechte, Anmeldung über OIDC (ADR-055) | 20 gleichzeitige Nutzer je Dokument, Änderung < 200 ms; Rechte im Server geprüft | ap-07a |
+| ap-16-selbstbetrieb | M1 | Container mit Server und Datenbank, Backups mit Wiederherstellungstest (lokales Modell mit ap-15, OIDC mit ap-07b) | Installation in < 15 min | ap-07a |
+| ap-07b-server-zusammenarbeit | M2 | Mehrere Personen live: Presence, Cursor, Kommentare an Elementen, Rollen und Rechte, Anmeldung über OIDC (ADR-055) | 20 gleichzeitige Nutzer je Dokument, Änderung < 200 ms; Rechte im Server geprüft | ap-07a |
 | ap-25-entwuerfe | M2 | Entwürfe, Meilensteine, Übernehmen mit Entscheidungskarten, Zur Prüfung geben, Verwerfen mit Begründung, Herkunft, semantische Konflikte (ADR-051) | 100 % der Konflikte im Testkorpus erkannt | ap-07b |
 | ap-17-desktop-offline | M2 | Tauri-App mit Kern, Speicher und Worker; offline, Abgleich beim Verbinden | Einen Tag offline gearbeitet, Merge ohne Datenverlust | ap-06, ap-07a, ap-40 |
-| ap-26-publikation | M2 | Publikationsstatus, Manifest, URIs, semantischer Diff | Schnittstellen-Diff an 3 Referenzräumen korrekt | ap-05 |
-| ap-33a-freigabe | M2 | Items, Sachnummern, Revisionen, Lebenszyklus, Selbstfreigabe bzw. Vier-Augen-Prinzip, Freigabestand mit STEP und Bericht | Absorber und Raumangebot freigegeben, geändert und als Revision B erneut freigegeben; Freigabestand bitgleich reproduzierbar | ap-25, ap-26 |
+| ap-26-publikation | M2 | Publikationsstatus, Manifest, Adressen auf ID-Basis (ADR-058), semantischer Diff | Schnittstellen-Diff an 3 Referenzräumen korrekt | ap-05 |
+| ap-13b-bibliotheken | M2 | Referenz-Eingänge an Komponenten mit Ersetzen und Umhängen (ADR-050); Bibliotheken über Projektgrenzen mit Versionen und Aktualisierung mit Vorschau | Katalog aus einem Bibliotheksprojekt in drei Raumprojekten; Update mit Vorschau übernommen, Überschreibungen bleiben | ap-13a, ap-26 |
+| ap-33a-freigabe | M2 | Items, Sachnummern, Revisionen, Lebenszyklus, Selbstfreigabe bzw. Vier-Augen-Prinzip, Freigabestand mit STEP, Bericht und Mengenliste als Stückliste | Absorber und Raumangebot freigegeben, geändert und als Revision B erneut freigegeben; Freigabestand bitgleich reproduzierbar | ap-25, ap-26 |
 | ap-37a-suche | M2 | Struktur Organisation › Bereich › Projekt, Suche mit Facetten, Rückverweise, Startseite | 20 typische Such-Aufgaben der Firma in je ≤ 30 s gelöst; Suche über 100.000 Elemente < 300 ms | ap-07b, ap-25 |
-| ap-15-mcp-ki | M3 | MCP-Endpunkt, Anbieter-Schnittstelle (lokal und Cloud), Änderungssätze, Eval-Suite mit Aufgabengenerator und Prüfern (ADR-053) | Agent bringt die Nachhallzeit eines Referenzraums in das Zielband, mit Cloud- und lokalem Modell | ap-07a, ap-08a, ap-13 |
+| ap-15-mcp-ki | M3 | MCP-Endpunkt, Anbieter-Schnittstelle (lokal und Cloud), Änderungssätze, Eval-Suite mit Aufgabengenerator und Prüfern (ADR-053) | Agent bringt die Nachhallzeit eines Referenzraums in das Zielband, mit Cloud- und lokalem Modell | ap-07b, ap-08a, ap-13a |
 | ap-24-textprojektion-git | M3 | Textprojektion produktiv, Git-Export und -Import | Roundtrip verlustfrei; eine Parameteränderung = eine Zeile | ap-05 |
 | ap-20-regeln-raumakustik | M3 | Zielwerte als Regelpaket (z. B. nach DIN 18041), geprüft durch die Firma; Messungen mit Grenzwert, Modellierrichtlinien | Zielbänder für 5 Raumarten stimmen mit Firmenprüfung | ap-11 |
-| ap-08b-arbeitsflaeche-ausbau | M3 | Stapel, Arbeitsbereiche aus Fachpaketen, Aktionsprotokoll, Avatare | Stapel und Arbeitsbereiche für Raum und Akustik; jede Aktion als Textzeile kopierbar | ap-07b, ap-08a |
-| ap-23a-knoten-ansicht | M3 | Knoten-Ansicht des Graphen: lesen, durchsuchen, Werte an jeder Kante; Auswahl synchron mit 3D | Absorber-Raster vollständig als Knoten sichtbar; Auswahl in beide Richtungen < 100 ms | ap-08a, ap-24 |
-| ap-27-plugin-sdk | M3 | Fachpaket-API öffentlich und minimal: Manifest, Sandbox und Rechte, Projekt-Vertrauen, Beispiel-Fachpaket | Fremd-Plugin ohne Änderung am Kern | ap-05, ap-08b |
+| ap-08c-arbeitsflaeche-ausbau | M3 | Stapel, Arbeitsbereiche aus Fachpaketen, Aktionsprotokoll, Avatare | Stapel und Arbeitsbereiche für Raum und Akustik; jede Aktion als Textzeile kopierbar | ap-07b, ap-08b |
+| ap-23a-knoten-ansicht | M3 | Knoten-Ansicht des Graphen: lesen, durchsuchen, Werte an jeder Kante; Auswahl synchron mit 3D | Absorber-Raster vollständig als Knoten sichtbar; Auswahl in beide Richtungen < 100 ms | ap-08b, ap-24 |
+| ap-27-plugin-sdk | M3 | Fachpaket-API öffentlich und minimal: Manifest, Sandbox und Rechte, Projekt-Vertrauen, Beispiel-Fachpaket | Fremd-Plugin ohne Änderung am Kern | ap-05, ap-08c |
 | ap-23-knoten-editor | nach Beta | Knoten-Editor zum Bearbeiten, Untergraphen als Bausteine und Befehle | Absorber-Raster vollständig im Knoten-Editor | ap-23a |
 | ap-35-apps-studien | nach Beta | Apps aus veröffentlichten Untergraphen, gesperrte Komponenten, Bibliotheksebenen, Studien mit Tabelle und Pareto-Diagramm | Vertrieb erstellt ohne Modellrechte eine Raumbelegung mit Angebot; Studie mit 100 Varianten < 2 min | ap-06, ap-11, ap-23 |
-| ap-36-direkt-skelett | nach Beta | Direktes Bearbeiten von Flächen (auch an STEP), Skelett mit eingefrorenen Verknüpfungen, Ersetzen mit Umhängen | Lieferanten-STEP ohne Neumodellieren angepasst; Skelettänderung erreicht 20 Teile, eingefrorene erst nach Bestätigung | ap-06, ap-12, ap-13 |
+| ap-36-direkt-skelett | nach Beta | Direktes Bearbeiten von Flächen (auch an STEP), Skelett mit eingefrorenen Verknüpfungen, Ersetzen mit Umhängen | Lieferanten-STEP ohne Neumodellieren angepasst; Skelettänderung erreicht 20 Teile, eingefrorene erst nach Bestätigung | ap-06, ap-12, ap-13b |
 | ap-21-import-ifc-dxf | nach Beta | Import von Räumen aus IFC und Grundrissen aus DXF | 3 Architekturmodelle ohne Nacharbeit übernommen | ap-09 |
 | ap-22-moebel-gltf | nach Beta | Möbelbibliothek, glTF-Import und -Export | 20 Möbel mit Absorptionsfläche; Szene als glTF exportiert | ap-14 |
 | ap-33b-aenderungswesen | nach Beta | Stückliste mit Verwendungsnachweis, Änderungsantrag und -auftrag, Austauschformat | Änderungsauftrag erzeugt Revisionen von drei abhängigen Items gemeinsam | ap-33a |
@@ -1082,7 +1084,7 @@ Abnahmetests sind immer pytest-Tests unter `tests/acceptance/<change-id>/`; sie 
 
 ## Roadmap und Meilensteine
 
-Die Roadmap wird über Meilensteine und Gates gesteuert, nicht über Termine (ADR-059). Die Monatsangaben sind Richtwerte bei etwa zwei Nachtläufen je Change und Reviews mehrmals pro Woche; das Tempo bestimmen Nachtschicht und menschliche Prüfzeit. Kritischer Pfad: ap-05 → ap-40 → ap-06 und ap-07a → ap-08a → Fachpaket Raum (ap-09 bis ap-13) → ap-14, ap-18, ap-19. Architektur-Grundlagen (Befehlsregister, Fachpaket-API, Einheiten, CRDT) kommen vollständig in M1; verschoben werden nur Funktionen.
+Die Roadmap wird über Meilensteine und Gates gesteuert, nicht über Termine (ADR-059). Die Monatsangaben sind Richtwerte bei etwa zwei Nachtläufen je Change und Reviews mehrmals pro Woche; das Tempo bestimmen Nachtschicht und menschliche Prüfzeit. Kritischer Pfad: ap-05 → ap-40 → ap-06, ap-07a und ap-08a → ap-08b → Fachpaket Raum (ap-09 bis ap-13a) → ap-14, ap-18, ap-19. Architektur-Grundlagen (Befehlsregister, Fachpaket-API, Einheiten, CRDT) kommen vollständig in M1; verschoben werden nur Funktionen.
 
 &#91;embedded content: Roadmap · vier Meilensteine bis zur Beta, vier Gates\]
 
@@ -1095,11 +1097,11 @@ Die Roadmap wird über Meilensteine und Gates gesteuert, nicht über Termine (AD
 
 ## Risiken und Gegenmaßnahmen
 
-Die größten Risiken liegen jetzt im Datenmodell (Größe und Merge-Verhalten des CRDT), in der persistenten Identität und in der Breite des Stacks für zwei Personen. Die ersten beiden klären die Spikes in Phase 0, das dritte begrenzen klare Schichtgrenzen und Regeln je Sprache.
+Die größten Risiken liegen jetzt im Datenmodell (Größe und Merge-Verhalten des CRDT), in der persistenten Identität und in der Breite des Stacks für zwei Personen. Die ersten beiden klären die Spikes in M0, das dritte begrenzen klare Schichtgrenzen und Regeln je Sprache.
 
 | ID | Risiko | Auswirkung | Gegenmaßnahme |
 | --- | --- | --- | --- |
-| R-10 | Persistente Identität bricht bei Topologie-Änderungen (Topological Naming Problem), z. B. wenn eine Fläche durch eine neue Tasche geteilt wird | Sehr hoch | Spike ap-39 in Phase 0; drei Stufen nach ADR-016; Mehrdeutigkeit führt zur Nachfrage statt zur Vermutung; Stresstests in der CI; Veröffentlichung bevorzugt auf Features und Bezugselemente statt auf abgeleitete Flächen |
+| R-10 | Persistente Identität bricht bei Topologie-Änderungen (Topological Naming Problem), z. B. wenn eine Fläche durch eine neue Tasche geteilt wird | Sehr hoch | Spike ap-39 in M0; drei Stufen nach ADR-016; Mehrdeutigkeit führt zur Nachfrage statt zur Vermutung; Stresstests in der CI; Veröffentlichung bevorzugt auf Features und Bezugselemente statt auf abgeleitete Flächen |
 | R-15 | Oberfläche reagiert zu träge, weil OCCT-Rebuilds Sekunden dauern | Hoch | Inkrementeller Rebuild und Näherungsvorschau (ADR-025); Spike mit Zeitmessung an Referenzteilen; Performance-Budgets als Pflichttests |
 | R-16 | Gleichzeitige Änderungen von Menschen und Agenten ergeben technisch gültige, fachlich widersprüchliche Modelle | Hoch | Semantische Konfliktprüfung nach jedem Merge (ADR-033); Agenten arbeiten auf eigenem Zweig und kommen als Änderungssatz zurück; Regeln laufen nach jeder Übernahme |
 | R-13 | UI erreicht mit Agenten allein nicht die geforderte Qualität | Hoch | UX-Designer im Kernteam; Prototyp vor Code; Referenz-Screenshots und visuelle Regressionstests als Spec; Usability-Runde je Gate |

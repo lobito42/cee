@@ -3,6 +3,7 @@
 - Status: akzeptiert
 - Datum: 2026-10-17
 - Entscheider: Kernteam
+- Geändert durch: ADR-059 (Zuordnung zu Meilensteinen)
 
 ## Kontext
 
@@ -37,4 +38,4 @@ Frei verschachtelte Ordner; manuelle Verschlagwortung; externe Wiki- und Suchwer
 ## Konsequenzen
 
 Ergänzt ADR-018 und ADR-045. Der Suchindex ist abgeleitet (wie Geometrie) und wird nie synchronisiert,
-sondern je Server bzw. Gerät aufgebaut. Neues Arbeitspaket ap-37 (Ordnung und Suche) in Phase 2.
+sondern je Server bzw. Gerät aufgebaut. Arbeitspakete ap-37a (Grundfunktionen, M2) und ap-37b (Ausbau nach der Beta), siehe ADR-059.

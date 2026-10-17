@@ -3,6 +3,7 @@
 - Status: akzeptiert
 - Datum: 2026-10-17
 - Entscheider: Kernteam
+- Geändert durch: ADR-059 (Zuordnung zu Meilensteinen)
 
 ## Kontext
 
@@ -46,4 +47,5 @@ eigene Tabelle.
 
 Ändert ADR-017 (Manifest ist Teil des Freigabestands, Versionierung im Server statt nur in Git) und ADR-032
 (Exporte eines Freigabestands werden archiviert; das Modell selbst speichert weiter keine Geometrie).
-Ergänzt ADR-015 („Freigegeben“ = Status eines Items). Arbeitspaket ap-33 vor der Beta.
+Ergänzt ADR-015 („Freigegeben“ = Status eines Items). Arbeitspakete ap-33a vor der Beta (Item, Revision, Lebenszyklus, Freigabestand; Mengenliste aus ap-18 als
+Stückliste) und ap-33b danach (Verwendungsnachweis, Änderungswesen, Austauschformat), siehe ADR-059.

@@ -29,4 +29,4 @@ Keine.
 - Abnahmetests: `tests/acceptance/ap-02-akustik-nachhallzeit/` (AK-1 bis AK-5)
 - Gate G1
 - Nicht-Ziele: Zielwerte nach DIN 18041 (eigenes Regelpaket), Luftabsorption, geometrische Verfahren,
-  WASM- und NIF-Anbindung (kommen mit ap-05 bzw. ap-07)
+  WASM- und NIF-Anbindung (kommen mit ap-40)

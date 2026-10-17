@@ -1,6 +1,6 @@
 # Spike-Berichte
 
-Spikes der Phase 0. Aufbau: `## Fragestellung`, `## Vorgehen`, `## Messwerte`, `## Empfehlung`
+Spikes des Meilensteins M0 (ADR-059). Aufbau: `## Fragestellung`, `## Vorgehen`, `## Messwerte`, `## Empfehlung`
 (erste Zeile Go oder No-Go). Messwerte zusätzlich maschinenlesbar als `<name>.json`, wenn der Change das verlangt.
 
 | Change | Bericht | Frage |

@@ -15,7 +15,7 @@ Export als STEP AP242 mit Farben, Namen, Baugruppenstruktur, Namen und Adressen 
 
 ## Alternativen
 
-Native Makro-Generatoren je CAD-System (Kandidat für Phase 2).
+Native Makro-Generatoren je CAD-System (Kandidat nach der Beta).
 
 ## Konsequenzen
 

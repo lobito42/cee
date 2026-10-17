@@ -24,7 +24,7 @@ rules:
   proposal:
     - Unter Impact die betroffenen ADRs mit Nummer nennen; widerspricht der Change einem ADR, das explizit sagen
     - Unter Impact das Gate (G1–G4) und den Pfad der Abnahmetests tests/acceptance/<change-id>/ nennen
-    - Nicht-Ziele nennen, besonders Themen aus Phase 2
+    - Nicht-Ziele nennen, besonders Themen aus späteren Meilensteinen (ADR-059)
   specs:
     - Jedes Requirement braucht mindestens ein messbares Scenario (Zahl, Toleranz, Zeit oder Ja/Nein)
   design:

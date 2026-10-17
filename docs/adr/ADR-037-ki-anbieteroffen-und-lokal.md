@@ -31,4 +31,4 @@ Feste Bindung an einen Anbieter; eigener gehosteter KI-Dienst mit Abrechnung.
 ## Konsequenzen
 
 Lokale Modelle sind schwächer; Funktionen müssen auch mit ihnen nützlich sein und dürfen nicht nur mit
-dem stärksten Modell funktionieren. Selbstbetrieb (Server, Speicher, Modelle) wird in Phase 1 vorgezogen.
+dem stärksten Modell funktionieren. Selbstbetrieb (Server, Speicher) kommt in M1, lokale Modelle mit ap-15 in M3 (ADR-059).

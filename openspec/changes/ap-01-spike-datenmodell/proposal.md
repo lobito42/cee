@@ -34,5 +34,5 @@ Keine.
 - Betroffene ADRs (bestätigen oder überarbeiten): ADR-028, 029, 030, 033, 035, 038, 039, 043, 046, 047
 - Abnahmetests: `tests/acceptance/ap-01-spike-datenmodell/` (AK-1 bis AK-6)
 - Gate G1
-- Nicht-Ziele: keine Geometrie (ap-06), keine Live-Synchronisation zwischen Clients (ap-03), keine UI (ap-08),
+- Nicht-Ziele: keine Geometrie (ap-06), keine Live-Synchronisation zwischen Clients (ap-03), keine UI (ap-08b),
   kein produktiver Code in `crates/graph` (ap-05)

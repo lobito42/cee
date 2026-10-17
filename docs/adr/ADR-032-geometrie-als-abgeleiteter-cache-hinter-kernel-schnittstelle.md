@@ -11,7 +11,7 @@ Geometrie ist groß und deterministisch aus dem Rezept berechenbar. OpenCascade 
 
 ## Entscheidung
 
-Synchronisiert wird nur das Rezept (der Graph), nie Geometrie. Ergebnisse werden nach Inhalts-Hash (Element, Eingänge, Kernel-Version) gecacht. Der Kernel steht hinter einer versionierten Nachrichten-Schnittstelle (`format/kernel/`). Erste Implementierung: Python-Worker (`worker/`) mit OCP und build123d. Worker laufen als eigene Betriebssystem-Prozesse, überwacht vom Server bzw. vom Tauri-Host, mit Zeitlimit und Neustart. Optional zeigt der Client eine schnelle Netz-Vorschau, die exakte Geometrie kommt vom Worker. Ein eigener Kernel ist nur als spezialisierter Zusatz denkbar (z. B. implizite Modelle, Gitter), frühestens in Phase 3.
+Synchronisiert wird nur das Rezept (der Graph), nie Geometrie. Ergebnisse werden nach Inhalts-Hash (Element, Eingänge, Kernel-Version) gecacht. Der Kernel steht hinter einer versionierten Nachrichten-Schnittstelle (`format/kernel/`). Erste Implementierung: Python-Worker (`worker/`) mit OCP und build123d. Worker laufen als eigene Betriebssystem-Prozesse, überwacht vom Server bzw. vom Tauri-Host, mit Zeitlimit und Neustart. Optional zeigt der Client eine schnelle Netz-Vorschau, die exakte Geometrie kommt vom Worker. Ein eigener Kernel ist nur als spezialisierter Zusatz denkbar (z. B. implizite Modelle, Gitter), frühestens nach der Beta (ADR-059).
 
 ## Alternativen
 

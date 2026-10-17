@@ -3,6 +3,7 @@
 - Status: akzeptiert
 - Datum: 2026-10-17
 - Entscheider: Kernteam
+- Geändert durch: ADR-059 (Zuordnung zu Meilensteinen)
 
 ## Kontext
 
@@ -34,5 +35,5 @@ Feste Anbindung an ein bestimmtes PLM/ERP; CEE als PLM mit Lager und Aufträgen;
 
 ## Konsequenzen
 
-Ergänzt ADR-017, ADR-030 und ADR-047. Das Format entsteht mit ap-33; die API, Ereignisse und
+Ergänzt ADR-017, ADR-030 und ADR-047. Das Format entsteht mit ap-33b; die API, Ereignisse und
 Beispielanbindung mit ap-34 nach der Beta. PLM-Funktionen über die Produktdefinition hinaus bleiben Nicht-Ziel.

@@ -8,7 +8,7 @@ mit Korrekturen, Einstellungen in Ebenen, Vergleich und Verlauf.
 
 | VS Code | Idee für CEE | Wann sinnvoll |
 | --- | --- | --- |
-| Breadcrumbs | Pfad über der Arbeitsfläche: Projekt › Raum 2.07 › Deckensegel 3, jede Stufe klickbar | mit ap-08 |
+| Breadcrumbs | Pfad über der Arbeitsfläche: Projekt › Raum 2.07 › Deckensegel 3, jede Stufe klickbar | mit ap-08b |
 | Walkthroughs | Geführter Einstieg in der App: erster Raum, erster Absorber, erste Nachhallzeit, erstes Bild | vor der Beta |
 | Keymaps als Erweiterungen | Tastenbelegungen wie SolidWorks, Fusion 360, SketchUp oder Blender zum Umsteigen | mit ap-27 |
 | Zen-Modus | Fokusmodus ohne Panels, z. B. für Präsentationen beim Kunden | mit ap-14 |
@@ -24,7 +24,7 @@ mit Korrekturen, Einstellungen in Ebenen, Vergleich und Verlauf.
 | Settings Sync | Persönliche Einstellungen und Plugins auf allen Geräten, über den eigenen Server statt einen Cloud-Dienst | mit ap-17 |
 | Stable und Insiders | Zwei Kanäle: stabile Version und tägliche Vorabversion für Neugierige | mit der Beta |
 | Open VSX | Offenes, selbst hostbares Plugin-Verzeichnis unter neutraler Trägerschaft | nach ap-27 |
-| Live Share mit Folgen | Siehe Folgen-Modus in den Onshape-Anregungen | mit ap-07 |
+| Live Share mit Folgen | Siehe Folgen-Modus in den Onshape-Anregungen | mit ap-07b |
 
 ## Bewusst nicht
 

@@ -37,4 +37,4 @@ Git-Begriffe direkt zeigen; manuelles Speichern mit Versionsnummern; Löschen st
 ## Konsequenzen
 
 Ändert ADR-033 (Begriffe und Zustände der Zweige) und ergänzt ADR-047 (Zustände vor der Prüfung). Betrifft
-ap-08, ap-17 und ap-25.
+ap-08b, ap-17 und ap-25.

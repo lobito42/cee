@@ -10,7 +10,7 @@ Immersive Unterstützung ist gewünscht, aber kein Kern des ersten Produkts.
 
 ## Entscheidung
 
-Immersive Ansicht über WebXR im Browser, aufbauend auf der Interaktionsschicht (ADR-026): Modell in Originalgröße betrachten, Elemente auswählen, kommentieren, gemeinsam mit Anwesenheit. Kein Modellieren in XR. Frühestens Phase 3.
+Immersive Ansicht über WebXR im Browser, aufbauend auf der Interaktionsschicht (ADR-026): Modell in Originalgröße betrachten, Elemente auswählen, kommentieren, gemeinsam mit Anwesenheit. Kein Modellieren in XR. Frühestens nach der Beta (ADR-059).
 
 ## Alternativen
 

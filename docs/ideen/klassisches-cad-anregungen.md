@@ -7,14 +7,14 @@ Modellierrichtlinien als Elemente bzw. Regeln.
 
 | Vorbild | Idee für CEE | Wann sinnvoll |
 | --- | --- | --- |
-| Creo-Modellbaum mit Spalten | Featurebaum mit frei wählbaren Spalten (Parameter, Masse, Status, Revision), bearbeitbar wie eine Tabelle | mit ap-08 |
+| Creo-Modellbaum mit Spalten | Featurebaum mit frei wählbaren Spalten (Parameter, Masse, Status, Revision), bearbeitbar wie eine Tabelle | mit ap-08b |
 | NX: rollenbasierte Oberfläche | Rollen (Einsteiger, Konstrukteur, Prüfer) blenden Befehle ein und aus, ergänzend zu den Arbeitsbereichen | nach Nutzertests |
 | Eltern-Kind-Ansicht | „Wovon hängt das ab, was hängt davon ab?“ als kleiner Graph rund um die Auswahl | mit ap-23 |
 | NX Arrangements | Mehrere Stellungen einer Baugruppe (geöffnet, geschlossen, Transport) | Fachpaket Mechanik |
 | Kinematik, verformbare Teile | Gelenke und Bewegung prüfen; Federn und Schläuche, die sich der Einbaulage anpassen | Fachpaket Mechanik |
 | Creo Layout, CATIA Functional Design | 2D-Konzeptskizze, die das 3D-Modell steuert | nach ap-36 |
 | Kollisions- und Abstandsprüfung | Steht bereits als F-09; hier nur: Mindestabstände als Regel im Regelpaket | mit ap-20 |
-| Positionsnummern in Zeichnungen | Positionsnummern aus der Stückliste, automatisch und verknüpft | mit ap-33 |
+| Positionsnummern in Zeichnungen | Positionsnummern aus der Stückliste, automatisch und verknüpft | mit ap-33b |
 | CATIA Geometrical Sets | Ungeordnete Hilfsgeometrie neben der geordneten Historie | offen |
 | JT und leichte Formate | Leichte Darstellung großer Baugruppen für Viewer und Lieferanten | mit ap-22 |
 

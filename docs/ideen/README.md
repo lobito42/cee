@@ -6,7 +6,7 @@ diesem Ordner eigenständig um.
 
 | Idee | Stand | Frühestens |
 | --- | --- | --- |
-| [3D-gedruckte, raumoptimierte Schallabsorber](3d-gedruckte-absorber.md) | abgelegt 2026-10-17 | nach G2, als Phase-2-Paket |
+| [3D-gedruckte, raumoptimierte Schallabsorber](3d-gedruckte-absorber.md) | abgelegt 2026-10-17 | nach der Beta (setzt ap-31 und ap-32 voraus) |
 | [Weitere Anregungen aus Blender](blender-anregungen.md) | abgelegt 2026-10-17 | je Zeile beim passenden Paket |
 | [Weitere Anregungen aus VS Code](vscode-anregungen.md) | abgelegt 2026-10-17 | je Zeile beim passenden Paket |
 | [Weitere Anregungen aus Onshape](onshape-anregungen.md) | abgelegt 2026-10-17 | je Zeile beim passenden Paket |
