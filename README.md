@@ -16,7 +16,7 @@ wie bei Git. Bearbeitet wird in 3D, im Knoten-Editor oder als Text, Menschen und
 | Geometrie-Worker | `worker/` | Python, OpenCascade | MPL-2.0 |
 | SDKs und Formatspezifikation | `sdk/`, `format/` | – | Apache-2.0 |
 
-Architektur: `docs/adr/` (ADR-028 bis ADR-053 beschreiben die aktuelle Richtung).
+Architektur: `docs/adr/` (ADR-028 bis ADR-058 beschreiben die aktuelle Richtung).
 
 Dieses Repository ist zugleich der **Harness für spec-driven Entwicklung mit Agenten**: ADRs als
 Leitplanken, OpenSpec für Aufträge, Abnahmetests als Vertrag, ein Vertragsschutz für alle Werkzeuge und
@@ -90,8 +90,10 @@ Anweisungen, Aufträge und Schutzregeln: `docs/werkzeuge.md`.
 | --- | --- |
 | `AGENTS.md` | Anweisungen für alle Werkzeuge (`CLAUDE.md` importiert sie) |
 | `openspec/` | Specs, Changes, `config.yaml` (Projektkontext, Regeln), `queue.yaml` (Freigaben) |
-| `docs/adr/` | 36 Architekturentscheidungen |
-| `docs/rules/` | Regeln je Bereich: kern, server, mcp, client, geometrie (Quelle für `.claude/rules/`) |
+| `docs/adr/` | Architekturentscheidungen (Index in `docs/adr/README.md`) |
+| `docs/glossar.md` | Verbindliche Begriffe |
+| `CONTRIBUTING.md`, `SECURITY.md` | Mitmachen (mit DCO) und Sicherheitsmeldungen |
+| `docs/rules/` | Regeln je Bereich: kern, akustik, server, mcp, client, geometrie (Quelle für `.claude/rules/`) |
 | `tests/acceptance/<id>/` | Abnahmetests je Change |
 | `tools/guard.py` | Vertragsschutz (Branch-Regeln) für Hooks, Git und CI |
 | `tools/sync_agents.py` | erzeugt Claude-Regeln, OpenCode-Agenten, Pi-Skill-Liste |

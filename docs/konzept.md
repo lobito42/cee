@@ -11,13 +11,13 @@ Wir bauen eine offene, kollaborative Plattform für Produktdefinition: CEE, das 
 
 **Rahmen:** CEE ist ein ehrgeiziges Testprojekt, das von Anfang an so gebaut wird, dass es als Open-Source-Projekt veröffentlicht werden kann. Zielgruppe sind Einzelpersonen sowie kleine und mittlere Unternehmen. Perspektivisch soll CEE für die Produktentwicklung in KMU werden, was Blender und OpenSCAD für ihre Communities sind: offen, von einer Community getragen, ohne Lizenzschranke und für jedes Produkt. Erster Nutzer – nur, um das Ganze produktiv zu bekommen – ist eine kleine Firma, die Schallabsorber entwickelt: Räume gestalten, Absorber platzieren, Nachhallzeit, Kosten und CO₂ berechnen und das Ergebnis fotorealistisch zeigen. Die menschliche Zeit ist knapp; ein ausdrücklicher Zweck ist, autonomes Arbeiten von KI-Agenten zu erproben. Offenheit gegenüber KI-Modellen, lokale Modelle sowie selbst gehostete Daten und Modelle gelten ab dem ersten Tag (ADR-037).
 
-**Fünf Ziele und woran wir sie messen**
+**Sechs Ziele und woran wir sie messen**
 
 | Ziel | Was das heißt | Messlatte |
 | --- | --- | --- |
 | 1 Benutzerfreundlich, mächtig, erweiterbar | Bedienkonzept nach Figma mit fünf Werkzeugen; Plugins für eigene Elementtypen, Knoten und Regeln | 4 von 5 Konstrukteuren lösen die Kernabläufe ohne Einweisung; erstes Fremd-Plugin ohne Änderung am Kern |
 | 2 Open Source mit Community statt Forks | Kern MPL-2.0, SDK und Format Apache-2.0; offene RFCs über OpenSpec; geschützte Marke | Beiträge von außen in jedem Release; keine gepflegte Abspaltung |
-| 3 Kollaborativ | Live: alle sehen dasselbe, mit Anwesenheit und Kommentaren am Element. Offline: Zweige, Änderungsanfragen, Zusammenführen | Änderung bei allen in < 200 ms; zwei Zweige mit je 500 Änderungen ohne Datenverlust zusammengeführt |
+| 3 Kollaborativ | Live: alle sehen dasselbe, mit Anwesenheit und Kommentaren am Element. Offline: Entwürfe, Zur Prüfung geben, Übernehmen | Änderung bei allen in < 200 ms; zwei Entwürfe mit je 500 Änderungen ohne Datenverlust zusammengeführt |
 | 4 KI-optimiert | Features as Code (Textprojektion), Visual Programming (Knoten-Editor), MCP für jedes Modell; lokale und selbst gehostete Modelle von Anfang an | Ein Agent baut ein Referenzteil über MCP ohne menschlichen Eingriff, mit einem Cloud- und einem lokalen Modell |
 | 5 Immersiv (optional) | Review in Originalgröße über WebXR | Phase 3 |
 | 6 Testfeld für autonome Entwicklung | Agenten setzen freigegebene Changes unbeaufsichtigt um; Menschen schreiben Ziele, prüfen und entscheiden | Anteil der Changes, die ohne Nacharbeit gemergt werden; menschliche Minuten je gemergtem Change, je Gate gemessen |
@@ -70,33 +70,33 @@ Jeder Wert trägt Einheit und Quelle; Herstellerdaten der Firma kommen als eigen
 
 ## Rahmenbedingungen und Anforderungen
 
-Die Lösung muss alle Fertigungsverfahren abdecken, alle gängigen CAD-Systeme bedienen und vollständig Open Source sein. Daraus folgen ein neutrales Austauschformat (STEP), ein lizenzfreundlicher Kernel und ein modular erweiterbares Regelwerk.
+Die Lösung muss fachneutral sein (jede Branche über Fachpakete), über offene Formate mit gängigen CAD-Systemen zusammenarbeiten und vollständig Open Source sein. Daraus folgen ein neutrales Austauschformat (STEP), ein lizenzfreundlicher Kernel und ein modular erweiterbares Regelwerk.
 
 **Funktionale Anforderungen**
 
 | ID | Anforderung | Priorität |
 | --- | --- | --- |
 | F-01 | Modell als Element-Graph bearbeiten und live in Browser und Desktop-App anzeigen | Muss |
-| F-02 | Claude Code steuert Bauen, Messen, Rendern, Prüfen und Exportieren über MCP-Tools | Muss |
-| F-03 | Anforderungen strukturiert erfassen (Bauraum, Lasten, Schnittstellen, Werkstoff, Verfahren) | Muss |
-| F-04 | Konstruktionsrichtlinien als ausführbare Regeln je Fertigungsverfahren | Muss |
-| F-05 | Export STEP AP242, STL/3MF; Zeichnungsansichten als SVG/DXF | Muss |
-| F-06 | Auswahl von Flächen/Kanten im Viewer wird als Kontext an Claude übergeben | Muss |
-| F-07 | Parametrische Bibliothek geprüfter Features und Normteile | Muss |
+| F-02 | KI-Agenten beliebiger Anbieter, lokal oder in der Cloud, steuern Bauen, Messen, Rendern, Prüfen und Exportieren über MCP-Werkzeuge | Muss |
+| F-03 | Anforderungen strukturiert erfassen (Bauraum, Lasten, Schnittstellen, Werkstoff, Verfahren) als Elemente vom Typ requirement (ap-05, ap-15) | Muss |
+| F-04 | Konstruktionsrichtlinien als ausführbare Regeln: Raumakustik und Modellierrichtlinien vor der Beta (ap-20), Fertigungsverfahren danach (ap-31) | Muss |
+| F-05 | Export STEP AP242 vor der Beta (ap-33); STL/3MF und Zeichnungsansichten als SVG/DXF nach der Beta (ap-31) | Muss |
+| F-06 | Auswahl von Elementen, Flächen und Kanten wird als Kontext an den KI-Assistenten übergeben | Muss |
+| F-07 | Parametrische Bibliothek geprüfter Komponenten (ap-13); Normteile mit einem Fachpaket Mechanik nach der Beta | Muss |
 | F-08 | Blech: Abwicklung mit K-Faktor, Biegeradien, Freischnitte (nach der Beta) | Soll |
-| F-09 | Baugruppen mit Verbindungen (Joints) und Kollisionsprüfung | Soll |
+| F-09 | Baugruppen mit Verbindungen (Joints) und Kollisionsprüfung (Fachpaket Mechanik, nach der Beta) | Soll |
 | F-10 | FEM-Vorabschätzung (linear-statisch) | Kann |
 | F-11 | Import bestehender STEP-Teile als Referenz/Schnittstelle | Soll |
 | F-12 | Stabile Identität für jedes Element (Parameter, Punkt, Achse, Ebene, Kante, Fläche, Körper, Skizze, Annotation, Zeichnungsblatt, Instanz) über Modelländerungen hinweg | Muss |
 | F-13 | Konstrukteur entscheidet per Klick oder Code, welche Elemente veröffentlicht sind; alles andere gilt als Hilfsfeature; unabhängig von Sichtbarkeit | Muss |
 | F-14 | Jedes veröffentlichte Element einzeln exportierbar und über eine stabile Adresse referenzierbar | Muss |
 | F-15 | Versionierung der Bauteil-Schnittstelle mit semantischem Diff je Element | Muss |
-| F-16 | Rückverfolgung Anforderung → Element → Regelbefund → Zeichnungsblatt | Muss |
-| F-17 | Semantische PMI (Maße, Toleranzen, Bezüge, Oberflächen) an Element-IDs gebunden | Muss |
-| F-18 | Zeichnungsblätter als Elemente, aus dem Modell abgeleitet, mit eigener Revision und an Element-IDs gebunden | Muss |
+| F-16 | Rückverfolgung Anforderung → Element → Regelbefund → Zeichnungsblatt (ap-26, ap-37) | Muss |
+| F-17 | Semantische PMI (Maße, Toleranzen, Bezüge, Oberflächen) an Element-IDs gebunden (nach der Beta, ap-31) | Muss |
+| F-18 | Zeichnungsblätter als Elemente, aus dem Modell abgeleitet, mit eigener Revision und an Element-IDs gebunden (nach der Beta, ap-31) | Muss |
 | F-19 | Parametrische 2D-Skizzen mit Zwangsbedingungen und Maßen auf Flächen und Ebenen; interaktiv zeichnen, per Text beschreiben oder aus Handskizze, Foto oder DXF ableiten | Muss |
 | F-20 | Gleichzeitiges Arbeiten am selben Projekt: Änderungen, Auswahl und Cursor der anderen live sichtbar; Kommentare an jedem Element | Muss |
-| F-21 | Offline weiterarbeiten; Zweige, Änderungsanfragen, Review und Zusammenführen wie bei Git; semantische Konflikte als Befund | Muss |
+| F-21 | Offline weiterarbeiten; Entwürfe, Zur Prüfung geben und Übernehmen – Git-Mechanik ohne Git-Begriffe (ADR-051); semantische Konflikte als Befund | Muss |
 | F-22 | Drei gleichwertige Ansichten desselben Graphen: 3D, Knoten-Editor, Text | Muss |
 | F-23 | Textprojektion für Git und Review; Export und Import in echte Git-Repositories | Muss |
 | F-24 | Plugin-SDK für eigene Elementtypen, Knoten, Regeln und Panels (TypeScript, Python) | Soll |
@@ -111,7 +111,7 @@ Die Lösung muss alle Fertigungsverfahren abdecken, alle gängigen CAD-Systeme b
 | F-33 | Import von IFC und DXF; Möbel und Szenen als glTF | Soll |
 | F-34 | Komponenten wie in Figma: Auswahl zur Vorlage machen, Parameter und Varianten festlegen, Instanzen mit Überschreibungen, Bibliotheken mit Versionen und Aktualisierung mit Vorschau, Lösen | Muss |
 | F-35 | Freigabeprozess: Items mit Sachnummer, Revision und Status; Prüfen und Freigeben nach Vier-Augen-Prinzip; unveränderliche Freigabestände mit Manifest, Stückliste, STEP und PDF | Muss |
-| F-36 | Stückliste und Verwendungsnachweis aus dem Graphen; Änderungsantrag und Änderungsauftrag auf Basis von Zweigen, mit Folgen für alle Verwender | Muss |
+| F-36 | Stückliste und Verwendungsnachweis aus dem Graphen; Änderungsantrag und Änderungsauftrag auf Basis von Entwürfen, mit Folgen für alle Verwender | Muss |
 | F-37 | Verbindungspunkte zum Platzieren von Teilen und Produkten; Projektvariablen mit Einheiten an einer Stelle | Muss |
 | F-38 | Offene Schnittstelle zu PLM und ERP: Austauschformat, API, Ereignisse, Nummernkreise (nach der Beta) | Soll |
 | F-39 | Untergraph als Befehl: veröffentlichte Untergraphen werden ohne Code zu Befehl, Knoten und MCP-Werkzeug | Muss |
@@ -125,6 +125,7 @@ Die Lösung muss alle Fertigungsverfahren abdecken, alle gängigen CAD-Systeme b
 | F-47 | Entwicklungstrichter: Idee, In Arbeit, Ergebnis, Verworfen mit Begründung; ruhige Standardansicht mit Ergebnissen, Werkstatt mit allen Entwürfen; Herkunft und Entscheidungsprotokoll | Muss |
 | F-48 | Ordnung und Wiederfinden: feste schlanke Struktur, automatische Facetten, eine Suche für alles, Links ohne Bruch, Rückverweise, Sammlungen, Startseite, Doppelteil-Hinweis | Muss |
 | F-49 | Lernschleife für lokale Modelle: Aufgabengenerator, Prüfer, Erfahrungsspeicher, LoRA-Adapter aus geprüften Erfolgen (nach der Beta) | Kann |
+| F-50 | Rechte, Rollen und Anmeldung: OIDC, Rollen je Organisation, Bereich und Projekt, Gäste für Kunden und Lieferanten, Dienstkonten für Agenten | Muss |
 
 **Nicht-funktionale Anforderungen**
 
@@ -140,6 +141,10 @@ Die Lösung muss alle Fertigungsverfahren abdecken, alle gängigen CAD-Systeme b
 | N-08 | Latenz der Zusammenarbeit | Änderung bei allen Teilnehmern < 200 ms (gleiche Region) |
 | N-09 | Projektgröße | 100.000 Elemente laden in ≤ 2 s |
 | N-10 | KI ohne Cloud | Alle KI-Funktionen mit einem lokalen Modell nutzbar, ohne Internetzugang |
+| N-11 | Barrierefreiheit | Bedienelemente außerhalb der 3D-Fläche nach WCAG 2.2 AA; jede Funktion per Tastatur über die Befehlssuche erreichbar |
+| N-12 | Sprachen | Oberfläche von Anfang an auf Deutsch und Englisch, keine festen Texte im Code |
+| N-13 | Datenschutz | DSGVO-konform nach ADR-056; Export aller eigenen Daten; keine gespeicherte Anwesenheit |
+| N-14 | Einheiten | Jede Zahl mit Einheit; Dimensionsfehler werden erkannt, bevor gerechnet wird (ADR-057) |
 
 **Annahmen:** Konstrukteure akzeptieren ein Modell, das sie wahlweise in 3D, als Knoten oder als Text sehen; das native Weiterarbeiten in anderen CAD-Systemen erfolgt auf STEP (ohne Feature-Baum).
 
@@ -219,7 +224,7 @@ Jedes Element des Modells erhält eine stabile Identität, vom Punkt bis zum Zei
 | Zustand | Bedeutung | Entscheidet | Folgen |
 | --- | --- | --- | --- |
 | Intern | Hilfsfeature: Hilfsebene, Skizze, Zwischenkörper | Standard für alles | Hat eine ID, wird nicht exportiert, darf sich frei ändern |
-| Veröffentlicht | Teil der Bauteil-Schnittstelle | Konstrukteur; Claude darf nur vorschlagen | Adressierbar, einzeln exportierbar, im Manifest versioniert; jede Änderung erscheint als Diff |
+| Veröffentlicht | Teil der Bauteil-Schnittstelle | Konstrukteur; KI darf nur vorschlagen | Adressierbar, einzeln exportierbar, im Manifest versioniert; jede Änderung erscheint als Diff |
 | Freigegeben | Veröffentlicht und in einer Revision eingefroren | Freigeber nach Vier-Augen-Prinzip (ADR-047) | Unveränderlich; jede Änderung erzeugt eine neue Revision |
 
 **Was veröffentlicht werden kann**
@@ -238,20 +243,20 @@ Jedes Element des Modells erhält eine stabile Identität, vom Punkt bis zum Zei
 **So arbeitet der Konstrukteur**
 
 1. Element im Viewer anklicken, „Veröffentlichen…“ wählen, Namen vergeben (z. B. `Montageflaeche_A`) und optional eine Anforderung verknüpfen. Der Status wird am Element gesetzt und erscheint in der Textprojektion als eine Zeile.
-2. Alternativ in der Text- oder Knotenansicht oder per Auftrag an Claude; Claude schlägt Publikationen auch aus den Schnittstellen der `requirements.yaml` vor, der Konstrukteur bestätigt.
+2. Alternativ in der Text- oder Knotenansicht oder per Auftrag an den KI-Assistenten; er schlägt Publikationen auch aus den Schnittstellen der Anforderungen (Elemente vom Typ `requirement`) vor, der Konstrukteur bestätigt.
 3. Das Publikations-Panel listet alle veröffentlichten Elemente mit Status: unverändert, geometrisch geändert oder Referenz verloren.
 4. Nach jeder Änderung zeigt ein semantischer Diff die Wirkung auf die Schnittstelle, z. B. „Montageflaeche\_A um 2,0 mm in +Z verschoben; betrifft Blatt 1 und Baugruppe B-100“.
 5. Geht eine Referenz verloren, schlägt das System den wahrscheinlichsten Nachfolger vor; der Konstrukteur bestätigt mit einem Klick. Geraten wird nie.
 
 **Persistente Identität**
 
-Jedes Element hat seine ID ab der Erzeugung, auch Skizzen und Features; Claude vergibt sprechende Namen, der Konstrukteur kann sie ändern, ohne dass sich die ID ändert. Flächen und Kanten entstehen erst bei der Berechnung: Der Worker zeichnet für jede Kernel-Operation die Topologie-Historie auf (erzeugt, verändert, gelöscht) und leitet daraus Unter-IDs ab, z. B. `tasche_1/wand/+X`. Wird ein Pfad mehrdeutig, entscheidet eine Geometrie-Signatur (Typ, Normale, Flächeninhalt, Schwerpunkt); bleibt er mehrdeutig, wird der Konstrukteur gefragt. Eine veröffentlichte Fläche wird dadurch selbst zum Element (`face-ref`) mit eigener ID.
+Jedes Element hat seine ID ab der Erzeugung, auch Skizzen und Features; der KI-Assistent vergibt sprechende Namen, der Konstrukteur kann sie ändern, ohne dass sich die ID ändert. Flächen und Kanten entstehen erst bei der Berechnung: Der Worker zeichnet für jede Kernel-Operation die Topologie-Historie auf (erzeugt, verändert, gelöscht) und leitet daraus Unter-IDs ab, z. B. `tasche_1/wand/+X`. Wird ein Pfad mehrdeutig, entscheidet eine Geometrie-Signatur (Typ, Normale, Flächeninhalt, Schwerpunkt); bleibt er mehrdeutig, wird der Konstrukteur gefragt. Eine veröffentlichte Fläche wird dadurch selbst zum Element (`face-ref`) mit eigener ID.
 
 **Manifest, Versionierung und Adressierung**
 
 - Jede Revision hat ein Manifest mit allen veröffentlichten Elementen: ID, Name, Typ, Quell-Element, Geometrie-Hash, Anforderungs- und Zeichnungsbezüge. Es ist Teil der Textprojektion, sodass jede Änderungsanfrage die Schnittstellenänderungen zeigt.
 - Die Schnittstelle wird semantisch versioniert: Element entfernt oder Typ geändert = Major, Geometrie geändert oder Element neu = Minor, nur Metadaten = Patch.
-- Jedes veröffentlichte Element hat eine Adresse der Form `cee://<server>/<projekt>/<bauteil>@<version>#<name>`. Andere Bauteile, Baugruppen und Zeichnungen dürfen nur veröffentlichte Elemente referenzieren.
+- Jedes veröffentlichte Element hat eine Adresse auf Basis seiner ID: `cee://<server>/<organisation>/<projekt>/<element-id>@<meilenstein|revision>`; Namen sind nur Aliase, Umbenennen und Verschieben brechen keinen Link (ADR-058). Andere Bauteile, Baugruppen und Zeichnungen dürfen nur veröffentlichte Elemente referenzieren.
 - Aus den Verknüpfungen entsteht automatisch eine Traceability-Matrix: Anforderung → veröffentlichtes Element → Regelbefund → Zeichnungsblatt.
 
 **Zeichnungen als abgeleitete Artefakte**
@@ -269,9 +274,9 @@ Freigegeben wird ein **Item**: das, was bestellt, gefertigt oder verschickt wird
 | Freigegeben | Unveränderlicher Freigabestand: Schnappschuss mit Hash, Manifest, Stückliste, STEP, PDF; signiert mit Person, Zeit, Rolle | Freigeber, nicht der Ersteller | Änderungen nur über einen Änderungsauftrag, der die nächste Revision erzeugt |
 | Ersetzt, Gesperrt | Neue Revision gilt bzw. nicht mehr verwenden | Freigeber | Verwender sehen einen Hinweis und übernehmen mit Vorschau |
 
-- **Vier-Augen-Prinzip** als Standard, je Organisation konfigurierbar; Einzelpersonen können Selbstfreigabe einschalten, sie wird im Freigabestand vermerkt. KI-Agenten bereiten vor und prüfen, geben aber nie frei.
+- **Freigabe-Workflow** je Organisation konfigurierbar: Solange höchstens zwei Personen freigeben dürfen, ist Selbstfreigabe standardmäßig an; ab drei Personen gilt standardmäßig das Vier-Augen-Prinzip. Eine Selbstfreigabe wird immer im Freigabestand vermerkt. KI-Agenten bereiten vor und prüfen, geben aber nie frei.
 - **Stückliste** (Mengen- und Strukturstückliste) und **Verwendungsnachweis** entstehen aus dem Graphen, nie von Hand.
-- **Änderungswesen:** Ein Änderungsantrag beschreibt Problem und betroffene Items, ein Änderungsauftrag ist ein Zweig mit den Änderungen; beim Abschluss entstehen alle neuen Revisionen gemeinsam.
+- **Änderungswesen:** Ein Änderungsantrag beschreibt Problem und betroffene Items, ein Änderungsauftrag ist ein Entwurf mit den Änderungen; beim Abschluss entstehen alle neuen Revisionen gemeinsam.
 - **Archiv:** Die Dokumente eines Freigabestands werden aufbewahrt, damit eine Freigabe auch mit späteren Kernel-Versionen bitgleich bleibt (ergänzt ADR-032).
 
 **Anbindung an PLM und ERP (ADR-048)**
@@ -310,23 +315,23 @@ Es gibt keine Menüleiste und kein Ribbon. Befunde erscheinen als Markierung dir
 
 | Bereich | Inhalt |
 | --- | --- |
-| Kopfzeile | Bauteilname, Verfahren, Revision, Zweig; Avatare der Anwesenden; Agentenstatus; Freigeben und Teilen |
+| Kopfzeile | Bauteilname, Verfahren, Revision, Entwurf; Avatare der Anwesenden; Agentenstatus; Freigeben und Teilen |
 | Featurebaum (links) | Baumansicht des Graphen mit Elementen, veröffentlichten Elementen, Befunden und Zeichnungsblättern; Status als Symbol, Inline-Aktionen beim Überfahren, Drag & Drop, Filter statt Hide/Show; Auswahl synchron mit der Arbeitsfläche |
 | Arbeitsfläche (Mitte) | Modell, Auswahl, Ziehgriffe, Befundmarkierungen, Geister-Vorschau, Eingabe direkt an der Auswahl |
-| Eigenschaften (rechts in der Arbeitsfläche) | Passt sich der Auswahl an: Name, Werte, Schalter „Veröffentlicht“, Regeln, Nutzung, Anforderungen, „Claude fragen“ |
+| Eigenschaften (rechts in der Arbeitsfläche) | Passt sich der Auswahl an: Name, Werte, Schalter „Veröffentlicht“, Regeln, Nutzung, Anforderungen, „KI fragen“ |
 | Werkzeugleiste (unten) | Auswählen, Messen, Schnitt, Skizze, Fragen |
 | Befehlssuche (Strg/Cmd+K) | Jede Funktion per Suche, Text oder Sprache; zeigt auch das Tastenkürzel |
-| Verlauf (aufklappbar) | Zeitleiste der Stände mit Geometrie-Diff, Varianten-Vergleich und Zweigen |
+| Verlauf (aufklappbar) | Zeitleiste der Stände mit Geometrie-Diff, Varianten-Vergleich und Entwürfen |
 | Ansicht wechseln (oben rechts) | 3D, Knoten oder Text für dieselbe Auswahl; geteilte Ansicht nebeneinander |
 | Kommentare (am Element) | Faden an jedem Element, mit Erwähnungen; offene Fäden als Markierung am Modell |
 | Bibliothek (Reiter neben dem Featurebaum) | Komponenten und Varianten zum Hineinziehen; Hinweis auf neue Versionen mit Vorschau; „Zur Komponente machen“ an jeder Auswahl |
-| Arbeitsbereiche (Reiter in der Kopfzeile) | Raum, Akustik, Präsentation, Bericht – gleiche Auswahl und gleiches Modell, nur andere Panels und Werkzeuge |
+| Arbeitsbereiche (Reiter in der Kopfzeile) | Beitrag der Fachpakete (ADR-054), für Raum und Akustik: Raum, Akustik, Präsentation, Bericht – gleiche Auswahl und gleiches Modell, nur andere Panels und Werkzeuge |
 
 **Gestaltungsregeln**
 
 1. **Eine Aufgabe, ein Ort.** Was man an einem Element tut, passiert am Element oder im Eigenschaften-Panel, nie in einem eigenen Fenster.
 2. **Progressive Offenlegung.** Sichtbar ist nur, was zur aktuellen Auswahl passt; Expertenparameter klappen erst auf Wunsch auf.
-3. **Absicht statt Befehl.** Komplexe Operationen wie Blechlasche, Freistich oder Entformschräge werden beschrieben oder über die Befehlssuche gewählt. Claude füllt die Parameter mit sinnvollen Werten aus Regeln und Anforderungen.
+3. **Absicht statt Befehl.** Komplexe Operationen wie Segel-Raster, Wandaufbau oder Bohrungsmuster werden beschrieben oder über die Befehlssuche gewählt. Der KI-Assistent füllt die Parameter mit sinnvollen Werten aus Regeln und Anforderungen.
 4. **Direkt manipulieren.** Ziehgriffe an Flächen und Maßen, Werte im Panel überschreiben; jede Änderung ist sofort sichtbar.
 5. **Letzte Aktion nachjustieren.** Nach jeder Operation bleibt ein kleines Feld mit ihren Parametern offen, bis die nächste beginnt (Idee aus Blender).
 6. **Vorschau vor Übernahme.** Jede KI-Änderung kommt als Karte mit Geister-Vorschau, Begründung und Regelstatus; Annehmen oder Verwerfen.
@@ -441,20 +446,22 @@ Ordnung entsteht aus dem Graphen, statt gepflegt zu werden – kein „ich schic
 
 **Typische Abläufe**
 
-- **Neues Bauteil:** Anforderungen einfügen oder Dokument ablegen → Claude erstellt die `requirements.yaml` als Formular zur Bestätigung → Claude baut, prüft und rendert → Änderungskarte mit fertigem Teil.
+- **Neues Bauteil:** Anforderungen einfügen oder Dokument ablegen → der KI-Assistent legt Anforderungen als Elemente an und zeigt sie als Formular zur Bestätigung → er baut, prüft und rendert → Änderungskarte mit fertigem Teil.
 - **Änderung an der Auswahl:** Fläche klicken → „Rippe mittig, 2 mm“ → Geister-Vorschau → Annehmen.
-- **Befund beheben:** Befund klicken → Viewer springt zur Stelle → „Mit Claude beheben“ → Vorschlag mit Regelstatus.
+- **Befund beheben:** Befund klicken → Viewer springt zur Stelle → „Mit KI beheben“ → Vorschlag mit Regelstatus.
 - **Freigabe:** Publikations-Panel → Diff seit der letzten Revision → „Revision freigeben“ → Manifest, STEP und Zeichnungen werden eingefroren.
 
 **Web und Desktop:** Dieselbe Oberfläche läuft im Browser und als Desktop-App für Linux, Windows und macOS. Im Browser reicht ein Link zum Mitarbeiten, Ansehen oder Kommentieren, auch auf Tablet und Handy. Die Desktop-App arbeitet zusätzlich offline und rechnet Geometrie lokal.
 
-**Gemeinsam arbeiten:** Wer gerade im Projekt ist, erscheint als Avatar in der Kopfzeile; Auswahl und Cursor der anderen sind farbig markiert. Ein Klick auf einen Avatar folgt dessen Ansicht. Agenten erscheinen wie Personen, mit eigenem Avatar und ihren Änderungskarten. Offline Gearbeitetes kommt als Zweig zurück und wird wie eine Änderungsanfrage geprüft und übernommen.
+**Gemeinsam arbeiten:** Wer gerade im Projekt ist, erscheint als Avatar in der Kopfzeile; Auswahl und Cursor der anderen sind farbig markiert. Ein Klick auf einen Avatar folgt dessen Ansicht. Agenten erscheinen wie Personen, mit eigenem Avatar und ihren Änderungskarten. Offline Gearbeitetes kommt als Entwurf zurück und wird wie eine Änderungsanfrage geprüft und übernommen.
 
 **Messlatte:** Vor der Implementierung entstehen klickbare Prototypen. Sie gelten als bestanden, wenn mindestens 4 von 5 Konstrukteuren die Kernabläufe ohne Einweisung lösen.
 
 ## Architecture Decision Records
 
-Dreiundfünfzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-053 beschreiben die neue Richtung (Element-Graph, Rust-Kern, Elixir-Server, Web und Desktop, Lizenz, offene und lokale KI, Raumakustik, Material, Rendering, Austauschformate, Komponenten, Bedienmuster aus Blender und VS Code, fachneutraler Kern, Freigabe, PLM- und ERP-Schnittstelle, Automatisierung, Bewährtes aus klassischem CAD, Versionierung in Alltagsbegriffen, Ordnung, Lernschleife) und sind akzeptiert; sie ersetzen ADR-003, 005, 013 und 024. Die übrigen stehen auf „Vorgeschlagen“ und werden mit den Spikes bestätigt. Jedes ADR liegt zusätzlich als Markdown-Datei unter `docs/adr/` im Repository.
+Achtundfünfzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-058 beschreiben die neue Richtung (Element-Graph, Rust-Kern, Elixir-Server, Web und Desktop, Lizenz, offene und lokale KI, Raumakustik, Material, Rendering, Austauschformate, Komponenten, Bedienmuster aus Blender und VS Code, fachneutraler Kern, Freigabe, PLM- und ERP-Schnittstelle, Automatisierung, Bewährtes aus klassischem CAD, Versionierung in Alltagsbegriffen, Ordnung, Lernschleife, Fachpakete, Rechte, Datenschutz, Einheiten, Adressen) und sind akzeptiert (außer ADR-036, vorgeschlagen); sie ersetzen ADR-003, 005, 013 und 024. Die übrigen stehen auf „Vorgeschlagen“ und werden mit den Spikes bestätigt. Jedes ADR liegt zusätzlich als Markdown-Datei unter `docs/adr/` im Repository.
+
+Die frühen ADRs 001 bis 027 stammen aus einer früheren Richtung (VS-Code-Erweiterung, Code als Quelle der Wahrheit). Ihre Zusammenfassungen unten sind historisch; was davon heute gilt, steht in der jeweiligen ADR-Datei im Abschnitt „Aktuell gilt“. Verbindliche Begriffe stehen im Glossar (`docs/glossar.md`).
 
 | ADR | Entscheidung | Wichtigste Alternative |
 | --- | --- | --- |
@@ -464,9 +471,9 @@ Dreiundfünfzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-053 b
 | 004 | Austausch: STEP AP242 inkl. semantischer PMI, kein natives Plugin im Pilot | Native Makros je CAD-System |
 | 005 | VS-Code-Extension (TypeScript) + lokaler Python-Geometrie-Dienst (ersetzt durch 031) | Eigene Desktop-App, Web-App |
 | 006 | ocp\_tessellate wiederverwenden; three-cad-viewer als Ausgangspunkt (teilweise ersetzt durch ADR-026) | Eigener three.js-Viewer |
-| 007 | Claude-Anbindung ausschließlich über einen MCP-Server | Direkte Code-Ausführung im Terminal |
+| 007 | KI-Anbindung über MCP (ersetzt durch ADR-030, ADR-037, ADR-045) | Direkte Code-Ausführung im Terminal |
 | 008 | Regeln als Python-Prüfungen + YAML-Parameter, je Verfahren als Plugin | Regeln nur als Prompt-Text |
-| 009 | Anforderungen als versionierte, schema-validierte YAML-Datei | Freitext |
+| 009 | Anforderungen als YAML-Datei (ersetzt durch ADR-028: Elementtyp requirement) | Freitext |
 | 010 | Visuelle Selbstprüfung über Offscreen-Renderings | Nur numerische Prüfungen |
 | 011 | Eigene Blech-Schicht auf build123d (zurückgestellt bis nach der Beta) | Blech nur als Volumenkörper |
 | 012 | FEM optional über Gmsh + CalculiX | Kommerzieller Solver |
@@ -474,10 +481,10 @@ Dreiundfünfzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-053 b
 | 014 | Zwei Testebenen: Geometrie-Golden-Tests + KI-Eval-Suite | Nur Unit-Tests |
 | 015 | Explizite Publikation statt Sichtbarkeit | Hide/Show als Exportsteuerung |
 | 016 | Persistente Identität über Feature-IDs und Topologie-Historie | Indizes der Topologie, reines Geometrie-Matching |
-| 017 | Publikations-Manifest als eingecheckte Lockfile-Datei mit semantischer Versionierung | Nur Git-Commits, PLM-Datenbank |
-| 018 | Einheitliche Adressierung per URI; Querverweise nur auf veröffentlichte Elemente | Freie Referenzen auf jede Topologie |
+| 017 | Publikations-Manifest mit semantischer Versionierung (ersetzt durch ADR-047: Manifest im Freigabestand) | Nur Git-Commits, PLM-Datenbank |
+| 018 | Einheitliche Adressierung per URI; Querverweise nur auf veröffentlichte Elemente (Adressform ersetzt durch ADR-058) | Freie Referenzen auf jede Topologie |
 | 019 | PMI als semantische Objekte im Code, gebunden an Element-IDs | Annotationen nur auf Zeichnungen |
-| 020 | Zeichnungsblätter als Code, abgeleitet bei jedem Build | Interaktiver Zeichnungseditor |
+| 020 | Zeichnungsblätter, abgeleitet bei jeder Änderung (ersetzt durch ADR-028: Elementtyp sheet) | Interaktiver Zeichnungseditor |
 | 021 | KI-Änderungen nur als prüfbare Änderungssätze mit Vorschau | KI schreibt direkt ins Modell |
 | 022 | Vollbild-Arbeitsfläche als Custom Editor, Featurebaum nativ in der Primary Sidebar, Bedienkonzept nach Figma | Mehrere Webviews, klassische Menü- und Ribbon-UI |
 | 023 | Entwicklung durch Agenten unter menschlicher Steuerung, mit Specs und Tests als Vertrag | Klassisches Entwicklerteam |
@@ -501,7 +508,7 @@ Dreiundfünfzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-053 b
 | 041 | Nachhallzeit nach Sabine und Eyring je Oktavband im Rust-Kern; Ergebnisse als Analyse-Elemente | Berechnung im Python-Worker, externe Akustiksoftware |
 | 042 | Austausch: IFC- und DXF-Import, glTF in beide Richtungen, PDF-Bericht, STEP für Bauteile | Nur STEP (ADR-004) |
 | 043 | Komponenten mit Parametern und Varianten, Instanzen mit Überschreibungen, versionierte Bibliotheken mit Aktualisierung und Vorschau | Kopieren statt Instanzen |
-| 044 | Bedienmuster aus Blender: Werte beim Ziehen tippen, vier Arbeitsbereiche, Stapel als Sicht auf den Graphen, Aktion als Code, Denoiser im Fotomodus | Dialoge für exakte Werte, eine Oberfläche für alles |
+| 044 | Bedienmuster aus Blender: Werte beim Ziehen tippen, Arbeitsbereiche (seit ADR-054 Beitrag der Fachpakete), Stapel als Sicht auf den Graphen, Aktion als Code, Denoiser im Fotomodus | Dialoge für exakte Werte, eine Oberfläche für alles |
 | 045 | Nach VS Code: ein Befehlsregister für Mensch, Plugins und KI; Plugins mit Manifest in der Sandbox; Projekt-Vertrauen; Befunde mit Korrekturen; Einstellungen in Ebenen; visueller Vergleich | Plugins im selben Prozess, getrennte Werkzeuge für Mensch und KI |
 | 046 | Fachneutraler Kern; Fachpakete über die Plugin-API; Verbindungspunkte, Projektvariablen, Verweise auf feste Versionen (nach Onshape) | Fachtypen fest im Kern |
 | 047 | Freigabe mit Item, Sachnummer, Revision und Lebenszyklus; Vier-Augen-Prinzip; unveränderliche Freigabestände; Stückliste; Änderungswesen | Freigabe nur als Git-Tag oder nur im PLM |
@@ -511,6 +518,11 @@ Dreiundfünfzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-053 b
 | 051 | Versionierung in Alltagsbegriffen (Entwurf, Meilenstein, Übernehmen); Entwicklungstrichter mit Ergebnis und Verwerfen mit Begründung; Herkunft; Entscheidungsprotokoll | Git-Begriffe zeigen, Löschen statt Verwerfen |
 | 052 | Ordnungssystem: schlanke Struktur, automatische Facetten, eine Suche, feste Adressen, Rückverweise, Sammlungen, Startseite, Hygiene | Freie Ordnerbäume, externes Wiki |
 | 053 | Lernschleife für lokale Modelle: Prüfer bewerten, Aufgabengenerator, Erfahrungsspeicher, LoRA aus geprüften Erfolgen, Schutz gegen Schummeln | Selbstbewertung, Training nur in der Cloud |
+| 054 | Fachpakete: interne Fachpaket-API ab Phase 1, öffentliches SDK später; Akustik als Fachpaket-Crate; Arbeitsbereiche als Beitrag der Fachpakete | Fachpakete bis zum SDK im Kern, feste Arbeitsbereiche |
+| 055 | Rechte, Rollen, Anmeldung: OIDC, wenige Rollen, Gäste, Dienstkonten für Agenten, Prüfung im Server | Rechte je Element, Agenten unter dem Konto des Menschen |
+| 056 | Datenschutz: Anwesenheit nie speichern, Verlauf mit Konto-IDs, Export, keine Weitergabe ohne Wahl | Vollständiger Verlauf mit Klarnamen |
+| 057 | Einheiten und Größen: jede Zahl mit Dimension, kanonisch mm, rad, kg, s; Geld als Dezimalzahl mit Währung | Einheitenlose Zahlen nach Konvention |
+| 058 | Adressen auf ID-Basis, Namen als Aliase, Weiterleitung beim Verschieben | Namensbasierte Adressen |
 
 ### ADR-001: Geometriekernel OpenCascade
 
@@ -528,7 +540,7 @@ Dreiundfünfzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-053 b
 
 **Alternativen:** CadQuery (gleicher Kernel, aber lange Method-Chains, fehleranfälliger für LLMs); OpenSCAD (nur CSG/Mesh, kein STEP).
 
-**Konsequenzen:** Wir tragen Verbesserungen upstream bei. Eigene Erweiterungen (Blech, Regel-Annotationen) liegen in einem separaten Paket `cadloop-core` (Arbeitsname).
+**Konsequenzen:** Wir tragen Verbesserungen upstream bei. Eigene Erweiterungen liegen im Worker (`worker/`) bzw. in Fachpaketen, nicht in einem Fork.
 
 ### ADR-003: Code ist die Quelle der Wahrheit (ersetzt durch ADR-028)
 
@@ -618,11 +630,11 @@ Dreiundfünfzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-053 b
 
 **Kontext:** Das „Topological Naming Problem“: Nach einer Modelländerung werden Flächen und Kanten im Kernel neu nummeriert, Referenzen brechen. Ohne stabile IDs ist keine Publikation möglich.
 
-**Entscheidung:** Drei Stufen: (1) explizite Feature-IDs im Code; (2) Ableitung der Unter-IDs aus der Topologie-Historie jeder Kernel-Operation (erzeugt aus, verändert aus); (3) Geometrie-Signatur als Rückfall. Bleibt eine Zuordnung mehrdeutig, wird der Konstrukteur gefragt. Technische Basis ist die Historie der OCCT-Operationen, abgegriffen über OCP, da build123d selbst keine Topologie-Historie bereitstellt. Die Identitätsschicht liegt in `cadloop-core` als Wrapper um build123d-Operationen.
+**Entscheidung:** Drei Stufen: (1) explizite IDs für jedes Element; (2) Ableitung der Unter-IDs aus der Topologie-Historie jeder Kernel-Operation (erzeugt aus, verändert aus); (3) Geometrie-Signatur als Rückfall. Bleibt eine Zuordnung mehrdeutig, wird der Konstrukteur gefragt. Technische Basis ist die Historie der OCCT-Operationen, abgegriffen über OCP, da build123d selbst keine Topologie-Historie bereitstellt. Die Identitätsschicht liegt im Worker (Modul `kernel`) als Wrapper um build123d-Operationen.
 
 **Alternativen:** Topologie-Indizes (brechen bei jeder Änderung); reines Geometrie-Matching (rät bei symmetrischen Teilen falsch); OCAF/TNaming aus OCCT direkt (mächtig, aber schwer mit build123d zu verbinden; wird im Spike bewertet).
 
-**Konsequenzen:** Technisch anspruchsvollstes Arbeitspaket (AP-17, Risiko R-10); muss vor allen darauf aufbauenden Funktionen stehen.
+**Konsequenzen:** Technisch anspruchsvollstes Arbeitspaket (Spike ap-39, Risiko R-10); muss vor allen darauf aufbauenden Funktionen stehen.
 
 ### ADR-017: Manifest als Lockfile mit semantischer Versionierung
 
@@ -686,13 +698,13 @@ Dreiundfünfzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-053 b
 
 **Entscheidung:** Der Geometrie-Dienst speichert das Ergebnis jedes Features im Cache, verschlüsselt über dessen Code und Eingangsparameter, und baut nur ab dem ersten geänderten Feature neu. Beim Ziehen an Griffen oder Schiebereglern zeigt die Arbeitsfläche eine schnelle Näherung (Transformation oder vereinfachte Geometrie); die exakte Geometrie entsteht beim Loslassen. Rebuilds laufen im Hintergrund, abbrechbar, damit die UI nie blockiert.
 
-**Konsequenzen:** Features müssen deterministisch und ohne versteckten Zustand sein; das passt zu ADR-024. Ein Spike in AP-00 misst die erreichbaren Zeiten an Referenzteilen.
+**Konsequenzen:** Features müssen deterministisch und ohne versteckten Zustand sein; das passt zu ADR-024. ap-05 und ap-06 messen die erreichbaren Zeiten an Referenzteilen.
 
 ### ADR-026: Eigene Interaktionsschicht auf three.js
 
 **Kontext:** three-cad-viewer ist zum Anzeigen gebaut. Ziehgriffe, Geister-Vorschau, ID-genaue Auswahl, Befundmarkierungen und Analyse-Overlays gehen deutlich darüber hinaus.
 
-**Entscheidung:** Wir bauen eine eigene, schlanke Interaktionsschicht auf three.js: Szenengraph mit Element-IDs, GPU-Picking, Griffe, Vorschau-Layer, Overlays. Tessellierungsdaten kommen binär (Typed Arrays) statt als JSON. ocp\_tessellate und Teile von three-cad-viewer werden weiterverwendet, wo sie passen; der Spike in AP-00 entscheidet, wie viel.
+**Entscheidung:** Wir bauen eine eigene, schlanke Interaktionsschicht auf three.js: Szenengraph mit Element-IDs, GPU-Picking, Griffe, Vorschau-Layer, Overlays. Tessellierungsdaten kommen binär (Typed Arrays) statt als JSON. ocp\_tessellate und Teile von three-cad-viewer werden weiterverwendet, wo sie passen; der Spike ap-04 entscheidet, wie viel.
 
 **Konsequenzen:** Mehr eigener Code, dafür volle Kontrolle über Bedienqualität und Geschwindigkeit. Ein Fork von three-cad-viewer entfällt.
 
@@ -808,7 +820,7 @@ Dreiundfünfzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-053 b
 
 ### ADR-044: Bedienmuster aus Blender
 
-**Entscheidung:** (1) Während einer Bewegung Achse sperren und Wert tippen, ohne Dialog. (2) Vier Arbeitsbereiche Raum, Akustik, Präsentation, Bericht als Reiter; jeder zeigt nur passende Panels. (3) Stapel nicht-destruktiver Schritte im Eigenschaften-Panel als einfachste Sicht auf den Graphen. (4) Jede Aktion als Graph-Operation bzw. Textzeile sichtbar und kopierbar. (5) Fotomodus mit Denoiser (Open Image Denoise, Apache-2.0, oder gleichwertig im Browser).
+**Entscheidung:** (1) Während einer Bewegung Achse sperren und Wert tippen, ohne Dialog. (2) Arbeitsbereiche als Reiter, seit ADR-054 Beitrag der Fachpakete (für Raum und Akustik: Raum, Akustik, Präsentation, Bericht); jeder zeigt nur passende Panels. (3) Stapel nicht-destruktiver Schritte im Eigenschaften-Panel als einfachste Sicht auf den Graphen. (4) Jede Aktion als Graph-Operation bzw. Textzeile sichtbar und kopierbar. (5) Fotomodus mit Denoiser (Open Image Denoise, Apache-2.0, oder gleichwertig im Browser).
 
 **Konsequenzen:** Ändert ADR-022, ergänzt ADR-035 und ADR-040. Weitere Anregungen im Ideenspeicher.
 
@@ -826,7 +838,7 @@ Dreiundfünfzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-053 b
 
 ### ADR-047: Freigabeprozess, Revisionen und Lebenszyklus
 
-**Entscheidung:** (1) Item mit Sachnummer, Revision und Status. (2) Versionen jederzeit, Revisionen nur durch Freigabe. (3) Lebenszyklus In Arbeit → In Prüfung → Freigegeben → Ersetzt bzw. Gesperrt, Übergänge als Befehle mit Bedingungen. (4) Vier-Augen-Prinzip als Standard, Selbstfreigabe abschaltbar; Agenten geben nie frei. (5) Unveränderliche, signierte Freigabestände mit archivierten Dokumenten. (6) Stückliste aus dem Graphen. (7) Änderungsantrag und Änderungsauftrag auf Basis von Zweigen.
+**Entscheidung:** (1) Item mit Sachnummer, Revision und Status. (2) Versionen jederzeit, Revisionen nur durch Freigabe. (3) Lebenszyklus In Arbeit → In Prüfung → Freigegeben → Ersetzt bzw. Gesperrt, Übergänge als Befehle mit Bedingungen. (4) Selbstfreigabe standardmäßig an bis zwei Personen mit Freigaberecht, danach Vier-Augen-Prinzip; Agenten geben nie frei. (5) Unveränderliche, signierte Freigabestände mit archivierten Dokumenten. (6) Stückliste aus dem Graphen. (7) Änderungsantrag und Änderungsauftrag auf Basis von Entwürfen.
 
 **Konsequenzen:** Ändert ADR-017 und ADR-032, ergänzt ADR-015. Arbeitspaket ap-33 vor der Beta.
 
@@ -866,20 +878,50 @@ Dreiundfünfzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-053 b
 
 **Konsequenzen:** Ergänzt ADR-014 und ADR-037. Stufe 1 in ap-15, Stufen 2 und 3 in ap-38.
 
+### ADR-054: Fachpakete: interne API zuerst, Arbeitsbereiche als Beitrag
+
+**Entscheidung:** (1) Ab ap-05 bzw. ap-08 eine interne Fachpaket-API mit Manifest und Beitragsarten; mitgelieferte Fachpakete nutzen nur sie; das öffentliche SDK (ap-27) ist dieselbe API, stabil versioniert. (2) Fachpakete unter `packages/<name>/`, rechenintensive Teile als Crate `crates/<name>` (z. B. Akustik); Fachpakete hängen vom Kern ab, nie umgekehrt. (3) Der Kern bringt den Arbeitsbereich Modell; weitere Arbeitsbereiche steuern Fachpakete bei, höchstens fünf gleichzeitig sichtbar.
+
+**Konsequenzen:** Ändert ADR-041, ADR-044 und präzisiert ADR-046. ap-09 bis ap-11 hängen von ap-05 und ap-08 ab.
+
+### ADR-055: Rechte, Rollen und Anmeldung
+
+**Entscheidung:** Anmeldung über OpenID Connect (eigene Konten mit zweitem Faktor oder externer Anbieter); Rollen Betrachten, Kommentieren, Bearbeiten, Prüfen, Freigeben, Verwalten, dazu App-Nutzer und Gast; vererbt über Organisation, Bereich, Projekt, keine Rechte je Element; Prüfung im Server, offline Entstandenes außerhalb der Rechte als Entscheidungskarte; Agenten als Dienstkonto ohne Freigaberecht.
+
+**Konsequenzen:** Ergänzt ADR-030, ADR-047 und ADR-049. Umgesetzt in ap-07 und ap-16.
+
+### ADR-056: Datenschutz
+
+**Entscheidung:** Anwesenheit nur live; Verlauf mit Konto-IDs; Protokolle ohne Inhalte, höchstens 30 Tage; nach Austritt „ehemaliges Mitglied“, Signaturen in Freigabeständen bleiben für die Aufbewahrung; Export für Personen und Organisationen; keine Weitergabe ohne Wahl; für den gehosteten Dienst Auftragsverarbeitung und EU-Standort.
+
+**Konsequenzen:** Ergänzt ADR-037, ADR-047 und ADR-055; Prüfpunkt im Review.
+
+### ADR-057: Einheiten und Größen
+
+**Entscheidung:** Jeder Zahlenwert hat eine Dimension, der Kern prüft Ausdrücke; kanonisch mm, rad, kg, s, Hz, kg CO₂e; Geld als Dezimalzahl mit Währung; Eingabe mit Einheiten und Formeln, Anzeige je Projekt oder Person, Rundung nur in der Anzeige; Fachpakete wandeln nur an ihrer Schnittstelle.
+
+**Konsequenzen:** Ergänzt ADR-028, ADR-044 und ADR-046; festgelegt im Schema von ap-05.
+
+### ADR-058: Adressen auf ID-Basis
+
+**Entscheidung:** `cee://<server>/<organisation>/<projekt>/<element-id>@<meilenstein|revision>`; Namen als Aliase; Umbenennen ändert nichts, Verschieben leitet weiter; Verweise über Projektgrenzen speichern immer eine Version.
+
+**Konsequenzen:** Ersetzt die Adressform von ADR-018.
+
 ## Regelwerk und Verifikationsschleife
 
 Erstes Regelpaket ist die Raumakustik: Zielbänder für die Nachhallzeit je Raumart, geprüft von der Firma (ap-20). Die Fertigungsregeln unten folgen nach der Beta.
 
-Ein Bauteil gilt erst als fertig, wenn alle Regeln mit Schweregrad „Fehler“ bestehen, die Anforderungen erfüllt sind und ein Mensch das Ergebnis freigegeben hat. Claude arbeitet dafür in einer festen Schleife und bricht nach höchstens acht Iterationen mit einem Befundbericht ab.
+Ein Bauteil gilt erst als fertig, wenn alle Regeln mit Schweregrad „Fehler“ bestehen, die Anforderungen erfüllt sind und ein Mensch das Ergebnis freigegeben hat. Ein Agent arbeitet dafür in einer festen Schleife und bricht nach höchstens acht Iterationen mit einem Befundbericht ab.
 
 **Ablauf einer Konstruktionsaufgabe**
 
-1. Claude liest Freitext und Unterlagen und erzeugt die `requirements.yaml`; der Konstrukteur bestätigt sie.
-2. Claude wählt Bausteine aus der Bibliothek und legt das Bauteil als Elemente im Graphen an (als Änderungssatz).
+1. Der Agent liest Freitext und Unterlagen und legt Anforderungen als Elemente vom Typ `requirement` an; der Konstrukteur bestätigt sie.
+2. Der Agent wählt Bausteine aus der Bibliothek und legt das Bauteil als Elemente im Graphen an (als Änderungssatz).
 3. Der Worker berechnet die Geometrie; Fehler im Kernel kommen strukturiert mit Element-ID zurück.
 4. `check_rules` prüft Anforderungen und Regelpakete; Befunde nennen Regel-ID, Ort und Korrekturvorschlag.
 5. `render_views` liefert Ansichten mit markierten Befunden zur visuellen Kontrolle.
-6. Claude korrigiert und wiederholt ab Schritt 3, bis keine Fehler mehr offen sind.
+6. Der Agent korrigiert und wiederholt ab Schritt 3, bis keine Fehler mehr offen sind.
 7. Export, Prüfbericht (Markdown/HTML) und Freigabe durch den Menschen.
 
 **Regelpakete im Pilot (Auswahl, Startwerte firmenspezifisch anpassbar)**
@@ -899,7 +941,7 @@ Die Zahlen sind Platzhalter aus gängigen Konstruktionsrichtlinien; jedes Untern
 
 ## Arbeitspakete
 
-Die Arbeit ist in 33 Arbeitspakete in vier Phasen geschnitten, ausgerichtet auf den Anwendungsfall Raumakustik. Jedes Paket ist ein OpenSpec-Change mit Abnahmetests (`ap-xx-kurzname`); die Spikes der Phase 0 entscheiden, ob die Architektur trägt. ap-02 ist der erste Change mit echten Specs.
+Die Arbeit ist in 42 Arbeitspakete (ap-00 bis ap-41) in vier Phasen geschnitten; vor der Beta auf den ersten Anwendungsfall ausgerichtet, der Kern bleibt fachneutral. Jedes Paket ist ein OpenSpec-Change mit Abnahmetests (`ap-xx-kurzname`); die Spikes der Phase 0 entscheiden, ob die Architektur trägt. ap-02 ist der erste Change mit echten Specs.
 
 | AP | Phase | Inhalt | Abnahme | Abhängig von |
 | --- | --- | --- | --- | --- |
@@ -910,16 +952,16 @@ Die Arbeit ist in 33 Arbeitspakete in vier Phasen geschnitten, ausgerichtet auf 
 | ap-04-spike-rendering | 0 | Echtzeit-PBR und Fotomodus (Path Tracing mit Denoiser) in Browser und Tauri auf drei Systemen | Raum mit 50 Objekten ≥ 30 fps; Fotomodus 1920 × 1080 in ≤ 60 s auf Mittelklasse-GPU | ap-00 |
 | ap-05-graph-kern | 1 | Graph-Kern produktiv: Schema v1, Validierung, Abhängigkeiten, Migrationen, Teil-Laden, Berechnungszustände | 100.000 Elemente laden ≤ 2 s | ap-01 |
 | ap-06-kernel-worker | 1 | Kernel-Protokoll, Python-Worker mit OCCT, Cache nach Inhalts-Hash, Detailstufen, robuste Neuberechnung | Raum mit 6 Wänden und 2 Öffnungen baut < 1 s; Worker-Absturz ohne Serverausfall | ap-05 |
-| ap-07-server-sync | 1 | Dokumentprozesse, Channels, Presence, Rechte, PostgreSQL | 20 gleichzeitige Nutzer je Dokument, Änderung < 200 ms | ap-03, ap-05 |
-| ap-08-arbeitsflaeche | 1 | Arbeitsfläche mit 3D und 2D-Grundriss, Featurebaum, Eigenschaften mit Stapel, Befehlsregister mit Befehlssuche, Einstellungen, Avatare, Arbeitsbereiche, Werte beim Ziehen tippen, Aktionsprotokoll | 4 von 5 Testpersonen der Firma lösen Kernabläufe; Auswahl < 100 ms | ap-04 |
+| ap-07-server-sync | 1 | Dokumentprozesse, Channels, Presence, Rollen und Rechte (ADR-055), PostgreSQL | 20 gleichzeitige Nutzer je Dokument, Änderung < 200 ms | ap-03, ap-05 |
+| ap-08-arbeitsflaeche | 1 | Arbeitsfläche mit 3D und 2D-Grundriss, Featurebaum, Eigenschaften mit Stapel, Befehlsregister mit Befehlssuche, Einstellungen, Avatare, Arbeitsbereiche, Werte beim Ziehen tippen, Aktionsprotokoll | 4 von 5 Testpersonen der Firma lösen Kernabläufe; Auswahl < 100 ms | ap-04, ap-05 |
 | ap-09-raum-elemente | 1 | Geschoss, Wand, Boden, Decke, Fenster, Tür; Wände im Grundriss zeichnen | Besprechungsraum in ≤ 5 min modelliert; Öffnungen schneiden Wände korrekt | ap-06, ap-08 |
-| ap-10-materialbibliothek | 1 | Material-Elemente mit allen Eigenschaftsgruppen, Import von Herstellerdaten (CSV) | 20 Materialien der Firma importiert, αw und Absorberklasse korrekt | ap-05 |
+| ap-10-materialbibliothek | 1 | Material-Elemente mit allen Eigenschaftsgruppen, Import von Herstellerdaten (CSV) | 20 Materialien der Firma importiert, αw und Absorberklasse korrekt | ap-05, ap-08 |
 | ap-11-akustik-live | 1 | Analyse-Element Nachhallzeit, Live-Anzeige je Band, Zielband, Kern als WASM | Aktualisierung beim Verschieben < 100 ms | ap-02, ap-09, ap-10 |
 | ap-12-skizze-extrusion | 1 | Skizzen mit PlaneGCS, Extrusion, Identität der Flächen | Absorber-Form per Skizze in ≤ 3 Schritten; IDs stabil über 50 Parameteränderungen | ap-06, ap-08 |
-| ap-13-komponenten-katalog | 1 | Komponenten mit Varianten, Referenz-Eingängen und Instanzen (ADR-043, ADR-050), versionierte Bibliotheken mit Aktualisierung und Vorschau; Absorber-Katalog der Firma als Bibliothek; Platzieren an Wand und Decke, abgehängt, Reihen und Raster | 12 Deckensegel als Raster in einem Schritt; Wirkung sofort in der Nachhallzeit; ein Katalog-Update erreicht alle Instanzen, Überschreibungen bleiben | ap-10, ap-11, ap-12 |
+| ap-13-komponenten-katalog | 1 | Komponenten mit Varianten, Referenz-Eingängen und Instanzen (ADR-043, ADR-050), Bibliotheken mit Versionen im Projekt (Aktualisierung über Projektgrenzen mit ap-26); Absorber-Katalog der Firma als Bibliothek; Platzieren an Wand und Decke, abgehängt, Reihen und Raster | 12 Deckensegel als Raster in einem Schritt; Wirkung sofort in der Nachhallzeit; ein Katalog-Update erreicht alle Instanzen, Überschreibungen bleiben | ap-10, ap-11, ap-12 |
 | ap-14-rendering-fotomodus | 1 | Echtzeit-PBR, HDRI, Fotomodus mit Denoiser produktiv, Bild als PNG | Referenzraum fotorealistisch; Materialien entsprechen Mustern der Firma | ap-04, ap-10 |
-| ap-15-mcp-ki | 1 | MCP-Endpunkt, Anbieter-Schnittstelle (lokal und Cloud), Änderungssätze, Eval-Suite mit Aufgabengenerator und Prüfern (ADR-053) | Agent bringt die Nachhallzeit eines Referenzraums in das Zielband, mit Cloud- und lokalem Modell | ap-07, ap-13 |
-| ap-16-selbstbetrieb | 1 | Container mit Server, Datenbank und lokalem Modell, Backups | Installation in < 15 min | ap-07 |
+| ap-15-mcp-ki | 1 | MCP-Endpunkt, Anbieter-Schnittstelle (lokal und Cloud), Änderungssätze, Eval-Suite mit Aufgabengenerator und Prüfern (ADR-053) | Agent bringt die Nachhallzeit eines Referenzraums in das Zielband, mit Cloud- und lokalem Modell | ap-07, ap-08, ap-13 |
+| ap-16-selbstbetrieb | 1 | Container mit Server, Datenbank und lokalem Modell, Anmeldung über OIDC, Backups mit Wiederherstellungstest | Installation in < 15 min | ap-07 |
 | ap-17-desktop-offline | 1 | Tauri-App mit Kern, Speicher und Worker; offline, Abgleich beim Verbinden | Einen Tag offline gearbeitet, Merge ohne Datenverlust | ap-06, ap-07 |
 | ap-18-mengen-kosten-co2 | 2 | Mengen, Kosten, Gewicht und CO₂ je Raum; CSV-Mengenliste | Summen stimmen mit Handrechnung für 3 Räume | ap-10, ap-13 |
 | ap-19-bericht-angebot | 2 | PDF-Bericht: Nachhallzeit vorher/nachher, Bilder, Grundriss, Mengen, Kosten, CO₂ | Firma versendet einen echten Bericht ohne Nacharbeit | ap-14, ap-18 |
@@ -936,19 +978,22 @@ Die Arbeit ist in 33 Arbeitspakete in vier Phasen geschnitten, ausgerichtet auf 
 | ap-30-akustik-geometrisch | 3 | Spiegelquellen bzw. Strahlverfolgung, Auralisation (hörbar machen) | Abweichung zu Messung in 3 Räumen dokumentiert | ap-11 |
 | ap-31-fertigung | 3 | Fertigungsregeln (Fräsen, 3D-Druck, Blech), STEP mit PMI, Zeichnungen | Absorber-Bauteil fertigungsgerecht exportiert | ap-12 |
 | ap-32-zweiter-kernel | 3 | Spezialisierter Kernel (implizite Modelle, Gitter, z. B. für Absorberstrukturen) | Gitterabsorber als 3MF exportiert | ap-06 |
-| ap-33-freigabe-revisionen | 2 | Items, Sachnummern, Revisionen, Lebenszyklus, Vier-Augen-Freigabe, Freigabestände mit Dokumenten, Stückliste, Änderungsantrag und -auftrag, Austauschformat | Baugruppe und Raumangebot freigegeben, geändert und als Revision B erneut freigegeben; Freigabestand bitgleich reproduzierbar | ap-25, ap-26 |
+| ap-33-freigabe-revisionen | 2 | Items, Sachnummern, Revisionen, Lebenszyklus, Vier-Augen-Freigabe, Freigabestände mit STEP und Bericht (Zeichnungen erst mit ap-31), Stückliste, Änderungsantrag und -auftrag, Austauschformat | Baugruppe und Raumangebot freigegeben, geändert und als Revision B erneut freigegeben; Freigabestand bitgleich reproduzierbar | ap-25, ap-26 |
 | ap-34-plm-erp-schnittstelle | 3 | API aus dem Befehlsregister, Ereignisse mit Outbox, Nummernkreis-Plugin, Beispielanbindung an ein selbst gebautes PLM/ERP | Externes System empfängt Freigabe und Stückliste und vergibt Sachnummern, ohne Änderung am Kern | ap-27, ap-33 |
 | ap-35-apps-studien | 2 | Apps aus veröffentlichten Untergraphen, gesperrte Komponenten, Bibliotheksebenen, Studien mit Tabelle und Pareto-Diagramm | Vertrieb erstellt ohne Modellrechte eine Raumbelegung mit Angebot; Studie mit 100 Varianten < 2 min | ap-06, ap-11, ap-23 |
 | ap-36-direkt-skelett | 2 | Direktes Bearbeiten von Flächen (auch an STEP), Skelett mit eingefrorenen Verknüpfungen, Ersetzen mit Umhängen | Lieferanten-STEP ohne Neumodellieren angepasst; Skelettänderung erreicht 20 Teile, eingefrorene erst nach Bestätigung | ap-06, ap-12, ap-13 |
 | ap-37-ordnung-suche | 2 | Struktur Organisation › Bereich › Projekt, Suchindex mit Facetten und Parameterbedingungen, semantische Suche lokal, Rückverweise, Sammlungen, Startseite, Entscheidungsprotokoll, Hygiene | 20 typische Such-Aufgaben der Firma in je ≤ 30 s gelöst; Suche über 100.000 Elemente < 300 ms | ap-07, ap-25 |
 | ap-38-lernschleife | 3 | Erfahrungsspeicher, Versuche mit Prüfern, LoRA-Adapter aus geprüften Erfolgen, geheime Prüfaufgaben, Regressionsschranke | Lokales 8B-Modell mit Adapter löst ≥ 20 Prozentpunkte mehr geheime Aufgaben, ohne Rückschritt in einer Kategorie | ap-15 |
+| ap-39-spike-identitaet | 0 | Persistente Identität von Flächen und Kanten (ADR-016) an Referenzteilen: Topologie-Historie aus OCP, Stresstests mit geteilten und verschmolzenen Flächen | ≥ 95 % der Referenzen überleben 50 Parameteränderungen; Rest als Nachfrage, nie geraten | ap-00 |
+| ap-40-bindungen-sdk | 1 | Produktive Bindungen des Kerns: Rustler-NIF, WASM, PyO3; Python-SDK; dieselben Bindungen für Fachpaket-Crates | Gleicher Inhalts-Hash in Rust, Elixir, Browser und Python; Operation ≤ 1 ms (NIF) bzw. ≤ 5 ms (WASM) | ap-05 |
+| ap-41-ux-prototyp | 0 | Klickbarer Prototyp: Arbeitsfläche, Akustik-Panel, Entwürfe und Suche; Test mit der Firma | 4 von 5 Testpersonen lösen drei Kernabläufe ohne Einweisung | – |
 
 ### Entwicklung mit Agenten
 
 Agenten schreiben den Code, Menschen entscheiden, was gebaut wird und ob es gut genug ist. Jedes Arbeitspaket durchläuft dieselbe Pipeline:
 
 1. **Spec:** Das Kernteam schreibt eine Spec mit Ziel, Schnittstellen, Abnahmekriterien und Testfällen (bei UI zusätzlich Prototyp und Referenz-Screenshots).
-2. **Umsetzung:** Ein Claude-Code-Agent arbeitet in einem eigenen Worktree; mit dem Pro-Abo laufen 2, mit Max 4–6 Agenten parallel auf unabhängigen Paketen.
+2. **Umsetzung:** Ein Agent (Claude Code, OpenCode oder Pi) arbeitet in einem eigenen Worktree; mit dem Pro-Abo laufen 2, mit Max 4–6 Agenten parallel auf unabhängigen Paketen.
 3. **Automatische Prüfung:** CI mit Unit-, Golden-Geometrie-, Identitäts- und visuellen Regressionstests plus Eval-Suite.
 4. **Unabhängiges Review:** Ein zweiter Agent ohne Kenntnis der Umsetzung prüft gegen die Spec.
 5. **Menschliche Abnahme:** Review und Merge durch das Kernteam; UI-Pakete zusätzlich im Test mit Konstrukteuren.
@@ -989,7 +1034,7 @@ Abnahmetests sind immer pytest-Tests unter `tests/acceptance/<change-id>/`; sie 
 | Ebene | Datei | Zweck | Wer ändert |
 | --- | --- | --- | --- |
 | Vision und Regeln | `AGENTS.md` (alle Werkzeuge), `CLAUDE.md` importiert sie; `docs/rules/` je Bereich | Kurzfassung, Architekturregeln, Konventionen, Token-Regeln | Kernteam |
-| Leitplanken | `docs/adr/` | 36 Architekturentscheidungen | Kernteam |
+| Leitplanken | `docs/adr/` | 58 Architekturentscheidungen; Begriffe im Glossar docs/glossar.md | Kernteam |
 | Auftrag | OpenSpec-Change `openspec/changes/<id>/` (proposal, design, specs, tasks) | Spec-driven: Requirements mit messbaren Scenarios | Agent auf Branch `spec/<id>`, Freigabe durch Kernteam |
 | Freigabe | `openspec/queue.yaml` | Reihenfolge, Phase, Modell, Nachtfreigabe | Kernteam |
 | Vertrag | `tests/acceptance/<id>/`, `tests/golden/`, `tests/ui-reference/` | Abnahmetests aus den Scenarios | Agent auf Branch `tests/<id>`, Kernteam merged |
@@ -1025,16 +1070,16 @@ Abnahmetests sind immer pytest-Tests unter `tests/acceptance/<change-id>/`; sie 
 
 ## Roadmap und Meilensteine
 
-Die Roadmap wird über Gates gesteuert, nicht über Termine: Ein Gate ist erreicht, wenn seine Kriterien erfüllt sind. Die Monatsangaben sind Richtwerte für ein Team, das täglich Reviews schafft; bei wenig menschlicher Zeit bestimmt der Durchsatz der Nachtschicht das Tempo. Das Datenmodell (ap-01, ap-05) liegt auf dem kritischen Pfad, Selbstbetrieb mit lokalem Modell (ap-23) ist in Phase 1 vorgezogen.
+Die Roadmap wird über Gates gesteuert, nicht über Termine: Ein Gate ist erreicht, wenn seine Kriterien erfüllt sind. Die Monatsangaben sind Richtwerte für ein Team, das täglich Reviews schafft; bei wenig menschlicher Zeit bestimmt der Durchsatz der Nachtschicht das Tempo. Das Datenmodell (ap-01, ap-05) liegt auf dem kritischen Pfad, Selbstbetrieb mit lokalem Modell (ap-16) ist in Phase 1 vorgezogen.
 
 &#91;embedded content: Roadmap · 4 Phasen, 4 Gates, Beta nach etwa 10 Monaten\]
 
 | Gate | Richtwert | Kriterium |
 | --- | --- | --- |
-| G1 Architektur trägt | Monat 2 | ap-01 bis ap-04 mit Go (oder angepasste ADRs); Nachhallzeit korrekt und schnell; Gerüst in vier Sprachen grün; UX-Prototyp „Raum mit Absorbern“ mit der Firma getestet |
+| G1 Architektur trägt | Monat 2 | ap-01 bis ap-04, Identitäts-Spike ap-39 und UX-Prototyp ap-41 mit Go (oder angepasste ADRs); Nachhallzeit korrekt und schnell; Gerüst in vier Sprachen grün; UX-Prototyp „Raum mit Absorbern“ mit der Firma getestet |
 | G2 Raum mit Absorbern | Monat 5 | Zwei Personen modellieren live einen Besprechungsraum, eine davon offline; Absorber platziert, Nachhallzeit live; Fotomodus-Bild; ein Agent bringt die Nachhallzeit über MCP ins Zielband (Cloud und lokal); alles selbst betrieben |
-| G3 Öffentliche Beta | Monat 10 | Bericht für Angebote, Mengen, Kosten und CO₂, IFC- und DXF-Import, Möbel, Knoten-Editor, Zweige, Plugin-SDK; die Firma nutzt CEE für echte Angebote |
-| G4 Ökosystem | ab Monat 11 | Gehosteter Dienst, externe Beiträge, WebXR-Begehung, geometrische Akustik, Fertigung |
+| G3 Öffentliche Beta | Monat 10 | Bericht für Angebote, Mengen, Kosten und CO₂, IFC- und DXF-Import, Möbel, Knoten-Editor, Entwürfe und Prüfung, Freigabe mit Revisionen, Ordnung und Suche, Apps, Fachpaket-API und Plugin-SDK, Rechte und Anmeldung; die Firma nutzt CEE für echte Angebote |
+| G4 Ökosystem | ab Monat 11 | Gehosteter Dienst, externe Beiträge, WebXR-Begehung, geometrische Akustik, Fertigung, PLM/ERP-Schnittstelle, Lernschleife |
 
 ## Risiken und Gegenmaßnahmen
 
@@ -1042,19 +1087,19 @@ Die größten Risiken liegen jetzt im Datenmodell (Größe und Merge-Verhalten d
 
 | ID | Risiko | Auswirkung | Gegenmaßnahme |
 | --- | --- | --- | --- |
-| R-10 | Persistente Identität bricht bei Topologie-Änderungen (Topological Naming Problem), z. B. wenn eine Fläche durch eine neue Tasche geteilt wird | Sehr hoch | Spike in AP-00; drei Stufen nach ADR-016; Mehrdeutigkeit führt zur Nachfrage statt zur Vermutung; Stresstests in der CI; Veröffentlichung bevorzugt auf Features und Bezugselemente statt auf abgeleitete Flächen |
+| R-10 | Persistente Identität bricht bei Topologie-Änderungen (Topological Naming Problem), z. B. wenn eine Fläche durch eine neue Tasche geteilt wird | Sehr hoch | Spike ap-39 in Phase 0; drei Stufen nach ADR-016; Mehrdeutigkeit führt zur Nachfrage statt zur Vermutung; Stresstests in der CI; Veröffentlichung bevorzugt auf Features und Bezugselemente statt auf abgeleitete Flächen |
 | R-15 | Oberfläche reagiert zu träge, weil OCCT-Rebuilds Sekunden dauern | Hoch | Inkrementeller Rebuild und Näherungsvorschau (ADR-025); Spike mit Zeitmessung an Referenzteilen; Performance-Budgets als Pflichttests |
 | R-16 | Gleichzeitige Änderungen von Menschen und Agenten ergeben technisch gültige, fachlich widersprüchliche Modelle | Hoch | Semantische Konfliktprüfung nach jedem Merge (ADR-033); Agenten arbeiten auf eigenem Zweig und kommen als Änderungssatz zurück; Regeln laufen nach jeder Übernahme |
 | R-13 | UI erreicht mit Agenten allein nicht die geforderte Qualität | Hoch | UX-Designer im Kernteam; Prototyp vor Code; Referenz-Screenshots und visuelle Regressionstests als Spec; Usability-Runde je Gate |
 | R-14 | Review-Engpass im Kernteam oder schwer wartbarer Agenten-Code | Hoch | Kleine Pakete mit klaren Specs; unabhängiger Review-Agent vor menschlicher Abnahme; Architekturregeln als Linter; Pflicht-Tests je Merge |
-| R-01 | OCCT scheitert an komplexen Verrundungen oder Booleschen Operationen | Hoch | Fehler strukturiert an Claude zurückgeben; Regeln zur Reihenfolge (Verrundungen zuletzt); Heilungsfunktionen; Testkorpus schwieriger Fälle |
-| R-02 | Blech-Abwicklung ungenau gegenüber kommerziellem CAD (erst nach der Beta) | Hoch | Spike in AP-00; Referenzteile aus Fachbereich; Fallback: Abwicklung nur für einfache Biegungen |
-| R-03 | Claude erzeugt plausible, aber fachlich falsche Geometrie | Hoch | Ausführbare Regeln statt Prompt-Text; Änderungskarten mit Vorschau; verpflichtende menschliche Freigabe; Eval-Suite |
+| R-01 | OCCT scheitert an komplexen Verrundungen oder Booleschen Operationen | Hoch | Fehler strukturiert an den Agenten zurückgeben; Regeln zur Reihenfolge (Verrundungen zuletzt); Heilungsfunktionen; Testkorpus schwieriger Fälle |
+| R-02 | Blech-Abwicklung ungenau gegenüber kommerziellem CAD (erst nach der Beta) | Hoch | Spike vor einem Fachpaket Blech; Referenzteile aus Fachbereich; Fallback: Abwicklung nur für einfache Biegungen |
+| R-03 | KI erzeugt plausible, aber fachlich falsche Geometrie | Hoch | Ausführbare Regeln statt Prompt-Text; Änderungskarten mit Vorschau; verpflichtende menschliche Freigabe; Eval-Suite |
 | R-11 | Semantische PMI in STEP AP242 wird von OCCT oder Ziel-CAD-Systemen nur teilweise unterstützt | Mittel | Früher Import-Test; PMI zusätzlich als JSON und auf der Zeichnung; Beitrag zu OCCT prüfen |
-| R-12 | Konstrukteure veröffentlichen zu viel oder zu wenig | Mittel | Vorschläge durch Claude aus der Anforderungsdatei; Warnung, wenn Zeichnung oder Baugruppe ein internes Element braucht; Leitfaden im Pilot |
+| R-12 | Konstrukteure veröffentlichen zu viel oder zu wenig | Mittel | Vorschläge durch den KI-Assistenten aus den Anforderungen; Warnung, wenn Zeichnung oder Baugruppe ein internes Element braucht; Leitfaden im Pilot |
 | R-04 | Abhängigkeit von kleinen Upstream-Projekten (build123d, ocp\_tessellate) | Mittel | Früher Kontakt und Beiträge; Versionen pinnen; Fork als Notfalloption dokumentieren |
-| R-05 | Konstrukteure finden Knoten und Text zu technisch | Mittel | Bedienung primär über Arbeitsfläche, Featurebaum und Claude; Code bleibt optional sichtbar; Pilot mit Feedbackschleifen |
-| R-06 | STEP-Import im Ziel-CAD verliert Namen, Farben oder Struktur | Mittel | Import-Testmatrix in AP-12; AP242 mit Validierungsdateien |
+| R-05 | Konstrukteure finden Knoten und Text zu technisch | Mittel | Bedienung primär über Arbeitsfläche, Featurebaum und KI-Assistent; Code bleibt optional sichtbar; Pilot mit Feedbackschleifen |
+| R-06 | STEP-Import im Ziel-CAD verliert Namen, Farben oder Struktur | Mittel | Import-Testmatrix in ap-21 und ap-33; AP242 mit Validierungsdateien |
 | R-08 | Desktop-App mit Python-Worker und OCCT ist groß und schwer zu verteilen | Mittel | Worker als eingebettete Laufzeit im Tauri-Paket; vorgebaute Pakete je Plattform; im Browser rechnet der Server |
 | R-09 | Kontextüberlauf bei großen Modellen | Niedrig | Kompakte Tool-Antworten, Topologie-Zusammenfassungen, Bilder statt Rohdaten |
 | R-17 | Automerge wird bei großen Projekten zu langsam oder zu groß | Sehr hoch | Spike ap-01 mit 10.000 und 100.000 Elementen; Rückfall: ein Dokument je Bauteil statt je Projekt; Historie komprimieren |
@@ -1076,8 +1121,11 @@ Die größten Risiken liegen jetzt im Datenmodell (Größe und Merge-Verhalten d
 - [ ] Spike ap-01 starten (Agent kern-specialist) und Ergebnis im ADR-Workshop bewerten
 - [ ] Klickbare Prototypen für Arbeitsfläche, Knoten-Editor und Zusammenarbeit erstellen und mit 5 Konstrukteuren testen
 - [ ] Klären, wer veröffentlichte Elemente nutzt (CAM, Messtechnik, Simulation, PLM, Lieferanten) und welche Exportformate diese je Elementtyp brauchen
-- [x] Freigabeprozess festgelegt (ADR-047): Vier-Augen-Prinzip als Standard, Selbstfreigabe für Einzelpersonen abschaltbar, Agenten geben nie frei
-- [ ] Rechte und Mandanten: Wer sieht und ändert welches Projekt, auch beim Selbstbetrieb?
+- [x] Freigabeprozess festgelegt (ADR-047): Selbstfreigabe an, solange höchstens zwei Personen freigeben dürfen, danach Vier-Augen-Prinzip, Agenten geben nie frei
+- [x] Rechte und Mandanten festgelegt (ADR-055): Organisation, Bereich, Projekt; wenige Rollen, Gäste, Dienstkonten für Agenten; Anmeldung über OIDC
+- [ ] Lizenz von PlaneGCS im Browser klären (ADR-027), vor ap-12
+- [ ] Eigene GitHub-Identität für Agenten (Bot-Konto oder GitHub App), damit Schutzregeln und Reviews Menschen und Agenten unterscheiden
+- [ ] Grundtypliste und Beispielteil halter.py auf die Form des Element-Graphen umstellen (Script-Element mit deklarierten Ein- und Ausgängen)
 - [ ] Governance: Rolle der Community bei Roadmap und RFCs; später Stiftung oder Firma als Träger
 - [ ] Lizenzprüfung durch Fachanwalt vor dem ersten öffentlichen Release (MPL-2.0 und Apache-2.0, DCO)
 - [ ] Zeichnungsstandards (Blattformate, Schriftfeld, ISO 128/129) aus dem Fachbereich bereitstellen
