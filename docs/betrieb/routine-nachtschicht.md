@@ -14,7 +14,8 @@ Einrichten unter claude.ai/code/routines → **New routine** (oder im CLI mit `/
 **Setup-Skript der Umgebung**
 
 ```bash
-pip install uv && uv sync --extra cad && npm install -g @fission-ai/openspec@latest
+pip install uv && uv sync --extra cad && npm install -g @fission-ai/openspec@latest \
+  && sudo apt-get update && sudo apt-get install -y elixir erlang-dev   # Rust ist meist vorinstalliert
 ```
 
 **Prompt (genau so übernehmen)**

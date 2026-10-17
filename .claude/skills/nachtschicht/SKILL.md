@@ -10,9 +10,17 @@ Du arbeitest unbeaufsichtigt. Niemand beantwortet Fragen. Erledige **genau einen
 1. Lies `openspec/queue.yaml`. Kandidaten: Einträge mit `night: true` und `phase: tests` oder `phase: build`,
    deren `depends_on` alle `phase: done` haben – in Dateireihenfolge.
 2. Überspringe einen Kandidaten, wenn schon ein offener PR vom passenden Branch existiert
-   (`gh pr list --head tests/<id>` bzw. `--head change/<id>`) oder wenn die Arbeit `opus` verlangt
-   (`model: opus`) – solche Changes bearbeitet das Kernteam interaktiv.
+   (`gh pr list --head tests/<id>` bzw. `--head change/<id>`) oder wenn noch ein anderer Agenten-PR auf
+   Review wartet (höchstens ein offener Agenten-PR, Risiko R-23).
+   Bei `model: opus` die Arbeit an den passenden Spezialisten delegieren (`kern-specialist` für crates/ und
+   server/, `geometry-specialist` für worker/), wenn Subagenten verfügbar sind; sonst selbst arbeiten.
 3. Kein Kandidat: kurze Notiz „Nichts zu tun“ ausgeben und beenden. Nicht suchen, nicht erkunden.
+
+## Vorbereitung (Cloud-Umgebung)
+
+Fehlende Werkzeuge einmal installieren, Ausgabe knapp halten:
+`command -v uv || pip install -q uv`, `uv sync -q --extra cad`, `command -v openspec || npm i -g -s @fission-ai/openspec@latest`,
+`command -v mix || (apt-get update -qq && apt-get install -y -qq elixir erlang-dev)`, Rust über `cargo` (meist vorhanden).
 
 ## Ausführung
 
@@ -26,4 +34,5 @@ Du arbeitest unbeaufsichtigt. Niemand beantwortet Fragen. Erledige **genau einen
 
 - Pushe nur auf den genannten Branch, nie auf `main`. Ändere `openspec/queue.yaml` nicht.
 - Höchstens drei Anläufe pro Problem, dann Stand committen, PR als Entwurf öffnen, Problem im PR beschreiben.
+- Jeder PR folgt `.github/pull_request_template.md`, inklusive „In einfachen Worten“.
 - Am Ende eine Zusammenfassung von höchstens fünf Zeilen: Change, Schritt, Ergebnis, PR-Link, offene Fragen.

@@ -1,12 +1,12 @@
-# Ersetze @person-a und @person-b durch eure GitHub-Namen.
-*                     @person-a @person-b
-/openspec/            @person-a
-/docs/adr/            @person-a
-/tests/acceptance/    @person-a
+# Ersetze @lobito42 und @person-b durch eure GitHub-Namen.
+*                     @lobito42 @person-b
+/openspec/            @lobito42
+/docs/adr/            @lobito42
+/tests/acceptance/    @lobito42
 /tests/ui-reference/  @person-b
 /client/              @person-b
-/server/              @person-a
-/crates/              @person-a
-/format/              @person-a
-/AGENTS.md            @person-a
-/.claude/             @person-a
+/server/              @lobito42
+/crates/              @lobito42
+/format/              @lobito42
+/AGENTS.md            @lobito42
+/.claude/             @lobito42
