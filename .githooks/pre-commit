@@ -1,4 +1,8 @@
-#!/bin/sh
-# Vertragsschutz für jedes Werkzeug (Claude Code, OpenCode, Pi, Hand).
-# Aktivieren einmalig pro Klon: git config core.hooksPath .githooks
-exec python3 "$(git rev-parse --show-toplevel)/tools/guard.py" staged
+#!/usr/bin/env sh
+# Vertragsschutz und Synchronität der generierten Werkzeug-Dateien – für jedes Werkzeug (Claude, OpenCode, Pi, Hand).
+root="$(git rev-parse --show-toplevel)"
+python3 "$root/tools/guard.py" staged || exit 1
+python3 "$root/tools/sync_agents.py" --check >/dev/null || {
+  echo "Generierte Dateien nicht synchron: python3 tools/sync_agents.py ausführen und erneut committen." >&2
+  exit 1
+}
