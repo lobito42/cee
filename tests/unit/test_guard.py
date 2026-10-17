@@ -18,7 +18,8 @@ ALLOWED = [
     ("openspec/changes/ap-17-identitaet/specs/identitaet/spec.md", "spec/ap-17-identitaet"),
     ("tests/acceptance/ap-17-identitaet/test_x.py", "tests/ap-17-identitaet"),
     ("tests/golden/halter.json", "tests/ap-17-identitaet"),
-    ("tests/unit/test_x.py", "tests/ap-17-identitaet"),
+    ("pyproject.toml", "change/ap-17-identitaet"),  # Abhängigkeiten ergänzen bleibt erlaubt
+    ("Cargo.toml", "change/ap-17-identitaet"),
     ("packages/x.py", "claude/change/ap-17-identitaet"),  # Präfix der Cloud-Routinen
     ("crates/graph/src/lib.rs", "change/ap-01-spike-datenmodell"),
     ("server/lib/cee_server.ex", "change/ap-01-spike-datenmodell"),
@@ -26,6 +27,15 @@ ALLOWED = [
 ]
 
 BLOCKED = [
+    ("tests/acceptance/conftest.py", "change/ap-17-identitaet"),  # Prüfbericht H1
+    ("tests/acceptance/conftest.py", "tests/ap-17-identitaet"),
+    ("tools/acceptance_targets.py", "change/ap-17-identitaet"),
+    ("tools/guard.py", "change/ap-17-identitaet"),
+    ("tests/unit/test_guard.py", "change/ap-17-identitaet"),
+    ("tests/unit/test_x.py", "tests/ap-17-identitaet"),
+    ("pytest.ini", "change/ap-17-identitaet"),
+    ("deny.toml", "change/ap-17-identitaet"),
+    (".devcontainer/setup.sh", "change/ap-17-identitaet"),
     ("openspec/changes/ap-17-identitaet/proposal.md", "change/ap-17-identitaet"),
     ("openspec/changes/ap-18-publikation/tasks.md", "change/ap-17-identitaet"),
     ("openspec/changes/ap-17-identitaet/proposal.md", "main"),

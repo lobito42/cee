@@ -48,7 +48,11 @@ CORE_ONLY = (
     ".pi/",
     ".githooks/",
     ".github/",
-    "tools/guard.py",
+    "tools/",
+    "tests/unit/",
+    "pytest.ini",
+    "deny.toml",
+    ".devcontainer/",
     "LICENSE",
     "NOTICE",
     "sdk/LICENSE",
@@ -94,6 +98,9 @@ def reason(rel: str, branch: str, role: str = "") -> str | None:
             return None
         return f"{rel}: Changes nur auf Branch spec/{target}; auf change/{target} nur tasks.md abhaken"
 
+    if re.match(r"^tests/acceptance/[^/]+$", rel):
+        return f"{rel}: gemeinsame Testinfrastruktur (conftest), nur das Kernteam ändert das"
+
     acceptance = re.match(r"^tests/acceptance/([^/]+)/", rel)
     if acceptance:
         if kind == "tests" and acceptance.group(1) == cid:
@@ -109,7 +116,7 @@ def reason(rel: str, branch: str, role: str = "") -> str | None:
 
     if kind == "spec":
         return f"{rel}: auf spec/{cid} nur openspec/changes/{cid}/ bearbeiten"
-    if kind == "tests" and not rel.startswith("tests/"):
+    if kind == "tests" and not rel.startswith(("tests/acceptance/", "tests/golden/", "tests/ui-reference/")):
         return f"{rel}: auf tests/{cid} nur Tests schreiben, keinen Produktcode"
     return None
 

@@ -25,10 +25,6 @@ default-groups = ["dev"]
 [tool.uv.workspace]
 members = []  # worker und sdk/python werden in ap-00-setup als Workspace-Mitglieder ergänzt
 
-[tool.pytest.ini_options]
-testpaths = ["tests/unit"]  # Abnahmetests gezielt: uv run pytest tests/acceptance/apxx
-addopts = "-ra"
-
 [tool.ruff]
 line-length = 110
 target-version = "py311"

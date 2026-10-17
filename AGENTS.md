@@ -53,7 +53,7 @@ Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `opens
 | Pfad | Inhalt | Sprache | Prüfen |
 | --- | --- | --- | --- |
 | `crates/graph` | Element-Graph, CRDT, Textprojektion – die einzige Implementierung des Datenmodells | Rust | `cargo fmt --check && cargo clippy --all-targets -- -D warnings && cargo test -q` |
-| `server/` | Sync, Presence, Historie, Freigaben, Worker-Steuerung, MCP | Elixir | `cd server && mix format --check-formatted && mix test` |
+| `server/` | Sync, Presence, Historie, Freigaben, Worker-Steuerung, MCP | Elixir | `cd server && mix format --check-formatted && mix credo --strict && mix dialyzer && mix test` |
 | `client/` | Web-App und Tauri-Desktop-App | TypeScript | `cd client && npm run lint && npm test` |
 | `worker/` | Geometrie-Worker (OpenCascade über build123d/OCP) | Python | `uv run ruff check . && uv run pytest -q` |
 | `sdk/`, `format/` | SDKs und offene Formatspezifikation (Apache-2.0) | – | – |

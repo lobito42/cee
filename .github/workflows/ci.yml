@@ -17,7 +17,13 @@ jobs:
         with:
           node-version: 22
       - name: Vertragsschutz (Branch-Regeln aus tools/guard.py)
-        if: github.event_name == 'pull_request' && !contains(github.event.pull_request.labels.*.name, 'vertrag')
+        # Ausnahme nur für Kernteam-PRs: Label "vertrag" UND kein Agenten-Branch (spec/, tests/, change/).
+        # Agenten-Branches werden immer geprüft, egal welche Labels gesetzt sind.
+        if: >-
+          github.event_name == 'pull_request' && !(
+            contains(github.event.pull_request.labels.*.name, 'vertrag') &&
+            !startsWith(github.head_ref, 'spec/') && !startsWith(github.head_ref, 'tests/') &&
+            !startsWith(github.head_ref, 'change/') && !startsWith(github.head_ref, 'claude/'))
         run: python3 tools/guard.py range origin/${{ github.base_ref }}
       - name: Werkzeug-Dateien synchron
         run: python3 tools/sync_agents.py --check
@@ -46,6 +52,15 @@ jobs:
   elixir:
     name: Elixir-Server
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
     defaults:
       run:
         working-directory: server
@@ -84,6 +99,15 @@ jobs:
     name: Fällige Abnahmetests
     runs-on: ubuntu-latest
     needs: [rust, elixir, python]
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
@@ -95,6 +119,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-deny
       - run: uv sync --extra cad
       - shell: bash
         run: |
@@ -116,4 +143,33 @@ jobs:
       - run: npm install
       - run: npm run lint
       - run: npm test
-  # Tauri-Builds für Linux, Windows, macOS kommen mit dem Desktop-Gerüst (ap-00-setup, Task 1.4).
+
+  desktop:
+    name: Desktop-App (Tauri, ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Desktop-Gerüst vorhanden?
+        id: probe
+        shell: bash
+        run: if [ -f client/src-tauri/tauri.conf.json ]; then echo "present=true" >> "$GITHUB_OUTPUT"; fi
+      - if: steps.probe.outputs.present == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - if: steps.probe.outputs.present == 'true'
+        uses: dtolnay/rust-toolchain@stable
+      - if: steps.probe.outputs.present == 'true' && runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+      - if: steps.probe.outputs.present == 'true'
+        working-directory: client
+        shell: bash
+        run: |
+          npm install
+          npx --yes @tauri-apps/cli@2 build --no-bundle
