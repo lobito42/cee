@@ -13,7 +13,7 @@ paths:
   ein Achsenursprung genauso wie eine Baugruppe (ADR-028). Keine Sonderfälle je Elementtyp im Speicherformat.
 - Der Kern ist fachneutral (ADR-046): keine Fachbegriffe (Wand, Absorber, Nachhallzeit, Bohrung) im Code
   von `crates/graph`, kein Aufzählen von Elementtypen im Schema. Fachtypen definieren Fachpakete über das
-  Plugin-SDK. Ausnahme sind die Grundtypen `frame`, `variables`, `component`, `instance`, `item`.
+  Plugin-SDK. Ausnahme sind die Grundtypen `frame`, `variables`, `component`, `instance`, `item`, `study`.
 - Freigabestände sind unveränderlich: Operationen auf einen freigegebenen Untergraphen werden abgelehnt;
   Änderungen gehen nur über einen neuen Arbeitsstand bzw. Änderungsauftrag (ADR-047).
 - Gesperrte Komponenten (ADR-049): Operationen auf ihr Innenleben lehnt der Kern ab; nur freigegebene

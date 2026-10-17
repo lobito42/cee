@@ -114,6 +114,9 @@ Die Lösung muss alle Fertigungsverfahren abdecken, alle gängigen CAD-Systeme b
 | F-36 | Stückliste und Verwendungsnachweis aus dem Graphen; Änderungsantrag und Änderungsauftrag auf Basis von Zweigen, mit Folgen für alle Verwender | Muss |
 | F-37 | Verbindungspunkte zum Platzieren von Teilen und Produkten; Projektvariablen mit Einheiten an einer Stelle | Muss |
 | F-38 | Offene Schnittstelle zu PLM und ERP: Austauschformat, API, Ereignisse, Nummernkreise (nach der Beta) | Soll |
+| F-39 | Untergraph als Befehl: veröffentlichte Untergraphen werden ohne Code zu Befehl, Knoten und MCP-Werkzeug | Muss |
+| F-40 | Apps aus dem Graphen: Formular, 3D-Ergebnis und Bericht für Personen ohne Modellrechte, z. B. Vertrieb oder Kunden-Konfigurator | Soll |
+| F-41 | Studien: Parameterbereiche automatisch durchrechnen, Tabelle und Pareto-Diagramm, gewählte Lösung als Änderungssatz | Soll |
 
 **Nicht-funktionale Anforderungen**
 
@@ -195,6 +198,7 @@ Anders als in Figma haben Komponenten echte Parameter mit Formeln und Bedingunge
 | `component`, `instance` | Wiederverwenden | Absorber-Katalog | Normteile, Schraube M5/M6 |
 | `item` | Freigeben, bestellen, fertigen | Absorber-Produkt, Raumangebot | Teil 100-0002, Baugruppe 100-0001 |
 | `analysis` | Berechnen | Nachhallzeit | Masse, Schwerpunkt, später FEM |
+| `study` (Studie) | Varianten automatisch durchrechnen | 4–16 Segel, 40–100 mm Dicke gegen Nachhallzeit, Kosten, CO₂ | Blechdicke und Rippen gegen Masse und Preis |
 
 Ob diese Form trägt und schnell genug ist, klärt der erste Spike (`ap-01-spike-datenmodell`): 10.000 Elemente in ≤ 200 ms laden, eine Änderung in ≤ 5 ms, zwei Zweige mit je 500 Änderungen in ≤ 500 ms zusammenführen.
 
@@ -360,6 +364,20 @@ Nicht übernommen: Telemetrie standardmäßig an, ein proprietäres offizielles 
 
 Nicht übernommen: nur Cloud ohne Offline, Daten nur beim Anbieter, proprietärer Kernel, eigene Sprache. Weitere Anregungen (Rollback-Leiste, Folgen-Modus, öffentliche Projekte, Mobile, Audit-Verlauf, Mate-Typen) liegen im Ideenspeicher.
 
+**Von Synera übernommen (ADR-049)**
+
+Bei Synera liegt der Workflow neben dem Modell in fremden CAD-Systemen; bei CEE sind Modell und Automatisierung derselbe Graph – versioniert, freigebbar und reproduzierbar.
+
+| Muster | So in CEE |
+| --- | --- |
+| Workflows als Werkzeuge für Agenten | Veröffentlichter Untergraph wird Befehl, Knoten und MCP-Werkzeug, z. B. „Raum belegen bis Zielnachhallzeit“ |
+| Synera Run | App aus dem Graphen: Vertrieb gibt Raummaße ein und erhält Belegung und Angebot; Maschinenbauer bauen damit Konfiguratoren |
+| Eigene und geschützte Experten-Knoten | Bibliotheken für Person, Projekt, Organisation; gesperrte Komponenten nur über ihre Parameter nutzbar |
+| Live-Ergebnisse | Zwischenergebnis mit Einheit an jedem Knoten und jeder Kante |
+| Design-Exploration | Studien mit Tabelle und Pareto-Diagramm; Agent stößt an, der Mensch wählt |
+
+Nicht übernommen: Workflow getrennt vom Modell, Agenten nur in einer Cloud, Lizenzpool mit Tokens, tausend Knoten im Kern. Weitere Anregungen (Konnektoren zu Fremdwerkzeugen, Berichte als Word und Excel, Branchenvorlagen, Multi-Agenten, eingebettete Konfiguratoren) liegen im Ideenspeicher.
+
 **Skizzieren**
 
 - **Starten:** Fläche oder Ebene anklicken, „Skizze“ wählen; die Ansicht dreht sich senkrecht darauf, das Modell tritt halbtransparent zurück.
@@ -384,7 +402,7 @@ Nicht übernommen: nur Cloud ohne Offline, Daten nur beim Anbieter, proprietäre
 
 ## Architecture Decision Records
 
-Achtundvierzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-048 beschreiben die neue Richtung (Element-Graph, Rust-Kern, Elixir-Server, Web und Desktop, Lizenz, offene und lokale KI, Raumakustik, Material, Rendering, Austauschformate, Komponenten, Bedienmuster aus Blender und VS Code, fachneutraler Kern, Freigabe, PLM- und ERP-Schnittstelle) und sind akzeptiert; sie ersetzen ADR-003, 005, 013 und 024. Die übrigen stehen auf „Vorgeschlagen“ und werden mit den Spikes bestätigt. Jedes ADR liegt zusätzlich als Markdown-Datei unter `docs/adr/` im Repository.
+Neunundvierzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-049 beschreiben die neue Richtung (Element-Graph, Rust-Kern, Elixir-Server, Web und Desktop, Lizenz, offene und lokale KI, Raumakustik, Material, Rendering, Austauschformate, Komponenten, Bedienmuster aus Blender und VS Code, fachneutraler Kern, Freigabe, PLM- und ERP-Schnittstelle, Automatisierung) und sind akzeptiert; sie ersetzen ADR-003, 005, 013 und 024. Die übrigen stehen auf „Vorgeschlagen“ und werden mit den Spikes bestätigt. Jedes ADR liegt zusätzlich als Markdown-Datei unter `docs/adr/` im Repository.
 
 | ADR | Entscheidung | Wichtigste Alternative |
 | --- | --- | --- |
@@ -436,6 +454,7 @@ Achtundvierzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-048 be
 | 046 | Fachneutraler Kern; Fachpakete über die Plugin-API; Verbindungspunkte, Projektvariablen, Verweise auf feste Versionen (nach Onshape) | Fachtypen fest im Kern |
 | 047 | Freigabe mit Item, Sachnummer, Revision und Lebenszyklus; Vier-Augen-Prinzip; unveränderliche Freigabestände; Stückliste; Änderungswesen | Freigabe nur als Git-Tag oder nur im PLM |
 | 048 | Offene Schnittstelle zu PLM und ERP: ein führendes System je Feld, offenes Format, API aus dem Befehlsregister, Ereignisse, Anbindungen als Plugins | Feste Anbindung an ein Produkt; CEE als ERP |
+| 049 | Nach Synera: Untergraph als Befehl, Apps aus dem Graphen, Bibliotheksebenen und gesperrte Komponenten, Werte an jeder Kante, Studien | Automatisierung nur als Skript, Apps als eigene Software |
 
 ### ADR-001: Geometriekernel OpenCascade
 
@@ -761,6 +780,12 @@ Achtundvierzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-048 be
 
 **Konsequenzen:** Ergänzt ADR-017, ADR-030 und ADR-047. Format mit ap-33, API und Ereignisse mit ap-34 nach der Beta.
 
+### ADR-049: Automatisierung, Apps und Studien nach dem Vorbild von Synera
+
+**Entscheidung:** (1) Veröffentlichte Untergraphen mit deklarierten Ein- und Ausgängen werden ohne Code Befehl, Knoten und MCP-Werkzeug, versioniert und freigebbar. (2) Apps aus dem Graphen: Formular, 3D-Ergebnis, Kennzahlen und Bericht für Personen ohne Modellrechte; Ergebnisse als Änderungssatz. (3) Bibliotheken für Person, Projekt und Organisation; gesperrte Komponenten. (4) Zwischenergebnisse an jedem Knoten und jeder Kante. (5) Studien (`study`) rechnen Parameterbereiche im Worker durch; Tabelle und Pareto-Diagramm; der Mensch wählt.
+
+**Konsequenzen:** Ändert ADR-043, ergänzt ADR-035 und ADR-045. Neues Arbeitspaket ap-35; Werte an Kanten und Untergraph als Befehl kommen mit ap-23.
+
 ## Regelwerk und Verifikationsschleife
 
 Erstes Regelpaket ist die Raumakustik: Zielbänder für die Nachhallzeit je Raumart, geprüft von der Firma (ap-20). Die Fertigungsregeln unten folgen nach der Beta.
@@ -819,7 +844,7 @@ Die Arbeit ist in 33 Arbeitspakete in vier Phasen geschnitten, ausgerichtet auf 
 | ap-20-regeln-raumakustik | 2 | Zielwerte als Regelpaket (z. B. nach DIN 18041), geprüft durch die Firma | Zielbänder für 5 Raumarten stimmen mit Firmenprüfung | ap-11 |
 | ap-21-import-ifc-dxf | 2 | Import von Räumen aus IFC und Grundrissen aus DXF | 3 Architekturmodelle ohne Nacharbeit übernommen | ap-09 |
 | ap-22-moebel-gltf | 2 | Möbelbibliothek, glTF-Import und -Export | 20 Möbel mit Absorptionsfläche; Szene als glTF exportiert | ap-14 |
-| ap-23-knoten-editor | 2 | Knoten-Editor, Untergraphen als Bausteine | Absorber-Raster vollständig im Knoten-Editor | ap-08, ap-24 |
+| ap-23-knoten-editor | 2 | Knoten-Editor, Untergraphen als Bausteine und Befehle, Werte an jeder Kante | Absorber-Raster vollständig im Knoten-Editor | ap-08, ap-24 |
 | ap-24-textprojektion-git | 2 | Textprojektion produktiv, Git-Export und -Import | Roundtrip verlustfrei; eine Parameteränderung = eine Zeile | ap-05 |
 | ap-25-zweige-freigabe | 2 | Zweige, Änderungsanfragen, Review, Freigabe, semantische Konflikte | 100 % der Konflikte im Testkorpus erkannt | ap-07 |
 | ap-26-publikation | 2 | Publikationsstatus, Manifest, URIs, semantischer Diff | Schnittstellen-Diff an 3 Referenzräumen korrekt | ap-05 |
@@ -831,6 +856,7 @@ Die Arbeit ist in 33 Arbeitspakete in vier Phasen geschnitten, ausgerichtet auf 
 | ap-32-zweiter-kernel | 3 | Spezialisierter Kernel (implizite Modelle, Gitter, z. B. für Absorberstrukturen) | Gitterabsorber als 3MF exportiert | ap-06 |
 | ap-33-freigabe-revisionen | 2 | Items, Sachnummern, Revisionen, Lebenszyklus, Vier-Augen-Freigabe, Freigabestände mit Dokumenten, Stückliste, Änderungsantrag und -auftrag, Austauschformat | Baugruppe und Raumangebot freigegeben, geändert und als Revision B erneut freigegeben; Freigabestand bitgleich reproduzierbar | ap-25, ap-26 |
 | ap-34-plm-erp-schnittstelle | 3 | API aus dem Befehlsregister, Ereignisse mit Outbox, Nummernkreis-Plugin, Beispielanbindung an ein selbst gebautes PLM/ERP | Externes System empfängt Freigabe und Stückliste und vergibt Sachnummern, ohne Änderung am Kern | ap-27, ap-33 |
+| ap-35-apps-studien | 2 | Apps aus veröffentlichten Untergraphen, gesperrte Komponenten, Bibliotheksebenen, Studien mit Tabelle und Pareto-Diagramm | Vertrieb erstellt ohne Modellrechte eine Raumbelegung mit Angebot; Studie mit 100 Varianten < 2 min | ap-06, ap-11, ap-23 |
 
 ### Entwicklung mit Agenten
 
