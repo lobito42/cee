@@ -5,6 +5,18 @@ Produktdefinition: Ein Projekt ist ein **Graph aus Elementen** – ein Achsenurs
 Bauteil. Alle sehen online denselben Stand, offline wird wie bei Git weitergearbeitet. Bearbeitet wird in
 3D, im Knoten-Editor oder als Text; KI-Agenten arbeiten über denselben Graphen.
 
+## Zu Beginn jeder Sitzung: Wo stehen wir?
+
+Der gesamte Projektzustand liegt im Repository und auf GitHub, nicht in einem Chat. Werkzeug und Gerät
+spielen keine Rolle.
+
+1. `git pull` auf `main` (bzw. auf dem eigenen Branch).
+2. `openspec/queue.yaml` lesen: freigegebene Changes, ihre Phase und Reihenfolge.
+3. `gh pr list` (REST) – offene PRs; ein offener Agenten-PR heißt: erst Review, dann Neues.
+4. Den nächsten Schritt nennen und mit dem Menschen abstimmen (interaktiv) bzw. `/nachtschicht` folgen (unbeaufsichtigt).
+
+Hintergrund: `docs/konzept.md` (Export des Konzepts, nur gezielt lesen), Entscheidungen in `docs/adr/`.
+
 ## Arbeitsweise: Spec-driven mit OpenSpec
 
 1. **Auftrag = OpenSpec-Change** unter `openspec/changes/<id>/` (proposal, design, specs, tasks).

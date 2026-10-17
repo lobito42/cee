@@ -34,6 +34,11 @@ cargo test -q && (cd server && mix test)     # Rust-Kern und Server
 uv run pytest -q tests/acceptance/ap-01-spike-datenmodell   # zeigt die offene Arbeit des ersten Spikes
 ```
 
+**Auf einem neuen Gerät oder in einem anderen Werkzeug:** `git clone https://github.com/lobito42/cee`,
+`git config core.hooksPath .githooks`, im Kernteam `export CEE_ROLE=core` (sonst blockiert der Vertragsschutz
+Änderungen an ADRs, Queue und Konfiguration), dann im Werkzeug fragen: „Wo stehen wir?“ – die Anweisung dafür
+steht in `AGENTS.md`. Ohne lokale Installation: Devcontainer oder Claude Code im Browser.
+
 Auf GitHub: Branch-Schutz für `main` (PR-Pflicht, grüne CI, Code-Owner-Review), Labels `vertrag` und
 `review`, Secret `CLAUDE_CODE_OAUTH_TOKEN` (lokal `claude setup-token`), eure Namen in `.github/CODEOWNERS`.
 Konzept als Markdown nach `docs/konzept.md` exportieren.
