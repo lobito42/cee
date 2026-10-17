@@ -26,7 +26,7 @@ Keine.
 
 ## Impact
 
-- Neue Dateien unter `crates/`, `server/`, `client/`, `worker/`, `Cargo.lock`, `deny.toml`
+- Neue Dateien unter `crates/`, `server/`, `client/`, `worker/`, `Cargo.lock` (`deny.toml` liegt bereits vor, Kernteam)
 - Betroffene ADRs: ADR-029, 030, 031, 032, 034
 - Abnahmetests: `tests/acceptance/ap-00-setup/` (AK-1 bis AK-6)
 - Gate G1 (zusammen mit den Spikes ap-01 bis ap-04)

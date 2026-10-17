@@ -3,6 +3,7 @@ paths:
   - "worker/**/*.py"
   - "parts/**/*.py"
   - "sdk/python/**/*.py"
+  - "packages/**/*.py"
 ---
 <!-- generiert von tools/sync_agents.py – Quelle: docs/rules/geometrie.md -->
 

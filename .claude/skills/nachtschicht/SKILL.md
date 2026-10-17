@@ -33,6 +33,6 @@ Fehlende Werkzeuge einmal installieren, Ausgabe knapp halten:
 ## Grenzen
 
 - Pushe nur auf den genannten Branch, nie auf `main`. Ändere `openspec/queue.yaml` nicht.
-- Höchstens drei Anläufe pro Problem, dann Stand committen, PR als Entwurf öffnen, Problem im PR beschreiben.
+- Jeder Commit mit `git commit -s` (DCO). Höchstens drei Anläufe pro Problem, dann Stand committen, PR als Entwurf öffnen, Problem im PR beschreiben.
 - Jeder PR folgt `.github/pull_request_template.md`, inklusive „In einfachen Worten“.
 - Am Ende eine Zusammenfassung von höchstens fünf Zeilen: Change, Schritt, Ergebnis, PR-Link, offene Fragen.

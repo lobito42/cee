@@ -1,6 +1,8 @@
 ---
 paths:
   - "client/**/*"
+  - "packages/**/*.ts"
+  - "packages/**/*.tsx"
 ---
 <!-- generiert von tools/sync_agents.py – Quelle: docs/rules/client.md -->
 

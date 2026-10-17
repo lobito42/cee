@@ -110,7 +110,7 @@ Die Lösung muss fachneutral sein (jede Branche über Fachpakete), über offene 
 | F-32 | Mengen, Kosten, Gewicht und CO₂ je Raum; PDF-Bericht mit Nachhallzeit vorher/nachher; CSV-Mengenliste | Muss |
 | F-33 | Import von IFC und DXF; Möbel und Szenen als glTF | Soll |
 | F-34 | Komponenten wie in Figma: Auswahl zur Vorlage machen, Parameter und Varianten festlegen, Instanzen mit Überschreibungen, Bibliotheken mit Versionen und Aktualisierung mit Vorschau, Lösen | Muss |
-| F-35 | Freigabeprozess: Items mit Sachnummer, Revision und Status; Prüfen und Freigeben nach Vier-Augen-Prinzip; unveränderliche Freigabestände mit Manifest, Stückliste, STEP und PDF | Muss |
+| F-35 | Freigabeprozess: Items mit Sachnummer, Revision und Status; Prüfen und Freigeben (Selbstfreigabe bis zwei Personen, danach Vier-Augen-Prinzip); unveränderliche Freigabestände mit Manifest, Stückliste, STEP und PDF | Muss |
 | F-36 | Stückliste und Verwendungsnachweis aus dem Graphen; Änderungsantrag und Änderungsauftrag auf Basis von Entwürfen, mit Folgen für alle Verwender | Muss |
 | F-37 | Verbindungspunkte zum Platzieren von Teilen und Produkten; Projektvariablen mit Einheiten an einer Stelle | Muss |
 | F-38 | Offene Schnittstelle zu PLM und ERP: Austauschformat, API, Ereignisse, Nummernkreise (nach der Beta) | Soll |
@@ -191,7 +191,7 @@ Die Textprojektion ist deterministisch und verlustfrei: eine Zeile je Parameter,
 
 | Figma | CEE | Beispiel |
 | --- | --- | --- |
-| Main Component | Komponente: Untergraph mit freigegebenen Parametern | Deckensegel mit Breite, Länge, Dicke, Material, Abhängung |
+| Main Component | Komponente: Untergraph mit exponierten Parametern | Deckensegel mit Breite, Länge, Dicke, Material, Abhängung |
 | Instance | Instanz: Verweis plus Abweichungen, keine Kopie | 12 Segel im Raum, eines 900 statt 1200 mm breit |
 | Overrides | Überschreibungen bleiben bei Änderungen der Vorlage erhalten | Farbe eines Segels geändert, neue Kantenform kommt trotzdem an |
 | Variants | Varianten: benannte Parametersätze | Größe S/M/L, Montage Wand/Decke/abgehängt |
@@ -225,7 +225,7 @@ Jedes Element des Modells erhält eine stabile Identität, vom Punkt bis zum Zei
 | --- | --- | --- | --- |
 | Intern | Hilfsfeature: Hilfsebene, Skizze, Zwischenkörper | Standard für alles | Hat eine ID, wird nicht exportiert, darf sich frei ändern |
 | Veröffentlicht | Teil der Bauteil-Schnittstelle | Konstrukteur; KI darf nur vorschlagen | Adressierbar, einzeln exportierbar, im Manifest versioniert; jede Änderung erscheint als Diff |
-| Freigegeben | Veröffentlicht und in einer Revision eingefroren | Freigeber nach Vier-Augen-Prinzip (ADR-047) | Unveränderlich; jede Änderung erzeugt eine neue Revision |
+| Freigegeben | Veröffentlicht und in einer Revision eingefroren | Freigeber; ab drei Personen nach Vier-Augen-Prinzip (ADR-047) | Unveränderlich; jede Änderung erzeugt eine neue Revision |
 
 **Was veröffentlicht werden kann**
 
@@ -511,7 +511,7 @@ Die frühen ADRs 001 bis 027 stammen aus einer früheren Richtung (VS-Code-Erwei
 | 044 | Bedienmuster aus Blender: Werte beim Ziehen tippen, Arbeitsbereiche (seit ADR-054 Beitrag der Fachpakete), Stapel als Sicht auf den Graphen, Aktion als Code, Denoiser im Fotomodus | Dialoge für exakte Werte, eine Oberfläche für alles |
 | 045 | Nach VS Code: ein Befehlsregister für Mensch, Plugins und KI; Plugins mit Manifest in der Sandbox; Projekt-Vertrauen; Befunde mit Korrekturen; Einstellungen in Ebenen; visueller Vergleich | Plugins im selben Prozess, getrennte Werkzeuge für Mensch und KI |
 | 046 | Fachneutraler Kern; Fachpakete über die Plugin-API; Verbindungspunkte, Projektvariablen, Verweise auf feste Versionen (nach Onshape) | Fachtypen fest im Kern |
-| 047 | Freigabe mit Item, Sachnummer, Revision und Lebenszyklus; Vier-Augen-Prinzip; unveränderliche Freigabestände; Stückliste; Änderungswesen | Freigabe nur als Git-Tag oder nur im PLM |
+| 047 | Freigabe mit Item, Sachnummer, Revision und Lebenszyklus; Selbstfreigabe bis zwei Personen, danach Vier-Augen-Prinzip; unveränderliche Freigabestände; Stückliste; Änderungswesen | Freigabe nur als Git-Tag oder nur im PLM |
 | 048 | Offene Schnittstelle zu PLM und ERP: ein führendes System je Feld, offenes Format, API aus dem Befehlsregister, Ereignisse, Anbindungen als Plugins | Feste Anbindung an ein Produkt; CEE als ERP |
 | 049 | Nach Synera: Untergraph als Befehl, Apps aus dem Graphen, Bibliotheksebenen und gesperrte Komponenten, Werte an jeder Kante, Studien | Automatisierung nur als Skript, Apps als eigene Software |
 | 050 | Aus CATIA, NX, Creo: Referenz-Eingänge an Komponenten, direktes Bearbeiten als Element, robuste Neuberechnung, Skelett, Teil-Laden und Detailstufen, Messungen und Richtlinien als Elemente | Nur Parameter an Komponenten, Abbruch beim ersten Fehler, immer alles laden |
@@ -642,7 +642,7 @@ Die frühen ADRs 001 bis 027 stammen aus einer früheren Richtung (VS-Code-Erwei
 
 **Konsequenzen:** Git bleibt das einzige Versionssystem; jeder Pull Request zeigt Schnittstellenänderungen als lesbaren Diff. Eine spätere PLM-Anbindung liest nur das Manifest.
 
-### ADR-018: Adressierung per URI
+### ADR-018: Adressierung per URI (ersetzt durch ADR-058)
 
 **Entscheidung:** Jedes veröffentlichte Element ist unter `cee://<server>/<projekt>/<bauteil>@<version>#<name>` erreichbar, über MCP, im Client und in Exporten (als Attribut in STEP). Bauteile, Baugruppen und Zeichnungen referenzieren nur veröffentlichte Elemente.
 
@@ -814,7 +814,7 @@ Die frühen ADRs 001 bis 027 stammen aus einer früheren Richtung (VS-Code-Erwei
 
 **Kontext:** Wiederverwendbare, konfigurierbare Vorlagen wie in Figma: Absorber-Katalog, Möbel und Raumvorlagen einmal pflegen, vielfach nutzen, Aktualisierungen kontrolliert übernehmen.
 
-**Entscheidung:** Eine `component` hat einen Untergraphen, freigegebene Parameter und benannte Varianten. Eine `instance` verweist auf die Komponente und speichert nur Variante und Überschreibungen, nie eine Kopie. Definitionsänderungen erreichen alle Instanzen, Überschreibungen bleiben erhalten; entfällt ein Parameter, entsteht ein Befund. Komponenten sind verschachtelbar, Zyklen verboten. Bibliotheken sind Projekte mit veröffentlichten, semantisch versionierten Komponenten; neue Versionen kommen mit Vorschau der Wirkung (Geometrie, Nachhallzeit, Kosten). Lösen macht aus einer Instanz einen eigenständigen Untergraphen.
+**Entscheidung:** Eine `component` hat einen Untergraphen, exponierte Parameter und benannte Varianten. Eine `instance` verweist auf die Komponente und speichert nur Variante und Überschreibungen, nie eine Kopie. Definitionsänderungen erreichen alle Instanzen, Überschreibungen bleiben erhalten; entfällt ein Parameter, entsteht ein Befund. Komponenten sind verschachtelbar, Zyklen verboten. Bibliotheken sind Projekte mit veröffentlichten, semantisch versionierten Komponenten; neue Versionen kommen mit Vorschau der Wirkung (Geometrie, Nachhallzeit, Kosten). Lösen macht aus einer Instanz einen eigenständigen Untergraphen.
 
 **Konsequenzen:** Der Absorber-Katalog ist eine Komponentenbibliothek mit Varianten. ap-01 misst die Weitergabe an 1.000 Instanzen (≤ 50 ms) und den Erhalt der Überschreibungen.
 
@@ -951,18 +951,18 @@ Die Arbeit ist in 42 Arbeitspakete (ap-00 bis ap-41) in vier Phasen geschnitten;
 | ap-03-spike-sync | 0 | Phoenix Channels mit Rust-Kern: zwei Browser live, einer offline, Zusammenführen | Änderung bei beiden < 200 ms; Merge ohne Datenverlust | ap-01 |
 | ap-04-spike-rendering | 0 | Echtzeit-PBR und Fotomodus (Path Tracing mit Denoiser) in Browser und Tauri auf drei Systemen | Raum mit 50 Objekten ≥ 30 fps; Fotomodus 1920 × 1080 in ≤ 60 s auf Mittelklasse-GPU | ap-00 |
 | ap-05-graph-kern | 1 | Graph-Kern produktiv: Schema v1, Validierung, Abhängigkeiten, Migrationen, Teil-Laden, Berechnungszustände | 100.000 Elemente laden ≤ 2 s | ap-01 |
-| ap-06-kernel-worker | 1 | Kernel-Protokoll, Python-Worker mit OCCT, Cache nach Inhalts-Hash, Detailstufen, robuste Neuberechnung | Raum mit 6 Wänden und 2 Öffnungen baut < 1 s; Worker-Absturz ohne Serverausfall | ap-05 |
-| ap-07-server-sync | 1 | Dokumentprozesse, Channels, Presence, Rollen und Rechte (ADR-055), PostgreSQL | 20 gleichzeitige Nutzer je Dokument, Änderung < 200 ms | ap-03, ap-05 |
+| ap-06-kernel-worker | 1 | Kernel-Protokoll, Python-Worker mit OCCT, Cache nach Inhalts-Hash, Detailstufen, robuste Neuberechnung | Raum mit 6 Wänden und 2 Öffnungen baut < 1 s; Worker-Absturz ohne Serverausfall | ap-05, ap-39 |
+| ap-07-server-sync | 1 | Dokumentprozesse, Channels, Presence, Rollen und Rechte (ADR-055), PostgreSQL | 20 gleichzeitige Nutzer je Dokument, Änderung < 200 ms | ap-03, ap-05, ap-40 |
 | ap-08-arbeitsflaeche | 1 | Arbeitsfläche mit 3D und 2D-Grundriss, Featurebaum, Eigenschaften mit Stapel, Befehlsregister mit Befehlssuche, Einstellungen, Avatare, Arbeitsbereiche, Werte beim Ziehen tippen, Aktionsprotokoll | 4 von 5 Testpersonen der Firma lösen Kernabläufe; Auswahl < 100 ms | ap-04, ap-05 |
 | ap-09-raum-elemente | 1 | Geschoss, Wand, Boden, Decke, Fenster, Tür; Wände im Grundriss zeichnen | Besprechungsraum in ≤ 5 min modelliert; Öffnungen schneiden Wände korrekt | ap-06, ap-08 |
 | ap-10-materialbibliothek | 1 | Material-Elemente mit allen Eigenschaftsgruppen, Import von Herstellerdaten (CSV) | 20 Materialien der Firma importiert, αw und Absorberklasse korrekt | ap-05, ap-08 |
-| ap-11-akustik-live | 1 | Analyse-Element Nachhallzeit, Live-Anzeige je Band, Zielband, Kern als WASM | Aktualisierung beim Verschieben < 100 ms | ap-02, ap-09, ap-10 |
-| ap-12-skizze-extrusion | 1 | Skizzen mit PlaneGCS, Extrusion, Identität der Flächen | Absorber-Form per Skizze in ≤ 3 Schritten; IDs stabil über 50 Parameteränderungen | ap-06, ap-08 |
+| ap-11-akustik-live | 1 | Analyse-Element Nachhallzeit, Live-Anzeige je Band, Zielband, Kern als WASM | Aktualisierung beim Verschieben < 100 ms | ap-02, ap-09, ap-10, ap-40 |
+| ap-12-skizze-extrusion | 1 | Skizzen mit PlaneGCS, Extrusion, Identität der Flächen | Absorber-Form per Skizze in ≤ 3 Schritten; IDs stabil über 50 Parameteränderungen | ap-06, ap-08, ap-39 |
 | ap-13-komponenten-katalog | 1 | Komponenten mit Varianten, Referenz-Eingängen und Instanzen (ADR-043, ADR-050), Bibliotheken mit Versionen im Projekt (Aktualisierung über Projektgrenzen mit ap-26); Absorber-Katalog der Firma als Bibliothek; Platzieren an Wand und Decke, abgehängt, Reihen und Raster | 12 Deckensegel als Raster in einem Schritt; Wirkung sofort in der Nachhallzeit; ein Katalog-Update erreicht alle Instanzen, Überschreibungen bleiben | ap-10, ap-11, ap-12 |
 | ap-14-rendering-fotomodus | 1 | Echtzeit-PBR, HDRI, Fotomodus mit Denoiser produktiv, Bild als PNG | Referenzraum fotorealistisch; Materialien entsprechen Mustern der Firma | ap-04, ap-10 |
 | ap-15-mcp-ki | 1 | MCP-Endpunkt, Anbieter-Schnittstelle (lokal und Cloud), Änderungssätze, Eval-Suite mit Aufgabengenerator und Prüfern (ADR-053) | Agent bringt die Nachhallzeit eines Referenzraums in das Zielband, mit Cloud- und lokalem Modell | ap-07, ap-08, ap-13 |
 | ap-16-selbstbetrieb | 1 | Container mit Server, Datenbank und lokalem Modell, Anmeldung über OIDC, Backups mit Wiederherstellungstest | Installation in < 15 min | ap-07 |
-| ap-17-desktop-offline | 1 | Tauri-App mit Kern, Speicher und Worker; offline, Abgleich beim Verbinden | Einen Tag offline gearbeitet, Merge ohne Datenverlust | ap-06, ap-07 |
+| ap-17-desktop-offline | 1 | Tauri-App mit Kern, Speicher und Worker; offline, Abgleich beim Verbinden | Einen Tag offline gearbeitet, Merge ohne Datenverlust | ap-06, ap-07, ap-40 |
 | ap-18-mengen-kosten-co2 | 2 | Mengen, Kosten, Gewicht und CO₂ je Raum; CSV-Mengenliste | Summen stimmen mit Handrechnung für 3 Räume | ap-10, ap-13 |
 | ap-19-bericht-angebot | 2 | PDF-Bericht: Nachhallzeit vorher/nachher, Bilder, Grundriss, Mengen, Kosten, CO₂ | Firma versendet einen echten Bericht ohne Nacharbeit | ap-14, ap-18 |
 | ap-20-regeln-raumakustik | 2 | Zielwerte als Regelpaket (z. B. nach DIN 18041), geprüft durch die Firma; Messungen mit Grenzwert, Modellierrichtlinien | Zielbänder für 5 Raumarten stimmen mit Firmenprüfung | ap-11 |
@@ -978,7 +978,7 @@ Die Arbeit ist in 42 Arbeitspakete (ap-00 bis ap-41) in vier Phasen geschnitten;
 | ap-30-akustik-geometrisch | 3 | Spiegelquellen bzw. Strahlverfolgung, Auralisation (hörbar machen) | Abweichung zu Messung in 3 Räumen dokumentiert | ap-11 |
 | ap-31-fertigung | 3 | Fertigungsregeln (Fräsen, 3D-Druck, Blech), STEP mit PMI, Zeichnungen | Absorber-Bauteil fertigungsgerecht exportiert | ap-12 |
 | ap-32-zweiter-kernel | 3 | Spezialisierter Kernel (implizite Modelle, Gitter, z. B. für Absorberstrukturen) | Gitterabsorber als 3MF exportiert | ap-06 |
-| ap-33-freigabe-revisionen | 2 | Items, Sachnummern, Revisionen, Lebenszyklus, Vier-Augen-Freigabe, Freigabestände mit STEP und Bericht (Zeichnungen erst mit ap-31), Stückliste, Änderungsantrag und -auftrag, Austauschformat | Baugruppe und Raumangebot freigegeben, geändert und als Revision B erneut freigegeben; Freigabestand bitgleich reproduzierbar | ap-25, ap-26 |
+| ap-33-freigabe-revisionen | 2 | Items, Sachnummern, Revisionen, Lebenszyklus, Freigabe (Selbstfreigabe bis zwei Personen, danach Vier-Augen), Freigabestände mit STEP und Bericht (Zeichnungen erst mit ap-31), Stückliste, Änderungsantrag und -auftrag, Austauschformat | Baugruppe und Raumangebot freigegeben, geändert und als Revision B erneut freigegeben; Freigabestand bitgleich reproduzierbar | ap-25, ap-26 |
 | ap-34-plm-erp-schnittstelle | 3 | API aus dem Befehlsregister, Ereignisse mit Outbox, Nummernkreis-Plugin, Beispielanbindung an ein selbst gebautes PLM/ERP | Externes System empfängt Freigabe und Stückliste und vergibt Sachnummern, ohne Änderung am Kern | ap-27, ap-33 |
 | ap-35-apps-studien | 2 | Apps aus veröffentlichten Untergraphen, gesperrte Komponenten, Bibliotheksebenen, Studien mit Tabelle und Pareto-Diagramm | Vertrieb erstellt ohne Modellrechte eine Raumbelegung mit Angebot; Studie mit 100 Varianten < 2 min | ap-06, ap-11, ap-23 |
 | ap-36-direkt-skelett | 2 | Direktes Bearbeiten von Flächen (auch an STEP), Skelett mit eingefrorenen Verknüpfungen, Ersetzen mit Umhängen | Lieferanten-STEP ohne Neumodellieren angepasst; Skelettänderung erreicht 20 Teile, eingefrorene erst nach Bestätigung | ap-06, ap-12, ap-13 |

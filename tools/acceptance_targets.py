@@ -12,7 +12,7 @@ import re
 import subprocess
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(os.environ.get("CEE_ROOT") or Path(__file__).resolve().parents[1])
 BRANCH_RE = re.compile(r"^(?:claude/)?(?:spec|tests|change)/([a-z0-9][a-z0-9-]*)$")
 
 

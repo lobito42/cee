@@ -26,4 +26,5 @@ Namensbasierte Adressen; Adressen mit Pfad.
 
 ## Konsequenzen
 
-Ersetzt die Adressform von ADR-018; Web-Links der App nutzen dieselbe Form (`https://<server>/e/<element-id>`).
+Ersetzt die Adressform von ADR-018. Web-Links der App sind die Browser-Entsprechung derselben Adresse
+(`https://<server>/e/<element-id>[@<meilenstein|revision>]`).

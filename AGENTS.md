@@ -56,6 +56,7 @@ Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `opens
 | `server/` | Sync, Presence, Historie, Freigaben, Worker-Steuerung, MCP | Elixir | `cd server && mix format --check-formatted && mix credo --strict && mix dialyzer && mix test` |
 | `client/` | Web-App und Tauri-Desktop-App | TypeScript | `cd client && npm run lint && npm test` |
 | `worker/` | Geometrie-Worker (OpenCascade über build123d/OCP) | Python | `uv run ruff check . && uv run pytest -q` |
+| `packages/` | Fachpakete (ADR-054), z. B. Raum und Akustik; Regeln: `client.md` bzw. `geometrie.md` | TypeScript, Python | wie Client bzw. Worker |
 | `sdk/`, `format/` | SDKs und offene Formatspezifikation (Apache-2.0) | – | – |
 | `parts/` | Beispiele, z. B. Script-Element `parts/examples/halter.py` | Python | – |
 
@@ -70,7 +71,7 @@ Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `opens
 - Datenmodell-Logik nur im Rust-Kern; Server, Client und SDK binden ihn ein (ADR-029).
 - Server: ein Prozess je Dokument, nie je Element; keine Geometrie in der BEAM (ADR-030).
 - Geometrie nur im Worker hinter der Kernel-Schnittstelle (ADR-032). Topologie nie über Indizes (ADR-016).
-- Export und Querverweise nur über veröffentlichte Elemente, nie über Sichtbarkeit (ADR-015/018).
+- Export und Querverweise nur über veröffentlichte Elemente, nie über Sichtbarkeit (ADR-015, ADR-058).
 - KI-Änderungen nur als Änderungssatz mit Vorschau (ADR-021).
 - Jede Funktion ist ein Befehl im Befehlsregister; Befehlssuche, Tastenkürzel, Plugins und MCP-Tools nutzen
   dasselbe Register. Plugins laufen isoliert; fremde Projekte führen Code erst nach Vertrauen aus (ADR-045).
@@ -95,8 +96,8 @@ Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `opens
   mit Echtzeit und Fotomodus (ADR-040).
 - Wiederverwendung über Komponenten und Instanzen (ADR-043): Instanzen speichern nur Variante, gewählte
   Referenzen und Überschreibungen, nie eine Kopie; der Absorber-Katalog ist eine Komponentenbibliothek.
-- Lizenzen: Kern MPL-2.0, `sdk/` und `format/` Apache-2.0. Abhängigkeiten nur MPL/Apache/MIT/BSD/ISC/Zlib;
-  LGPL nur dynamisch oder im Worker-Prozess; kein GPL/AGPL (ADR-034).
+- Lizenzen: Kern MPL-2.0, `sdk/` und `format/` Apache-2.0. Abhängigkeiten nur freizügig nach der Liste in
+  ADR-034; LGPL nur dynamisch oder im Worker-Prozess; kein GPL/AGPL.
 
 ## Konventionen
 

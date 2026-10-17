@@ -24,7 +24,10 @@ jobs:
             contains(github.event.pull_request.labels.*.name, 'vertrag') &&
             !startsWith(github.head_ref, 'spec/') && !startsWith(github.head_ref, 'tests/') &&
             !startsWith(github.head_ref, 'change/') && !startsWith(github.head_ref, 'claude/'))
-        run: python3 tools/guard.py range origin/${{ github.base_ref }}
+        # Der Guard kommt aus dem Basis-Stand, damit ein PR seinen eigenen Schutz nicht ändern kann.
+        run: |
+          git show origin/${{ github.base_ref }}:tools/guard.py > "$RUNNER_TEMP/guard.py"
+          python3 "$RUNNER_TEMP/guard.py" range origin/${{ github.base_ref }}
       - name: Werkzeug-Dateien synchron
         run: python3 tools/sync_agents.py --check
       - name: OpenSpec gültig
@@ -124,8 +127,16 @@ jobs:
           tool: cargo-deny
       - run: uv sync --extra cad
       - shell: bash
+        env:
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"  # keine Plugins über neue Abhängigkeiten einschleusen
         run: |
-          targets=$(uv run python tools/acceptance_targets.py)
+          sel=tools/acceptance_targets.py
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch -q --depth=1 origin ${{ github.base_ref }}
+            git show origin/${{ github.base_ref }}:tools/acceptance_targets.py > "$RUNNER_TEMP/targets.py"
+            sel="$RUNNER_TEMP/targets.py"
+          fi
+          targets=$(CEE_ROOT="$PWD" uv run python "$sel")
           echo "Abnahmetests: ${targets:-keine}"
           if [ -n "$targets" ]; then uv run pytest -q $targets; fi
 
@@ -166,7 +177,7 @@ jobs:
       - if: steps.probe.outputs.present == 'true' && runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev patchelf
       - if: steps.probe.outputs.present == 'true'
         working-directory: client
         shell: bash

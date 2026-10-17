@@ -30,8 +30,8 @@ RULE_PATHS = {
     "akustik": ["crates/acoustics/**/*", "format/materials/**/*"],
     "server": ["server/**/*"],
     "mcp": ["server/lib/**/mcp/**/*", "server/test/**/mcp/**/*"],
-    "client": ["client/**/*"],
-    "geometrie": ["worker/**/*.py", "parts/**/*.py", "sdk/python/**/*.py"],
+    "client": ["client/**/*", "packages/**/*.ts", "packages/**/*.tsx"],
+    "geometrie": ["worker/**/*.py", "parts/**/*.py", "sdk/python/**/*.py", "packages/**/*.py"],
 }
 OPENCODE_MODELS = {
     "sonnet": "anthropic/claude-sonnet-5-5",

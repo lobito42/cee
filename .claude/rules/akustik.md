@@ -7,7 +7,8 @@ paths:
 
 # Regeln für Akustik und Materialien (crates/acoustics, Material-Elemente)
 
-- Einheiten immer SI und explizit im Namen oder Typ: `volume_m3`, `area_m2`, `t_s`. Frequenzbänder fest:
+- Intern rechnet das Fachpaket in SI mit Einheit im Namen oder Typ (`volume_m3`, `area_m2`, `t_s`); an der
+  Schnittstelle zum Graphen gelten Größen nach ADR-057 (z. B. Länge kanonisch in mm), umgerechnet nur dort. Frequenzbänder fest:
   125, 250, 500, 1000, 2000, 4000 Hz, als Aufzählung, nie als freie Zahl.
 - Formeln mit Quelle im Kommentar (z. B. Sabine, Eyring). Konstante 0,161 s/m bei 20 °C; Luftabsorption
   nur als optionaler, getrennt ausgewiesener Term.

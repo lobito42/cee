@@ -1,4 +1,4 @@
 # Lizenzprüfung für Rust-Abhängigkeiten (ADR-034): `cargo deny check licenses`
 [licenses]
-allow = ["MPL-2.0", "Apache-2.0", "Apache-2.0 WITH LLVM-exception", "MIT", "BSD-2-Clause", "BSD-3-Clause", "ISC", "Zlib", "Unicode-3.0", "Unicode-DFS-2016", "CC0-1.0"]
+allow = ["MPL-2.0", "Apache-2.0", "Apache-2.0 WITH LLVM-exception", "MIT", "BSD-2-Clause", "BSD-3-Clause", "ISC", "Zlib", "Unicode-3.0", "Unicode-DFS-2016", "CC0-1.0", "0BSD", "BSL-1.0"]
 confidence-threshold = 0.9

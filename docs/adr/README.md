@@ -1,6 +1,6 @@
 # Architecture Decision Records
 
-Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgeschlagen, akzeptiert, zurückgestellt, ersetzt durch ADR-xxx, verworfen; Zusatz „geändert durch ADR-xxx“, wenn ein späteres ADR Teile ändert. Ältere ADRs (001–027) haben einen Abschnitt „Aktuell gilt“, der sie in die heutige Richtung einordnet. Neue ADRs mit der nächsten freien Nummer nach demselben Aufbau.
+Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgeschlagen, akzeptiert, zurückgestellt, ersetzt durch ADR-xxx, verworfen; Zusatz „geändert durch ADR-xxx“, wenn ein späteres ADR Teile ändert. Ältere ADRs (001–027), die der heutigen Richtung widersprechen oder sie nur teilweise treffen, haben einen Abschnitt „Aktuell gilt“; die übrigen gelten unverändert bzw. über ihre Vermerke. Neue ADRs mit der nächsten freien Nummer nach demselben Aufbau.
 
 | ADR | Titel | Status |
 | --- | --- | --- |

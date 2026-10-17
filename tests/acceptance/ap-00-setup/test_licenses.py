@@ -64,6 +64,12 @@ def test_ak6_rust_dependencies():
     assert res.returncode == 0, res.stderr[-2000:]
 
 
+def _lgpl_modules() -> set[str]:
+    path = ROOT / "tools" / "lgpl_modules.txt"
+    lines = path.read_text(encoding="utf-8").splitlines() if path.exists() else []
+    return {ln.strip() for ln in lines if ln.strip() and not ln.startswith("#")}
+
+
 def test_ak6_npm_dependencies():
     """AK-6: Nur freizügige Lizenzen im Client (ohne LGPL, weil der Client gebündelt wird)."""
     res = sh(["npx", "--yes", "license-checker", "--json", "--production"], cwd=ROOT / "client", timeout=300)

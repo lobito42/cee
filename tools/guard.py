@@ -37,13 +37,11 @@ CORE_ONLY = (
     "AGENTS.md",
     "CLAUDE.md",
     "REVIEW.md",
-    ".claude/settings.json",
-    ".claude/hooks/",
-    ".claude/agents/",
-    ".claude/rules/",
-    ".claude/skills/",
-    ".claude/commands/",
+    ".claude/",
     ".opencode/",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    ".gitattributes",
     "opencode.json",
     ".pi/",
     ".githooks/",
@@ -97,6 +95,9 @@ def reason(rel: str, branch: str, role: str = "") -> str | None:
         if kind == "change" and target == cid and inner == "tasks.md":
             return None
         return f"{rel}: Changes nur auf Branch spec/{target}; auf change/{target} nur tasks.md abhaken"
+
+    if rel.split("/")[-1] == "conftest.py" and not re.match(r"^tests/acceptance/[^/]+/", rel):
+        return f"{rel}: conftest.py außerhalb eines Abnahmetest-Ordners gehört zum Vertrag (Kernteam)"
 
     if re.match(r"^tests/acceptance/[^/]+$", rel):
         return f"{rel}: gemeinsame Testinfrastruktur (conftest), nur das Kernteam ändert das"

@@ -1,0 +1,2 @@
+# npm-Pakete, die als eigenes, separat geladenes LGPL-Modul im Client laufen dürfen (ADR-027, ADR-034).
+# Nur das Kernteam pflegt diese Liste (tools/ ist Vertrag). Ein Paketname je Zeile.

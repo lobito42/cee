@@ -19,6 +19,7 @@ ALLOWED = [
     ("tests/acceptance/ap-17-identitaet/test_x.py", "tests/ap-17-identitaet"),
     ("tests/golden/halter.json", "tests/ap-17-identitaet"),
     ("pyproject.toml", "change/ap-17-identitaet"),  # Abhängigkeiten ergänzen bleibt erlaubt
+    ("tests/acceptance/ap-17-identitaet/conftest.py", "tests/ap-17-identitaet"),
     ("Cargo.toml", "change/ap-17-identitaet"),
     ("packages/x.py", "claude/change/ap-17-identitaet"),  # Präfix der Cloud-Routinen
     ("crates/graph/src/lib.rs", "change/ap-01-spike-datenmodell"),
@@ -28,6 +29,11 @@ ALLOWED = [
 
 BLOCKED = [
     ("tests/acceptance/conftest.py", "change/ap-17-identitaet"),  # Prüfbericht H1
+    ("conftest.py", "change/ap-17-identitaet"),  # Nachprüfung: Wurzel-conftest
+    ("tests/conftest.py", "change/ap-17-identitaet"),
+    ("server/conftest.py", "change/ap-17-identitaet"),
+    (".claude/settings.local.json", "change/ap-17-identitaet"),
+    ("CONTRIBUTING.md", "change/ap-17-identitaet"),
     ("tests/acceptance/conftest.py", "tests/ap-17-identitaet"),
     ("tools/acceptance_targets.py", "change/ap-17-identitaet"),
     ("tools/guard.py", "change/ap-17-identitaet"),
