@@ -26,7 +26,7 @@ Wir bauen eine offene, kollaborative Plattform für Produktdefinition: CEE, das 
 
 **Ziel bis zur öffentlichen Beta:** Ein kleines Team modelliert einen Raum mit Grundriss, Wänden, Decke, Boden, Fenstern, Türen und Möbeln, platziert Schallabsorber aus dem eigenen Katalog und sieht die Nachhallzeit je Oktavband live. Materialien tragen Aussehen, Akustik, Physik, Kosten und CO₂; daraus entstehen Mengen, Kosten und ein Bericht für das Angebot, dazu ein fotorealistisches Bild. Alle arbeiten live gemeinsam oder offline, Agenten helfen über MCP – auch mit einem lokalen Modell – und alles läuft auf eigener Hardware. Das Tempo bestimmen die Agenten, nicht feste Termine; die Monatsangaben in der Roadmap sind Richtwerte.
 
-**Nicht-Ziele bis zur Beta:** Freiformflächen in Class-A-Qualität, native Feature-Bäume in kommerziellen CAD-Systemen, PLM-Anbindung, FEM, Fertigungsregeln (Fräsen, 3D-Druck, Blech, Spritzguss), vollständiges BIM (Statik, Haustechnik, Bauantrag), ein eigener Geometrie-Kernel, Modellieren in XR, eine VS-Code-Integration, ein eigener KI-Dienst mit Abrechnung, Funktionen für Konzerne (PLM, feingranulare Rechteverwaltung).
+**Nicht-Ziele bis zur Beta:** Freiformflächen in Class-A-Qualität, native Feature-Bäume in kommerziellen CAD-Systemen, PLM- und ERP-Anbindung (Schnittstelle nach der Beta, ADR-048), FEM, Fertigungsregeln (Fräsen, 3D-Druck, Blech, Spritzguss), vollständiges BIM (Statik, Haustechnik, Bauantrag), ein eigener Geometrie-Kernel, Modellieren in XR, eine VS-Code-Integration, ein eigener KI-Dienst mit Abrechnung, Funktionen für Konzerne (PLM, feingranulare Rechteverwaltung).
 
 ## Erster Anwendungsfall: Raumakustik mit Schallabsorbern
 
@@ -37,6 +37,8 @@ Die Firma braucht einen durchgängigen Ablauf vom leeren Raum bis zum Angebot, o
 3. **Absorber platzieren:** Wandpaneele, Deckensegel, Baffeln oder Stellwände aus dem eigenen Katalog; eigene Formen per Skizze und Extrusion.
 4. **Wirkung sehen:** Nachhallzeit je Oktavband nach Sabine und Eyring, live beim Verschieben, gegen ein Zielband (ADR-041).
 5. **Zeigen und anbieten:** Echtzeit-Ansicht und Fotomodus (ADR-040); Mengen, Kosten, Gewicht und CO₂ aus Geometrie und Material; PDF-Bericht mit vorher/nachher.
+
+**Erster, nicht einziger Anwendungsfall.** Die Raumakustik ist das erste Fachpaket und prüft den Kern im Alltag einer echten Firma. Der Kern bleibt fachneutral: Bauteile, Baugruppen, Zeichnungen, Varianten, Stücklisten und Freigaben mit Revisionen gelten für jedes Produkt, vom Halter aus Blech bis zur Maschine. Der Spike ap-01 prüft deshalb neben dem Raum eine mechanische Baugruppe gegen dasselbe Schema (ADR-046).
 
 **Elemente des Anwendungsfalls**
 
@@ -108,6 +110,10 @@ Die Lösung muss alle Fertigungsverfahren abdecken, alle gängigen CAD-Systeme b
 | F-32 | Mengen, Kosten, Gewicht und CO₂ je Raum; PDF-Bericht mit Nachhallzeit vorher/nachher; CSV-Mengenliste | Muss |
 | F-33 | Import von IFC und DXF; Möbel und Szenen als glTF | Soll |
 | F-34 | Komponenten wie in Figma: Auswahl zur Vorlage machen, Parameter und Varianten festlegen, Instanzen mit Überschreibungen, Bibliotheken mit Versionen und Aktualisierung mit Vorschau, Lösen | Muss |
+| F-35 | Freigabeprozess: Items mit Sachnummer, Revision und Status; Prüfen und Freigeben nach Vier-Augen-Prinzip; unveränderliche Freigabestände mit Manifest, Stückliste, STEP und PDF | Muss |
+| F-36 | Stückliste und Verwendungsnachweis aus dem Graphen; Änderungsantrag und Änderungsauftrag auf Basis von Zweigen, mit Folgen für alle Verwender | Muss |
+| F-37 | Verbindungspunkte zum Platzieren von Teilen und Produkten; Projektvariablen mit Einheiten an einer Stelle | Muss |
+| F-38 | Offene Schnittstelle zu PLM und ERP: Austauschformat, API, Ereignisse, Nummernkreise (nach der Beta) | Soll |
 
 **Nicht-funktionale Anforderungen**
 
@@ -180,6 +186,16 @@ Die Textprojektion ist deterministisch und verlustfrei: eine Zeile je Parameter,
 
 Anders als in Figma haben Komponenten echte Parameter mit Formeln und Bedingungen und liefern berechnete Ausgänge – äquivalente Absorptionsfläche je Band, Gewicht, Preis, CO₂. Ändert sich eine Vorlage, rechnet die Nachhallzeit jedes betroffenen Raums neu.
 
+**Fachneutraler Kern und Fachpakete (ADR-046).** Der Kern kennt nur Grundtypen; Wand, Absorber oder Bohrung definieren Fachpakete, und zwar über dasselbe Plugin-SDK, das auch die Community nutzt (nach dem Vorbild der FeatureScript-Standardbibliothek in Onshape). Das Schema zählt keine Fachtypen auf.
+
+| Grundtyp | Zweck | Raum und Akustik | Maschinenbau |
+| --- | --- | --- | --- |
+| `frame` (Verbindungspunkt) | Andocken und Platzieren | Aufhängepunkt am Deckensegel, Rasterpunkt an der Decke | Bohrung in der Platte, Kopf der Schraube |
+| `variables` | Werte projektweit an einer Stelle | Raumhöhe, Abhängung | Blechdicke, Bohrungsdurchmesser |
+| `component`, `instance` | Wiederverwenden | Absorber-Katalog | Normteile, Schraube M5/M6 |
+| `item` | Freigeben, bestellen, fertigen | Absorber-Produkt, Raumangebot | Teil 100-0002, Baugruppe 100-0001 |
+| `analysis` | Berechnen | Nachhallzeit | Masse, Schwerpunkt, später FEM |
+
 Ob diese Form trägt und schnell genug ist, klärt der erste Spike (`ap-01-spike-datenmodell`): 10.000 Elemente in ≤ 200 ms laden, eine Änderung in ≤ 5 ms, zwei Zweige mit je 500 Änderungen in ≤ 500 ms zusammenführen.
 
 ## Publikations- und Identitätsmodell
@@ -192,7 +208,7 @@ Jedes Element des Modells erhält eine stabile Identität, vom Punkt bis zum Zei
 | --- | --- | --- | --- |
 | Intern | Hilfsfeature: Hilfsebene, Skizze, Zwischenkörper | Standard für alles | Hat eine ID, wird nicht exportiert, darf sich frei ändern |
 | Veröffentlicht | Teil der Bauteil-Schnittstelle | Konstrukteur; Claude darf nur vorschlagen | Adressierbar, einzeln exportierbar, im Manifest versioniert; jede Änderung erscheint als Diff |
-| Freigegeben | Veröffentlicht und in einer Revision eingefroren | Konstrukteur oder Prüfer | Unveränderlich; jede Änderung erzeugt eine neue Revision |
+| Freigegeben | Veröffentlicht und in einer Revision eingefroren | Freigeber nach Vier-Augen-Prinzip (ADR-047) | Unveränderlich; jede Änderung erzeugt eine neue Revision |
 
 **Was veröffentlicht werden kann**
 
@@ -229,6 +245,34 @@ Jedes Element hat seine ID ab der Erzeugung, auch Skizzen und Features; Claude v
 **Zeichnungen als abgeleitete Artefakte**
 
 Zeichnungsblätter sind Elemente vom Typ `sheet` und referenzieren Ansichten, Maße und PMI ausschließlich über Element-IDs. Dadurch überleben Maße Modelländerungen, und ein verwaister Bezug wird sofort gemeldet. Jedes Blatt hat eine eigene Revision und wird bei jeder Änderung neu abgeleitet.
+
+**Freigabeprozess und Revisionen (ADR-047)**
+
+Freigegeben wird ein **Item**: das, was bestellt, gefertigt oder verschickt wird – Teil, Baugruppe, Zeichnung, Dokument, Raum oder Angebot. Es verweist auf seine Definition im Graphen und trägt Sachnummer, Benennung, Revision und Status. Jede Änderung steht in der Historie, benannte Versionen setzt man jederzeit; eine **Revision** (Standard A, B, C …, Vorabstände 01, 02 …) entsteht nur durch Freigabe.
+
+| Status | Bedeutung | Wer | Weiter mit |
+| --- | --- | --- | --- |
+| In Arbeit | Frei bearbeitbar | Ersteller | „Zur Prüfung“, wenn alle Regeln mit Schweregrad „Fehler“ bestehen und Pflichtfelder gesetzt sind |
+| In Prüfung | Gesperrt; Vergleich zur letzten Revision mit Folgen für Verwender | Prüfer | Freigeben oder mit Kommentar zurückweisen |
+| Freigegeben | Unveränderlicher Freigabestand: Schnappschuss mit Hash, Manifest, Stückliste, STEP, PDF; signiert mit Person, Zeit, Rolle | Freigeber, nicht der Ersteller | Änderungen nur über einen Änderungsauftrag, der die nächste Revision erzeugt |
+| Ersetzt, Gesperrt | Neue Revision gilt bzw. nicht mehr verwenden | Freigeber | Verwender sehen einen Hinweis und übernehmen mit Vorschau |
+
+- **Vier-Augen-Prinzip** als Standard, je Organisation konfigurierbar; Einzelpersonen können Selbstfreigabe einschalten, sie wird im Freigabestand vermerkt. KI-Agenten bereiten vor und prüfen, geben aber nie frei.
+- **Stückliste** (Mengen- und Strukturstückliste) und **Verwendungsnachweis** entstehen aus dem Graphen, nie von Hand.
+- **Änderungswesen:** Ein Änderungsantrag beschreibt Problem und betroffene Items, ein Änderungsauftrag ist ein Zweig mit den Änderungen; beim Abschluss entstehen alle neuen Revisionen gemeinsam.
+- **Archiv:** Die Dokumente eines Freigabestands werden aufbewahrt, damit eine Freigabe auch mit späteren Kernel-Versionen bitgleich bleibt (ergänzt ADR-032).
+
+**Anbindung an PLM und ERP (ADR-048)**
+
+CEE wird kein ERP. Jedes Feld hat genau ein führendes System; ausgetauscht wird über ein offenes Format in `format/`, eine API aus dem Befehlsregister und Ereignisse.
+
+| Führend in CEE | Führend in PLM bzw. ERP |
+| --- | --- |
+| Geometrie, Parameter, Varianten, Zeichnungen | Materialstamm, Preise, Lieferanten |
+| Engineering-Stückliste (EBOM), Revisionen der Definition | Fertigungsstückliste (MBOM), Arbeitspläne |
+| Freigabestände und ihre Dokumente | Lager, Aufträge, Rechnungen |
+
+Ereignisse wie „Item freigegeben“ oder „Änderungsauftrag abgeschlossen“ gehen zuverlässig über eine Outbox als Webhook hinaus. Nummernkreise, Materialstamm und Preise kommen über Plugins herein; offline vergebene Sachnummern sind vorläufig, bis der Server sie bestätigt. So kann ein selbst gebautes PLM oder ERP andocken, ohne CEE-Code zu übernehmen.
 
 ## UI- und Interaktionskonzept
 
@@ -304,6 +348,18 @@ Weitere Anregungen (Fangmodi, Annotationen im 3D-Raum, Materialvorschau mit α-K
 
 Nicht übernommen: Telemetrie standardmäßig an, ein proprietäres offizielles Produkt neben dem offenen Code, die Fülle an Panels. Weitere Anregungen (Breadcrumbs, Walkthroughs, Keymaps zum Umsteigen, offenes Analyse-Protokoll nach Vorbild des LSP, Remote-Rechnen, Stable und Insiders) liegen im Ideenspeicher.
 
+**Von Onshape übernommen (ADR-046, ADR-047)**
+
+| Muster | So in CEE |
+| --- | --- |
+| FeatureScript-Standardbibliothek | Eingebaute Fachpakete nutzen nur das Plugin-SDK; jedes ist zugleich Vorlage für eigene |
+| Mate Connectors | Verbindungspunkte: Beim Ziehen rastet ein Teil am passenden Punkt ein, ob Schraube in Bohrung oder Segel an Decke |
+| Variable Studio | Panel „Variablen“ mit Werten und Einheiten; eine Änderung wirkt überall |
+| Versionen und Release Management | Versionen jederzeit, Revision nur durch Freigabe; die Kopfzeile zeigt Item, Revision und Status |
+| Verknüpfte Dokumente | Verweise über Projekte nur auf feste Versionen, mit Hinweis auf neue |
+
+Nicht übernommen: nur Cloud ohne Offline, Daten nur beim Anbieter, proprietärer Kernel, eigene Sprache. Weitere Anregungen (Rollback-Leiste, Folgen-Modus, öffentliche Projekte, Mobile, Audit-Verlauf, Mate-Typen) liegen im Ideenspeicher.
+
 **Skizzieren**
 
 - **Starten:** Fläche oder Ebene anklicken, „Skizze“ wählen; die Ansicht dreht sich senkrecht darauf, das Modell tritt halbtransparent zurück.
@@ -328,7 +384,7 @@ Nicht übernommen: Telemetrie standardmäßig an, ein proprietäres offizielles 
 
 ## Architecture Decision Records
 
-Fünfundvierzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-045 beschreiben die neue Richtung (Element-Graph, Rust-Kern, Elixir-Server, Web und Desktop, Lizenz, offene und lokale KI, Raumakustik, Material, Rendering, Austauschformate, Komponenten, Bedienmuster aus Blender und VS Code) und sind akzeptiert; sie ersetzen ADR-003, 005, 013 und 024. Die übrigen stehen auf „Vorgeschlagen“ und werden mit den Spikes bestätigt. Jedes ADR liegt zusätzlich als Markdown-Datei unter `docs/adr/` im Repository.
+Achtundvierzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-048 beschreiben die neue Richtung (Element-Graph, Rust-Kern, Elixir-Server, Web und Desktop, Lizenz, offene und lokale KI, Raumakustik, Material, Rendering, Austauschformate, Komponenten, Bedienmuster aus Blender und VS Code, fachneutraler Kern, Freigabe, PLM- und ERP-Schnittstelle) und sind akzeptiert; sie ersetzen ADR-003, 005, 013 und 024. Die übrigen stehen auf „Vorgeschlagen“ und werden mit den Spikes bestätigt. Jedes ADR liegt zusätzlich als Markdown-Datei unter `docs/adr/` im Repository.
 
 | ADR | Entscheidung | Wichtigste Alternative |
 | --- | --- | --- |
@@ -377,6 +433,9 @@ Fünfundvierzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-045 b
 | 043 | Komponenten mit Parametern und Varianten, Instanzen mit Überschreibungen, versionierte Bibliotheken mit Aktualisierung und Vorschau | Kopieren statt Instanzen |
 | 044 | Bedienmuster aus Blender: Werte beim Ziehen tippen, vier Arbeitsbereiche, Stapel als Sicht auf den Graphen, Aktion als Code, Denoiser im Fotomodus | Dialoge für exakte Werte, eine Oberfläche für alles |
 | 045 | Nach VS Code: ein Befehlsregister für Mensch, Plugins und KI; Plugins mit Manifest in der Sandbox; Projekt-Vertrauen; Befunde mit Korrekturen; Einstellungen in Ebenen; visueller Vergleich | Plugins im selben Prozess, getrennte Werkzeuge für Mensch und KI |
+| 046 | Fachneutraler Kern; Fachpakete über die Plugin-API; Verbindungspunkte, Projektvariablen, Verweise auf feste Versionen (nach Onshape) | Fachtypen fest im Kern |
+| 047 | Freigabe mit Item, Sachnummer, Revision und Lebenszyklus; Vier-Augen-Prinzip; unveränderliche Freigabestände; Stückliste; Änderungswesen | Freigabe nur als Git-Tag oder nur im PLM |
+| 048 | Offene Schnittstelle zu PLM und ERP: ein führendes System je Feld, offenes Format, API aus dem Befehlsregister, Ereignisse, Anbindungen als Plugins | Feste Anbindung an ein Produkt; CEE als ERP |
 
 ### ADR-001: Geometriekernel OpenCascade
 
@@ -684,6 +743,24 @@ Fünfundvierzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-045 b
 
 **Konsequenzen:** Ändert ADR-007 und ADR-022, ergänzt ADR-008 und ADR-044. Nicht übernommen: Telemetrie standardmäßig an, proprietäres offizielles Produkt. Weitere Anregungen im Ideenspeicher.
 
+### ADR-046: Fachneutraler Kern und Muster aus Onshape
+
+**Entscheidung:** (1) Der Kern kennt nur fachneutrale Grundtypen (Element, Komponente, Instanz, Verbindungspunkt, Variable, Material, Analyse, Item); Fachtypen leben in Fachpaketen wie `raum`, `akustik`, später `mechanik`. (2) Auch mitgelieferte Fachpakete nutzen nur das Plugin-SDK. (3) Verbindungspunkte (`frame`) zum Platzieren von Instanzen. (4) Projektvariablen (`variables`) mit Einheiten. (5) Verweise über Projekte nur auf feste Versionen.
+
+**Konsequenzen:** Ändert ADR-038: Raum und Akustik sind das erste Fachpaket. ap-01 prüft zusätzlich eine fachfremde Baugruppe gegen dasselbe Schema.
+
+### ADR-047: Freigabeprozess, Revisionen und Lebenszyklus
+
+**Entscheidung:** (1) Item mit Sachnummer, Revision und Status. (2) Versionen jederzeit, Revisionen nur durch Freigabe. (3) Lebenszyklus In Arbeit → In Prüfung → Freigegeben → Ersetzt bzw. Gesperrt, Übergänge als Befehle mit Bedingungen. (4) Vier-Augen-Prinzip als Standard, Selbstfreigabe abschaltbar; Agenten geben nie frei. (5) Unveränderliche, signierte Freigabestände mit archivierten Dokumenten. (6) Stückliste aus dem Graphen. (7) Änderungsantrag und Änderungsauftrag auf Basis von Zweigen.
+
+**Konsequenzen:** Ändert ADR-017 und ADR-032, ergänzt ADR-015. Arbeitspaket ap-33 vor der Beta.
+
+### ADR-048: Offene Schnittstelle zu PLM und ERP
+
+**Entscheidung:** (1) Ein führendes System je Feld: CEE für die Produktdefinition, PLM bzw. ERP für Materialstamm, MBOM, Lager und Aufträge. (2) Offenes Austauschformat in `format/`. (3) API aus dem Befehlsregister. (4) Ereignisse über eine Outbox, mindestens einmal zugestellt. (5) Nummernkreise und Abgleiche als Plugins.
+
+**Konsequenzen:** Ergänzt ADR-017, ADR-030 und ADR-047. Format mit ap-33, API und Ereignisse mit ap-34 nach der Beta.
+
 ## Regelwerk und Verifikationsschleife
 
 Erstes Regelpaket ist die Raumakustik: Zielbänder für die Nachhallzeit je Raumart, geprüft von der Firma (ap-20). Die Fertigungsregeln unten folgen nach der Beta.
@@ -720,7 +797,7 @@ Die Arbeit ist in 33 Arbeitspakete in vier Phasen geschnitten, ausgerichtet auf 
 | AP | Phase | Inhalt | Abnahme | Abhängig von |
 | --- | --- | --- | --- | --- |
 | ap-00-setup | 0 | Gerüst für Rust, Elixir, TypeScript/Tauri, Python; CI; Lizenzprüfung; Credo und Dialyzer | Alle Sprachen bauen und testen in der CI; 0 Lizenzverstöße | – |
-| ap-01-spike-datenmodell | 0 | Elementschema, Automerge, Textprojektion, NIF und WASM, Komponenten und Instanzen; Beispiel: Raum mit Absorbern | 12 Kennzahlen gemessen, Go oder No-Go | – |
+| ap-01-spike-datenmodell | 0 | Elementschema, Automerge, Textprojektion, NIF und WASM, Komponenten und Instanzen; Beispiele: Raum mit Absorbern und fachfremde Baugruppe mit Verbindungspunkten, Variablen und Items | 12 Kennzahlen gemessen, Go oder No-Go | – |
 | ap-02-akustik-nachhallzeit | 0 | Crate `crates/acoustics`: Sabine und Eyring je Oktavband, Fehler, Kommandozeile | ≤ 0,1 % zur Formel; 1.000 Flächen ≤ 1 ms | – |
 | ap-03-spike-sync | 0 | Phoenix Channels mit Rust-Kern: zwei Browser live, einer offline, Zusammenführen | Änderung bei beiden < 200 ms; Merge ohne Datenverlust | ap-01 |
 | ap-04-spike-rendering | 0 | Echtzeit-PBR und Fotomodus (Path Tracing mit Denoiser) in Browser und Tauri auf drei Systemen | Raum mit 50 Objekten ≥ 30 fps; Fotomodus 1920 × 1080 in ≤ 60 s auf Mittelklasse-GPU | ap-00 |
@@ -752,6 +829,8 @@ Die Arbeit ist in 33 Arbeitspakete in vier Phasen geschnitten, ausgerichtet auf 
 | ap-30-akustik-geometrisch | 3 | Spiegelquellen bzw. Strahlverfolgung, Auralisation (hörbar machen) | Abweichung zu Messung in 3 Räumen dokumentiert | ap-11 |
 | ap-31-fertigung | 3 | Fertigungsregeln (Fräsen, 3D-Druck, Blech), STEP mit PMI, Zeichnungen | Absorber-Bauteil fertigungsgerecht exportiert | ap-12 |
 | ap-32-zweiter-kernel | 3 | Spezialisierter Kernel (implizite Modelle, Gitter, z. B. für Absorberstrukturen) | Gitterabsorber als 3MF exportiert | ap-06 |
+| ap-33-freigabe-revisionen | 2 | Items, Sachnummern, Revisionen, Lebenszyklus, Vier-Augen-Freigabe, Freigabestände mit Dokumenten, Stückliste, Änderungsantrag und -auftrag, Austauschformat | Baugruppe und Raumangebot freigegeben, geändert und als Revision B erneut freigegeben; Freigabestand bitgleich reproduzierbar | ap-25, ap-26 |
+| ap-34-plm-erp-schnittstelle | 3 | API aus dem Befehlsregister, Ereignisse mit Outbox, Nummernkreis-Plugin, Beispielanbindung an ein selbst gebautes PLM/ERP | Externes System empfängt Freigabe und Stückliste und vergibt Sachnummern, ohne Änderung am Kern | ap-27, ap-33 |
 
 ### Entwicklung mit Agenten
 
@@ -886,7 +965,7 @@ Die größten Risiken liegen jetzt im Datenmodell (Größe und Merge-Verhalten d
 - [ ] Spike ap-01 starten (Agent kern-specialist) und Ergebnis im ADR-Workshop bewerten
 - [ ] Klickbare Prototypen für Arbeitsfläche, Knoten-Editor und Zusammenarbeit erstellen und mit 5 Konstrukteuren testen
 - [ ] Klären, wer veröffentlichte Elemente nutzt (CAM, Messtechnik, Simulation, PLM, Lieferanten) und welche Exportformate diese je Elementtyp brauchen
-- [ ] Freigabeprozess festlegen: Wer darf Revisionen freigeben, braucht es eine Vier-Augen-Prüfung?
+- [x] Freigabeprozess festgelegt (ADR-047): Vier-Augen-Prinzip als Standard, Selbstfreigabe für Einzelpersonen abschaltbar, Agenten geben nie frei
 - [ ] Rechte und Mandanten: Wer sieht und ändert welches Projekt, auch beim Selbstbetrieb?
 - [ ] Governance: Rolle der Community bei Roadmap und RFCs; später Stiftung oder Firma als Träger
 - [ ] Lizenzprüfung durch Fachanwalt vor dem ersten öffentlichen Release (MPL-2.0 und Apache-2.0, DCO)
