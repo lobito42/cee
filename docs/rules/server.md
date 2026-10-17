@@ -11,6 +11,8 @@
 - Presence und Channels: Nachrichten klein halten, keine Geometrie über Channels, nur Operationen,
   Hashes und Vorschau-Verweise.
 - Hintergrundaufgaben (Export, Regelprüfung, KI-Läufe) über Oban, idempotent.
+- Studien (ADR-049) laufen als Oban-Jobs mit begrenzter Parallelität je Organisation, sind abbrechbar und
+  setzen nach einem Neustart fort; Ergebnisse je Variante nach Inhalts-Hash zwischengespeichert.
 - Statusübergänge im Lebenszyklus (ADR-047) nur über Befehle mit Rechteprüfung; Freigeben ist Menschen
   vorbehalten, nie einem Agenten oder MCP-Zugang. Freigabestände und ihre Dokumente werden nie geändert oder
   gelöscht, nur ersetzt bzw. gesperrt.

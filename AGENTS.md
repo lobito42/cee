@@ -77,6 +77,8 @@ Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `opens
 - Der Kern ist fachneutral, Raum und Akustik sind das erste Fachpaket über das Plugin-SDK (ADR-046).
   Freigaben mit Item, Revision und Lebenszyklus; Freigabestände sind unveränderlich, nur Menschen geben frei
   (ADR-047). PLM und ERP nur über offenes Format, API und Ereignisse (ADR-048).
+- Automatisierung ist Teil des Graphen: veröffentlichte Untergraphen werden Befehl, Knoten, MCP-Werkzeug und
+  App; Studien rechnen Varianten im Worker durch, der Mensch wählt (ADR-049).
 - Erster Anwendungsfall: Räume mit Schallabsorbern (ADR-038). Material ist ein Element mit Aussehen, Akustik,
   Physik, Kosten und CO₂ (ADR-039); Nachhallzeit rechnet `crates/acoustics` (ADR-041); Rendering im Client
   mit Echtzeit und Fotomodus (ADR-040).

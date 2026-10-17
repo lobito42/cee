@@ -16,6 +16,10 @@
   Arbeitsbereich; ein fünfter Arbeitsbereich nur per ADR.
 - Jede Aktion erzeugt eine Graph-Operation, die im Aktionsprotokoll als Text sichtbar und kopierbar ist.
 - Der Stapel im Eigenschaften-Panel ist eine Projektion des Graphen, kein eigenes Datenmodell.
+- Der Knoten-Editor zeigt an jedem Knoten bzw. jeder Kante das aktuelle Zwischenergebnis mit Einheit (ADR-049);
+  große Werte gekürzt, Geometrie als kleine Vorschau aus dem Cache, nie neu berechnet nur für die Anzeige.
+- Apps (ADR-049) sind generierte Oberflächen aus den Eingängen eines veröffentlichten Untergraphen, keine
+  eigenen Masken von Hand. Sie schreiben nie direkt ins Modell, nur Änderungssätze bzw. eigene Stände.
 - Jede Funktion ist ein Befehl im Befehlsregister (stabile ID, Parameter-Schema). Befehlssuche,
   Tastenkürzel, Kontextaktionen und Plugins rufen nur Befehle auf; keine Funktion nur hinter einem Knopf
   (ADR-045).

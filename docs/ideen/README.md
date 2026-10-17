@@ -10,3 +10,4 @@ diesem Ordner eigenständig um.
 | [Weitere Anregungen aus Blender](blender-anregungen.md) | abgelegt 2026-10-17 | je Zeile beim passenden Paket |
 | [Weitere Anregungen aus VS Code](vscode-anregungen.md) | abgelegt 2026-10-17 | je Zeile beim passenden Paket |
 | [Weitere Anregungen aus Onshape](onshape-anregungen.md) | abgelegt 2026-10-17 | je Zeile beim passenden Paket |
+| [Weitere Anregungen aus Synera](synera-anregungen.md) | abgelegt 2026-10-17 | je Zeile beim passenden Paket |

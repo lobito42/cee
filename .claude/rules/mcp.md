@@ -10,6 +10,8 @@ paths:
 - Jedes Tool hat ein JSON-Schema für Ein- und Ausgabe und einen Test mit Beispielaufruf.
 - MCP-Tools werden aus dem Befehlsregister erzeugt (ADR-045): kein Tool ohne entsprechenden Befehl, den
   auch ein Mensch in der Oberfläche aufrufen kann. Ausnahme nur lesende Abfragen für Agenten.
+- Veröffentlichte Untergraphen werden automatisch zu Werkzeugen (ADR-049); ihre Beschreibung und die
+  Grenzen der Eingänge kommen aus dem Untergraphen, nicht aus Handarbeit im Server.
 - Antworten sind kompakt: Zusammenfassung zuerst, Details nur auf Nachfrage (Parameter `detail`).
   Ziel: < 2.000 Tokens pro typischer Antwort. Keine Rohgeometrie, keine Tessellierungsdaten.
 - Orte werden immer als Element-ID oder veröffentlichter Name angegeben, nie als Index.

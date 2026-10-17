@@ -16,6 +16,9 @@ paths:
   Plugin-SDK. Ausnahme sind die Grundtypen `frame`, `variables`, `component`, `instance`, `item`.
 - Freigabestände sind unveränderlich: Operationen auf einen freigegebenen Untergraphen werden abgelehnt;
   Änderungen gehen nur über einen neuen Arbeitsstand bzw. Änderungsauftrag (ADR-047).
+- Gesperrte Komponenten (ADR-049): Operationen auf ihr Innenleben lehnt der Kern ab; nur freigegebene
+  Parameter sind über Instanzen änderbar. Die Sperre ist eine Eigenschaft der Komponente, kein Sonderfall im
+  Speicherformat.
 - Instanzen speichern nur `variant` und `overrides`, nie eine Kopie des Untergraphen (ADR-043). Entfällt ein
   überschriebener Parameter, wird das als Befund gemeldet. Zyklen zwischen Komponenten sind ein Fehler.
 - IDs sind stabil und werden nie wiederverwendet. Referenzen gehen auf `<id>.<output>`, nie auf Positionen.
