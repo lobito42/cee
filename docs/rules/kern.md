@@ -4,6 +4,8 @@
   auf und bauen keine eigene Logik für Elemente, Abhängigkeiten oder Merge nach.
 - Jedes Element hat dieselbe Form (`id`, `type`, `inputs`, `params`, `outputs`, `content`, `meta`) –
   ein Achsenursprung genauso wie eine Baugruppe (ADR-028). Keine Sonderfälle je Elementtyp im Speicherformat.
+- Instanzen speichern nur `variant` und `overrides`, nie eine Kopie des Untergraphen (ADR-043). Entfällt ein
+  überschriebener Parameter, wird das als Befund gemeldet. Zyklen zwischen Komponenten sind ein Fehler.
 - IDs sind stabil und werden nie wiederverwendet. Referenzen gehen auf `<id>.<output>`, nie auf Positionen.
 - Schemaänderung = neue `SCHEMA_VERSION` + Migration + Test mit altem Dokument.
 - Kein `unsafe` (Workspace-Lint). Keine Panics über Bindungsgrenzen: öffentliche Funktionen geben

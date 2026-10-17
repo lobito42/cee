@@ -46,3 +46,4 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-040](ADR-040-rendering-echtzeit-und-fotomodus.md) | Rendering: Echtzeit und Fotomodus im Client | akzeptiert |
 | [ADR-041](ADR-041-akustik-berechnung-im-kern.md) | Akustik-Berechnung im Rust-Kern | akzeptiert |
 | [ADR-042](ADR-042-austauschformate-gltf-ifc-dxf-step.md) | Austauschformate: glTF, IFC, DXF, STEP | akzeptiert |
+| [ADR-043](ADR-043-komponenten-instanzen-bibliotheken.md) | Komponenten, Instanzen und Bibliotheken | akzeptiert |

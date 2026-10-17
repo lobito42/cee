@@ -21,6 +21,8 @@ TYPES = {
     "extrude",
     "part",
     "analysis",
+    "component",
+    "instance",
 }
 BANDS = {"125", "250", "500", "1000", "2000", "4000"}
 NEEDS_MATERIAL = {"wall", "slab", "absorber"}
@@ -52,16 +54,42 @@ def test_ak3_every_element_has_the_same_form():
 
 
 def test_ak3_example_covers_all_kinds():
-    """AK-3: Alle Elementarten, mindestens drei Absorber, einer davon per Extrusion."""
+    """AK-3: Alle Elementarten kommen vor; mindestens ein Absorber ist per Skizze und Extrusion gebaut."""
     project = json.loads(EXAMPLE.read_text(encoding="utf-8"))
     elements = list(_walk(project["elements"]))
     missing = TYPES - {e["type"] for e in elements}
     assert not missing, f"Elementarten fehlen: {sorted(missing)}"
     absorbers = [e for e in elements if e["type"] == "absorber"]
-    assert len(absorbers) >= 3, "Mindestens drei Absorber erwartet"
     assert any(any(c["type"] == "extrude" for c in _walk(a["content"])) for a in absorbers), (
         "Mindestens ein Absorber muss als Skizze plus Extrusion aufgebaut sein"
     )
+
+
+def test_ak3_component_with_variants_and_instances():
+    """AK-3: Komponente mit ≥ 2 Varianten, ≥ 3 Instanzen davon, eine mit Überschreibung (ADR-043)."""
+    project = json.loads(EXAMPLE.read_text(encoding="utf-8"))
+    elements = list(_walk(project["elements"]))
+    components = {e["id"]: e for e in elements if e["type"] == "component"}
+    absorber_components = [
+        c for c in components.values() if any(x["type"] == "absorber" for x in _walk(c["content"]))
+    ]
+    assert absorber_components, "Keine Komponente mit Absorber im Untergraphen"
+    comp = absorber_components[0]
+    assert len(comp["params"].get("variants", {})) >= 2, "Komponente braucht mindestens zwei Varianten"
+    assert comp["params"].get("parameters"), "Komponente ohne freigegebene Parameter"
+    instances = [
+        e
+        for e in elements
+        if e["type"] == "instance" and e["inputs"].get("definition") == f"{comp['id']}.definition"
+    ]
+    assert len(instances) >= 3, "Mindestens drei Instanzen der Absorber-Komponente erwartet"
+    for i in instances:
+        assert i["params"].get("variant") in comp["params"]["variants"], f"{i['id']}: unbekannte Variante"
+        assert not i["content"], f"{i['id']}: Instanz darf keine Kopie des Untergraphen enthalten"
+        assert set(i["params"].get("overrides", {})) <= set(comp["params"]["parameters"]), (
+            f"{i['id']}: Überschreibung eines nicht freigegebenen Parameters"
+        )
+    assert any(i["params"].get("overrides") for i in instances), "Keine Instanz mit Überschreibung"
 
 
 def test_ak3_materials_carry_acoustics_and_are_referenced():

@@ -11,7 +11,8 @@ Elixir und im Browser identische Ergebnisse liefert (ADR-029).
 - Entwurf des Elementschemas `format/schema/element.schema.json` (JSON Schema 2020-12)
 - Beispielprojekt `format/examples/raum.json`: Besprechungsraum mit Wänden, Boden, Decke, Fenster, Tür, Tisch,
   Materialien, drei Absorbern (ein Absorber als Skizze plus Extrusion) und einer Nachhallzeit-Analyse – vollständig als Elemente
-- Prototyp `spikes/datenmodell/` (Rust): Graph auf Automerge, Textprojektion, Benchmarks, Kommandozeile
+- Komponenten, Varianten und Instanzen mit Überschreibungen nach ADR-043
+- Prototyp `spikes/datenmodell/` (Rust): Graph auf Automerge, Textprojektion, Komponenten, Benchmarks, Kommandozeile
 - Messungen zu Größe, Lade-, Operations- und Merge-Zeiten sowie zu Rustler-NIF und WASM
 - Bericht `docs/spikes/datenmodell.md` und maschinenlesbare Messwerte `docs/spikes/datenmodell.json`
 
@@ -28,7 +29,7 @@ Keine.
 
 ## Impact
 
-- Betroffene ADRs (bestätigen oder überarbeiten): ADR-028, 029, 030, 033, 035, 038, 039
+- Betroffene ADRs (bestätigen oder überarbeiten): ADR-028, 029, 030, 033, 035, 038, 039, 043
 - Abnahmetests: `tests/acceptance/ap-01-spike-datenmodell/` (AK-1 bis AK-5)
 - Gate G1
 - Nicht-Ziele: keine Geometrie (ap-02), keine Live-Synchronisation zwischen Clients (ap-03), keine UI (ap-04),

@@ -18,6 +18,8 @@ THRESHOLDS = {  # Schlüssel: (Schwellwert, Vergleich) – aus design.md
     "nif_op_p95_ms": (1, "<="),
     "wasm_op_p95_ms": (5, "<="),
     "hash_equal_native_nif_wasm": (1, ">="),
+    "component_propagate_1000_ms": (50, "<="),
+    "overrides_kept_pct": (100, ">="),
 }
 
 

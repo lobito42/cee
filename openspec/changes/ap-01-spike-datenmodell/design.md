@@ -12,6 +12,13 @@ Wände, Decken, Böden und Absorber verweisen über den Eingang `material` (bzw.
 bei Schichtaufbauten) auf `material`-Elemente. Ein Material trägt in `params` mindestens `alpha` als Objekt
 mit den Oktavbändern `125`, `250`, `500`, `1000`, `2000`, `4000`.
 
+Komponenten und Instanzen (ADR-043): Eine `component` hat `params.parameters` (Name → Objekt mit mindestens
+`default`), `params.variants` (Name → Parametersatz, mindestens zwei Varianten), einen Untergraphen in
+`content` und den Ausgang `definition`. Eine `instance` hat den Eingang `definition` =
+`"<komponenten-id>.definition"` und `params` = `{"variant": "<name>", "overrides": {…}}`. Im Beispiel ist das
+Deckensegel eine Komponente, deren Untergraph einen per Skizze und Extrusion gebauten `absorber` enthält; im
+Raum stehen mindestens drei Instanzen davon, mindestens eine mit Überschreibung.
+
 ## Goals / Non-Goals
 
 **Goals:** belastbare Messwerte; Schema-Entwurf; Empfehlung Go oder No-Go je Frage.
@@ -34,6 +41,8 @@ mit den Oktavbändern `125`, `250`, `500`, `1000`, `2000`, `4000`.
 | `nif_op_p95_ms` | Parameteränderung über Rustler-NIF aus Elixir (p95) | ≤ 1 ms |
 | `wasm_op_p95_ms` | Parameteränderung über WASM in Node (p95) | ≤ 5 ms |
 | `hash_equal_native_nif_wasm` | gleicher Inhalts-Hash nach gleicher Operationsfolge (1 = ja) | 1 |
+| `component_propagate_1000_ms` | Änderung einer Komponente an 1.000 Instanzen weitergeben (aufgelöste Parameter neu berechnet) | ≤ 50 ms |
+| `overrides_kept_pct` | Anteil erhaltener Überschreibungen nach 100 zufälligen Definitionsänderungen | 100 % |
 
 Messrechner und Versionen im Bericht nennen. Jede Kennzahl in `datenmodell.json` als
 `{"value": <Zahl>, "unit": "<Einheit>", "threshold": <Zahl>, "pass": <bool>}`; dazu `"recommendation": "Go" | "No-Go"`.
