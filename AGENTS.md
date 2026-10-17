@@ -75,8 +75,9 @@ Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `opens
 - Jede Funktion ist ein Befehl im Befehlsregister; Befehlssuche, Tastenkürzel, Plugins und MCP-Tools nutzen
   dasselbe Register. Plugins laufen isoliert; fremde Projekte führen Code erst nach Vertrauen aus (ADR-045).
 - Kein fester KI-Anbieter: Modelle nur über die Anbieter-Schnittstelle oder MCP; lokale Modelle müssen
-  funktionieren; keine Daten an Dritte ohne ausdrückliche Wahl, keine Telemetrie ohne ausdrückliche Zustimmung (ADR-037).
-- Der Kern ist fachneutral, Raum und Akustik sind das erste Fachpaket über das Plugin-SDK (ADR-046).
+  funktionieren; keine Daten an Dritte ohne ausdrückliche Wahl, keine Telemetrie ohne Zustimmung (ADR-037).
+- Der Kern ist fachneutral (ADR-046); Raum und Akustik sind das erste Fachpaket über die Fachpaket-API,
+  Arbeitsbereiche sind Beiträge der Fachpakete (ADR-054).
   Freigaben mit Item, Revision und Lebenszyklus; Freigabestände sind unveränderlich, nur Menschen geben frei
   (ADR-047). PLM und ERP nur über offenes Format, API und Ereignisse (ADR-048).
 - Automatisierung ist Teil des Graphen: veröffentlichte Untergraphen werden Befehl, Knoten, MCP-Werkzeug und
@@ -86,6 +87,9 @@ Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `opens
 - Einfach und fehlerarm (ADR-051/052): Oberfläche ohne Git-Begriffe (Entwurf, Meilenstein, Übernehmen),
   Verwerfen statt Löschen, Ordnung aus dem Graphen (Facetten, Suche, Rückverweise) statt Ordnerpflege.
 - Lernschleife für lokale Modelle nur mit Prüfern als Bewertung, nie Selbstbewertung (ADR-053).
+- Rechte prüft der Server; Agenten laufen als Dienstkonto ohne Freigaberecht (ADR-055). Datensparsam: keine
+  gespeicherte Anwesenheit, Verlauf nur mit Konto-IDs (ADR-056). Jede Zahl ist eine Größe mit Einheit
+  (ADR-057). Adressen beruhen auf der Element-ID (ADR-058). Begriffe: `docs/glossar.md`.
 - Erster Anwendungsfall: Räume mit Schallabsorbern (ADR-038). Material ist ein Element mit Aussehen, Akustik,
   Physik, Kosten und CO₂ (ADR-039); Nachhallzeit rechnet `crates/acoustics` (ADR-041); Rendering im Client
   mit Echtzeit und Fotomodus (ADR-040).
@@ -98,4 +102,5 @@ Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `opens
 
 Rust 2021, kein `unsafe`, Fehler als `Result`. Elixir mit `mix format`, Typespecs an öffentlichen
 Funktionen. TypeScript strict. Python ≥ 3.11 mit Typ-Hints, ruff, pytest.
-Commits im Imperativ mit Change-ID: `ap-01-spike-datenmodell: Merge-Zeit für 10.000 Elemente messen`.
+Commits im Imperativ mit Change-ID: `ap-01-spike-datenmodell: Merge-Zeit für 10.000 Elemente messen`, immer
+mit `git commit -s` (Developer Certificate of Origin, `CONTRIBUTING.md`).

@@ -12,11 +12,11 @@ paths:
 - Jedes Element hat dieselbe Form (`id`, `type`, `inputs`, `params`, `outputs`, `content`, `meta`) –
   ein Achsenursprung genauso wie eine Baugruppe (ADR-028). Keine Sonderfälle je Elementtyp im Speicherformat.
 - Der Kern ist fachneutral (ADR-046): keine Fachbegriffe (Wand, Absorber, Nachhallzeit, Bohrung) im Code
-  von `crates/graph`, kein Aufzählen von Elementtypen im Schema. Fachtypen definieren Fachpakete über das
-  Plugin-SDK. Ausnahme sind die Grundtypen `frame`, `variables`, `component`, `instance`, `item`, `study`.
+  von `crates/graph`, kein Aufzählen von Elementtypen im Schema. Fachtypen definieren Fachpakete über die
+  Fachpaket-API (ADR-054). Ausnahme sind die Grundtypen `frame`, `variables`, `component`, `instance`, `item`, `study`.
 - Freigabestände sind unveränderlich: Operationen auf einen freigegebenen Untergraphen werden abgelehnt;
   Änderungen gehen nur über einen neuen Arbeitsstand bzw. Änderungsauftrag (ADR-047).
-- Gesperrte Komponenten (ADR-049): Operationen auf ihr Innenleben lehnt der Kern ab; nur freigegebene
+- Gesperrte Komponenten (ADR-049): Operationen auf ihr Innenleben lehnt der Kern ab; nur exponierte
   Parameter sind über Instanzen änderbar. Die Sperre ist eine Eigenschaft der Komponente, kein Sonderfall im
   Speicherformat.
 - Komponenten können Referenz-Eingänge mit Typ deklarieren; Instanzen speichern nur die gewählten Verweise
@@ -32,6 +32,10 @@ paths:
   Untergraphen (ADR-043). Entfällt ein überschriebener Parameter, wird das als Befund gemeldet. Zyklen
   zwischen Komponenten sind ein Fehler.
 - IDs sind stabil und werden nie wiederverwendet. Referenzen gehen auf `<id>.<output>`, nie auf Positionen.
+- Jeder Zahlenwert ist eine Größe mit Dimension (ADR-057); kanonisch mm, rad, kg, s, Hz, kg CO₂e; Geld als
+  Dezimalzahl mit Währung. Ausdrücke mit unverträglichen Dimensionen sind ein Fehler.
+- `crates/graph` kennt keine Fachpakete; Fachpaket-Crates (z. B. `crates/acoustics`) hängen vom Kern ab,
+  nie umgekehrt (ADR-054).
 - Schemaänderung = neue `SCHEMA_VERSION` + Migration + Test mit altem Dokument.
 - Kein `unsafe` (Workspace-Lint). Keine Panics über Bindungsgrenzen: öffentliche Funktionen geben
   `Result` zurück; NIF-, WASM- und PyO3-Schichten wandeln Fehler in strukturierte Fehler um.

@@ -18,8 +18,9 @@
   die Startseite – keine zusätzlichen Ordnerebenen unter Projekt.
 - Bewegen, Drehen, Skalieren: Achse sperren und Wert tippen ist immer möglich, mit Einheiten und einfachen
   Formeln; nie ein Dialog für exakte Werte (ADR-044).
-- Vier Arbeitsbereiche (Raum, Akustik, Präsentation, Bericht). Ein neues Panel gehört genau einem
-  Arbeitsbereich; ein fünfter Arbeitsbereich nur per ADR.
+- Arbeitsbereiche sind Beiträge von Fachpaketen (ADR-054); der Kern bringt nur „Modell“, Raum und Akustik
+  bringen Raum, Akustik, Präsentation, Bericht. Ein neues Panel gehört genau einem Arbeitsbereich; höchstens
+  fünf Arbeitsbereiche gleichzeitig sichtbar.
 - Jede Aktion erzeugt eine Graph-Operation, die im Aktionsprotokoll als Text sichtbar und kopierbar ist.
 - Der Stapel im Eigenschaften-Panel ist eine Projektion des Graphen, kein eigenes Datenmodell.
 - Fehlerhafte und veraltete Elemente sind in allen Ansichten sichtbar markiert (Baum, 3D, Knoten); das Modell
@@ -38,5 +39,10 @@
 - Einstellungen nur über das Einstellungs-Schema (Ebenen Standard, Organisation, Benutzer, Projekt), nie
   verstreut über `localStorage` oder eigene Dateien.
 - Derselbe Code für Browser und Tauri. Plattformzugriffe (Dateien, Worker) nur über `client/src/platform/`.
+- Barrierefreiheit: Bedienelemente außerhalb der 3D-Fläche nach WCAG 2.2 AA (Kontrast, Tastatur, Fokus,
+  Beschriftung für Screenreader); jede Funktion ist per Tastatur über die Befehlssuche erreichbar.
+- Sprache: keine festen Texte im Code, nur Übersetzungsschlüssel; Deutsch und Englisch von Anfang an.
+- Zahlen immer mit Einheit anzeigen und annehmen (ADR-057); gerundet wird nur in der Anzeige.
+- Begriffe aus `docs/glossar.md`; neue Begriffe erst dort eintragen.
 - Jede sichtbare UI-Änderung braucht einen aktualisierten Referenz-Screenshot unter
   `tests/ui-reference/` – den legt der Test-Autor nach Freigabe durch UX an, nicht der Implementierer.

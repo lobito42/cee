@@ -17,6 +17,10 @@ paths:
 - Presence und Channels: Nachrichten klein halten, keine Geometrie über Channels, nur Operationen,
   Hashes und Vorschau-Verweise.
 - Hintergrundaufgaben (Export, Regelprüfung, KI-Läufe) über Oban, idempotent.
+- Rechte (ADR-055) prüft der Server bei jeder Operation, jeder Suche und jedem Export; Agenten und
+  Automatisierungen laufen als Dienstkonto ohne Recht zum Freigeben.
+- Datenschutz (ADR-056): Anwesenheit nie speichern; im Verlauf nur Konto-IDs; Protokolle ohne Modellinhalte,
+  höchstens 30 Tage. Jede neue gespeicherte Angabe zu Personen braucht einen Vermerk im PR.
 - Suchindex und Facetten (ADR-052) sind abgeleitet aus dem Graphen, werden nie synchronisiert und lassen sich
   jederzeit neu aufbauen; die Suche prüft Rechte je Treffer. Adressen bleiben nach Umbenennen und
   Verschieben gültig (Weiterleitung).

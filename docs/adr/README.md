@@ -21,7 +21,7 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-015](ADR-015-explizite-publikation-statt-sichtbarkeit.md) | Explizite Publikation statt Sichtbarkeit | vorgeschlagen, geändert durch ADR-028 |
 | [ADR-016](ADR-016-persistente-identitaet.md) | Persistente Identität | vorgeschlagen, geändert durch ADR-028 |
 | [ADR-017](ADR-017-manifest-als-lockfile-mit-semantischer-versionieru.md) | Manifest als Lockfile mit semantischer Versionierung | ersetzt durch ADR-047 |
-| [ADR-018](ADR-018-adressierung-per-uri.md) | Adressierung per URI | vorgeschlagen, geändert durch ADR-028 |
+| [ADR-018](ADR-018-adressierung-per-uri.md) | Adressierung per URI | ersetzt durch ADR-058 |
 | [ADR-019](ADR-019-semantische-pmi-im-code.md) | Semantische PMI im Code | vorgeschlagen, geändert durch ADR-028 |
 | [ADR-020](ADR-020-zeichnungsblaetter-als-code.md) | Zeichnungsblätter als Code | ersetzt durch ADR-028 |
 | [ADR-021](ADR-021-ki-aenderungen-als-pruefbare-aenderungssaetze.md) | KI-Änderungen als prüfbare Änderungssätze | vorgeschlagen, geändert durch ADR-035 |
@@ -44,12 +44,12 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-038](ADR-038-erster-anwendungsfall-raumakustik.md) | Erster Anwendungsfall: Raumgestaltung und Raumakustik | akzeptiert, geändert durch ADR-046 |
 | [ADR-039](ADR-039-material-als-element-mit-eigenschaften.md) | Material als Element mit Eigenschaften | akzeptiert |
 | [ADR-040](ADR-040-rendering-echtzeit-und-fotomodus.md) | Rendering: Echtzeit und Fotomodus im Client | akzeptiert, geändert durch ADR-044 |
-| [ADR-041](ADR-041-akustik-berechnung-im-kern.md) | Akustik-Berechnung im Rust-Kern | akzeptiert |
+| [ADR-041](ADR-041-akustik-berechnung-im-kern.md) | Akustik-Berechnung im Rust-Kern | akzeptiert, geändert durch ADR-054 |
 | [ADR-042](ADR-042-austauschformate-gltf-ifc-dxf-step.md) | Austauschformate: glTF, IFC, DXF, STEP | akzeptiert |
 | [ADR-043](ADR-043-komponenten-instanzen-bibliotheken.md) | Komponenten, Instanzen und Bibliotheken | akzeptiert, geändert durch ADR-049 und ADR-050 |
-| [ADR-044](ADR-044-bedienmuster-aus-blender.md) | Bedienmuster aus Blender | akzeptiert |
+| [ADR-044](ADR-044-bedienmuster-aus-blender.md) | Bedienmuster aus Blender | akzeptiert, geändert durch ADR-054 |
 | [ADR-045](ADR-045-befehle-erweiterungen-vertrauen-nach-vs-code.md) | Befehle, Erweiterungen und Vertrauen nach dem Vorbild von VS Code | akzeptiert |
-| [ADR-046](ADR-046-fachneutraler-kern-muster-aus-onshape.md) | Fachneutraler Kern und Muster aus Onshape | akzeptiert |
+| [ADR-046](ADR-046-fachneutraler-kern-muster-aus-onshape.md) | Fachneutraler Kern und Muster aus Onshape | akzeptiert, geändert durch ADR-054 |
 | [ADR-047](ADR-047-freigabe-revisionen-lebenszyklus.md) | Freigabeprozess, Revisionen und Lebenszyklus | akzeptiert |
 | [ADR-048](ADR-048-schnittstelle-plm-erp.md) | Offene Schnittstelle zu PLM und ERP | akzeptiert |
 | [ADR-049](ADR-049-automatisierung-apps-studien-nach-synera.md) | Automatisierung, Apps und Studien nach dem Vorbild von Synera | akzeptiert |
@@ -57,3 +57,8 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-051](ADR-051-versionierung-in-alltagsbegriffen-entwicklungstrichter.md) | Versionierung in Alltagsbegriffen und Entwicklungstrichter | akzeptiert |
 | [ADR-052](ADR-052-ordnungssystem-und-wiederfinden.md) | Ordnungssystem und Wiederfinden | akzeptiert |
 | [ADR-053](ADR-053-lernschleife-fuer-lokale-modelle.md) | Lernschleife für lokale Modelle | akzeptiert |
+| [ADR-054](ADR-054-fachpakete-interne-api-und-arbeitsbereiche.md) | Fachpakete: interne API zuerst, Arbeitsbereiche als Beitrag | akzeptiert |
+| [ADR-055](ADR-055-rechte-rollen-anmeldung.md) | Rechte, Rollen und Anmeldung | akzeptiert |
+| [ADR-056](ADR-056-datenschutz.md) | Datenschutz | akzeptiert |
+| [ADR-057](ADR-057-einheiten-und-groessen.md) | Einheiten und Größen | akzeptiert |
+| [ADR-058](ADR-058-adressen-auf-id-basis.md) | Adressen auf ID-Basis | akzeptiert |

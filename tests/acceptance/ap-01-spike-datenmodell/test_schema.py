@@ -76,7 +76,7 @@ def test_ak3_component_with_variants_and_instances():
     assert absorber_components, "Keine Komponente mit Absorber im Untergraphen"
     comp = absorber_components[0]
     assert len(comp["params"].get("variants", {})) >= 2, "Komponente braucht mindestens zwei Varianten"
-    assert comp["params"].get("parameters"), "Komponente ohne freigegebene Parameter"
+    assert comp["params"].get("parameters"), "Komponente ohne exponierte Parameter"
     instances = [
         e
         for e in elements
@@ -87,7 +87,7 @@ def test_ak3_component_with_variants_and_instances():
         assert i["params"].get("variant") in comp["params"]["variants"], f"{i['id']}: unbekannte Variante"
         assert not i["content"], f"{i['id']}: Instanz darf keine Kopie des Untergraphen enthalten"
         assert set(i["params"].get("overrides", {})) <= set(comp["params"]["parameters"]), (
-            f"{i['id']}: Überschreibung eines nicht freigegebenen Parameters"
+            f"{i['id']}: Überschreibung eines nicht exponierten Parameters"
         )
     assert any(i["params"].get("overrides") for i in instances), "Keine Instanz mit Überschreibung"
 

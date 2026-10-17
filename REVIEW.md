@@ -14,6 +14,9 @@ Gilt für das automatische Review jedes Pull Requests und für den Reviewer-Agen
 - Elementtyp mit Sonderfeldern statt der einheitlichen Elementform (ADR-028).
 - KI-Änderung wird ohne Änderungskarte übernommen (ADR-021).
 - Netzwerkzugriffe außerhalb des Sync-Protokolls zwischen Client und Server; Kern und Worker haben keinen Netzzugriff.
+- Neue gespeicherte Angaben zu Personen ohne Vermerk und ohne Grundlage in ADR-056; Rechteprüfung fehlt im
+  Server (ADR-055).
+- Zahlenwerte ohne Einheit bzw. Dimension (ADR-057); Begriffe gegen `docs/glossar.md`.
 
 ## Wichtig
 

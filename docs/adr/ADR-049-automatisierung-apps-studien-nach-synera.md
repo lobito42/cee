@@ -21,7 +21,7 @@ Abläufe versioniert, freigebbar und reproduzierbar.
    laufen im Browser für Personen ohne Modellrechte, auf dem eigenen Server; Eingaben und Ergebnis werden als
    Änderungssatz bzw. eigener Stand gespeichert, nie direkt ins Modell geschrieben.
 3. **Bibliotheken je Ebene und gesperrte Komponenten:** Bibliotheken gibt es für Person, Projekt und
-   Organisation. Eine Komponente kann gesperrt werden: Nutzer sehen und ändern nur die freigegebenen Parameter,
+   Organisation. Eine Komponente kann gesperrt werden: Nutzer sehen und ändern nur die exponierten Parameter,
    das Innenleben ist schreibgeschützt oder verborgen (ergänzt ADR-043).
 4. **Werte an jeder Kante:** Der Knoten-Editor zeigt Zwischenergebnisse (Wert mit Einheit, Liste, kleine
    Geometrie-Vorschau, Befund) direkt am Knoten bzw. an der Kante, live bei jeder Änderung.

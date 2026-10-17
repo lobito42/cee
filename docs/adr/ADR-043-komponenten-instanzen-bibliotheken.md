@@ -12,7 +12,7 @@ Raumvorlagen sollen einmal gepflegt und vielfach genutzt werden, mit kontrollier
 
 ## Entscheidung
 
-- Eine **Komponente** ist ein Element vom Typ `component` mit Untergraph (`content`), freigegebenen
+- Eine **Komponente** ist ein Element vom Typ `component` mit Untergraph (`content`), exponierten
   Parametern (`params.parameters`: Name → Typ, Standardwert, Grenzen) und benannten **Varianten**
   (`params.variants`: Name → Parametersatz). Ausgang `definition`.
 - Eine **Instanz** ist ein Element vom Typ `instance` mit Eingang `definition` = `<komponenten-id>.definition`
