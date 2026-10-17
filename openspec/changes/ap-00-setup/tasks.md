@@ -1,7 +1,7 @@
 ## 1. Gerüst
 
 - [ ] 1.1 Rust-Workspace: `cargo fmt --check`, `cargo clippy -- -D warnings`, `cargo test` grün – Prüfung: AK-2
-- [ ] 1.2 Phoenix-Anwendung in `server/` mit `GET /health` → 200 und Test – Prüfung: AK-2
+- [ ] 1.2 Phoenix-Anwendung in `server/` mit `GET /health` → 200 und Test; Credo und Dialyzer eingerichtet – Prüfung: AK-2
 - [ ] 1.3 Client mit Vite, TypeScript strict, ESLint, Prettier, Vitest; echte `lint`- und `test`-Skripte – Prüfung: AK-3
 - [ ] 1.4 Tauri-2-Hülle in `client/src-tauri/` plus CI-Job für Linux, Windows, macOS – Prüfung: AK-1, AK-3
 - [ ] 1.5 Worker `cee_worker` beantwortet `ping` über stdio – Prüfung: AK-4

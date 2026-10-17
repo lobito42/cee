@@ -14,7 +14,7 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-008](ADR-008-ausfuehrbare-regelpakete.md) | Ausführbare Regelpakete | vorgeschlagen |
 | [ADR-009](ADR-009-strukturierte-anforderungsdatei.md) | Strukturierte Anforderungsdatei | vorgeschlagen |
 | [ADR-010](ADR-010-visuelle-selbstpruefung.md) | Visuelle Selbstprüfung | vorgeschlagen |
-| [ADR-011](ADR-011-eigene-blech-schicht.md) | Eigene Blech-Schicht | vorgeschlagen |
+| [ADR-011](ADR-011-eigene-blech-schicht.md) | Eigene Blech-Schicht | zurückgestellt (nach der Beta) |
 | [ADR-012](ADR-012-optionale-fem.md) | Optionale FEM | vorgeschlagen |
 | [ADR-013](ADR-013-lizenz-und-governance.md) | Lizenz und Governance | ersetzt durch ADR-034 |
 | [ADR-014](ADR-014-zwei-testebenen.md) | Zwei Testebenen | vorgeschlagen |

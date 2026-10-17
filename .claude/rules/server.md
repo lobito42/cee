@@ -17,4 +17,7 @@ paths:
 - Presence und Channels: Nachrichten klein halten, keine Geometrie über Channels, nur Operationen,
   Hashes und Vorschau-Verweise.
 - Hintergrundaufgaben (Export, Regelprüfung, KI-Läufe) über Oban, idempotent.
-- Prüfen: `mix format --check-formatted`, `mix compile --warnings-as-errors`, `mix test`.
+- Typespecs an jeder öffentlichen Funktion; `mix dialyzer` und `mix credo --strict` ohne Befund. Das Kernteam
+  kann Elixir nicht selbst prüfen – Typen und Tests ersetzen das menschliche Code-Review.
+- Prüfen: `mix format --check-formatted`, `mix compile --warnings-as-errors`, `mix credo --strict`,
+  `mix dialyzer`, `mix test`.

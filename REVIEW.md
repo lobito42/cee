@@ -17,6 +17,11 @@ Gilt für das automatische Review jedes Pull Requests und für den Reviewer-Agen
 
 ## Wichtig
 
+- Abschnitt „In einfachen Worten“ im PR vorhanden und zutreffend (das Kernteam prüft Rust und Elixir
+  nicht selbst).
+- Elixir: Typespecs an öffentlichen Funktionen, `mix dialyzer` ohne Befund. Rust: kein `unwrap()`/`expect()`
+  außerhalb von Tests.
+
 - Jedes Scenario des OpenSpec-Changes ist durch einen Test belegt; alle Tasks sind abgehakt.
 - Fehler aus Kern und Worker werden strukturiert weitergegeben (Element-ID, Hinweis), nicht verschluckt.
 - Schemaänderung mit neuer `SCHEMA_VERSION`, Migration und Test mit altem Dokument.

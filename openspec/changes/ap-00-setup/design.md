@@ -14,7 +14,7 @@ Gerüst; Inhalte entstehen in den folgenden Changes.
 
 | Bereich | Entscheidung | Budget |
 | --- | --- | --- |
-| Server | `mix phx.new server --app cee_server --no-html --no-assets --no-mailer --no-dashboard`, PostgreSQL über Ecto | `mix test` < 30 s |
+| Server | `mix phx.new server --app cee_server --no-html --no-assets --no-mailer --no-dashboard`, PostgreSQL über Ecto; Credo und Dialyzer, weil das Kernteam Elixir nicht selbst prüft | `mix test` < 30 s |
 | Client | Vite + TypeScript strict, Vitest, ESLint (flat config), Prettier | `npm test` < 30 s |
 | Desktop | Tauri 2, Fenster lädt den Vite-Build; CI baut für Linux, Windows, macOS | Installer < 20 MB |
 | Worker | Paket `cee_worker` unter `worker/src/`, Aufruf `uv run python -m cee_worker`; eine JSON-Zeile je Nachricht | `ping` < 2 s inkl. Start |

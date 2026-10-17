@@ -11,4 +11,5 @@
 - Keine Geometrie und kein I/O im Kern-Crate; Speicher und Netz gehören in die Hosts.
 - Deterministisch: gleiche Operationen ergeben bitgleiche Textprojektion und gleiche Hashes.
 - Lange Operationen (> 1 ms) als Dirty-NIF kennzeichnen bzw. inkrementell anbieten.
+- Kein `unwrap()`/`expect()` außerhalb von Tests; für neue Logik Property-Tests (proptest) statt nur Beispiele.
 - Prüfen: `cargo fmt --check`, `cargo clippy --all-targets -- -D warnings`, `cargo test -q`.

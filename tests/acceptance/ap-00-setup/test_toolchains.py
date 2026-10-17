@@ -18,17 +18,20 @@ def test_ak2_rust_workspace_green():
 
 
 def test_ak2_elixir_server_green():
-    """AK-2: Phoenix-Server ist formatiert, kompiliert ohne Warnungen und hat einen Health-Test."""
+    """AK-2: Phoenix-Server: formatiert, ohne Warnungen, Credo und Dialyzer sauber, Health-Test vorhanden."""
     server = ROOT / "server"
     for cmd in (
         ["mix", "format", "--check-formatted"],
         ["mix", "compile", "--warnings-as-errors"],
+        ["mix", "credo", "--strict"],
+        ["mix", "dialyzer"],
         ["mix", "test"],
     ):
         res = sh(cmd, cwd=server)
         assert res.returncode == 0, f"{' '.join(cmd)}:\n{(res.stdout + res.stderr)[-2000:]}"
     deps = (server / "mix.exs").read_text(encoding="utf-8")
-    assert ":phoenix" in deps, "Phoenix fehlt in server/mix.exs"
+    for dep in (":phoenix", ":credo", ":dialyxir"):
+        assert dep in deps, f"{dep} fehlt in server/mix.exs"
     tests = " ".join(p.read_text(encoding="utf-8") for p in (server / "test").rglob("*_test.exs"))
     assert "/health" in tests, "Kein Test für GET /health"
 
