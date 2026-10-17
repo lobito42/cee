@@ -9,7 +9,7 @@ Stand: 2026-10-17
 
 Wir bauen eine offene, kollaborative Plattform für Produktdefinition: CEE, das Collaborative Engineering Environment. Das Logo ist ein C mit einem freistehenden Strich in der Mitte, angelehnt an das Zeichen „ist Element von“. Ein Projekt ist ein **Graph aus Elementen**, in dem ein Achsenursprung genauso behandelt wird wie ein ganzes Bauteil. Online sehen alle denselben Stand wie in Figma, offline geht es weiter wie bei Git. Bearbeitet wird in 3D, im Knoten-Editor oder als Text, von Menschen und KI-Agenten gemeinsam.
 
-**Rahmen:** CEE ist ein ehrgeiziges Testprojekt, das von Anfang an so gebaut wird, dass es als Open-Source-Projekt veröffentlicht werden kann. Zielgruppe sind Einzelpersonen und kleine Projektgruppen, privat oder in kleinen Firmen. Die menschliche Zeit ist knapp; ein ausdrücklicher Zweck ist, autonomes Arbeiten von KI-Agenten zu erproben. Offenheit gegenüber KI-Modellen, lokale Modelle sowie selbst gehostete Daten und Modelle gelten ab dem ersten Tag (ADR-037).
+**Rahmen:** CEE ist ein ehrgeiziges Testprojekt, das von Anfang an so gebaut wird, dass es als Open-Source-Projekt veröffentlicht werden kann. Zielgruppe sind Einzelpersonen und kleine Projektgruppen, privat oder in kleinen Firmen. Erster Nutzer ist eine kleine Firma, die Schallabsorber entwickelt: Räume gestalten, Absorber platzieren, Nachhallzeit, Kosten und CO₂ berechnen und das Ergebnis fotorealistisch zeigen. Die menschliche Zeit ist knapp; ein ausdrücklicher Zweck ist, autonomes Arbeiten von KI-Agenten zu erproben. Offenheit gegenüber KI-Modellen, lokale Modelle sowie selbst gehostete Daten und Modelle gelten ab dem ersten Tag (ADR-037).
 
 **Fünf Ziele und woran wir sie messen**
 
@@ -24,9 +24,45 @@ Wir bauen eine offene, kollaborative Plattform für Produktdefinition: CEE, das 
 
 **Das Fundament ist das atomare Datenmodell.** Jedes Element – Punkt, Achse, Skizze, Feature, Fläche, Körper, Bauteil, Baugruppe, Maß, Zeichnungsblatt, Regel, Anforderung – hat dieselbe Form, eine stabile ID und eine eigene Historie. Deshalb lässt sich alles gleich adressieren, veröffentlichen, kommentieren, versionieren und zusammenführen.
 
-**Ziel bis zur öffentlichen Beta:** Einzelpersonen und kleine Gruppen konstruieren Fräs- und 3D-Druckteile live gemeinsam im Browser und in der Desktop-App, arbeiten offline weiter und führen zusammen, lassen Agenten über MCP Bauteile erzeugen und prüfen – auch mit einem lokalen Modell – und betreiben alles auf eigener Hardware. Das Tempo bestimmen die Agenten, nicht feste Termine; die Monatsangaben in der Roadmap sind Richtwerte.
+**Ziel bis zur öffentlichen Beta:** Ein kleines Team modelliert einen Raum mit Grundriss, Wänden, Decke, Boden, Fenstern, Türen und Möbeln, platziert Schallabsorber aus dem eigenen Katalog und sieht die Nachhallzeit je Oktavband live. Materialien tragen Aussehen, Akustik, Physik, Kosten und CO₂; daraus entstehen Mengen, Kosten und ein Bericht für das Angebot, dazu ein fotorealistisches Bild. Alle arbeiten live gemeinsam oder offline, Agenten helfen über MCP – auch mit einem lokalen Modell – und alles läuft auf eigener Hardware. Das Tempo bestimmen die Agenten, nicht feste Termine; die Monatsangaben in der Roadmap sind Richtwerte.
 
-**Nicht-Ziele bis zur Beta:** Freiformflächen in Class-A-Qualität, native Feature-Bäume in kommerziellen CAD-Systemen, PLM-Anbindung, FEM, Blech und Regeln für Spritzguss, ein eigener Geometrie-Kernel, Modellieren in XR, eine VS-Code-Integration, ein eigener KI-Dienst mit Abrechnung, Funktionen für Konzerne (PLM, feingranulare Rechteverwaltung).
+**Nicht-Ziele bis zur Beta:** Freiformflächen in Class-A-Qualität, native Feature-Bäume in kommerziellen CAD-Systemen, PLM-Anbindung, FEM, Fertigungsregeln (Fräsen, 3D-Druck, Blech, Spritzguss), vollständiges BIM (Statik, Haustechnik, Bauantrag), ein eigener Geometrie-Kernel, Modellieren in XR, eine VS-Code-Integration, ein eigener KI-Dienst mit Abrechnung, Funktionen für Konzerne (PLM, feingranulare Rechteverwaltung).
+
+## Erster Anwendungsfall: Raumakustik mit Schallabsorbern
+
+Die Firma braucht einen durchgängigen Ablauf vom leeren Raum bis zum Angebot, ohne Wechsel zwischen CAD, Akustik-Tabelle und Rendering-Programm (ADR-038).
+
+1. **Raum anlegen:** Grundriss zeichnen oder aus IFC bzw. DXF übernehmen; Wände, Boden, Decke, Fenster und Türen entstehen als Elemente mit Material.
+2. **Einrichten:** Möbel aus der Bibliothek oder als glTF; sie zählen mit ihrer äquivalenten Absorptionsfläche.
+3. **Absorber platzieren:** Wandpaneele, Deckensegel, Baffeln oder Stellwände aus dem eigenen Katalog; eigene Formen per Skizze und Extrusion.
+4. **Wirkung sehen:** Nachhallzeit je Oktavband nach Sabine und Eyring, live beim Verschieben, gegen ein Zielband (ADR-041).
+5. **Zeigen und anbieten:** Echtzeit-Ansicht und Fotomodus (ADR-040); Mengen, Kosten, Gewicht und CO₂ aus Geometrie und Material; PDF-Bericht mit vorher/nachher.
+
+**Elemente des Anwendungsfalls**
+
+| Element | Beschreibung | Wichtige Parameter |
+| --- | --- | --- |
+| `level` | Geschoss mit Grundriss | Höhe, Bezugshöhe |
+| `wall` | Wand entlang einer Achse | Dicke, Höhe, Schichtaufbau aus Materialien |
+| `slab` | Boden oder Decke | Dicke, Material |
+| `opening` | Fenster oder Tür, sitzt in einer Wand | Breite, Höhe, Brüstung, Material |
+| `furniture` | Möbel aus Bibliothek oder eigenem Untergraphen | Äquivalente Absorptionsfläche je Band |
+| `absorber` | Produkt mit Variante, Maßen und Montageart | Material, Abstand zur Wand, Stückpreis |
+| `material` | Eigenschaften an einer Stelle (ADR-039) | siehe nächste Tabelle |
+| `analysis` | Berechnetes Ergebnis, z. B. Nachhallzeit | Raum, Zielwerte, Verfahren |
+
+**Eigenschaften eines Materials**
+
+| Gruppe | Inhalt | Einheit |
+| --- | --- | --- |
+| Aussehen | Farbe, Rauheit, Metallizität, Textur, Transparenz (glTF-PBR) | – |
+| Akustik | Absorptionsgrad α je Oktavband 125–4000 Hz, daraus αw und Absorberklasse | 0–1 |
+| Physik | Dichte, Wärmeleitfähigkeit | kg/m³, W/(m·K) |
+| Brandverhalten | Klasse nach EN 13501-1 | – |
+| Kosten | Preis je Einheit | €/m², €/Stück |
+| Nachhaltigkeit | Treibhauspotenzial (GWP), Quelle (z. B. EPD) | kg CO₂-Äq. je Einheit |
+
+Jeder Wert trägt Einheit und Quelle; Herstellerdaten der Firma kommen als eigene Bibliothek.
 
 ## Rahmenbedingungen und Anforderungen
 
@@ -61,7 +97,14 @@ Die Lösung muss alle Fertigungsverfahren abdecken, alle gängigen CAD-Systeme b
 | F-23 | Textprojektion für Git und Review; Export und Import in echte Git-Repositories | Muss |
 | F-24 | Plugin-SDK für eigene Elementtypen, Knoten, Regeln und Panels (TypeScript, Python) | Soll |
 | F-25 | Immersives Review über WebXR | Kann |
-| F-26 | 3D-Druck: Druckbarkeit prüfen (Überhänge, Wandstärken, Bauraum), Ausrichtung vorschlagen, Export als 3MF | Muss |
+| F-26 | 3D-Druck: Druckbarkeit prüfen (Überhänge, Wandstärken, Bauraum), Ausrichtung vorschlagen, Export als 3MF (nach der Beta) | Kann |
+| F-27 | Raum modellieren: Grundriss, Wände, Boden, Decke, Fenster, Türen; 2D-Grundriss und 3D zeigen dieselben Elemente | Muss |
+| F-28 | Materialbibliothek mit Aussehen, Akustik, Physik, Brandverhalten, Kosten und CO₂; Import von Herstellerdaten | Muss |
+| F-29 | Nachhallzeit je Oktavband nach Sabine und Eyring, live beim Platzieren, mit Zielband | Muss |
+| F-30 | Absorber aus Katalog platzieren (Wand, Decke, abgehängt, freistehend), auch in Reihen und Rastern | Muss |
+| F-31 | Echtzeit-Rendering mit PBR und Fotomodus (Path Tracing) für fotorealistische Bilder | Muss |
+| F-32 | Mengen, Kosten, Gewicht und CO₂ je Raum; PDF-Bericht mit Nachhallzeit vorher/nachher; CSV-Mengenliste | Muss |
+| F-33 | Import von IFC und DXF; Möbel und Szenen als glTF | Soll |
 
 **Nicht-funktionale Anforderungen**
 
@@ -240,7 +283,7 @@ Es gibt keine Menüleiste und kein Ribbon. Befunde erscheinen als Markierung dir
 
 ## Architecture Decision Records
 
-Siebenunddreißig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-037 beschreiben die neue Richtung (Element-Graph, Rust-Kern, Elixir-Server, Web und Desktop, Lizenz, offene und lokale KI) und sind akzeptiert; sie ersetzen ADR-003, 005, 013 und 024. Die übrigen stehen auf „Vorgeschlagen“ und werden mit den Spikes bestätigt. Jedes ADR liegt zusätzlich als Markdown-Datei unter `docs/adr/` im Repository.
+Zweiundvierzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-042 beschreiben die neue Richtung (Element-Graph, Rust-Kern, Elixir-Server, Web und Desktop, Lizenz, offene und lokale KI, Raumakustik, Material, Rendering, Austauschformate) und sind akzeptiert; sie ersetzen ADR-003, 005, 013 und 024. Die übrigen stehen auf „Vorgeschlagen“ und werden mit den Spikes bestätigt. Jedes ADR liegt zusätzlich als Markdown-Datei unter `docs/adr/` im Repository.
 
 | ADR | Entscheidung | Wichtigste Alternative |
 | --- | --- | --- |
@@ -281,6 +324,11 @@ Siebenunddreißig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-037
 | 035 | Drei gleichwertige Projektionen: 3D, Knoten, Text | Code mit Rückübersetzung (ADR-024) |
 | 036 | Immersives Review über WebXR (vorgeschlagen, Phase 3) | Native XR-Apps |
 | 037 | KI anbieteroffen und lokal: MCP und Anbieter-Schnittstelle, lokale Modelle ab Tag 1, eigener Schlüssel, keine Telemetrie | Bindung an einen Anbieter, eigener KI-Dienst |
+| 038 | Erster Anwendungsfall Raumgestaltung und Raumakustik: Geschoss, Wand, Decke, Boden, Öffnung, Möbel, Absorber als Elemente | Fräs- und Blechteile zuerst, volles BIM |
+| 039 | Material als Element mit Aussehen, Akustik, Physik, Brandverhalten, Kosten, CO₂ – jeder Wert mit Einheit und Quelle | Material als Attribut je Bauteil |
+| 040 | Rendering im Client: Echtzeit-PBR und Fotomodus mit Path Tracing (three-gpu-pathtracer, MIT); glTF als Austausch | Blender/Cycles (GPL), Render-Server |
+| 041 | Nachhallzeit nach Sabine und Eyring je Oktavband im Rust-Kern; Ergebnisse als Analyse-Elemente | Berechnung im Python-Worker, externe Akustiksoftware |
+| 042 | Austausch: IFC- und DXF-Import, glTF in beide Richtungen, PDF-Bericht, STEP für Bauteile | Nur STEP (ADR-004) |
 
 ### ADR-001: Geometriekernel OpenCascade
 
@@ -538,7 +586,39 @@ Siebenunddreißig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-037
 
 **Konsequenzen:** Die Eval-Suite misst jede Version mit einem Cloud- und einem lokalen Modell. Selbstbetrieb wird in Phase 1 vorgezogen.
 
+### ADR-038: Erster Anwendungsfall Raumgestaltung und Raumakustik
+
+**Entscheidung:** Die ersten Elementtypen sind `level`, `wall`, `slab`, `opening`, `furniture`, `absorber`, `material` und `analysis`; Absorber-Bauteile entstehen per Skizze und Extrusion. Ein Raum ist ein Element mit Untergraph; der Grundriss ist eine 2D-Ansicht derselben Elemente.
+
+**Konsequenzen:** Fertigungsregeln folgen nach der Beta. Kein volles BIM (Statik, Haustechnik, Bauantrag); IFC dient zum Übernehmen von Räumen.
+
+### ADR-039: Material als Element mit Eigenschaften
+
+**Entscheidung:** Ein Material ist ein Element mit den Gruppen Aussehen (glTF-PBR), Akustik (α je Oktavband, αw, Absorberklasse), Physik, Brandverhalten, Kosten und Nachhaltigkeit (GWP mit Quelle). Elemente verweisen über den Eingang `material` darauf, Schichtaufbauten als Liste mit Dicken.
+
+**Konsequenzen:** Mengen, Kosten, Gewicht und CO₂ ergeben sich ohne Zusatzpflege; Herstellerdaten kommen als eigene Bibliothek.
+
+### ADR-040: Rendering im Client
+
+**Entscheidung:** Echtzeit mit three.js (PBR, HDRI, Schatten), Fotomodus mit progressivem Path Tracing (three-gpu-pathtracer, MIT) auf derselben Szene; glTF als Austausch. Kein Rendering in der Cloud.
+
+**Konsequenzen:** Leistung auf schwacher Hardware misst Spike ap-04.
+
+### ADR-041: Akustik-Berechnung im Rust-Kern
+
+**Entscheidung:** `crates/acoustics` berechnet die Nachhallzeit je Oktavband nach Sabine und Eyring, nativ, als WASM und als NIF. Ergebnisse sind `analysis`-Elemente. Zielwerte (z. B. DIN 18041) kommen als geprüftes Regelpaket, Normtext wird nicht übernommen.
+
+**Konsequenzen:** 1.000 Flächen in unter 1 ms (ap-02). Geometrische Verfahren folgen als eigenes Analyse-Element.
+
+### ADR-042: Austauschformate
+
+**Entscheidung:** Import von IFC (IfcOpenShell im Worker), DXF und glTF; Export als glTF, PDF-Bericht, CSV-Mengenliste und STEP AP242 für Bauteile.
+
+**Konsequenzen:** Ändert ADR-004; IfcOpenShell (LGPL) nur im Worker-Prozess.
+
 ## Regelwerk und Verifikationsschleife
+
+Erstes Regelpaket ist die Raumakustik: Zielbänder für die Nachhallzeit je Raumart, geprüft von der Firma (ap-20). Die Fertigungsregeln unten folgen nach der Beta.
 
 Ein Bauteil gilt erst als fertig, wenn alle Regeln mit Schweregrad „Fehler“ bestehen, die Anforderungen erfüllt sind und ein Mensch das Ergebnis freigegeben hat. Claude arbeitet dafür in einer festen Schleife und bricht nach höchstens acht Iterationen mit einem Befundbericht ab.
 
@@ -567,40 +647,43 @@ Die Zahlen sind Platzhalter aus gängigen Konstruktionsrichtlinien; jedes Untern
 
 ## Arbeitspakete
 
-Die Arbeit ist in 30 Arbeitspakete in vier Phasen geschnitten. Jedes Paket ist ein OpenSpec-Change mit Abnahmetests (`ap-xx-kurzname`); die Spikes der Phase 0 entscheiden, ob die neue Architektur trägt. Bis zur Beta sind es etwa zehn Monate mit zwei Personen und Agenten. Das ist ehrgeizig und hängt am Review-Durchsatz (R-14).
+Die Arbeit ist in 33 Arbeitspakete in vier Phasen geschnitten, ausgerichtet auf den Anwendungsfall Raumakustik. Jedes Paket ist ein OpenSpec-Change mit Abnahmetests (`ap-xx-kurzname`); die Spikes der Phase 0 entscheiden, ob die Architektur trägt. ap-02 ist der erste Change mit echten Specs.
 
 | AP | Phase | Inhalt | Abnahme | Abhängig von |
 | --- | --- | --- | --- | --- |
-| ap-00-setup | 0 | Gerüst für Rust, Elixir, TypeScript/Tauri und Python; CI; Lizenzprüfung; ein Durchlauf der Agenten-Pipeline | Alle Sprachen bauen und testen in der CI; 0 Lizenzverstöße | – |
-| ap-01-spike-datenmodell | 0 | Elementschema, Automerge-Prototyp, Textprojektion, Rustler-NIF und WASM | 10 Kennzahlen gemessen, Go oder No-Go | – |
-| ap-02-spike-identitaet | 0 | OCCT-Topologie-Historie auf Element-IDs abbilden | ≥ 95 % der Flächen-IDs über 50 Parameteränderungen erhalten, 0 Fehlzuordnungen | ap-01 |
+| ap-00-setup | 0 | Gerüst für Rust, Elixir, TypeScript/Tauri, Python; CI; Lizenzprüfung; Credo und Dialyzer | Alle Sprachen bauen und testen in der CI; 0 Lizenzverstöße | – |
+| ap-01-spike-datenmodell | 0 | Elementschema, Automerge, Textprojektion, NIF und WASM; Beispiel: Raum mit Absorbern | 10 Kennzahlen gemessen, Go oder No-Go | – |
+| ap-02-akustik-nachhallzeit | 0 | Crate `crates/acoustics`: Sabine und Eyring je Oktavband, Fehler, Kommandozeile | ≤ 0,1 % zur Formel; 1.000 Flächen ≤ 1 ms | – |
 | ap-03-spike-sync | 0 | Phoenix Channels mit Rust-Kern: zwei Browser live, einer offline, Zusammenführen | Änderung bei beiden < 200 ms; Merge ohne Datenverlust | ap-01 |
-| ap-04-spike-interaktion | 0 | three.js-Auswahl und Rendering in Browser und Tauri auf drei Systemen; Rendering ohne Display | Auswahl < 100 ms; 7 Ansichten als PNG | ap-00 |
-| ap-05-graph-kern | 1 | Graph-Kern produktiv: Schema v1, Validierung, Abhängigkeiten, inkrementelle Planung, Migrationen | 100.000 Elemente laden ≤ 2 s; Migration alter Dokumente getestet | ap-01 |
-| ap-06-kernel-worker | 1 | Kernel-Protokoll, Python-Worker mit OCCT, Cache nach Inhalts-Hash, Pool im Server und in Tauri | Referenzteil baut < 3 s; Worker-Absturz ohne Serverausfall | ap-02, ap-05 |
+| ap-04-spike-rendering | 0 | Echtzeit-PBR und Fotomodus (Path Tracing) in Browser und Tauri auf drei Systemen | Raum mit 50 Objekten ≥ 30 fps; Fotomodus 1920 × 1080 in ≤ 60 s auf Mittelklasse-GPU | ap-00 |
+| ap-05-graph-kern | 1 | Graph-Kern produktiv: Schema v1, Validierung, Abhängigkeiten, Migrationen | 100.000 Elemente laden ≤ 2 s | ap-01 |
+| ap-06-kernel-worker | 1 | Kernel-Protokoll, Python-Worker mit OCCT, Cache nach Inhalts-Hash | Raum mit 6 Wänden und 2 Öffnungen baut < 1 s; Worker-Absturz ohne Serverausfall | ap-05 |
 | ap-07-server-sync | 1 | Dokumentprozesse, Channels, Presence, Rechte, PostgreSQL | 20 gleichzeitige Nutzer je Dokument, Änderung < 200 ms | ap-03, ap-05 |
-| ap-08-arbeitsflaeche | 1 | Arbeitsfläche, Featurebaum, Eigenschaften, Befehlssuche, Design-Tokens, Avatare | 4 von 5 Konstrukteuren lösen Kernabläufe; Auswahl < 100 ms | ap-04 |
-| ap-09-skizzen | 1 | Parametrische Skizzen mit PlaneGCS (WASM und Worker) | 30 Elemente bleiben beim Ziehen flüssig; beide Solver gleich | ap-05, ap-08 |
-| ap-10-grundfeatures | 1 | Extrudieren, Tasche, Drehen, Bohrung, Fase, Rundung, Muster | Golden-Tests für jedes Feature | ap-06, ap-09 |
-| ap-11-publikation | 1 | Publikationsstatus, Manifest, URIs, semantischer Diff | Schnittstellen-Diff an 3 Referenzteilen korrekt | ap-05, ap-10 |
-| ap-12-textprojektion | 1 | Textprojektion produktiv, Git-Export und -Import | Roundtrip verlustfrei; eine Parameteränderung = eine Zeile | ap-05 |
-| ap-13-mcp-ki | 1 | MCP-Endpunkt, Anbieter-Schnittstelle (lokale und Cloud-Modelle), Änderungssätze, Änderungskarten, Eval-Suite | Agent baut Referenzteil ohne Eingriff mit Cloud- und lokalem Modell; Eval ≥ 80 % (Cloud), Wert für lokal gemessen | ap-07, ap-10 |
-| ap-14-desktop-offline | 1 | Tauri-App mit Kern, lokalem Speicher und Worker; offline, Abgleich beim Verbinden | Einen Tag offline gearbeitet, Merge ohne Datenverlust | ap-06, ap-07 |
-| ap-15-knoten-editor | 2 | Knoten-Editor, Untergraphen als wiederverwendbare Bausteine | Halter vollständig im Knoten-Editor gebaut | ap-08, ap-12 |
-| ap-16-baugruppen | 2 | Baugruppen, Verbindungen, Kollisionsprüfung | Baugruppe aus 3 Teilen, Kollisionen erkannt | ap-10, ap-11 |
-| ap-17-step-pmi | 2 | STEP AP242 mit semantischer PMI, Import-Testmatrix | Import in ≥ 4 Ziel-CAD-Systemen geprüft | ap-10 |
-| ap-18-zeichnungen | 2 | Zeichnungsblätter als Elemente, Export PDF, SVG, DXF | Maße überleben 20 Modelländerungen | ap-11, ap-17 |
-| ap-19-zweige-freigabe | 2 | Zweige, Änderungsanfragen, Review, Freigabe, semantische Konflikte | 100 % der Konflikte im Testkorpus erkannt | ap-07, ap-11 |
-| ap-20-regeln | 2 | Regel-Engine, Pakete Fräsen und 3D-Druck | Befunde am Element mit Vorschlag | ap-10 |
-| ap-21-3d-druck | 2 | 3D-Druck: Druckbarkeit (Überhänge, Wandstärken, Bauraum), Ausrichtung, 3MF-Export | 5 Referenzteile ohne Druckbarkeits-Befund gedruckt | ap-10 |
-| ap-22-plugin-sdk | 2 | Plugin-SDK für TypeScript und Python, Beispielplugin, Doku | Fremd-Plugin ohne Änderung am Kern | ap-05, ap-15 |
-| ap-23-selbstbetrieb | 1 | Release als Container mit Server, Datenbank und lokalem Modell, Backups, Betriebsdoku (vorgezogen, ADR-037) | Installation in < 15 min | ap-07 |
-| ap-24-hosting | 3 | Gehosteter Dienst mit Organisationen und Abrechnung | Erste zahlende Organisation | ap-23 |
-| ap-25-webxr | 3 | Immersives Review mit Anwesenheit und Kommentaren | Review-Sitzung mit 3 Personen in XR | ap-08 |
-| ap-26-bibliothek | 3 | Öffentliche Bibliothek für Bausteine und Normteile | 100 geprüfte Bausteine | ap-22 |
-| ap-27-fem | 3 | FEM-Anbindung (Gmsh, CalculiX) | Plausibilität an 3 Lastfällen | ap-10 |
-| ap-28-zweiter-kernel | 3 | Spezialisierter Kernel für implizite Modelle und Gitter | Gitterbauteil exportiert als 3MF | ap-06 |
-| ap-29-blech | 3 | Blech-Schicht und Abwicklung (ADR-011) | ≤ 0,1 mm Abweichung zur Referenz | ap-10 |
+| ap-08-arbeitsflaeche | 1 | Arbeitsfläche mit 3D und 2D-Grundriss, Featurebaum, Eigenschaften, Befehlssuche, Avatare | 4 von 5 Testpersonen der Firma lösen Kernabläufe; Auswahl < 100 ms | ap-04 |
+| ap-09-raum-elemente | 1 | Geschoss, Wand, Boden, Decke, Fenster, Tür; Wände im Grundriss zeichnen | Besprechungsraum in ≤ 5 min modelliert; Öffnungen schneiden Wände korrekt | ap-06, ap-08 |
+| ap-10-materialbibliothek | 1 | Material-Elemente mit allen Eigenschaftsgruppen, Import von Herstellerdaten (CSV) | 20 Materialien der Firma importiert, αw und Absorberklasse korrekt | ap-05 |
+| ap-11-akustik-live | 1 | Analyse-Element Nachhallzeit, Live-Anzeige je Band, Zielband, Kern als WASM | Aktualisierung beim Verschieben < 100 ms | ap-02, ap-09, ap-10 |
+| ap-12-skizze-extrusion | 1 | Skizzen mit PlaneGCS, Extrusion, Identität der Flächen | Absorber-Form per Skizze in ≤ 3 Schritten; IDs stabil über 50 Parameteränderungen | ap-06, ap-08 |
+| ap-13-absorber-katalog | 1 | Produktvarianten, Platzieren an Wand und Decke, abgehängt, Reihen und Raster | 12 Deckensegel als Raster in einem Schritt; Wirkung sofort in der Nachhallzeit | ap-10, ap-11, ap-12 |
+| ap-14-rendering-fotomodus | 1 | Echtzeit-PBR, HDRI, Fotomodus produktiv, Bild als PNG | Referenzraum fotorealistisch; Materialien entsprechen Mustern der Firma | ap-04, ap-10 |
+| ap-15-mcp-ki | 1 | MCP-Endpunkt, Anbieter-Schnittstelle (lokal und Cloud), Änderungssätze, Eval-Suite | Agent bringt die Nachhallzeit eines Referenzraums in das Zielband, mit Cloud- und lokalem Modell | ap-07, ap-13 |
+| ap-16-selbstbetrieb | 1 | Container mit Server, Datenbank und lokalem Modell, Backups | Installation in < 15 min | ap-07 |
+| ap-17-desktop-offline | 1 | Tauri-App mit Kern, Speicher und Worker; offline, Abgleich beim Verbinden | Einen Tag offline gearbeitet, Merge ohne Datenverlust | ap-06, ap-07 |
+| ap-18-mengen-kosten-co2 | 2 | Mengen, Kosten, Gewicht und CO₂ je Raum; CSV-Mengenliste | Summen stimmen mit Handrechnung für 3 Räume | ap-10, ap-13 |
+| ap-19-bericht-angebot | 2 | PDF-Bericht: Nachhallzeit vorher/nachher, Bilder, Grundriss, Mengen, Kosten, CO₂ | Firma versendet einen echten Bericht ohne Nacharbeit | ap-14, ap-18 |
+| ap-20-regeln-raumakustik | 2 | Zielwerte als Regelpaket (z. B. nach DIN 18041), geprüft durch die Firma | Zielbänder für 5 Raumarten stimmen mit Firmenprüfung | ap-11 |
+| ap-21-import-ifc-dxf | 2 | Import von Räumen aus IFC und Grundrissen aus DXF | 3 Architekturmodelle ohne Nacharbeit übernommen | ap-09 |
+| ap-22-moebel-gltf | 2 | Möbelbibliothek, glTF-Import und -Export | 20 Möbel mit Absorptionsfläche; Szene als glTF exportiert | ap-14 |
+| ap-23-knoten-editor | 2 | Knoten-Editor, Untergraphen als Bausteine | Absorber-Raster vollständig im Knoten-Editor | ap-08, ap-24 |
+| ap-24-textprojektion-git | 2 | Textprojektion produktiv, Git-Export und -Import | Roundtrip verlustfrei; eine Parameteränderung = eine Zeile | ap-05 |
+| ap-25-zweige-freigabe | 2 | Zweige, Änderungsanfragen, Review, Freigabe, semantische Konflikte | 100 % der Konflikte im Testkorpus erkannt | ap-07 |
+| ap-26-publikation | 2 | Publikationsstatus, Manifest, URIs, semantischer Diff | Schnittstellen-Diff an 3 Referenzräumen korrekt | ap-05 |
+| ap-27-plugin-sdk | 2 | Plugin-SDK für TypeScript und Python, Beispielplugin | Fremd-Plugin ohne Änderung am Kern | ap-05, ap-23 |
+| ap-28-hosting | 3 | Gehosteter Dienst mit Organisationen | Erste externe Organisation | ap-16 |
+| ap-29-webxr | 3 | Begehung des Raums in Originalgröße, mit Anwesenheit und Kommentaren | Review-Sitzung mit 3 Personen in XR | ap-14 |
+| ap-30-akustik-geometrisch | 3 | Spiegelquellen bzw. Strahlverfolgung, Auralisation (hörbar machen) | Abweichung zu Messung in 3 Räumen dokumentiert | ap-11 |
+| ap-31-fertigung | 3 | Fertigungsregeln (Fräsen, 3D-Druck, Blech), STEP mit PMI, Zeichnungen | Absorber-Bauteil fertigungsgerecht exportiert | ap-12 |
+| ap-32-zweiter-kernel | 3 | Spezialisierter Kernel (implizite Modelle, Gitter, z. B. für Absorberstrukturen) | Gitterabsorber als 3MF exportiert | ap-06 |
 
 ### Entwicklung mit Agenten
 
@@ -623,8 +706,8 @@ Beide haben keine Erfahrung mit Rust und Elixir; den Code schreiben und prüfen 
 
 ### Fokus bis zur Beta
 
-- Im Fokus bis zur Beta: Datenmodell, Zusammenarbeit live und offline, Arbeitsfläche mit voller KI-Integration, Fräsen und 3D-Druck, Publikation, PMI und Zeichnungen, STEP-Export, Plugin-SDK.
-- Phase 3: gehosteter Dienst, WebXR, öffentliche Bibliothek, FEM, zweiter Kernel; Blech; später Spritzguss als Regelpaket.
+- Im Fokus bis zur Beta: Datenmodell, Raum, Materialien, Nachhallzeit, Absorber-Katalog, Rendering mit Fotomodus, Mengen, Kosten, CO₂, Bericht, Zusammenarbeit live und offline, KI über MCP, Plugin-SDK.
+- Phase 3: gehosteter Dienst, WebXR, öffentliche Bibliothek, FEM, zweiter Kernel; geometrische Akustik, Fertigung (Fräsen, 3D-Druck, Blech).
 - Prinzip: Das Datenmodell zuerst und richtig. Alles andere lässt sich später verbessern, ein falsches Datenmodell nicht.
 
 ## Entwicklungsumgebung und Agenten-Setup
@@ -688,12 +771,12 @@ Die Roadmap wird über Gates gesteuert, nicht über Termine: Ein Gate ist erreic
 
 &#91;embedded content: Roadmap · 4 Phasen, 4 Gates, Beta nach etwa 10 Monaten\]
 
-| Gate | Zeitpunkt | Kriterium |
+| Gate | Richtwert | Kriterium |
 | --- | --- | --- |
-| G1 Architektur trägt | Ende Monat 2 | Spikes ap-01 bis ap-04 mit Go (oder angepasste ADRs); Gerüst in vier Sprachen grün; Agenten-Pipeline mit unabhängigem Review läuft; UX-Prototyp der Kernabläufe mit Konstrukteuren getestet |
-| G2 Gemeinsamer Durchstich | Ende Monat 5 | Zwei Personen bauen live gemeinsam den Halter, eine davon offline mit späterem Merge; ein Agent baut ein Referenzteil über MCP; Flächen veröffentlicht, Schnittstellen-Diff korrekt; Desktop-App auf Linux, Windows, macOS |
-| G3 Öffentliche Beta | Ende Monat 10 | Knoten-Editor, Baugruppen, STEP AP242 mit PMI, Zeichnungen, Zweige und Freigabe, Fräsen und 3D-Druck; Plugin-SDK mit einem Fremd-Plugin; Selbstbetrieb dokumentiert |
-| G4 Ökosystem | ab Monat 11 | Gehosteter Dienst, erste externe Beiträge in jedem Release, Bibliothek; WebXR-Review nach Bedarf |
+| G1 Architektur trägt | Monat 2 | ap-01 bis ap-04 mit Go (oder angepasste ADRs); Nachhallzeit korrekt und schnell; Gerüst in vier Sprachen grün; UX-Prototyp „Raum mit Absorbern“ mit der Firma getestet |
+| G2 Raum mit Absorbern | Monat 5 | Zwei Personen modellieren live einen Besprechungsraum, eine davon offline; Absorber platziert, Nachhallzeit live; Fotomodus-Bild; ein Agent bringt die Nachhallzeit über MCP ins Zielband (Cloud und lokal); alles selbst betrieben |
+| G3 Öffentliche Beta | Monat 10 | Bericht für Angebote, Mengen, Kosten und CO₂, IFC- und DXF-Import, Möbel, Knoten-Editor, Zweige, Plugin-SDK; die Firma nutzt CEE für echte Angebote |
+| G4 Ökosystem | ab Monat 11 | Gehosteter Dienst, externe Beiträge, WebXR-Begehung, geometrische Akustik, Fertigung |
 
 ## Risiken und Gegenmaßnahmen
 
@@ -723,6 +806,10 @@ Die größten Risiken liegen jetzt im Datenmodell (Größe und Merge-Verhalten d
 | R-21 | Ein Unternehmen spaltet den Kern ab oder betreibt ihn verändert als Dienst | Mittel | Plugin-SDK statt Fork-Zwang; offene Roadmap und RFCs; geschützte Marke; bester gehosteter Dienst; MPL sichert Rückfluss bei Weitergabe |
 | R-22 | Lokale Modelle sind zu schwach für den Assistenten und die MCP-Werkzeuge | Hoch | Wenige, einfache Tools; Eval-Suite mit lokalem Modell als Pflicht; Funktionen in Stufen (lokal: erklären, prüfen, kleine Änderungen; Cloud: ganze Bauteile) |
 | R-23 | Autonome Agenten liefern mehr Code, als zwei Menschen mit wenig Zeit prüfen können | Hoch | Höchstens ein offener Agenten-PR je Person; unabhängiger Review-Agent vorab; Abnahmetests als harter Vertrag; Nachtschicht pausiert, solange Reviews offen sind |
+| R-24 | Sabine und Eyring weichen in stark gedämpften oder ungleichmäßigen Räumen von Messungen ab | Mittel | Annahmen im Ergebnis anzeigen; Vergleich mit Messungen der Firma; geometrische Verfahren in ap-30 |
+| R-25 | Materialdaten lückenhaft oder ohne Quelle (α, Preise, CO₂) | Hoch | Pflichtfelder Einheit und Quelle; Schätzwerte sichtbar markiert; Firmendaten als gepflegte Bibliothek |
+| R-26 | Fotomodus zu langsam auf Büro-Laptops ohne starke GPU | Mittel | Spike ap-04 auf schwacher Hardware; progressive Vorschau; Bild auf dem eigenen Server rechnen lassen |
+| R-27 | Zielwerte aus Normen (DIN 18041) falsch übernommen oder urheberrechtlich problematisch | Mittel | Nur Formeln und Werte, keine Normtexte; Regelpaket von der Firma geprüft und freigegeben |
 
 ## Offene Punkte und nächste Schritte
 
@@ -739,6 +826,11 @@ Die größten Risiken liegen jetzt im Datenmodell (Größe und Merge-Verhalten d
 - [ ] 10–15 Referenzbauteile für Eval-Suite, Identitäts-Stresstests und 3D-Druck auswählen
 - [ ] Lokales Referenzmodell für Eval-Suite und Assistent auswählen (über Ollama) und Mindest-Hardware festlegen
 - [ ] Kontakt mit den Maintainern von build123d, OCP und Automerge aufnehmen (Zusammenarbeit statt Fork)
+- [ ] Produktdaten der Firma bereitstellen: Absorber-Varianten, gemessene α je Oktavband, Brandklassen, Preise, EPD bzw. CO₂-Werte
+- [ ] Zielwerte für Raumarten (z. B. nach DIN 18041) durch die Firma prüfen lassen
+- [ ] Drei Referenzräume mit gemessener Nachhallzeit vor und nach dem Einbau für Tests und Eval-Suite
+- [ ] Materialmuster fotografieren als Vorlage für realistische Materialien im Rendering
+- [ ] GitHub-Namen des zweiten Kollegen bestätigen; klären, ob das Repository in eine Organisation umzieht
 
 ## Quellen
 
