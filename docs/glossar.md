@@ -68,6 +68,11 @@ sie verwendet werden. In Klammern: der englische Bezeichner im Code.
 | --- | --- |
 | Arbeitsbereich | Zusammenstellung von Panels und Werkzeugen für eine Aufgabe; Beitrag eines Fachpakets (ADR-054) |
 | Befehl, Befehlsregister | Jede Funktion mit stabiler ID; Grundlage für Befehlssuche, Tastenkürzel, Plugins, MCP (ADR-045) |
+| Layout: Werkbank, Kompakt, Ansicht | Anordnung der Oberfläche für Maus, Touch/Stift bzw. Handy; dieselben Befehle (ADR-060) |
+| Navigationsprofil | Belegung von Maus und Gesten für Drehen, Verschieben, Zoomen nach dem Vorbild eines anderen Programms |
+| 3D-Maus | Eingabegerät mit sechs Achsen (z. B. SpaceMouse); bewegt Objekt oder Kamera |
+| Begehung | Ansicht eines Raums in Originalgröße in VR oder am Bildschirm |
+| Höreindruck | Hörbare Vorschau der Raumakustik (vorher/nachher); ausdrücklich kein Messwert |
 | App | Generierte Oberfläche aus einem veröffentlichten Untergraphen (ADR-049) |
 | Sammlung | Gespeicherte Suche statt Ordner (ADR-052) |
 

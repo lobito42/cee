@@ -38,7 +38,19 @@
   Script-Elemente, kein Plugin-Code des Projekts.
 - Einstellungen nur über das Einstellungs-Schema (Ebenen Standard, Organisation, Benutzer, Projekt), nie
   verstreut über `localStorage` oder eigene Dateien.
-- Derselbe Code für Browser und Tauri. Plattformzugriffe (Dateien, Worker) nur über `client/src/platform/`.
+- Derselbe Code für Browser und Tauri. Plattformzugriffe (Dateien, Worker, HID) nur über `client/src/platform/`.
+- Geräte und Layouts (ADR-060): drei Layouts – Werkbank, Kompakt, Ansicht – mit denselben Befehlen; kein Layout
+  hat eigene Logik. Nichts hängt am Überfahren mit der Maus; jede Hover-Information ist auch per Antippen bzw.
+  Fokus erreichbar. Bedienflächen im Layout Kompakt ≥ 44 × 44 px.
+- Eingabe nur über die Eingabeschicht (`client/src/input/`): Maus, Trackpad, Touch, Stift, 3D-Maus,
+  XR-Controller und Sprache erzeugen Befehle oder Kameraänderungen, nie direkte Modelländerungen.
+  Navigationsprofile und Belegung der 3D-Maus-Tasten sind Einstellungen, keine Sonderfälle im Code.
+- 3D-Maus: WebHID bzw. HID in Tauri, kein proprietäres Hersteller-SDK; fehlt die Unterstützung, ein Hinweis
+  statt eines Fehlers.
+- XR über WebXR auf derselben Interaktionsschicht: ≥ 72 fps (Meta Quest 3, Raum mit 50 Objekten), Teleport als
+  Standard, keine Kamerabewegung ohne Kopfbewegung. In XR nur Instanzen platzieren, verschieben, austauschen und
+  Varianten wählen – kein Modellieren, keine Freigabe. Höreindrücke immer als „Höreindruck, kein Messwert“
+  kennzeichnen.
 - Barrierefreiheit: Bedienelemente außerhalb der 3D-Fläche nach WCAG 2.2 AA (Kontrast, Tastatur, Fokus,
   Beschriftung für Screenreader); jede Funktion ist per Tastatur über die Befehlssuche erreichbar.
 - Sprache: keine festen Texte im Code, nur Übersetzungsschlüssel; Deutsch und Englisch von Anfang an.

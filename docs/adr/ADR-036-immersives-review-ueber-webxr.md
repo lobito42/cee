@@ -4,6 +4,10 @@
 - Datum: 2026-10-17
 - Entscheider: Kernteam
 
+## Aktuell gilt (Stand 2026-10-18)
+
+Ergänzt durch ADR-060: In XR sind einfache Bearbeitungen erlaubt (Instanzen platzieren, verschieben, austauschen, Variante wählen), aber kein Modellieren und keine Freigabe; dazu Höreindruck (vorher/nachher) und AR. Zielgeräte, Budgets und Reihenfolge stehen in ADR-060.
+
 ## Kontext
 
 Immersive Unterstützung ist gewünscht, aber kein Kern des ersten Produkts.

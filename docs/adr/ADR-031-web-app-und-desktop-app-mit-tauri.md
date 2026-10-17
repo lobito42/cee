@@ -4,6 +4,10 @@
 - Datum: 2026-10-17
 - Entscheider: Kernteam
 
+## Aktuell gilt (Stand 2026-10-18)
+
+Tablet und Handy haben eigene Rollen und Layouts (ADR-060): Tablet vor Ort (Aufmaß, Skizze, Präsentation, offline), Handy für Ansehen, Kommentieren, Freigeben und QR-Adressen. XR siehe ADR-060.
+
 ## Kontext
 
 Das Produkt soll im Browser und auf allen gängigen Betriebssystemen laufen, online wie offline. VS Code ist kein Ziel-Client.

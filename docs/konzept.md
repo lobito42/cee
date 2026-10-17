@@ -3,7 +3,7 @@
 
 # CEE – Collaborative Engineering Environment: Konzept
 
-Stand: 2026-10-17
+Stand: 2026-10-18
 
 ## Zusammenfassung
 
@@ -459,7 +459,7 @@ Ordnung entsteht aus dem Graphen, statt gepflegt zu werden – kein „ich schic
 
 ## Architecture Decision Records
 
-Neunundfünfzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-059 beschreiben die neue Richtung (Element-Graph, Rust-Kern, Elixir-Server, Web und Desktop, Lizenz, offene und lokale KI, Raumakustik, Material, Rendering, Austauschformate, Komponenten, Bedienmuster aus Blender und VS Code, fachneutraler Kern, Freigabe, PLM- und ERP-Schnittstelle, Automatisierung, Bewährtes aus klassischem CAD, Versionierung in Alltagsbegriffen, Ordnung, Lernschleife, Fachpakete, Rechte, Datenschutz, Einheiten, Adressen, Meilensteine) und sind akzeptiert (außer ADR-036, vorgeschlagen); sie ersetzen ADR-003, 005, 013 und 024. Die übrigen stehen auf „Vorgeschlagen“ und werden mit den Spikes bestätigt. Jedes ADR liegt zusätzlich als Markdown-Datei unter `docs/adr/` im Repository.
+Sechzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-060 beschreiben die neue Richtung (Element-Graph, Rust-Kern, Elixir-Server, Web und Desktop, Lizenz, offene und lokale KI, Raumakustik, Material, Rendering, Austauschformate, Komponenten, Bedienmuster aus Blender und VS Code, fachneutraler Kern, Freigabe, PLM- und ERP-Schnittstelle, Automatisierung, Bewährtes aus klassischem CAD, Versionierung in Alltagsbegriffen, Ordnung, Lernschleife, Fachpakete, Rechte, Datenschutz, Einheiten, Adressen, Meilensteine, Geräte und XR) und sind akzeptiert (außer ADR-036, vorgeschlagen); sie ersetzen ADR-003, 005, 013 und 024. Die übrigen stehen auf „Vorgeschlagen“ und werden mit den Spikes bestätigt. Jedes ADR liegt zusätzlich als Markdown-Datei unter `docs/adr/` im Repository.
 
 Die frühen ADRs 001 bis 027 stammen aus einer früheren Richtung (VS-Code-Erweiterung, Code als Quelle der Wahrheit). Ihre Zusammenfassungen unten sind historisch; was davon heute gilt, steht in der jeweiligen ADR-Datei im Abschnitt „Aktuell gilt“. Verbindliche Begriffe stehen im Glossar (`docs/glossar.md`).
 
@@ -743,7 +743,7 @@ Die frühen ADRs 001 bis 027 stammen aus einer früheren Richtung (VS-Code-Erwei
 
 **Entscheidung:** Ein TypeScript-Client läuft im Browser und als Tauri-2-App für Linux, Windows und macOS. Desktop: Kern nativ, lokaler Speicher und Worker, voll offline. Browser: Kern als WASM, Geometrie vom Server.
 
-**Konsequenzen:** Ersetzt ADR-005. Unterschiede der Web-Engines (WebKitGTK, WebView2, WKWebView) brauchen eigene UI-Tests.
+**Konsequenzen:** Ersetzt ADR-005. Unterschiede der Web-Engines (WebKitGTK, WebView2, WKWebView) brauchen eigene UI-Tests. Rollen von Tablet und Handy sowie XR: ADR-060.
 
 ### ADR-032: Geometrie als abgeleiteter Cache
 
@@ -915,6 +915,14 @@ Die frühen ADRs 001 bis 027 stammen aus einer früheren Richtung (VS-Code-Erwei
 
 **Konsequenzen:** M1 ist für eine Person, das Datenmodell bleibt auf Zusammenarbeit ausgelegt; der Knoten-Editor ist in der Beta eine lesende Ansicht.
 
+### ADR-060: Geräte, Layouts, Eingabe und XR
+
+**Kontext:** Projekte in KMU beginnen oft vor Ort (Aufmaß beim Kunden, häufig ohne Netz), werden unterwegs freigegeben und beim Kunden präsentiert. Konstrukteure erwarten eine 3D-Maus, Umsteiger die Navigation ihres bisherigen CAD. VR und AR machen räumliche Entscheidungen erlebbar – bei Raumakustik auch hörbar.
+
+**Entscheidung:** (1) Geräte nach Aufgabe: Desktop und Laptop als Werkbank, Tablet mit Stift vor Ort (Aufmaß, Skizze, Fotos, Präsentation, offline), Handy unterwegs (ansehen, kommentieren, freigeben, QR-Adressen), Großbildschirm zur Präsentation, Brille zum Erleben. (2) Eine Oberfläche mit drei Layouts – Werkbank, Kompakt, Ansicht – und denselben Befehlen. (3) Eingabe als austauschbare Schicht mit Navigationsprofilen (wie Onshape, SolidWorks, Fusion, Blender); nichts hängt am Überfahren mit der Maus. (4) 3D-Maus über WebHID im Browser bzw. HID in Tauri, ohne proprietäres SDK: sechs Achsen, Drehpunkt an der Auswahl, Modi Objekt und Kamera, frei belegbare Tasten als Befehle, beidhändig mit der Maus. (5) XR über WebXR (Meta Quest, Vision Pro, PC-VR, AR am Android-Tablet): Begehung in Originalgröße oder als Puppenhaus, Höreindruck vorher/nachher aus der Nachhallzeit, Instanzen platzieren und austauschen (kein Modellieren, keine Freigabe), gemischte Sitzungen, Absorber in AR an die echte Decke; ≥ 72 fps auf Meta Quest 3. (6) Offline je nach Gerät; Tauri 2 deckt später auch iOS und Android ab.
+
+**Konsequenzen:** Ändert ADR-031 und ADR-036, ergänzt ADR-044 und ADR-059. M1 bereitet nur vor (Eingabeschicht, keine Hover-Abhängigkeit); Layout Ansicht und QR-Adressen in der Beta. Spike ap-42 (XR und 3D-Maus) ist jederzeit möglich, braucht aber Hardware und einen Menschen; nach der Beta vorne ap-43 (Eingabegeräte), ap-29 (XR) und ap-44 (Tablet vor Ort).
+
 ## Regelwerk und Verifikationsschleife
 
 Erstes Regelpaket ist die Raumakustik: Zielbänder für die Nachhallzeit je Raumart, geprüft von der Firma (ap-20). Die Fertigungsregeln unten folgen nach der Beta.
@@ -987,6 +995,10 @@ Die Arbeit ist in Arbeitspakete geschnitten und nach vier Meilensteinen bis zur 
 | ap-08c-arbeitsflaeche-ausbau | M3 | Stapel, Arbeitsbereiche aus Fachpaketen, Aktionsprotokoll, Avatare | Stapel und Arbeitsbereiche für Raum und Akustik; jede Aktion als Textzeile kopierbar | ap-07b, ap-08b |
 | ap-23a-knoten-ansicht | M3 | Knoten-Ansicht des Graphen: lesen, durchsuchen, Werte an jeder Kante; Auswahl synchron mit 3D | Absorber-Raster vollständig als Knoten sichtbar; Auswahl in beide Richtungen < 100 ms | ap-08b, ap-24 |
 | ap-27-plugin-sdk | M3 | Fachpaket-API öffentlich und minimal: Manifest, Sandbox und Rechte, Projekt-Vertrauen, Beispiel-Fachpaket | Fremd-Plugin ohne Änderung am Kern | ap-05, ap-08c |
+| ap-42-spike-xr-eingabe | Spike, jederzeit | WebXR auf Meta Quest 3 und PC-VR mit einem Referenzraum, Höreindruck aus der Nachhallzeit, Webviews von Tauri auf WebXR prüfen; 3D-Maus über WebHID und HID in Tauri, Konflikte mit Hersteller-Treibern | Raum mit 50 Objekten ≥ 72 fps auf der Brille; 3D-Maus mit sechs Achsen in Chrome und Tauri auf 3 Systemen | ap-04 |
+| ap-43-eingabegeraete | nach Beta | Navigationsprofile (Onshape, SolidWorks, Fusion, Blender), 3D-Maus mit Objekt- und Kameramodus und belegbaren Tasten, Trackpad-Gesten, Layout Kompakt für Tablets (ADR-060) | Begehung eines Raums nur mit der 3D-Maus; Umsteiger navigiert ohne Einweisung mit seinem Profil | ap-08c, ap-42 |
+| ap-29-webxr | nach Beta | XR über WebXR (ADR-060): Begehung in Originalgröße und als Puppenhaus, Höreindruck vorher/nachher aus der Nachhallzeit, Instanzen platzieren und austauschen, AR mit Ebenenerkennung, gemischte Sitzungen mit Anwesenheit und Kommentaren | Review-Sitzung mit 3 Personen (Brille und Desktop); ≥ 72 fps auf Meta Quest 3; Absorber in AR an die echte Decke gesetzt und als Entwurf übernommen | ap-07b, ap-11, ap-14, ap-42 |
+| ap-44-tablet-vor-ort | nach Beta | Aufmaß am Tablet: Grundriss mit dem Stift, Maße, Fotos am Element, offline mit Näherungsvorschau; Präsentation beim Kunden; Tauri 2 mobil oder Web-App | Besprechungsraum vor Ort ohne Netz aufgenommen, im Büro ohne Nacharbeit weiterbearbeitet | ap-09, ap-17, ap-43 |
 | ap-23-knoten-editor | nach Beta | Knoten-Editor zum Bearbeiten, Untergraphen als Bausteine und Befehle | Absorber-Raster vollständig im Knoten-Editor | ap-23a |
 | ap-35-apps-studien | nach Beta | Apps aus veröffentlichten Untergraphen, gesperrte Komponenten, Bibliotheksebenen, Studien mit Tabelle und Pareto-Diagramm | Vertrieb erstellt ohne Modellrechte eine Raumbelegung mit Angebot; Studie mit 100 Varianten < 2 min | ap-06, ap-11, ap-23 |
 | ap-36-direkt-skelett | nach Beta | Direktes Bearbeiten von Flächen (auch an STEP), Skelett mit eingefrorenen Verknüpfungen, Ersetzen mit Umhängen | Lieferanten-STEP ohne Neumodellieren angepasst; Skelettänderung erreicht 20 Teile, eingefrorene erst nach Bestätigung | ap-06, ap-12, ap-13b |
@@ -997,7 +1009,6 @@ Die Arbeit ist in Arbeitspakete geschnitten und nach vier Meilensteinen bis zur 
 | ap-34-plm-erp-schnittstelle | nach Beta | API aus dem Befehlsregister, Ereignisse mit Outbox, Nummernkreis-Plugin, Beispielanbindung an ein selbst gebautes PLM/ERP | Externes System empfängt Freigabe und Stückliste und vergibt Sachnummern, ohne Änderung am Kern | ap-27, ap-33b |
 | ap-38-lernschleife | nach Beta | Erfahrungsspeicher, Versuche mit Prüfern, LoRA-Adapter aus geprüften Erfolgen, geheime Prüfaufgaben, Regressionsschranke | Lokales 8B-Modell mit Adapter löst ≥ 20 Prozentpunkte mehr geheime Aufgaben, ohne Rückschritt in einer Kategorie | ap-15 |
 | ap-28-hosting | nach Beta | Gehosteter Dienst mit Organisationen | Erste externe Organisation | ap-16 |
-| ap-29-webxr | nach Beta | Begehung des Raums in Originalgröße, mit Anwesenheit und Kommentaren | Review-Sitzung mit 3 Personen in XR | ap-14 |
 | ap-30-akustik-geometrisch | nach Beta | Spiegelquellen bzw. Strahlverfolgung, Auralisation (hörbar machen) | Abweichung zu Messung in 3 Räumen dokumentiert | ap-11 |
 | ap-31-fertigung | nach Beta | Fertigungsregeln (Fräsen, 3D-Druck, Blech), STEP mit PMI, Zeichnungen | Absorber-Bauteil fertigungsgerecht exportiert | ap-12 |
 | ap-32-zweiter-kernel | nach Beta | Spezialisierter Kernel (implizite Modelle, Gitter, z. B. für Absorberstrukturen) | Gitterabsorber als 3MF exportiert | ap-06 |
