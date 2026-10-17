@@ -3,7 +3,7 @@
 - Status: vorgeschlagen
 - Datum: 2026-10-16
 - Entscheider: Kernteam
-- Geändert durch: ADR-030 (MCP-Endpunkt im Server)
+- Geändert durch: ADR-030 (MCP-Endpunkt im Server), ADR-045 (Werkzeuge aus dem Befehlsregister)
 
 ## Kontext
 

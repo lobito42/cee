@@ -70,6 +70,8 @@ Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `opens
 - Geometrie nur im Worker hinter der Kernel-Schnittstelle (ADR-032). Topologie nie über Indizes (ADR-016).
 - Export und Querverweise nur über veröffentlichte Elemente, nie über Sichtbarkeit (ADR-015/018).
 - KI-Änderungen nur als Änderungssatz mit Vorschau (ADR-021).
+- Jede Funktion ist ein Befehl im Befehlsregister; Befehlssuche, Tastenkürzel, Plugins und MCP-Tools nutzen
+  dasselbe Register. Plugins laufen isoliert; fremde Projekte führen Code erst nach Vertrauen aus (ADR-045).
 - Kein fester KI-Anbieter: Modelle nur über die Anbieter-Schnittstelle oder MCP; lokale Modelle müssen
   funktionieren; keine Daten an Dritte ohne ausdrückliche Wahl, keine Telemetrie (ADR-037).
 - Erster Anwendungsfall: Räume mit Schallabsorbern (ADR-038). Material ist ein Element mit Aussehen, Akustik,

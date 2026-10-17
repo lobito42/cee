@@ -10,7 +10,7 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-004](ADR-004-step-ap242-als-bruecke-zu-allen-cad-systemen.md) | STEP AP242 als Brücke zu allen CAD-Systemen | vorgeschlagen, geändert durch ADR-042 |
 | [ADR-005](ADR-005-extension-plus-lokaler-geometrie-dienst.md) | Extension plus lokaler Geometrie-Dienst | ersetzt durch ADR-031 |
 | [ADR-006](ADR-006-bestehende-viewer-komponenten-wiederverwenden.md) | Bestehende Viewer-Komponenten wiederverwenden | vorgeschlagen |
-| [ADR-007](ADR-007-mcp-server-als-einzige-ki-schnittstelle.md) | MCP-Server als einzige KI-Schnittstelle | vorgeschlagen, geändert durch ADR-030 |
+| [ADR-007](ADR-007-mcp-server-als-einzige-ki-schnittstelle.md) | MCP-Server als einzige KI-Schnittstelle | vorgeschlagen, geändert durch ADR-030 und ADR-045 |
 | [ADR-008](ADR-008-ausfuehrbare-regelpakete.md) | Ausführbare Regelpakete | vorgeschlagen, geändert durch ADR-041 |
 | [ADR-009](ADR-009-strukturierte-anforderungsdatei.md) | Strukturierte Anforderungsdatei | vorgeschlagen |
 | [ADR-010](ADR-010-visuelle-selbstpruefung.md) | Visuelle Selbstprüfung | vorgeschlagen |
@@ -25,7 +25,7 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-019](ADR-019-semantische-pmi-im-code.md) | Semantische PMI im Code | vorgeschlagen, geändert durch ADR-028 |
 | [ADR-020](ADR-020-zeichnungsblaetter-als-code.md) | Zeichnungsblätter als Code | vorgeschlagen, geändert durch ADR-028 |
 | [ADR-021](ADR-021-ki-aenderungen-als-pruefbare-aenderungssaetze.md) | KI-Änderungen als prüfbare Änderungssätze | vorgeschlagen, geändert durch ADR-035 |
-| [ADR-022](ADR-022-eine-cad-arbeitsflaeche-mit-figma-bedienkonzept.md) | Eine CAD-Arbeitsfläche mit Figma-Bedienkonzept | vorgeschlagen, geändert durch ADR-031 |
+| [ADR-022](ADR-022-eine-cad-arbeitsflaeche-mit-figma-bedienkonzept.md) | Eine CAD-Arbeitsfläche mit Figma-Bedienkonzept | vorgeschlagen, geändert durch ADR-031, ADR-044 und ADR-045 |
 | [ADR-023](ADR-023-entwicklung-durch-agenten.md) | Entwicklung durch Agenten | vorgeschlagen |
 | [ADR-024](ADR-024-code-transformation-ueber-den-syntaxbaum.md) | Code-Transformation über den Syntaxbaum | ersetzt durch ADR-028 und ADR-035 |
 | [ADR-025](ADR-025-inkrementeller-rebuild-und-naeherungsvorschau.md) | Inkrementeller Rebuild und Näherungsvorschau | vorgeschlagen, geändert durch ADR-032 |
@@ -48,3 +48,4 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-042](ADR-042-austauschformate-gltf-ifc-dxf-step.md) | Austauschformate: glTF, IFC, DXF, STEP | akzeptiert |
 | [ADR-043](ADR-043-komponenten-instanzen-bibliotheken.md) | Komponenten, Instanzen und Bibliotheken | akzeptiert |
 | [ADR-044](ADR-044-bedienmuster-aus-blender.md) | Bedienmuster aus Blender | akzeptiert |
+| [ADR-045](ADR-045-befehle-erweiterungen-vertrauen-nach-vs-code.md) | Befehle, Erweiterungen und Vertrauen nach dem Vorbild von VS Code | akzeptiert |

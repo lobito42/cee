@@ -3,7 +3,7 @@
 - Status: vorgeschlagen
 - Datum: 2026-10-16
 - Entscheider: Kernteam
-- Geändert durch: ADR-031, ADR-044
+- Geändert durch: ADR-031, ADR-044, ADR-045
 
 ## Kontext
 

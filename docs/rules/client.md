@@ -16,6 +16,15 @@
   Arbeitsbereich; ein fünfter Arbeitsbereich nur per ADR.
 - Jede Aktion erzeugt eine Graph-Operation, die im Aktionsprotokoll als Text sichtbar und kopierbar ist.
 - Der Stapel im Eigenschaften-Panel ist eine Projektion des Graphen, kein eigenes Datenmodell.
+- Jede Funktion ist ein Befehl im Befehlsregister (stabile ID, Parameter-Schema). Befehlssuche,
+  Tastenkürzel, Kontextaktionen und Plugins rufen nur Befehle auf; keine Funktion nur hinter einem Knopf
+  (ADR-045).
+- Plugin-Code läuft nie im UI-Thread und nie mit Zugriff auf interne Module, nur über die Plugin-API im
+  Web Worker. Ein Fehler im Plugin zeigt einen Befund, bricht aber nichts ab.
+- Fremde Projekte und Bibliotheken öffnen im eingeschränkten Modus, bis man ihnen vertraut: keine
+  Script-Elemente, kein Plugin-Code des Projekts.
+- Einstellungen nur über das Einstellungs-Schema (Ebenen Standard, Organisation, Benutzer, Projekt), nie
+  verstreut über `localStorage` oder eigene Dateien.
 - Derselbe Code für Browser und Tauri. Plattformzugriffe (Dateien, Worker) nur über `client/src/platform/`.
 - Jede sichtbare UI-Änderung braucht einen aktualisierten Referenz-Screenshot unter
   `tests/ui-reference/` – den legt der Test-Autor nach Freigabe durch UX an, nicht der Implementierer.

@@ -1,6 +1,8 @@
 # Regeln für den MCP-Endpunkt (im Server)
 
 - Jedes Tool hat ein JSON-Schema für Ein- und Ausgabe und einen Test mit Beispielaufruf.
+- MCP-Tools werden aus dem Befehlsregister erzeugt (ADR-045): kein Tool ohne entsprechenden Befehl, den
+  auch ein Mensch in der Oberfläche aufrufen kann. Ausnahme nur lesende Abfragen für Agenten.
 - Antworten sind kompakt: Zusammenfassung zuerst, Details nur auf Nachfrage (Parameter `detail`).
   Ziel: < 2.000 Tokens pro typischer Antwort. Keine Rohgeometrie, keine Tessellierungsdaten.
 - Orte werden immer als Element-ID oder veröffentlichter Name angegeben, nie als Index.

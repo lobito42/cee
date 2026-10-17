@@ -8,3 +8,4 @@ diesem Ordner eigenständig um.
 | --- | --- | --- |
 | [3D-gedruckte, raumoptimierte Schallabsorber](3d-gedruckte-absorber.md) | abgelegt 2026-10-17 | nach G2, als Phase-2-Paket |
 | [Weitere Anregungen aus Blender](blender-anregungen.md) | abgelegt 2026-10-17 | je Zeile beim passenden Paket |
+| [Weitere Anregungen aus VS Code](vscode-anregungen.md) | abgelegt 2026-10-17 | je Zeile beim passenden Paket |

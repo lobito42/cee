@@ -12,3 +12,5 @@
   Hinweis zurückgeben; nie verschlucken. Ein Absturz darf nur den Worker treffen.
 - Neue Geometrie-Funktion = mindestens ein Golden-Test (Volumen, Fläche, Schwerpunkt, Topologie-Zählung).
 - Performance: kein Ray-Casting oder Tessellieren in Schleifen über Flächen ohne Cache.
+- Script-Elemente und Plugin-Code in Python laufen nur im Worker und nur für vertraute Projekte (ADR-045).
+  Im eingeschränkten Modus liefert der Worker Geometrie nur aus dem Cache oder einen Platzhalter.
