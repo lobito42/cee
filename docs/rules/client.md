@@ -10,6 +10,12 @@
 - Der Client ändert das Modell nur über Graph-Operationen des Kerns (`crates/graph` als WASM bzw. nativ),
   nie über eigene Datenstrukturen. 3D, Knoten-Editor und Text zeigen denselben Graphen (ADR-035).
 - KI-Änderungen erscheinen immer als Änderungskarte mit Vorschau, nie direkt (ADR-021).
+- Keine Git-Begriffe in der Oberfläche (ADR-051): Entwurf, Meilenstein, Übernehmen, Zur Prüfung geben,
+  Zurückholen, Ableiten, Verlauf. Kein Speichern-Knopf; Konflikte nur als Entscheidungskarten.
+- Nichts wird gelöscht, was andere nutzen oder was Wissen trägt: Entwürfe werden verworfen (mit Begründung)
+  und ausgeblendet. Standardansicht zeigt Ergebnisse; die Werkstatt zeigt alle Entwürfe.
+- Wiederfinden (ADR-052): Inhalte erreicht man über die eine Suche, Facetten, Sammlungen, Rückverweise und
+  die Startseite – keine zusätzlichen Ordnerebenen unter Projekt.
 - Bewegen, Drehen, Skalieren: Achse sperren und Wert tippen ist immer möglich, mit Einheiten und einfachen
   Formeln; nie ein Dialog für exakte Werte (ADR-044).
 - Vier Arbeitsbereiche (Raum, Akustik, Präsentation, Bericht). Ein neues Panel gehört genau einem

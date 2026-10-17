@@ -12,3 +12,4 @@ diesem Ordner eigenständig um.
 | [Weitere Anregungen aus Onshape](onshape-anregungen.md) | abgelegt 2026-10-17 | je Zeile beim passenden Paket |
 | [Weitere Anregungen aus Synera](synera-anregungen.md) | abgelegt 2026-10-17 | je Zeile beim passenden Paket |
 | [Weitere Anregungen aus klassischem CAD](klassisches-cad-anregungen.md) | abgelegt 2026-10-17 | je Zeile beim passenden Paket |
+| [Ordnung, Suche und Lernschleife – weiter gedacht](ordnung-und-lernen.md) | abgelegt 2026-10-17 | je Zeile beim passenden Paket |

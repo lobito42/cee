@@ -26,6 +26,8 @@ paths:
   Element blockiert weder Speichern noch Merge noch die Berechnung unabhängiger Zweige des Graphen.
 - Untergraphen müssen einzeln ladbar sein (Teil-Laden): keine Operation darf das vollständige Dokument
   voraussetzen, wenn sie nur einen Untergraphen betrifft.
+- Herkunft (`meta.derived_from` mit Version) und Trichter-Zustand eines Entwurfs (ADR-051) sind Daten im Graphen;
+  Verwerfen ist ein Zustand, kein Löschen.
 - Instanzen speichern nur `variant`, `overrides` und gewählte Referenz-Eingänge, nie eine Kopie des
   Untergraphen (ADR-043). Entfällt ein überschriebener Parameter, wird das als Befund gemeldet. Zyklen
   zwischen Komponenten sind ein Fehler.

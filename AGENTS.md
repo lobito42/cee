@@ -1,7 +1,8 @@
 # CEE – Anweisungen für Coding-Agenten
 
-Gilt für Claude Code, OpenCode und Pi. CEE (Collaborative Engineering Environment) ist eine offene, kollaborative Plattform für
-Produktdefinition: Ein Projekt ist ein **Graph aus Elementen** – ein Achsenursprung genauso wie ein ganzes
+Gilt für Claude Code, OpenCode und Pi. CEE (Collaborative Engineering Environment) ist eine offene,
+kollaborative Plattform für Produktdefinition – perspektivisch für kleine und mittlere Unternehmen, was
+Blender und OpenSCAD für ihre Communities sind: Ein Projekt ist ein **Graph aus Elementen** – ein Achsenursprung genauso wie ein ganzes
 Bauteil. Alle sehen online denselben Stand, offline wird wie bei Git weitergearbeitet. Bearbeitet wird in
 3D, im Knoten-Editor oder als Text; KI-Agenten arbeiten über denselben Graphen.
 
@@ -81,6 +82,9 @@ Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `opens
   App; Studien rechnen Varianten im Worker durch, der Mensch wählt (ADR-049).
 - Robust und groß (ADR-050): Fehler eines Elements zerbrechen nie das Modell; Untergraphen und Detailstufen
   werden bei Bedarf geladen; Komponenten haben Referenz-Eingänge; direktes Bearbeiten ist ein Element.
+- Einfach und fehlerarm (ADR-051/052): Oberfläche ohne Git-Begriffe (Entwurf, Meilenstein, Übernehmen),
+  Verwerfen statt Löschen, Ordnung aus dem Graphen (Facetten, Suche, Rückverweise) statt Ordnerpflege.
+- Lernschleife für lokale Modelle nur mit Prüfern als Bewertung, nie Selbstbewertung (ADR-053).
 - Erster Anwendungsfall: Räume mit Schallabsorbern (ADR-038). Material ist ein Element mit Aussehen, Akustik,
   Physik, Kosten und CO₂ (ADR-039); Nachhallzeit rechnet `crates/acoustics` (ADR-041); Rendering im Client
   mit Echtzeit und Fotomodus (ADR-040).

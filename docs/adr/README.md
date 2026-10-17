@@ -36,7 +36,7 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-030](ADR-030-elixir-phoenix-fuer-den-server.md) | Elixir und Phoenix für den Server | akzeptiert |
 | [ADR-031](ADR-031-web-app-und-desktop-app-mit-tauri.md) | Web-App und Desktop-App mit Tauri | akzeptiert |
 | [ADR-032](ADR-032-geometrie-als-abgeleiteter-cache-hinter-kernel-schnittstelle.md) | Geometrie als abgeleiteter Cache hinter einer Kernel-Schnittstelle | akzeptiert, geändert durch ADR-047 |
-| [ADR-033](ADR-033-local-first-zusammenarbeit-mit-crdt-und-zweigen.md) | Local-first-Zusammenarbeit mit CRDT und Zweigen | akzeptiert |
+| [ADR-033](ADR-033-local-first-zusammenarbeit-mit-crdt-und-zweigen.md) | Local-first-Zusammenarbeit mit CRDT und Zweigen | akzeptiert, geändert durch ADR-051 |
 | [ADR-034](ADR-034-lizenz-mpl-fuer-den-kern-apache-fuer-sdk-und-format.md) | Lizenz: MPL-2.0 für den Kern, Apache-2.0 für SDK und Format | akzeptiert |
 | [ADR-035](ADR-035-drei-projektionen-3d-knoten-text.md) | Drei Projektionen: 3D, Knoten, Text | akzeptiert, geändert durch ADR-044 |
 | [ADR-036](ADR-036-immersives-review-ueber-webxr.md) | Immersives Review über WebXR | vorgeschlagen |
@@ -54,3 +54,6 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-048](ADR-048-schnittstelle-plm-erp.md) | Offene Schnittstelle zu PLM und ERP | akzeptiert |
 | [ADR-049](ADR-049-automatisierung-apps-studien-nach-synera.md) | Automatisierung, Apps und Studien nach dem Vorbild von Synera | akzeptiert |
 | [ADR-050](ADR-050-bewaehrtes-aus-klassischem-cad.md) | Bewährtes aus klassischem CAD (CATIA, NX, Creo) | akzeptiert |
+| [ADR-051](ADR-051-versionierung-in-alltagsbegriffen-entwicklungstrichter.md) | Versionierung in Alltagsbegriffen und Entwicklungstrichter | akzeptiert |
+| [ADR-052](ADR-052-ordnungssystem-und-wiederfinden.md) | Ordnungssystem und Wiederfinden | akzeptiert |
+| [ADR-053](ADR-053-lernschleife-fuer-lokale-modelle.md) | Lernschleife für lokale Modelle | akzeptiert |

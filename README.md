@@ -2,7 +2,8 @@
 
 # CEE – Collaborative Engineering Environment
 
-Offene, kollaborative Plattform für Produktdefinition. Name und Logo
+Offene, kollaborative Plattform für Produktdefinition – für kleine und mittlere Unternehmen, was Blender
+und OpenSCAD für ihre Communities sind. Name und Logo
 (`docs/marke/`) stehen unter Markenvorbehalt, bis die Recherche abgeschlossen ist. Ein Projekt ist ein **Graph aus Elementen** – ein
 Achsenursprung genauso wie ein ganzes Bauteil. Alle sehen online denselben Stand; offline geht es weiter
 wie bei Git. Bearbeitet wird in 3D, im Knoten-Editor oder als Text, Menschen und KI-Agenten gemeinsam.
@@ -15,7 +16,7 @@ wie bei Git. Bearbeitet wird in 3D, im Knoten-Editor oder als Text, Menschen und
 | Geometrie-Worker | `worker/` | Python, OpenCascade | MPL-2.0 |
 | SDKs und Formatspezifikation | `sdk/`, `format/` | – | Apache-2.0 |
 
-Architektur: `docs/adr/` (ADR-028 bis ADR-036 beschreiben die aktuelle Richtung).
+Architektur: `docs/adr/` (ADR-028 bis ADR-053 beschreiben die aktuelle Richtung).
 
 Dieses Repository ist zugleich der **Harness für spec-driven Entwicklung mit Agenten**: ADRs als
 Leitplanken, OpenSpec für Aufträge, Abnahmetests als Vertrag, ein Vertragsschutz für alle Werkzeuge und

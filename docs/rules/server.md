@@ -11,6 +11,9 @@
 - Presence und Channels: Nachrichten klein halten, keine Geometrie über Channels, nur Operationen,
   Hashes und Vorschau-Verweise.
 - Hintergrundaufgaben (Export, Regelprüfung, KI-Läufe) über Oban, idempotent.
+- Suchindex und Facetten (ADR-052) sind abgeleitet aus dem Graphen, werden nie synchronisiert und lassen sich
+  jederzeit neu aufbauen; die Suche prüft Rechte je Treffer. Adressen bleiben nach Umbenennen und
+  Verschieben gültig (Weiterleitung).
 - Studien (ADR-049) laufen als Oban-Jobs mit begrenzter Parallelität je Organisation, sind abbrechbar und
   setzen nach einem Neustart fort; Ergebnisse je Variante nach Inhalts-Hash zwischengespeichert.
 - Statusübergänge im Lebenszyklus (ADR-047) nur über Befehle mit Rechteprüfung; Freigeben ist Menschen

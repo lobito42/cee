@@ -10,8 +10,10 @@ context: |
   Rust-Kern für das Datenmodell (crates/, ADR-029), Elixir/Phoenix-Server für Sync, Historie und Worker
   (server/, ADR-030), TypeScript-Client als Web- und Tauri-App (client/, ADR-031), Python-Worker mit
   OpenCascade für Geometrie (worker/, ADR-032). Lizenz: Kern MPL-2.0, sdk/ und format/ Apache-2.0 (ADR-034).
-  Zielgruppe: Einzelpersonen und kleine Projektgruppen (privat, kleine Firmen). Erster Anwendungsfall:
-  Raumgestaltung und Raumakustik für eine kleine Firma, die Schallabsorber herstellt (ADR-038 bis 042). KI anbieteroffen, lokale
+  Zielgruppe: Einzelpersonen, kleine und mittlere Unternehmen; perspektivisch eine offene Plattform wie
+  Blender oder OpenSCAD, für Produktentwicklung in KMU. Der Kern ist fachneutral (ADR-046). Erster
+  Anwendungsfall (nur zum produktiven Start): Raumgestaltung und Raumakustik für eine kleine Firma, die
+  Schallabsorber herstellt (ADR-038 bis 042). KI anbieteroffen, lokale
   Modelle und Selbstbetrieb von Anfang an (ADR-037). Testprojekt mit wenig menschlicher Zeit: Changes klein
   schneiden, damit Agenten sie unbeaufsichtigt umsetzen können.
   Architekturentscheidungen stehen in docs/adr/ (README.md ist der Index). Sie sind verbindlich.

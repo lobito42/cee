@@ -18,6 +18,9 @@ paths:
 - Fehler sind strukturiert: `code`, `message`, `element_id`, `hint` (was der Agent als Nächstes tun soll).
 - Schreibende Tools erzeugen Änderungssätze aus Graph-Operationen (ADR-021), nie direkte Änderungen.
 - Kein Tool gibt frei oder sperrt (ADR-047). Agenten dürfen Freigaben vorbereiten und prüfen.
+- Ein Such-Werkzeug nutzt dieselbe Suche wie die Oberfläche (ADR-052), mit denselben Rechten.
+- Aufgaben, Prüfer und Lösungswege für die Lernschleife (ADR-053) bewertet nur ein Prüfer, nie das Modell
+  selbst; Projektdaten fließen nur mit ausdrücklicher Zustimmung der Organisation ein.
 - Tool-Beschreibungen sind Teil des Produkts: kurz, eindeutig, mit einem Beispiel.
 - Kein Tool setzt ein bestimmtes Modell voraus. Jedes Tool muss mit einem kleinen lokalen Modell bedienbar
   sein: wenige Parameter, Aufzählungen statt Freitext, keine verschachtelten Pflichtobjekte (ADR-037).

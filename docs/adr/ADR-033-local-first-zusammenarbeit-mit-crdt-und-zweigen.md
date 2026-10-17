@@ -3,6 +3,7 @@
 - Status: akzeptiert
 - Datum: 2026-10-17
 - Entscheider: Kernteam
+- Geändert durch: ADR-051 (Alltagsbegriffe, Trichter-Zustände)
 
 ## Kontext
 
