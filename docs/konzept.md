@@ -9,7 +9,7 @@ Stand: 2026-10-17
 
 Wir bauen eine offene, kollaborative Plattform für Produktdefinition: CEE, das Collaborative Engineering Environment. Das Logo ist ein C mit einem freistehenden Strich in der Mitte, angelehnt an das Zeichen „ist Element von“. Ein Projekt ist ein **Graph aus Elementen**, in dem ein Achsenursprung genauso behandelt wird wie ein ganzes Bauteil. Online sehen alle denselben Stand wie in Figma, offline geht es weiter wie bei Git. Bearbeitet wird in 3D, im Knoten-Editor oder als Text, von Menschen und KI-Agenten gemeinsam.
 
-**Rahmen:** CEE ist ein ehrgeiziges Testprojekt, das von Anfang an so gebaut wird, dass es als Open-Source-Projekt veröffentlicht werden kann. Zielgruppe sind Einzelpersonen und kleine Projektgruppen, privat oder in kleinen Firmen. Erster Nutzer ist eine kleine Firma, die Schallabsorber entwickelt: Räume gestalten, Absorber platzieren, Nachhallzeit, Kosten und CO₂ berechnen und das Ergebnis fotorealistisch zeigen. Die menschliche Zeit ist knapp; ein ausdrücklicher Zweck ist, autonomes Arbeiten von KI-Agenten zu erproben. Offenheit gegenüber KI-Modellen, lokale Modelle sowie selbst gehostete Daten und Modelle gelten ab dem ersten Tag (ADR-037).
+**Rahmen:** CEE ist ein ehrgeiziges Testprojekt, das von Anfang an so gebaut wird, dass es als Open-Source-Projekt veröffentlicht werden kann. Zielgruppe sind Einzelpersonen sowie kleine und mittlere Unternehmen. Perspektivisch soll CEE für die Produktentwicklung in KMU werden, was Blender und OpenSCAD für ihre Communities sind: offen, von einer Community getragen, ohne Lizenzschranke und für jedes Produkt. Erster Nutzer – nur, um das Ganze produktiv zu bekommen – ist eine kleine Firma, die Schallabsorber entwickelt: Räume gestalten, Absorber platzieren, Nachhallzeit, Kosten und CO₂ berechnen und das Ergebnis fotorealistisch zeigen. Die menschliche Zeit ist knapp; ein ausdrücklicher Zweck ist, autonomes Arbeiten von KI-Agenten zu erproben. Offenheit gegenüber KI-Modellen, lokale Modelle sowie selbst gehostete Daten und Modelle gelten ab dem ersten Tag (ADR-037).
 
 **Fünf Ziele und woran wir sie messen**
 
@@ -121,6 +121,10 @@ Die Lösung muss alle Fertigungsverfahren abdecken, alle gängigen CAD-Systeme b
 | F-43 | Direktes Bearbeiten von Flächen, auch an importiertem STEP ohne Historie, als Element im Graphen | Soll |
 | F-44 | Robuste Neuberechnung: ein fehlerhaftes Element markiert, das Modell bleibt bedienbar; Skelett mit live oder eingefrorenen Verknüpfungen | Muss |
 | F-45 | Teil-Laden und Detailstufen für Baugruppen mit 5.000 Teilen; Messungen mit Grenzwert und Modellierrichtlinien als Regeln | Muss |
+| F-46 | Versionierung ohne Git-Begriffe: automatisch gesichert; Entwurf, Meilenstein, Übernehmen, Zur Prüfung geben, Zurückholen, Ableiten, Verlauf; Konflikte als Entscheidungskarten | Muss |
+| F-47 | Entwicklungstrichter: Idee, In Arbeit, Ergebnis, Verworfen mit Begründung; ruhige Standardansicht mit Ergebnissen, Werkstatt mit allen Entwürfen; Herkunft und Entscheidungsprotokoll | Muss |
+| F-48 | Ordnung und Wiederfinden: feste schlanke Struktur, automatische Facetten, eine Suche für alles, Links ohne Bruch, Rückverweise, Sammlungen, Startseite, Doppelteil-Hinweis | Muss |
+| F-49 | Lernschleife für lokale Modelle: Aufgabengenerator, Prüfer, Erfahrungsspeicher, LoRA-Adapter aus geprüften Erfolgen (nach der Beta) | Kann |
 
 **Nicht-funktionale Anforderungen**
 
@@ -397,6 +401,35 @@ CATIA, NX und Creo sind schwer zu bedienen, tragen aber 30 Jahre Erfahrung mit g
 
 Nicht übernommen: Ribbon und Menüs mit tausend Befehlen, Dateien ein- und auschecken, geschlossene Formate, Lizenzen je Modul. Weitere Anregungen (Baum mit Spalten, Rollen, Eltern-Kind-Ansicht, Stellungen, Kinematik, Kollisionsprüfung, Positionsnummern) liegen im Ideenspeicher.
 
+**Versionierung ohne Git-Begriffe (ADR-051)**
+
+Git ist die Mechanik, nicht die Sprache. Gesichert wird automatisch; die Oberfläche spricht so:
+
+| Git | In CEE | So fühlt es sich an |
+| --- | --- | --- |
+| commit | entfällt | Nie wieder Speichern oder Commit-Nachricht |
+| branch | Entwurf | Spielwiese, ohne andere zu stören |
+| tag | Meilenstein | „Stand für den Kundentermin“ mit einem Klick |
+| merge | Übernehmen | Vergleich ansehen, Konflikte als Entscheidungskarten |
+| pull request | Zur Prüfung geben | führt in den Freigabeprozess |
+| revert, checkout | Zurückholen | ganzer Stand oder einzelnes Element |
+| fork | Ableiten | Kopie mit Herkunft, Verbesserungen am Original werden angeboten |
+| log, blame | Verlauf | wer, wann, warum – direkt am Element |
+
+**Der Entwicklungstrichter:** (1) **Erkunden** – viele Entwürfe parallel, gemeinsam live. (2) **Verdichten** – vergleichen, Studien, abstimmen; was nicht weiterkommt, wird verworfen, nicht gelöscht: ausgeblendet, archiviert, durchsuchbar, mit Begründung. (3) **Ergebnis kennzeichnen** – standardmäßig sehen alle nur Ergebnisse, die Werkstatt mit allen Entwürfen öffnet man bei Bedarf. (4) **Wiederverwenden** – als Komponente, Bibliothek oder Vorlage. (5) **Anpassen** – Ableiten mit Herkunft, die nächste Schleife beginnt. Ergebnisse, Verwerfungen und Prüfentscheidungen tragen sich in das Entscheidungsprotokoll des Projekts ein.
+
+**Ordnung und Wiederfinden (ADR-052)**
+
+Ordnung entsteht aus dem Graphen, statt gepflegt zu werden – kein „ich schick dir den Link“ als einziger Weg.
+
+- **Schlanke Struktur:** Organisation › Bereich (Produkt, Kunde, Thema) › Projekt, keine weiteren Ordner.
+- **Facetten automatisch:** Typ, Status, Sachnummer, Revision, Material, Kunde, Verantwortliche, Datum, Fachpaket.
+- **Eine Suche für alles:** Strg/Cmd+K findet Befehle und Inhalte – Volltext, Facetten, Parameterbedingungen („Deckensegel, α500 ≥ 0,8, freigegeben“), semantisch mit lokalem Modell.
+- **Links ohne Bruch:** feste Adressen, die Umbenennen und Verschieben überstehen.
+- **Rückverweise:** Verwendet in, Abgeleitet von/zu, Erwähnt in – über Projekte hinweg.
+- **Sammlungen und Startseite:** gespeicherte Suchen statt Ordner; je Person zuletzt bearbeitet, wartet auf mich, Änderungen an Genutztem.
+- **Kontext am Element** statt im Wiki; **Hygiene:** verwaiste Entwürfe werden zum Verwerfen vorgeschlagen, ähnliche vorhandene Teile beim Anlegen angezeigt.
+
 **Skizzieren**
 
 - **Starten:** Fläche oder Ebene anklicken, „Skizze“ wählen; die Ansicht dreht sich senkrecht darauf, das Modell tritt halbtransparent zurück.
@@ -421,7 +454,7 @@ Nicht übernommen: Ribbon und Menüs mit tausend Befehlen, Dateien ein- und ausc
 
 ## Architecture Decision Records
 
-Fünfzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-050 beschreiben die neue Richtung (Element-Graph, Rust-Kern, Elixir-Server, Web und Desktop, Lizenz, offene und lokale KI, Raumakustik, Material, Rendering, Austauschformate, Komponenten, Bedienmuster aus Blender und VS Code, fachneutraler Kern, Freigabe, PLM- und ERP-Schnittstelle, Automatisierung, Bewährtes aus klassischem CAD) und sind akzeptiert; sie ersetzen ADR-003, 005, 013 und 024. Die übrigen stehen auf „Vorgeschlagen“ und werden mit den Spikes bestätigt. Jedes ADR liegt zusätzlich als Markdown-Datei unter `docs/adr/` im Repository.
+Dreiundfünfzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-053 beschreiben die neue Richtung (Element-Graph, Rust-Kern, Elixir-Server, Web und Desktop, Lizenz, offene und lokale KI, Raumakustik, Material, Rendering, Austauschformate, Komponenten, Bedienmuster aus Blender und VS Code, fachneutraler Kern, Freigabe, PLM- und ERP-Schnittstelle, Automatisierung, Bewährtes aus klassischem CAD, Versionierung in Alltagsbegriffen, Ordnung, Lernschleife) und sind akzeptiert; sie ersetzen ADR-003, 005, 013 und 024. Die übrigen stehen auf „Vorgeschlagen“ und werden mit den Spikes bestätigt. Jedes ADR liegt zusätzlich als Markdown-Datei unter `docs/adr/` im Repository.
 
 | ADR | Entscheidung | Wichtigste Alternative |
 | --- | --- | --- |
@@ -475,6 +508,9 @@ Fünfzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-050 beschrei
 | 048 | Offene Schnittstelle zu PLM und ERP: ein führendes System je Feld, offenes Format, API aus dem Befehlsregister, Ereignisse, Anbindungen als Plugins | Feste Anbindung an ein Produkt; CEE als ERP |
 | 049 | Nach Synera: Untergraph als Befehl, Apps aus dem Graphen, Bibliotheksebenen und gesperrte Komponenten, Werte an jeder Kante, Studien | Automatisierung nur als Skript, Apps als eigene Software |
 | 050 | Aus CATIA, NX, Creo: Referenz-Eingänge an Komponenten, direktes Bearbeiten als Element, robuste Neuberechnung, Skelett, Teil-Laden und Detailstufen, Messungen und Richtlinien als Elemente | Nur Parameter an Komponenten, Abbruch beim ersten Fehler, immer alles laden |
+| 051 | Versionierung in Alltagsbegriffen (Entwurf, Meilenstein, Übernehmen); Entwicklungstrichter mit Ergebnis und Verwerfen mit Begründung; Herkunft; Entscheidungsprotokoll | Git-Begriffe zeigen, Löschen statt Verwerfen |
+| 052 | Ordnungssystem: schlanke Struktur, automatische Facetten, eine Suche, feste Adressen, Rückverweise, Sammlungen, Startseite, Hygiene | Freie Ordnerbäume, externes Wiki |
+| 053 | Lernschleife für lokale Modelle: Prüfer bewerten, Aufgabengenerator, Erfahrungsspeicher, LoRA aus geprüften Erfolgen, Schutz gegen Schummeln | Selbstbewertung, Training nur in der Cloud |
 
 ### ADR-001: Geometriekernel OpenCascade
 
@@ -812,6 +848,24 @@ Fünfzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-050 beschrei
 
 **Konsequenzen:** Ändert ADR-025 und ADR-043, ergänzt ADR-008, ADR-016 und ADR-032. Betrifft ap-05, ap-06, ap-13, ap-20; neues Arbeitspaket ap-36.
 
+### ADR-051: Versionierung in Alltagsbegriffen und Entwicklungstrichter
+
+**Entscheidung:** (1) Oberfläche ohne Git-Begriffe, automatisch gesichert: Entwurf, Meilenstein, Übernehmen, Zur Prüfung geben, Zurückholen, Ableiten, Verlauf. (2) Konflikte als Entscheidungskarten. (3) Zustände Idee, In Arbeit, Ergebnis, dann ADR-047; Verwerfen archiviert mit Begründung, löscht nie. (4) Standardansicht zeigt Ergebnisse, die Werkstatt alle Entwürfe. (5) Herkunft beim Ableiten. (6) Entscheidungsprotokoll je Projekt.
+
+**Konsequenzen:** Ändert ADR-033, ergänzt ADR-047. Betrifft ap-08, ap-17, ap-25.
+
+### ADR-052: Ordnungssystem und Wiederfinden
+
+**Entscheidung:** Organisation › Bereich › Projekt; Facetten automatisch aus dem Graphen; eine Suche für Befehle und Inhalte mit Parameterbedingungen und semantischer Suche; feste Adressen mit Weiterleitung; Rückverweise; gespeicherte Sammlungen; Startseite je Person; Kontext am Element; Hygiene für verwaiste Entwürfe und Doppelteile.
+
+**Konsequenzen:** Ergänzt ADR-018 und ADR-045. Suchindex ist abgeleitet und wird nie synchronisiert. Arbeitspaket ap-37.
+
+### ADR-053: Lernschleife für lokale Modelle
+
+**Entscheidung:** Bewertung nur durch Prüfer; Aufgabengenerator je Fachpaket; Stufen Prüfer, Erfahrungsspeicher, LoRA aus geprüften Erfolgen, später bestärkendes Lernen; geheime Prüfaufgaben und Regressionsschranke; Training lokal, Projektdaten nur mit Zustimmung.
+
+**Konsequenzen:** Ergänzt ADR-014 und ADR-037. Stufe 1 in ap-15, Stufen 2 und 3 in ap-38.
+
 ## Regelwerk und Verifikationsschleife
 
 Erstes Regelpaket ist die Raumakustik: Zielbänder für die Nachhallzeit je Raumart, geprüft von der Firma (ap-20). Die Fertigungsregeln unten folgen nach der Beta.
@@ -841,6 +895,8 @@ Ein Bauteil gilt erst als fertig, wenn alle Regeln mit Schweregrad „Fehler“ 
 
 Die Zahlen sind Platzhalter aus gängigen Konstruktionsrichtlinien; jedes Unternehmen hinterlegt seine eigenen Werte in YAML. Wissen, das sich nicht als Prüfung ausdrücken lässt (z. B. Gestaltungsprinzipien, Hausstandards), liegt als Skill-Text für Claude bei.
 
+**Lernschleife für lokale Modelle (ADR-053).** Weil sich CEE-Aufgaben objektiv prüfen lassen (Graph gültig, Geometrie baut, Regeln bestehen, Zielwerte erreicht), können lokale Modelle aus geprüften Versuchen lernen. Bewertet wird nur durch Prüfer, nie durch das Modell selbst. Stufen: (1) Aufgabengenerator und Prüfer, zugleich Eval-Suite; (2) Erfahrungsspeicher mit geprüften Lösungswegen als Beispiele; (3) LoRA-Adapter aus geprüften Erfolgen; (4) bestärkendes Lernen später. Schutz: geheime Prüfaufgaben, Übernahme nur bei Verbesserung ohne Rückschritt, mehrere Prüfer, Stichproben durch Menschen. Alles lokal; Aufgabensätze, Prüfer und Adapter lassen sich offen teilen.
+
 ## Arbeitspakete
 
 Die Arbeit ist in 33 Arbeitspakete in vier Phasen geschnitten, ausgerichtet auf den Anwendungsfall Raumakustik. Jedes Paket ist ein OpenSpec-Change mit Abnahmetests (`ap-xx-kurzname`); die Spikes der Phase 0 entscheiden, ob die Architektur trägt. ap-02 ist der erste Change mit echten Specs.
@@ -862,7 +918,7 @@ Die Arbeit ist in 33 Arbeitspakete in vier Phasen geschnitten, ausgerichtet auf 
 | ap-12-skizze-extrusion | 1 | Skizzen mit PlaneGCS, Extrusion, Identität der Flächen | Absorber-Form per Skizze in ≤ 3 Schritten; IDs stabil über 50 Parameteränderungen | ap-06, ap-08 |
 | ap-13-komponenten-katalog | 1 | Komponenten mit Varianten, Referenz-Eingängen und Instanzen (ADR-043, ADR-050), versionierte Bibliotheken mit Aktualisierung und Vorschau; Absorber-Katalog der Firma als Bibliothek; Platzieren an Wand und Decke, abgehängt, Reihen und Raster | 12 Deckensegel als Raster in einem Schritt; Wirkung sofort in der Nachhallzeit; ein Katalog-Update erreicht alle Instanzen, Überschreibungen bleiben | ap-10, ap-11, ap-12 |
 | ap-14-rendering-fotomodus | 1 | Echtzeit-PBR, HDRI, Fotomodus mit Denoiser produktiv, Bild als PNG | Referenzraum fotorealistisch; Materialien entsprechen Mustern der Firma | ap-04, ap-10 |
-| ap-15-mcp-ki | 1 | MCP-Endpunkt, Anbieter-Schnittstelle (lokal und Cloud), Änderungssätze, Eval-Suite | Agent bringt die Nachhallzeit eines Referenzraums in das Zielband, mit Cloud- und lokalem Modell | ap-07, ap-13 |
+| ap-15-mcp-ki | 1 | MCP-Endpunkt, Anbieter-Schnittstelle (lokal und Cloud), Änderungssätze, Eval-Suite mit Aufgabengenerator und Prüfern (ADR-053) | Agent bringt die Nachhallzeit eines Referenzraums in das Zielband, mit Cloud- und lokalem Modell | ap-07, ap-13 |
 | ap-16-selbstbetrieb | 1 | Container mit Server, Datenbank und lokalem Modell, Backups | Installation in < 15 min | ap-07 |
 | ap-17-desktop-offline | 1 | Tauri-App mit Kern, Speicher und Worker; offline, Abgleich beim Verbinden | Einen Tag offline gearbeitet, Merge ohne Datenverlust | ap-06, ap-07 |
 | ap-18-mengen-kosten-co2 | 2 | Mengen, Kosten, Gewicht und CO₂ je Raum; CSV-Mengenliste | Summen stimmen mit Handrechnung für 3 Räume | ap-10, ap-13 |
@@ -872,7 +928,7 @@ Die Arbeit ist in 33 Arbeitspakete in vier Phasen geschnitten, ausgerichtet auf 
 | ap-22-moebel-gltf | 2 | Möbelbibliothek, glTF-Import und -Export | 20 Möbel mit Absorptionsfläche; Szene als glTF exportiert | ap-14 |
 | ap-23-knoten-editor | 2 | Knoten-Editor, Untergraphen als Bausteine und Befehle, Werte an jeder Kante | Absorber-Raster vollständig im Knoten-Editor | ap-08, ap-24 |
 | ap-24-textprojektion-git | 2 | Textprojektion produktiv, Git-Export und -Import | Roundtrip verlustfrei; eine Parameteränderung = eine Zeile | ap-05 |
-| ap-25-zweige-freigabe | 2 | Zweige, Änderungsanfragen, Review, Freigabe, semantische Konflikte | 100 % der Konflikte im Testkorpus erkannt | ap-07 |
+| ap-25-zweige-freigabe | 2 | Entwürfe, Meilensteine, Übernehmen mit Entscheidungskarten, Zur Prüfung geben, Verwerfen mit Begründung, Herkunft, semantische Konflikte (ADR-051) | 100 % der Konflikte im Testkorpus erkannt | ap-07 |
 | ap-26-publikation | 2 | Publikationsstatus, Manifest, URIs, semantischer Diff | Schnittstellen-Diff an 3 Referenzräumen korrekt | ap-05 |
 | ap-27-plugin-sdk | 2 | Plugin-SDK für TypeScript und Python mit Manifest, Sandbox und Rechten, Projekt-Vertrauen, Beispielplugin | Fremd-Plugin ohne Änderung am Kern | ap-05, ap-23 |
 | ap-28-hosting | 3 | Gehosteter Dienst mit Organisationen | Erste externe Organisation | ap-16 |
@@ -884,6 +940,8 @@ Die Arbeit ist in 33 Arbeitspakete in vier Phasen geschnitten, ausgerichtet auf 
 | ap-34-plm-erp-schnittstelle | 3 | API aus dem Befehlsregister, Ereignisse mit Outbox, Nummernkreis-Plugin, Beispielanbindung an ein selbst gebautes PLM/ERP | Externes System empfängt Freigabe und Stückliste und vergibt Sachnummern, ohne Änderung am Kern | ap-27, ap-33 |
 | ap-35-apps-studien | 2 | Apps aus veröffentlichten Untergraphen, gesperrte Komponenten, Bibliotheksebenen, Studien mit Tabelle und Pareto-Diagramm | Vertrieb erstellt ohne Modellrechte eine Raumbelegung mit Angebot; Studie mit 100 Varianten < 2 min | ap-06, ap-11, ap-23 |
 | ap-36-direkt-skelett | 2 | Direktes Bearbeiten von Flächen (auch an STEP), Skelett mit eingefrorenen Verknüpfungen, Ersetzen mit Umhängen | Lieferanten-STEP ohne Neumodellieren angepasst; Skelettänderung erreicht 20 Teile, eingefrorene erst nach Bestätigung | ap-06, ap-12, ap-13 |
+| ap-37-ordnung-suche | 2 | Struktur Organisation › Bereich › Projekt, Suchindex mit Facetten und Parameterbedingungen, semantische Suche lokal, Rückverweise, Sammlungen, Startseite, Entscheidungsprotokoll, Hygiene | 20 typische Such-Aufgaben der Firma in je ≤ 30 s gelöst; Suche über 100.000 Elemente < 300 ms | ap-07, ap-25 |
+| ap-38-lernschleife | 3 | Erfahrungsspeicher, Versuche mit Prüfern, LoRA-Adapter aus geprüften Erfolgen, geheime Prüfaufgaben, Regressionsschranke | Lokales 8B-Modell mit Adapter löst ≥ 20 Prozentpunkte mehr geheime Aufgaben, ohne Rückschritt in einer Kategorie | ap-15 |
 
 ### Entwicklung mit Agenten
 

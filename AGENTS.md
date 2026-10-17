@@ -2,9 +2,10 @@
 
 Gilt für Claude Code, OpenCode und Pi. CEE (Collaborative Engineering Environment) ist eine offene,
 kollaborative Plattform für Produktdefinition – perspektivisch für kleine und mittlere Unternehmen, was
-Blender und OpenSCAD für ihre Communities sind: Ein Projekt ist ein **Graph aus Elementen** – ein Achsenursprung genauso wie ein ganzes
-Bauteil. Alle sehen online denselben Stand, offline wird wie bei Git weitergearbeitet. Bearbeitet wird in
-3D, im Knoten-Editor oder als Text; KI-Agenten arbeiten über denselben Graphen.
+Blender und OpenSCAD für ihre Communities sind. Ein Projekt ist ein **Graph aus Elementen** – ein
+Achsenursprung genauso wie ein ganzes Bauteil. Alle sehen online denselben Stand, offline wird wie bei Git
+weitergearbeitet. Bearbeitet wird in 3D, im Knoten-Editor oder als Text; KI-Agenten arbeiten über denselben
+Graphen.
 
 ## Zu Beginn jeder Sitzung: Wo stehen wir?
 
