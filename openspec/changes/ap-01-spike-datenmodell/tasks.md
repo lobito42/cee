@@ -1,7 +1,7 @@
 ## 1. Schema
 
 - [ ] 1.1 `format/schema/element.schema.json` mit einheitlicher Elementform, rekursiv über `content` – Prüfung: AK-3
-- [ ] 1.2 `format/examples/halter.json` mit Ursprung, Achse, Ebene, Skizze, Feature, Flächenreferenz, Bauteil, Baugruppe (3 Bauteile), PMI, Zeichnungsblatt – Prüfung: AK-3
+- [ ] 1.2 `format/examples/raum.json` mit Ursprung, Geschoss, Wänden, Boden, Decke, Fenster, Tür, Möbel, Materialien, drei Absorbern (einer per Skizze und Extrusion) und Nachhallzeit-Analyse – Prüfung: AK-3
 
 ## 2. Prototyp
 

@@ -6,9 +6,24 @@ import pytest
 from conftest import ROOT
 
 SCHEMA = ROOT / "format" / "schema" / "element.schema.json"
-EXAMPLE = ROOT / "format" / "examples" / "halter.json"
+EXAMPLE = ROOT / "format" / "examples" / "raum.json"
 FORM = {"id", "type", "inputs", "params", "outputs", "content", "meta"}
-TYPES = {"origin", "axis", "plane", "sketch", "extrude", "face-ref", "part", "assembly", "pmi", "sheet"}
+TYPES = {
+    "origin",
+    "level",
+    "wall",
+    "slab",
+    "opening",
+    "furniture",
+    "absorber",
+    "material",
+    "sketch",
+    "extrude",
+    "part",
+    "analysis",
+}
+BANDS = {"125", "250", "500", "1000", "2000", "4000"}
+NEEDS_MATERIAL = {"wall", "slab", "absorber"}
 jsonschema = pytest.importorskip("jsonschema", reason="jsonschema fehlt (uv sync)")
 
 
@@ -27,7 +42,7 @@ def test_ak3_example_validates_against_schema():
 
 
 def test_ak3_every_element_has_the_same_form():
-    """AK-3: Jedes Element auf jeder Ebene hat genau dieselben Felder – vom Ursprung bis zur Baugruppe."""
+    """AK-3: Jedes Element auf jeder Ebene hat genau dieselben Felder – vom Ursprung bis zum Raum."""
     project = json.loads(EXAMPLE.read_text(encoding="utf-8"))
     elements = list(_walk(project["elements"]))
     odd = [(e.get("id"), sorted(set(e) ^ FORM)) for e in elements if set(e) != FORM]
@@ -37,13 +52,30 @@ def test_ak3_every_element_has_the_same_form():
 
 
 def test_ak3_example_covers_all_kinds():
-    """AK-3: Das Beispiel enthält alle Elementarten und eine Baugruppe aus drei Bauteilen."""
+    """AK-3: Alle Elementarten, mindestens drei Absorber, einer davon per Extrusion."""
     project = json.loads(EXAMPLE.read_text(encoding="utf-8"))
     elements = list(_walk(project["elements"]))
     missing = TYPES - {e["type"] for e in elements}
     assert not missing, f"Elementarten fehlen: {sorted(missing)}"
-    assemblies = [e for e in elements if e["type"] == "assembly"]
-    assert any(sum(1 for c in a["content"] if c["type"] == "part") >= 3 for a in assemblies)
+    absorbers = [e for e in elements if e["type"] == "absorber"]
+    assert len(absorbers) >= 3, "Mindestens drei Absorber erwartet"
+    assert any(any(c["type"] == "extrude" for c in _walk(a["content"])) for a in absorbers), (
+        "Mindestens ein Absorber muss als Skizze plus Extrusion aufgebaut sein"
+    )
+
+
+def test_ak3_materials_carry_acoustics_and_are_referenced():
+    """AK-3: Materialien tragen α je Oktavband; Wand, Decke, Boden, Absorber verweisen darauf."""
+    project = json.loads(EXAMPLE.read_text(encoding="utf-8"))
+    elements = list(_walk(project["elements"]))
+    materials = {e["id"] for e in elements if e["type"] == "material"}
+    for m in (e for e in elements if e["type"] == "material"):
+        alpha = m["params"].get("alpha", {})
+        assert set(alpha) == BANDS, f"{m['id']}: alpha braucht genau die Bänder {sorted(BANDS)}"
+        assert all(0 <= float(v) <= 1 for v in alpha.values()), f"{m['id']}: alpha außerhalb 0..1"
+    for e in (e for e in elements if e["type"] in NEEDS_MATERIAL):
+        refs = [r.split(".")[0] for k, r in e["inputs"].items() if k.startswith("material")]
+        assert refs and all(r in materials for r in refs), f"{e['id']} ({e['type']}) ohne gültiges Material"
 
 
 def test_ak3_references_resolve():

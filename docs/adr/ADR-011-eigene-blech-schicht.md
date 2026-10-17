@@ -1,6 +1,6 @@
 # ADR-011: Eigene Blech-Schicht
 
-- Status: zurückgestellt (nach der Beta; Zielgruppe braucht zuerst 3D-Druck)
+- Status: zurückgestellt (nach der Beta)
 - Datum: 2026-10-16
 - Entscheider: Kernteam
 

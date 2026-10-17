@@ -20,3 +20,9 @@ changes:
     model: opus    # Agent kern-specialist
     night: true    # Testfeld für autonomes Arbeiten; Bewertung des Ergebnisses durch das Kernteam im PR
     depends_on: []
+
+  - id: ap-02-akustik-nachhallzeit
+    phase: build
+    model: sonnet
+    night: true    # klar spezifiziert, durch Abnahmetests vollständig prüfbar
+    depends_on: []

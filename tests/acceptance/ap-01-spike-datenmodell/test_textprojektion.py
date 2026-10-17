@@ -5,7 +5,7 @@ import json
 
 from conftest import ROOT, sh
 
-EXAMPLE = ROOT / "format" / "examples" / "halter.json"
+EXAMPLE = ROOT / "format" / "examples" / "raum.json"
 MANIFEST = ROOT / "spikes" / "datenmodell" / "Cargo.toml"
 
 
@@ -25,7 +25,7 @@ def test_ak4_roundtrip_is_lossless_and_deterministic(tmp_path):
     text1 = cli("to-text", str(EXAMPLE))
     text2 = cli("to-text", str(EXAMPLE))
     assert text1 == text2, "Textprojektion ist nicht deterministisch"
-    path = tmp_path / "halter.txt"
+    path = tmp_path / "raum.txt"
     path.write_text(text1, encoding="utf-8")
     back = json.loads(cli("from-text", str(path)))
     assert canonical(back) == canonical(json.loads(EXAMPLE.read_text(encoding="utf-8")))

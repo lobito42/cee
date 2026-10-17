@@ -6,8 +6,11 @@ Siehe proposal.md – Why. Elementform laut ADR-028: `id`, `type`, `inputs`, `pa
 Festlegungen für den Entwurf: Ein Projekt ist `{"schema_version": <n>, "elements": [...]}`. `inputs` ist ein
 Objekt Name → Referenz `"<id>.<output>"`, `outputs` ein Objekt Name → Ausgabetyp, `params` ein Objekt
 Name → Wert, `content` eine Liste von Elementen (leer, wenn kein Untergraph), `meta` ein Objekt. Alle sieben
-Felder sind immer vorhanden. Elementtypen im Beispiel mindestens: `origin`, `axis`, `plane`, `sketch`,
-`extrude`, `face-ref`, `part`, `assembly`, `pmi`, `sheet`.
+Felder sind immer vorhanden. Elementtypen im Beispiel mindestens (ADR-038/039): `origin`, `level`, `wall`,
+`slab`, `opening`, `furniture`, `absorber`, `material`, `sketch`, `extrude`, `part`, `analysis`.
+Wände, Decken, Böden und Absorber verweisen über den Eingang `material` (bzw. `material_0`, `material_1` …
+bei Schichtaufbauten) auf `material`-Elemente. Ein Material trägt in `params` mindestens `alpha` als Objekt
+mit den Oktavbändern `125`, `250`, `500`, `1000`, `2000`, `4000`.
 
 ## Goals / Non-Goals
 

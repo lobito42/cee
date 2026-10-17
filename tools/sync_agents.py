@@ -27,6 +27,7 @@ HEADER = "<!-- generiert von tools/sync_agents.py – Quelle: {src} -->\n"
 
 RULE_PATHS = {
     "kern": ["crates/**/*", "Cargo.toml"],
+    "akustik": ["crates/acoustics/**/*", "format/materials/**/*"],
     "server": ["server/**/*"],
     "mcp": ["server/lib/**/mcp/**/*", "server/test/**/mcp/**/*"],
     "client": ["client/**/*"],

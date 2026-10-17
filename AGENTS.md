@@ -43,7 +43,7 @@ Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `opens
 - Teste nur, was du geändert hast, und knapp: `pytest -q -x`, `cargo test -q -p <crate>`, `mix test --failed`.
 - Keine Erkundung „zur Sicherheit“. Plane kurz, setze um, prüfe mit dem Test aus der Task.
 - Regeln je Bereich stehen in `docs/rules/` – lies nur die zu deinen Dateien:
-  `kern.md` (crates/), `server.md` und `mcp.md` (server/), `client.md` (client/), `geometrie.md` (worker/, parts/, sdk/python/).
+  `kern.md` (crates/), `akustik.md` (crates/acoustics/, Materialien), `server.md` und `mcp.md` (server/), `client.md` (client/), `geometrie.md` (worker/, parts/, sdk/python/).
 
 ## Struktur und Befehle
 
@@ -71,6 +71,9 @@ Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `opens
 - KI-Änderungen nur als Änderungssatz mit Vorschau (ADR-021).
 - Kein fester KI-Anbieter: Modelle nur über die Anbieter-Schnittstelle oder MCP; lokale Modelle müssen
   funktionieren; keine Daten an Dritte ohne ausdrückliche Wahl, keine Telemetrie (ADR-037).
+- Erster Anwendungsfall: Räume mit Schallabsorbern (ADR-038). Material ist ein Element mit Aussehen, Akustik,
+  Physik, Kosten und CO₂ (ADR-039); Nachhallzeit rechnet `crates/acoustics` (ADR-041); Rendering im Client
+  mit Echtzeit und Fotomodus (ADR-040).
 - Lizenzen: Kern MPL-2.0, `sdk/` und `format/` Apache-2.0. Abhängigkeiten nur MPL/Apache/MIT/BSD/ISC/Zlib;
   LGPL nur dynamisch oder im Worker-Prozess; kein GPL/AGPL (ADR-034).
 
