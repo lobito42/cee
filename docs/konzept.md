@@ -1124,7 +1124,7 @@ Die größten Risiken liegen jetzt im Datenmodell (Größe und Merge-Verhalten d
 - [x] Freigabeprozess festgelegt (ADR-047): Selbstfreigabe an, solange höchstens zwei Personen freigeben dürfen, danach Vier-Augen-Prinzip, Agenten geben nie frei
 - [x] Rechte und Mandanten festgelegt (ADR-055): Organisation, Bereich, Projekt; wenige Rollen, Gäste, Dienstkonten für Agenten; Anmeldung über OIDC
 - [ ] Lizenz von PlaneGCS im Browser klären (ADR-027), vor ap-12
-- [ ] Eigene GitHub-Identität für Agenten (Bot-Konto oder GitHub App), damit Schutzregeln und Reviews Menschen und Agenten unterscheiden
+- [ ] Eigene GitHub-Identität für Agenten (Bot-Konto oder GitHub App), damit Schutzregeln und Reviews Menschen und Agenten unterscheiden – zurückgestellt bis es Produktcode gibt (spätestens mit ap-05); dann zuerst die Nachtschicht als GitHub-Action, später eigene GitHub-App
 - [ ] Grundtypliste und Beispielteil halter.py auf die Form des Element-Graphen umstellen (Script-Element mit deklarierten Ein- und Ausgängen)
 - [ ] Governance: Rolle der Community bei Roadmap und RFCs; später Stiftung oder Firma als Träger
 - [ ] Lizenzprüfung durch Fachanwalt vor dem ersten öffentlichen Release (MPL-2.0 und Apache-2.0, DCO)
