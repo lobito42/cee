@@ -10,3 +10,4 @@ Spikes der Phase 0. Aufbau: `## Fragestellung`, `## Vorgehen`, `## Messwerte`, `
 | ap-04-spike-rendering | `rendering.md` | Echtzeit-PBR und Fotomodus (Path Tracing) in Browser und Tauri auf drei Systemen? |
 
 Pipeline-Durchlauf (Task 2.2 in `openspec/changes/ap-00-setup/tasks.md`): Link auf den gemergten PR hier eintragen.
+
