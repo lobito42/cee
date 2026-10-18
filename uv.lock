@@ -1,9 +1,15 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = ">=3.11, <3.14"
 resolution-markers = [
     "python_full_version >= '3.12'",
     "python_full_version < '3.12'",
+]
+
+[manifest]
+members = [
+    "cee",
+    "cee-worker",
 ]
 
 [[package]]
@@ -80,34 +86,6 @@ wheels = [
 ]
 
 [[package]]
-name = "cee"
-version = "0.0.1"
-source = { virtual = "." }
-
-[package.optional-dependencies]
-cad = [
-    { name = "build123d" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "jsonschema" },
-    { name = "pytest" },
-    { name = "ruff" },
-]
-
-[package.metadata]
-requires-dist = [{ name = "build123d", marker = "extra == 'cad'", specifier = ">=0.9" }]
-provides-extras = ["cad"]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "jsonschema", specifier = ">=4.23" },
-    { name = "pytest", specifier = ">=8" },
-    { name = "ruff", specifier = ">=0.6" },
-]
-
-[[package]]
 name = "cadquery-ocp-novtk"
 version = "8.0.1.1.0"
 source = { registry = "https://pypi.org/simple" }
@@ -139,6 +117,51 @@ source = { registry = "https://pypi.org/simple" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/13/5e/29c3d8c4b290dee82387468a33ac06c663518a167963cdb9ff48e6bbd8f9/cadquery_ocp_proxy-8.0.1.1.0-py3-none-any.whl", hash = "sha256:98c71bb60cfb651afe179b134ab88580fd75384fce0cc6d633f727002cd18abd", size = 3250, upload-time = "2026-10-05T16:23:45.717Z" },
 ]
+
+[[package]]
+name = "cee"
+version = "0.0.1"
+source = { virtual = "." }
+dependencies = [
+    { name = "cee-worker" },
+]
+
+[package.optional-dependencies]
+cad = [
+    { name = "build123d" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "jsonschema" },
+    { name = "pytest" },
+    { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "build123d", marker = "extra == 'cad'", specifier = ">=0.9" },
+    { name = "cee-worker", editable = "worker" },
+]
+provides-extras = ["cad"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "jsonschema", specifier = ">=4.23" },
+    { name = "pytest", specifier = ">=8" },
+    { name = "ruff", specifier = ">=0.6" },
+]
+
+[[package]]
+name = "cee-worker"
+version = "0.0.1"
+source = { editable = "worker" }
+dependencies = [
+    { name = "build123d" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "build123d", specifier = ">=0.9" }]
 
 [[package]]
 name = "certifi"

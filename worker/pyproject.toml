@@ -1,0 +1,14 @@
+[project]
+name = "cee-worker"
+version = "0.0.1"
+description = "Geometrie-Worker (OpenCascade über build123d/OCP), spricht das Kernel-Protokoll über stdio (ADR-032)"
+requires-python = ">=3.11,<3.14"
+license = "MPL-2.0"
+dependencies = ["build123d>=0.9"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/cee_worker"]
