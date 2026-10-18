@@ -66,6 +66,9 @@ arbeitet Claude, sichert nach jeder Task und öffnet einen PR. Jeder Lauf schrei
 „Nachtschicht-Protokoll“. Sie verbraucht nur das Abo-Kontingent. Einrichtung und Morgenroutine:
 `docs/betrieb/routine-nachtschicht.md`.
 
+**Für Menschen:** morgens und abends `claude` → `/stand` – Überblick und die nötigen Handgriffe in einfachen
+Worten (`docs/betrieb/arbeitsweise.md`).
+
 ## Sparsam mit dem Pro-Abo
 
 - Standardmodell Sonnet; Opus nur für `spec-writer`, `geometry-specialist` und `kern-specialist`.

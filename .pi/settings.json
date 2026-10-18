@@ -2,6 +2,7 @@
   "skills": [
     "../.claude/skills/implement-change",
     "../.claude/skills/nachtschicht",
-    "../.claude/skills/review-change"
+    "../.claude/skills/review-change",
+    "../.claude/skills/stand"
   ]
 }

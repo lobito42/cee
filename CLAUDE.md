@@ -3,7 +3,8 @@
 ## Nur für Claude Code
 
 - OpenSpec-Befehle: `/opsx:propose`, `/opsx:apply`, `/opsx:archive`, `/opsx:explore`.
-- Eigene Abläufe: `/implement-change <id>`, `/review-change <PR>`, `/nachtschicht` (unbeaufsichtigter Lauf).
+- Eigene Abläufe: `/stand` (täglicher Überblick für den Menschen, morgens und abends), `/implement-change <id>`,
+  `/review-change <PR>`, `/nachtschicht` (unbeaufsichtigter Lauf).
 - Subagenten in `.claude/agents/`: spec-writer, test-author, implementer, reviewer, ui-checker,
   geometry-specialist, kern-specialist. Standardmodell ist Sonnet; Opus nur für spec-writer und die beiden
   Spezialisten (Spikes, schwierige Fälle).

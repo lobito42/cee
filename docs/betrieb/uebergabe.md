@@ -1,8 +1,8 @@
-# Übergabe – Stand 2026-10-18
+# Übergabe – Stand 2026-10-19
 
 Für die nächste Sitzung (Claude CLI am Rechner, Claude in der Cloud oder ein anderer Agent). Der Projektzustand liegt
-vollständig im Repository; diese Seite fasst zusammen, was zuletzt passiert ist und was offen ist. Aufgaben bis
-zur ersten Nachtschicht: `docs/betrieb/todo-erste-nachtschicht.md`.
+vollständig im Repository; diese Seite fasst zusammen, was zuletzt passiert ist und was offen ist. Wie der Alltag läuft: `docs/betrieb/arbeitsweise.md`
+(kurz: `claude` → `/stand`).
 
 ## Weiterarbeiten in der CLI
 
@@ -51,8 +51,8 @@ Begriffe stehen in `docs/glossar.md` (u. a. nicht „Werkbank“, „Kompakt“,
 - Feste Versionen: `.tool-versions`, `rust-toolchain.toml`.
 - Abnahmetest-PRs (`tests/<id>`): die neuen Tests sind absichtlich rot; die CI prüft dort nur, dass sie sich sammeln
   lassen, alle anderen fälligen Tests bleiben Pflicht – so können sie trotz Branch-Schutz gemergt werden.
-- Warteschlange: ap-00 (Gerüst), ap-01 (Spike Datenmodell), ap-02 (Akustik) – alle mit Abnahmetests auf main.
-  Erster Schritt der Nachtschicht: `build` für `ap-00-setup` auf `change/ap-00-setup`.
+- Warteschlange: ap-00 (Gerüst) ist fertig und archiviert. Offen: ap-01 (Spike Datenmodell, Opus) und ap-02
+  (Akustik), beide mit Abnahmetests auf main. Nächster Schritt der Nachtschicht: `build` für ap-01.
 
 ## Wo was liegt
 
@@ -68,7 +68,6 @@ Begriffe stehen in `docs/glossar.md` (u. a. nicht „Werkbank“, „Kompakt“,
 
 | Punkt | Wann | Notiz |
 | --- | --- | --- |
-| Einrichtung für die Nachtschicht | heute | `docs/betrieb/todo-erste-nachtschicht.md` |
 | Lizenzfrage PlaneGCS (LGPL im Browser) | vor ap-12 | ADR-027 |
 | G2-Schnitt mit der Firma: Zielwerte DIN 18041, Angebotsfelder, Grundriss-Hintergrund | wenn die Firma dazukommt | ADR-059, Nachtrag |
 | Sachnummernschema, UX-Test (ap-41) | mit der Firma | ADR-047, Konzept |
