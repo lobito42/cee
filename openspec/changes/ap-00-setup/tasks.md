@@ -9,12 +9,12 @@
 
 ## 2. Regeln
 
-- [ ] 2.1 Lizenzprüfung für Python, Cargo, npm, Mix ohne Verstöße – Prüfung: AK-6
-- [ ] 2.2 Ablauf dieses Changes (Branches, CI-Jobs, Dauer, Probleme) in `docs/spikes/README.md` beschrieben – Prüfung: Abschnitt „ap-00“ vorhanden
+- [x] 2.1 Lizenzprüfung für Python, Cargo, npm, Mix ohne Verstöße – Prüfung: AK-6
+- [x] 2.2 Ablauf dieses Changes (Branches, CI-Jobs, Dauer, Probleme) in `docs/spikes/README.md` beschrieben – Prüfung: Abschnitt „ap-00“ vorhanden
 
 ## 3. Integration
 
-- [ ] 3.1 Alle Abnahmetests grün – Prüfung: `uv run pytest tests/acceptance/ap-00-setup`
+- [x] 3.1 Alle Abnahmetests grün – Prüfung: `uv run pytest tests/acceptance/ap-00-setup`
 
 ## Workflow follow-up
 
