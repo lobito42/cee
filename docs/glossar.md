@@ -38,7 +38,7 @@ sie verwendet werden. In Klammern: der englische Bezeichner im Code.
 | Hauptstand | Der gemeinsame Stand eines Projekts |
 | Ergebnis | Als gültiges Arbeitsergebnis gekennzeichneter Entwurf; die Standardansicht zeigt nur Ergebnisse |
 | Verworfen | Ausgeblendeter, archivierter Entwurf mit Begründung; nie gelöscht |
-| Werkstatt | Ansicht mit allen Entwürfen eines Projekts |
+| Ergebnis, Alle Entwürfe | Die zwei Ansichten eines Projekts: „Ergebnis“ zeigt nur den übernommenen Stand (Standard), „Alle Entwürfe“ zeigt auch verworfene und ausgeblendete Entwürfe mit Begründung (ADR-051); nicht „Werkstatt“ |
 | Übernehmen | Entwurf in den Hauptstand oder einen anderen Entwurf zusammenführen |
 | Meilenstein | Benannte Version, jederzeit setzbar |
 | Version | Oberbegriff für einen festen Stand (Meilenstein oder Revision); nicht für Schnittstellen-SemVer |
@@ -68,7 +68,7 @@ sie verwendet werden. In Klammern: der englische Bezeichner im Code.
 | --- | --- |
 | Arbeitsbereich | Zusammenstellung von Panels und Werkzeugen für eine Aufgabe; Beitrag eines Fachpakets (ADR-054) |
 | Befehl, Befehlsregister | Jede Funktion mit stabiler ID; Grundlage für Befehlssuche, Tastenkürzel, Plugins, MCP (ADR-045) |
-| Layout: Werkbank, Kompakt | Anordnung der Oberfläche für Maus und Trackpad bzw. Touch und Stift (iPad); dieselben Befehle (ADR-060) |
+| Layout: Desktop, Tablet | Anordnung der Oberfläche für Maus und Trackpad bzw. Touch und Stift (iPad); dieselben Befehle (ADR-060); nicht „Werkbank“ oder „Kompakt“ |
 | Musterkatalog | Verbindliche Liste der Bedienmuster, je Aufgabe genau eines (`docs/design/muster.md`, ADR-061) |
 | Wertfeld | Das eine Eingabefeld für Zahlen mit Einheit |
 | Design-Token | Benannter Wert für Farbe, Schrift, Abstand usw.; Quelle `docs/design/tokens.json` |

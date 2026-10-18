@@ -6,7 +6,7 @@ Muster oder eine Abweichung gibt es nur per ADR. Farben, Schrift, Abstände komm
 `docs/design/tokens.json`.
 
 Jedes Muster ist ein Baustein in `client/src/ui/` (später auch in der Apple-App, ADR-060) und hat einen Eintrag
-auf der Katalogseite mit Referenzbildern (hell und dunkel, Werkbank und Kompakt, Linux und Mac).
+auf der Katalogseite mit Referenzbildern (hell und dunkel, Desktop und Tablet, Linux und Mac).
 
 ## Entscheiden und ändern
 

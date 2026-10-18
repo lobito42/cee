@@ -32,7 +32,7 @@ sind die Inhalte farbig (Materialien, Renderings); die Oberfläche darf nicht mi
 3. **Schrift:** Inter (Variable) für die ganze Oberfläche, JetBrains Mono für Textprojektion, Code und
    Aktionsprotokoll; beide selbst gehostet (kein Abruf bei Dritten, ADR-056). Pflicht-Merkmale tabellarische
    Ziffern (`tnum`) und l mit Fuß (`cv05`). Drei Schnitte (400, 500, 600). Größen 12, 13, 14, 16, 20, 24 px;
-   Grundgröße 13 px in der Werkbank, 15 px im Layout Kompakt.
+   Grundgröße 13 px im Layout Desktop, 15 px im Layout Tablet.
 
 4. **Farbschema „Graphit“ mit einem Akzent:** neutrale Grautöne mit leichtem Blaustich, hell und dunkel; eine
    Akzentfarbe „Stahlblau“ nur für Auswahl, Fokus, die eine Hauptaktion je Ansicht und KI-Vorschläge; gedämpfte
@@ -44,8 +44,8 @@ sind die Inhalte farbig (Materialien, Renderings); die Oberfläche darf nicht mi
    geändert. Tokens und Musterkatalog ändert nur das Kernteam.
 
 6. **Durchsetzung:** Bausteine nur in `client/src/ui/`; ein Lint verbietet rohe Bedienelemente, Farbwerte und
-   Schriftangaben außerhalb davon; eine Katalogseite zeigt jeden Baustein in hell und dunkel, Werkbank und
-   Kompakt; UI-Tests vergleichen mit Referenzbildern auf Linux und Mac; ein Unit-Test prüft die Kontraste der
+   Schriftangaben außerhalb davon; eine Katalogseite zeigt jeden Baustein in hell und dunkel, Desktop und
+   Tablet; UI-Tests vergleichen mit Referenzbildern auf Linux und Mac; ein Unit-Test prüft die Kontraste der
    Tokens. Review-Frage: „Gibt es dafür schon ein Muster?“
 
 ## Alternativen

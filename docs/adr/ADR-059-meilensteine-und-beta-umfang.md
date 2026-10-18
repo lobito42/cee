@@ -14,7 +14,7 @@ Grundsatzentscheidungen später umgebaut werden müssen.
 
 1. **Vier Meilensteine bis zur Beta**, jeder mit greifbarem Nutzen:
    - **M0 Klären (Gate G1):** Gerüst, Spikes Datenmodell, Akustik, Sync, Rendering, Identität; UX-Prototyp.
-   - **M1 Werkbank (Gate G2):** Die Firma erstellt allein ein echtes Angebot – Raum, Absorber aus dem Katalog,
+   - **M1 Erstes Angebot (Gate G2, früher „Werkbank“):** Die Firma erstellt allein ein echtes Angebot – Raum, Absorber aus dem Katalog,
      Nachhallzeit live, Fotomodus, Bericht mit Mengen und Kosten; im Browser, selbst gehostet, eine Person.
    - **M2 Zusammen:** mehrere Personen live und offline, Entwürfe, Freigabe (light), Suche (light).
    - **M3 Beta (Gate G3):** KI über MCP mit lokalem Modell, Textprojektion, Regeln, Knoten-Ansicht (nur lesen),

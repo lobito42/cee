@@ -28,7 +28,7 @@ paths:
 - Keine Git-Begriffe in der Oberfläche (ADR-051): Entwurf, Meilenstein, Übernehmen, Zur Prüfung geben,
   Zurückholen, Ableiten, Verlauf. Kein Speichern-Knopf; Konflikte nur als Entscheidungskarten.
 - Nichts wird gelöscht, was andere nutzen oder was Wissen trägt: Entwürfe werden verworfen (mit Begründung)
-  und ausgeblendet. Standardansicht zeigt Ergebnisse; die Werkstatt zeigt alle Entwürfe.
+  und ausgeblendet. Standardansicht „Ergebnis“ zeigt den übernommenen Stand; „Alle Entwürfe“ zeigt alles.
 - Wiederfinden (ADR-052): Inhalte erreicht man über die eine Suche, Facetten, Sammlungen, Rückverweise und
   die Startseite – keine zusätzlichen Ordnerebenen unter Projekt.
 - Bewegen, Drehen, Skalieren: Achse sperren und Wert tippen ist immer möglich, mit Einheiten und einfachen
@@ -57,9 +57,9 @@ paths:
 - Zielsysteme (ADR-060): Linux und macOS zuerst (Referenzbilder, Feinschliff), Windows läuft mit (CI-Pflicht),
   iPad als Tablet-Ziel; kein Handy-Layout. Kürzel folgen der Plattform (Cmd bzw. Strg). Unter Linux ist
   WebKitGTK das schwächste Glied – Leistung dort messen, nicht nur in Chromium.
-- Geräte und Layouts (ADR-060): zwei Layouts – Werkbank und Kompakt – mit denselben Befehlen; kein Layout
+- Geräte und Layouts (ADR-060): zwei Layouts – Desktop und Tablet – mit denselben Befehlen; kein Layout
   hat eigene Logik. Nichts hängt am Überfahren mit der Maus; jede Hover-Information ist auch per Antippen bzw.
-  Fokus erreichbar. Bedienflächen im Layout Kompakt ≥ 44 × 44 px.
+  Fokus erreichbar. Bedienflächen im Layout Tablet ≥ 44 × 44 px.
 - Eingabe nur über die Eingabeschicht (`client/src/input/`): Maus, Trackpad, Touch, Stift, 3D-Maus,
   XR-Controller und Sprache erzeugen Befehle oder Kameraänderungen, nie direkte Modelländerungen.
   Navigationsprofile und Belegung der 3D-Maus-Tasten sind Einstellungen, keine Sonderfälle im Code.

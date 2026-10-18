@@ -18,7 +18,7 @@ Endziel für räumliches Arbeiten ist die Apple Vision Pro.
 
    | Priorität | System | Rolle |
    | --- | --- | --- |
-   | 1 | Linux, macOS (Tauri und Browser) | Werkbank, Hauptziel; Feinschliff und UI-Referenzbilder zuerst hier |
+   | 1 | Linux, macOS (Tauri und Browser) | Arbeiten am Modell, Hauptziel; Feinschliff und UI-Referenzbilder zuerst hier |
    | 2 | Windows (Tauri und Browser) | läuft mit: CI-Pflicht, Fehler werden behoben, keine Windows-Sonderfunktionen |
    | 3 | iPad | Tablet-Ziel: zuerst Safari, später native App (Punkt 6) |
    | 4 | Meta Quest, Apple Vision Pro | XR: zuerst WebXR, Endziel native App auf der Vision Pro (Punkt 6) |
@@ -31,7 +31,7 @@ Endziel für räumliches Arbeiten ist die Apple Vision Pro.
    (Ausnahme zu ADR-022). Kürzel folgen der Plattform (Cmd bzw. Strg). Mac-App und Apple-Apps werden signiert und
    beglaubigt.
 
-2. **Eine Oberfläche, zwei Layouts:** **Werkbank** (Maus und Trackpad) und **Kompakt** (Touch und Stift auf dem
+2. **Eine Oberfläche, zwei Layouts:** **Desktop** (Maus und Trackpad) und **Tablet** (Touch und Stift auf dem
    iPad: Panels als Schubladen, Bedienflächen ≥ 44 px, langes Drücken = Kontextaktionen). Gewählt wird nach
    Bildschirm und Eingabegerät, umschaltbar. Beide rufen dieselben Befehle auf (ADR-045); kein Layout hat eigene
    Logik.
@@ -88,8 +88,8 @@ Endziel für räumliches Arbeiten ist die Apple Vision Pro.
    Geräteklasse mit automatischen Detailstufen (WebGL2 als Grundlage, WebGPU wo vorhanden); Abgleichstatus ruhig
    und in Alltagssprache; Einstieg über ein geführtes Beispielprojekt statt Handbuch.
 
-9. **Reihenfolge (ADR-059 bleibt):** M1: Werkbank auf Linux, Mac, Windows; Befehle als Daten (ap-08a);
-   Eingabeschicht ohne Hover-Abhängigkeit. Beta: iPad in Safari mit Layout Kompakt zum Ansehen, Kommentieren,
+9. **Reihenfolge (ADR-059 bleibt):** M1: Layout Desktop auf Linux, Mac, Windows; Befehle als Daten (ap-08a);
+   Eingabeschicht ohne Hover-Abhängigkeit. Beta: iPad in Safari mit Layout Tablet zum Ansehen, Kommentieren,
    Freigeben und Präsentieren (ap-08c). Spike ap-42 (XR und 3D-Maus) jederzeit nach der Spike-Ausnahme von
    ADR-059, mit Hardware und einem Menschen. Nach der Beta vorne: ap-43 Eingabegeräte, ap-29 WebXR, dann ap-44
    Apple-App für iPad und Vision Pro.

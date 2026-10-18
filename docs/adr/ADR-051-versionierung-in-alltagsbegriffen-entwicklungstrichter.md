@@ -23,8 +23,9 @@ die nächste Schleife anpassen. Die Oberfläche muss diesen Prozess abbilden, ei
 3. **Trichter-Zustände eines Entwurfs:** Idee → In Arbeit → **Ergebnis** → (Zur Prüfung → Freigegeben nach
    ADR-047); Seitenausgang **Verworfen**. Verwerfen löscht nie: Der Entwurf wird ausgeblendet, archiviert,
    bleibt durchsuchbar und braucht eine kurze Begründung.
-4. **Ruhige Standardansicht:** Projekte zeigen standardmäßig nur Ergebnisse und den Hauptstand. Die
-   **Werkstatt** mit allen Entwürfen, auch nebeneinander auf der Arbeitsfläche, öffnet man bei Bedarf.
+4. **Ruhige Standardansicht:** Projekte zeigen standardmäßig die Ansicht **Ergebnis** (übernommener
+   Stand). Die Ansicht **Alle Entwürfe**, auch nebeneinander auf der Arbeitsfläche, öffnet man bei Bedarf
+   (Begriff geändert am 2026-10-18, früher „Werkstatt“).
 5. **Herkunft:** Ableiten und Wiederverwenden speichern die Herkunft (`meta.derived_from` mit Version).
    Verbesserungen am Original werden dem Abgeleiteten mit Vorschau angeboten, nie automatisch übernommen.
 6. **Entscheidungsprotokoll je Projekt:** Ergebnisse, Verwerfungen mit Begründung und Prüfentscheidungen
