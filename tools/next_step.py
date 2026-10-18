@@ -188,11 +188,23 @@ def _unmerged(branches: set[str]) -> set[str]:
 
 
 def gather_online() -> tuple[list[dict], set[str], str, set[str]]:
-    prs = json.loads(
-        _gh(
-            ["pr", "list", "--state", "open", "--json", "number,headRefName,labels,isDraft,statusCheckRollup"]
+    # PRs aus Forks nie als Agenten-PRs werten: ein Fremder könnte einen Branch change/<id> anlegen.
+    prs = [
+        p
+        for p in json.loads(
+            _gh(
+                [
+                    "pr",
+                    "list",
+                    "--state",
+                    "open",
+                    "--json",
+                    "number,headRefName,labels,isDraft,statusCheckRollup,isCrossRepository",
+                ]
+            )
         )
-    )
+        if not p.get("isCrossRepository")
+    ]
     res = subprocess.run(
         ["git", "ls-remote", "--heads", "origin"], cwd=ROOT, capture_output=True, text=True, timeout=120
     )
@@ -200,9 +212,9 @@ def gather_online() -> tuple[list[dict], set[str], str, set[str]]:
     subprocess.run(["git", "fetch", "-q", "origin"], cwd=ROOT, capture_output=True, timeout=300)
     remote = _unmerged(heads)
     merged_prs = json.loads(
-        _gh(["pr", "list", "--state", "merged", "--limit", "200", "--json", "headRefName"])
+        _gh(["pr", "list", "--state", "merged", "--limit", "200", "--json", "headRefName,isCrossRepository"])
     )
-    merged = {p["headRefName"] for p in merged_prs}
+    merged = {p["headRefName"] for p in merged_prs if not p.get("isCrossRepository")}
     runs = json.loads(
         _gh(
             [

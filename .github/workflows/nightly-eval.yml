@@ -9,6 +9,9 @@ on:
     - cron: "17 2 * * *"
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   eval:
     runs-on: ubuntu-latest
