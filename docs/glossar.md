@@ -52,7 +52,7 @@ sie verwendet werden. In Klammern: der englische Bezeichner im Code.
 | Begriff | Bedeutung |
 | --- | --- |
 | Änderungssatz | Menge von Graph-Operationen, die vorgeschlagen, aber noch nicht übernommen ist (von KI, App oder Studie, ADR-021) |
-| Änderungskarte | Darstellung eines Änderungssatzes in der Oberfläche mit Vorschau, Übernehmen und Verwerfen |
+| Entscheidungskarte | Das eine Muster für jede vorgeschlagene Änderung (KI, Konflikt, Bibliotheks-Update, Befund mit Korrektur, Studienergebnis) mit Vorschau, Übernehmen und Verwerfen (ADR-061); nicht „Änderungskarte“ |
 | Zur Prüfung geben | Einen Entwurf zur Prüfung vorlegen (technisch eine Änderungsanfrage) |
 | Änderungsantrag | Beschreibt ein Problem und die betroffenen Items, bevor geändert wird (ADR-047) |
 | Änderungsauftrag | Entwurf mit den Änderungen zu einem Änderungsantrag; erzeugt beim Abschluss die neuen Revisionen |
@@ -69,6 +69,9 @@ sie verwendet werden. In Klammern: der englische Bezeichner im Code.
 | Arbeitsbereich | Zusammenstellung von Panels und Werkzeugen für eine Aufgabe; Beitrag eines Fachpakets (ADR-054) |
 | Befehl, Befehlsregister | Jede Funktion mit stabiler ID; Grundlage für Befehlssuche, Tastenkürzel, Plugins, MCP (ADR-045) |
 | Layout: Werkbank, Kompakt | Anordnung der Oberfläche für Maus und Trackpad bzw. Touch und Stift (iPad); dieselben Befehle (ADR-060) |
+| Musterkatalog | Verbindliche Liste der Bedienmuster, je Aufgabe genau eines (`docs/design/muster.md`, ADR-061) |
+| Wertfeld | Das eine Eingabefeld für Zahlen mit Einheit |
+| Design-Token | Benannter Wert für Farbe, Schrift, Abstand usw.; Quelle `docs/design/tokens.json` |
 | Navigationsprofil | Belegung von Maus und Gesten für Drehen, Verschieben, Zoomen nach dem Vorbild eines anderen Programms |
 | 3D-Maus | Eingabegerät mit sechs Achsen (z. B. SpaceMouse); bewegt Objekt oder Kamera |
 | Begehung | Ansicht eines Raums in Originalgröße in VR oder am Bildschirm |

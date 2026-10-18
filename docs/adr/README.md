@@ -25,7 +25,7 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-019](ADR-019-semantische-pmi-im-code.md) | Semantische PMI im Code | vorgeschlagen, geändert durch ADR-028 |
 | [ADR-020](ADR-020-zeichnungsblaetter-als-code.md) | Zeichnungsblätter als Code | ersetzt durch ADR-028 |
 | [ADR-021](ADR-021-ki-aenderungen-als-pruefbare-aenderungssaetze.md) | KI-Änderungen als prüfbare Änderungssätze | vorgeschlagen, geändert durch ADR-035 |
-| [ADR-022](ADR-022-eine-cad-arbeitsflaeche-mit-figma-bedienkonzept.md) | Eine CAD-Arbeitsfläche mit Figma-Bedienkonzept | vorgeschlagen, geändert durch ADR-031, ADR-044, ADR-045 und ADR-060 |
+| [ADR-022](ADR-022-eine-cad-arbeitsflaeche-mit-figma-bedienkonzept.md) | Eine CAD-Arbeitsfläche mit Figma-Bedienkonzept | vorgeschlagen, geändert durch ADR-031, ADR-044, ADR-045, ADR-060 und ADR-061 |
 | [ADR-023](ADR-023-entwicklung-durch-agenten.md) | Entwicklung durch Agenten | vorgeschlagen |
 | [ADR-024](ADR-024-code-transformation-ueber-den-syntaxbaum.md) | Code-Transformation über den Syntaxbaum | ersetzt durch ADR-028 und ADR-035 |
 | [ADR-025](ADR-025-inkrementeller-rebuild-und-naeherungsvorschau.md) | Inkrementeller Rebuild und Näherungsvorschau | vorgeschlagen, geändert durch ADR-032 und ADR-050 |
@@ -37,7 +37,7 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-031](ADR-031-web-app-und-desktop-app-mit-tauri.md) | Web-App und Desktop-App mit Tauri | akzeptiert, geändert durch ADR-060 |
 | [ADR-032](ADR-032-geometrie-als-abgeleiteter-cache-hinter-kernel-schnittstelle.md) | Geometrie als abgeleiteter Cache hinter einer Kernel-Schnittstelle | akzeptiert, geändert durch ADR-047 |
 | [ADR-033](ADR-033-local-first-zusammenarbeit-mit-crdt-und-zweigen.md) | Local-first-Zusammenarbeit mit CRDT und Zweigen | akzeptiert, geändert durch ADR-051 |
-| [ADR-034](ADR-034-lizenz-mpl-fuer-den-kern-apache-fuer-sdk-und-format.md) | Lizenz: MPL-2.0 für den Kern, Apache-2.0 für SDK und Format | akzeptiert |
+| [ADR-034](ADR-034-lizenz-mpl-fuer-den-kern-apache-fuer-sdk-und-format.md) | Lizenz: MPL-2.0 für den Kern, Apache-2.0 für SDK und Format | akzeptiert, ergänzt durch ADR-061 |
 | [ADR-035](ADR-035-drei-projektionen-3d-knoten-text.md) | Drei Projektionen: 3D, Knoten, Text | akzeptiert, geändert durch ADR-044 |
 | [ADR-036](ADR-036-immersives-review-ueber-webxr.md) | Immersives Review über WebXR | vorgeschlagen, geändert durch ADR-060 |
 | [ADR-037](ADR-037-ki-anbieteroffen-und-lokal.md) | KI anbieteroffen und lokal | akzeptiert |
@@ -64,3 +64,4 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-058](ADR-058-adressen-auf-id-basis.md) | Adressen auf ID-Basis | akzeptiert |
 | [ADR-059](ADR-059-meilensteine-und-beta-umfang.md) | Meilensteine und Beta-Umfang | akzeptiert |
 | [ADR-060](ADR-060-geraete-layouts-eingabe-xr.md) | Geräte, Layouts, Eingabe und XR | akzeptiert |
+| [ADR-061](ADR-061-designsystem-ein-muster-je-aufgabe.md) | Designsystem – ein Muster je Aufgabe | akzeptiert |

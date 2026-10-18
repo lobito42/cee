@@ -30,6 +30,7 @@ from pathlib import Path
 CORE_ONLY = (
     "docs/adr/",
     "docs/rules/",
+    "docs/design/",
     "openspec/specs/",
     "openspec/config.yaml",
     "openspec/queue.yaml",

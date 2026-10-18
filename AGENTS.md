@@ -95,6 +95,8 @@ Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `opens
 - Zielsysteme Linux und Mac zuerst, Windows mit, iPad als Tablet, kein Handy; zwei Layouts mit denselben Befehlen;
   Befehle sind Daten mit Wirkung im Kern; Eingabe als austauschbare Schicht (3D-Maus, Navigationsprofile); XR
   erst über WebXR, Endziel native App auf der Vision Pro als dünner Client (ADR-060).
+- Ein Muster je Aufgabe nach `docs/design/muster.md`; Tokens nur aus `docs/design/tokens.json`; Inter,
+  Farbschema Graphit mit einem Akzent (ADR-061).
 - Erster Anwendungsfall: Räume mit Schallabsorbern (ADR-038). Material ist ein Element mit Aussehen, Akustik,
   Physik, Kosten und CO₂ (ADR-039); Nachhallzeit rechnet `crates/acoustics` (ADR-041); Rendering im Client
   mit Echtzeit und Fotomodus (ADR-040).

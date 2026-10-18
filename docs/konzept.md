@@ -339,6 +339,7 @@ Es gibt keine Menüleiste und kein Ribbon. Befunde erscheinen als Markierung dir
 8. **Knoten und Text auf Wunsch.** Wer räumlich denkt, arbeitet in 3D; ein Klick zeigt dieselbe Auswahl als Knoten oder als Text daneben.
 9. **Wenige Tastenkürzel.** Unter 15 Kürzel, alle in der Befehlssuche sichtbar; vollständig per Maus, Trackpad oder Stift bedienbar.
 10. **Schnell und ruhig.** Reaktion unter 100 ms, keine modalen Dialoge, viel Weißraum, eine Akzentfarbe nur für Auswahl und KI, Hell- und Dunkelmodus.
+11. **Ein Muster je Aufgabe.** Nichts Ähnliches wird auf zwei Arten gelöst: eine Entscheidungskarte für jede vorgeschlagene Änderung, ein Wertfeld für jede Zahl, eine Suche, eine Statussprache, Standards statt Eigenbau (ADR-061, Musterkatalog `docs/design/muster.md`). Schrift Inter, Farbschema Graphit mit einem Akzent Stahlblau.
 
 **Von Blender übernommen (ADR-044)**
 
@@ -459,7 +460,7 @@ Ordnung entsteht aus dem Graphen, statt gepflegt zu werden – kein „ich schic
 
 ## Architecture Decision Records
 
-Sechzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-060 beschreiben die neue Richtung (Element-Graph, Rust-Kern, Elixir-Server, Web und Desktop, Lizenz, offene und lokale KI, Raumakustik, Material, Rendering, Austauschformate, Komponenten, Bedienmuster aus Blender und VS Code, fachneutraler Kern, Freigabe, PLM- und ERP-Schnittstelle, Automatisierung, Bewährtes aus klassischem CAD, Versionierung in Alltagsbegriffen, Ordnung, Lernschleife, Fachpakete, Rechte, Datenschutz, Einheiten, Adressen, Meilensteine, Geräte und XR) und sind akzeptiert (außer ADR-036, vorgeschlagen); sie ersetzen ADR-003, 005, 013 und 024. Die übrigen stehen auf „Vorgeschlagen“ und werden mit den Spikes bestätigt. Jedes ADR liegt zusätzlich als Markdown-Datei unter `docs/adr/` im Repository.
+Einundsechzig Entscheidungen legen die Architektur fest. ADR-028 bis ADR-061 beschreiben die neue Richtung (Element-Graph, Rust-Kern, Elixir-Server, Web und Desktop, Lizenz, offene und lokale KI, Raumakustik, Material, Rendering, Austauschformate, Komponenten, Bedienmuster aus Blender und VS Code, fachneutraler Kern, Freigabe, PLM- und ERP-Schnittstelle, Automatisierung, Bewährtes aus klassischem CAD, Versionierung in Alltagsbegriffen, Ordnung, Lernschleife, Fachpakete, Rechte, Datenschutz, Einheiten, Adressen, Meilensteine, Geräte und XR, Designsystem) und sind akzeptiert (außer ADR-036, vorgeschlagen); sie ersetzen ADR-003, 005, 013 und 024. Die übrigen stehen auf „Vorgeschlagen“ und werden mit den Spikes bestätigt. Jedes ADR liegt zusätzlich als Markdown-Datei unter `docs/adr/` im Repository.
 
 Die frühen ADRs 001 bis 027 stammen aus einer früheren Richtung (VS-Code-Erweiterung, Code als Quelle der Wahrheit). Ihre Zusammenfassungen unten sind historisch; was davon heute gilt, steht in der jeweiligen ADR-Datei im Abschnitt „Aktuell gilt“. Verbindliche Begriffe stehen im Glossar (`docs/glossar.md`).
 
@@ -923,6 +924,14 @@ Die frühen ADRs 001 bis 027 stammen aus einer früheren Richtung (VS-Code-Erwei
 
 **Konsequenzen:** Ändert ADR-022 (App-Menü auf macOS), ADR-031 und ADR-036, präzisiert ADR-045, ergänzt ADR-044 und ADR-059. M1: Werkbank auf Linux, Mac, Windows und Befehle als Daten (ap-08a). Beta: iPad in Safari zum Ansehen, Kommentieren, Freigeben und Präsentieren (ap-08c). Spike ap-42 jederzeit mit Hardware und einem Menschen; nach der Beta ap-43 (Eingabegeräte), ap-29 (WebXR) und ap-44 (Apple-App für iPad und Vision Pro). Risiko: Rust für visionOS ist noch kein voll unterstütztes Ziel.
 
+### ADR-061: Designsystem – ein Muster je Aufgabe
+
+**Kontext:** Die Oberfläche soll sich wie aus einem Guss anfühlen: Nichts Ähnliches darf auf zwei Arten gelöst sein, und wo es Standards gibt, gelten sie. Viele Agenten bauen parallel an der Oberfläche; in CEE sind die Inhalte farbig, die Oberfläche darf nicht mit ihnen konkurrieren.
+
+**Entscheidung:** (1) Verbindlicher Musterkatalog `docs/design/muster.md`, je Aufgabe genau ein Muster: eine Entscheidungskarte für jede vorgeschlagene Änderung (KI, Konflikt, Bibliotheks-Update, Befund, Studie, Freigabe-Prüfung), ein Wertfeld mit Einheit, eine Suche für Befehle und Inhalte, eine Statussprache (Farbe, Symbol und Wort), Rückgängig statt Sicherheitsabfragen; neue Muster nur per ADR. (2) Standards: WAI-ARIA-Muster, WCAG 2.2 AA, Design-Tokens im W3C-Format, Farben in OKLCH, ISO 80000, Achsfarben X rot, Y grün, Z blau, Symbole aus Lucide. (3) Schrift Inter mit tabellarischen Ziffern, JetBrains Mono für Code, selbst gehostet; Grundgröße 13 px (Werkbank) bzw. 15 px (Kompakt). (4) Farbschema Graphit mit einem Akzent Stahlblau, gedämpfte Statusfarben, Kontraste ≥ 4,5 : 1 in hell und dunkel. (5) Eine Quelle `docs/design/tokens.json`, daraus CSS, TypeScript und später Swift. (6) Durchsetzung über Bausteine in `client/src/ui/`, Lint, Katalogseite, Referenzbilder auf Linux und Mac, Kontrast-Test.
+
+**Konsequenzen:** Präzisiert ADR-021, ADR-022, ADR-045, ADR-051 und ADR-052; ergänzt ADR-034 um Schriften unter der SIL Open Font License. ap-41 baut auf Katalog und Tokens auf, ap-08a erzeugt die Tokens und richtet Lint und Katalogseite ein, ap-08b baut die Bausteine.
+
 ## Regelwerk und Verifikationsschleife
 
 Erstes Regelpaket ist die Raumakustik: Zielbänder für die Nachhallzeit je Raumart, geprüft von der Firma (ap-20). Die Fertigungsregeln unten folgen nach der Beta.
@@ -966,13 +975,13 @@ Die Arbeit ist in Arbeitspakete geschnitten und nach vier Meilensteinen bis zur 
 | ap-39-spike-identitaet | M0 | Persistente Identität von Flächen und Kanten (ADR-016) an Referenzteilen: Topologie-Historie aus OCP, Stresstests mit geteilten und verschmolzenen Flächen | ≥ 95 % der Referenzen überleben 50 Parameteränderungen; Rest als Nachfrage, nie geraten | ap-00 |
 | ap-03-spike-sync | M0 | Phoenix Channels mit Rust-Kern: zwei Browser live, einer offline, Zusammenführen | Änderung bei beiden < 200 ms; Merge ohne Datenverlust | ap-01 |
 | ap-04-spike-rendering | M0 | Echtzeit-PBR und Fotomodus (Path Tracing mit Denoiser) in Browser und Tauri auf drei Systemen | Raum mit 50 Objekten ≥ 30 fps; Fotomodus 1920 × 1080 in ≤ 60 s auf Mittelklasse-GPU | ap-00 |
-| ap-41-ux-prototyp | M0 | Klickbarer Prototyp: Arbeitsfläche, Akustik-Panel, Entwürfe und Suche; Test mit der Firma | 4 von 5 Testpersonen lösen drei Kernabläufe ohne Einweisung | – |
+| ap-41-ux-prototyp | M0 | Klickbarer Prototyp: Arbeitsfläche, Akustik-Panel, Entwürfe und Suche, gebaut aus Musterkatalog und Tokens (ADR-061); Test mit der Firma | 4 von 5 Testpersonen lösen drei Kernabläufe ohne Einweisung | – |
 | ap-05-graph-kern | M1 | Graph-Kern produktiv: Schema v1, Validierung, Abhängigkeiten, Migrationen, Teil-Laden, Berechnungszustände | 100.000 Elemente laden ≤ 2 s | ap-01 |
 | ap-40-bindungen-sdk | M1 | Produktive Bindungen des Kerns: Rustler-NIF, WASM, PyO3; Python-SDK; dieselben Bindungen für Fachpaket-Crates | Gleicher Inhalts-Hash in Rust, Elixir, Browser und Python; Operation ≤ 1 ms (NIF) bzw. ≤ 5 ms (WASM) | ap-05 |
 | ap-06-kernel-worker | M1 | Kernel-Protokoll, Python-Worker mit OCCT, Cache nach Inhalts-Hash, Detailstufen, robuste Neuberechnung | Raum mit 6 Wänden und 2 Öffnungen baut < 1 s; Worker-Absturz ohne Serverausfall | ap-05, ap-39, ap-40 |
 | ap-07a-server-dokument | M1 | Dokumentprozess, Speichern in PostgreSQL, Channels für eine Person, lokale Anmeldung, Export aller Projektdaten im offenen Format | Dokument mit 10.000 Elementen speichern und laden ≤ 2 s; Absturz ohne Datenverlust | ap-03, ap-05, ap-40 |
-| ap-08a-grundlagen | M1 | Befehlsregister mit Befehlssuche, Einstellungen, interne Fachpaket-API (ADR-054), Übersetzungen Deutsch und Englisch, Einheiten in Ein- und Ausgabe (ADR-057); Befehle als Daten mit Wirkung im Kern (ADR-060) | Jede Funktion über die Befehlssuche erreichbar; keine festen Texte im Code; ein Beispiel-Fachpaket lädt über die API | ap-05, ap-40 |
-| ap-08b-arbeitsflaeche | M1 | Arbeitsfläche mit 3D und 2D-Grundriss, Featurebaum, Eigenschaften, Werte beim Ziehen tippen; Bedienelemente nach WCAG 2.2 AA | 4 von 5 Testpersonen der Firma lösen Kernabläufe; Auswahl < 100 ms; vollständig per Tastatur bedienbar | ap-04, ap-07a, ap-08a, ap-41 |
+| ap-08a-grundlagen | M1 | Befehlsregister mit Befehlssuche, Einstellungen, interne Fachpaket-API (ADR-054), Übersetzungen Deutsch und Englisch, Einheiten in Ein- und Ausgabe (ADR-057); Befehle als Daten mit Wirkung im Kern (ADR-060); Tokens erzeugt, Lint und Katalogseite (ADR-061) | Jede Funktion über die Befehlssuche erreichbar; keine festen Texte im Code; ein Beispiel-Fachpaket lädt über die API | ap-05, ap-40 |
+| ap-08b-arbeitsflaeche | M1 | Arbeitsfläche mit 3D und 2D-Grundriss, Featurebaum, Eigenschaften, Werte beim Ziehen tippen; Bausteine aus dem Musterkatalog (ADR-061); Bedienelemente nach WCAG 2.2 AA | 4 von 5 Testpersonen der Firma lösen Kernabläufe; Auswahl < 100 ms; vollständig per Tastatur bedienbar | ap-04, ap-07a, ap-08a, ap-41 |
 | ap-09-raum-elemente | M1 | Geschoss, Wand, Boden, Decke, Fenster, Tür, einfache Möbel (Quader mit Absorptionsfläche); Wände im Grundriss zeichnen | Besprechungsraum in ≤ 5 min modelliert; Öffnungen schneiden Wände korrekt | ap-06, ap-08b |
 | ap-10-materialbibliothek | M1 | Material-Elemente mit allen Eigenschaftsgruppen, Import von Herstellerdaten (CSV) | 20 Materialien der Firma importiert, αw und Absorberklasse korrekt | ap-05, ap-08b |
 | ap-11-akustik-live | M1 | Analyse-Element Nachhallzeit, Live-Anzeige je Band, Zielband, Kern als WASM | Aktualisierung beim Verschieben < 100 ms | ap-02, ap-09, ap-10, ap-40 |

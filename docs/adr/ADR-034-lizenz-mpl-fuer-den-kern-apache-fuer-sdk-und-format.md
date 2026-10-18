@@ -4,6 +4,11 @@
 - Datum: 2026-10-17
 - Entscheider: Kernteam
 
+## Aktuell gilt (Stand 2026-10-18)
+
+Wie unten, ergänzt durch ADR-061: Schriften unter der SIL Open Font License 1.1 (Inter, JetBrains Mono) sind erlaubt;
+sie werden unverändert mitgeliefert, der Lizenztext liegt bei.
+
 ## Kontext
 
 Verbesserungen am Kern sollen zurückfließen, Plugins und Anbindungen sollen unter jeder Lizenz möglich sein. Das Projekt soll in Unternehmen einsetzbar sein.

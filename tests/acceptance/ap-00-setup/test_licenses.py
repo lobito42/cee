@@ -8,7 +8,7 @@ from conftest import ROOT, need, sh
 # Positivliste nach ADR-034 (freizügige Lizenzen). Unbekannte oder fehlende Lizenzen gelten als Verstoß.
 PERMISSIVE = re.compile(
     r"\b(MIT|Apache|BSD|0BSD|ISC|MPL|Mozilla Public|Zlib|CC0|Unicode|PSF"
-    r"|Python Software Foundation|BSL-1\.0|Boost)",
+    r"|Python Software Foundation|BSL-1\.0|Boost|OFL|SIL Open Font)",  # OFL nur für Schriften (ADR-061)
     re.I,
 )
 LGPL = re.compile(r"\bLGPL|Lesser General Public", re.I)

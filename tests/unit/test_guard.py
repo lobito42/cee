@@ -42,6 +42,8 @@ BLOCKED = [
     ("pytest.ini", "change/ap-17-identitaet"),
     ("deny.toml", "change/ap-17-identitaet"),
     (".tool-versions", "change/ap-00-setup"),
+    ("docs/design/tokens.json", "change/ap-08a-grundlagen"),
+    ("docs/design/muster.md", "tests/ap-08b-arbeitsflaeche"),
     ("rust-toolchain.toml", "change/ap-01-spike-datenmodell"),
     (".devcontainer/setup.sh", "change/ap-17-identitaet"),
     ("openspec/changes/ap-17-identitaet/proposal.md", "change/ap-17-identitaet"),

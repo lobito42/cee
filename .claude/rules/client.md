@@ -12,12 +12,19 @@ paths:
   Funktionen kommen in die Befehlssuche (Strg/Cmd+K), ins Eigenschaften-Panel oder an die Auswahl.
 - Die Werkzeugleiste hat genau fünf Werkzeuge (Auswählen, Messen, Schnitt, Skizze, Fragen). Ein sechstes
   nur per ADR.
-- Farben, Schriften, Abstände ausschließlich über die Tokens in `client/src/design/tokens.ts`, hell und
-  dunkel. Keine Hex-Werte im Komponentencode. Eine Akzentfarbe, nur für Auswahl und KI-Vorschläge.
+- Ein Muster je Aufgabe (ADR-061): vor jedem neuen Bedienelement `docs/design/muster.md` lesen und das
+  vorhandene Muster benutzen. Neue Muster oder Abweichungen nur per ADR. Bausteine nur in `client/src/ui/`;
+  außerhalb davon keine rohen Bedienelemente, keine Farbwerte, keine Schriftangaben (Lint).
+- Farben, Schriften, Abstände ausschließlich über die Tokens. Quelle ist `docs/design/tokens.json` (Kernteam);
+  `client/src/design/tokens.ts` und das CSS werden daraus erzeugt und nie von Hand geändert. Hell und dunkel.
+  Eine Akzentfarbe, nur für Auswahl, Fokus, die eine Hauptaktion je Ansicht und KI-Vorschläge.
+- Schrift Inter (selbst gehostet) mit `tnum` und `cv05`, Code und Textprojektion in JetBrains Mono; nur die
+  Größen und Schnitte aus den Tokens. Symbole nur aus Lucide bzw. im selben 24-px-Raster gezeichnet.
+- Status immer als Farbe, Symbol und Wort zusammen; keine Sicherheitsabfragen – Rückgängig statt „Wirklich?“.
 - Reaktionszeit: Auswahl und Hervorhebung < 100 ms; nichts blockiert den UI-Thread länger als 16 ms.
 - Der Client ändert das Modell nur über Graph-Operationen des Kerns (`crates/graph` als WASM bzw. nativ),
   nie über eigene Datenstrukturen. 3D, Knoten-Editor und Text zeigen denselben Graphen (ADR-035).
-- KI-Änderungen erscheinen immer als Änderungskarte mit Vorschau, nie direkt (ADR-021).
+- KI-Änderungen erscheinen immer als Entscheidungskarte mit Vorschau, nie direkt (ADR-021, ADR-061).
 - Keine Git-Begriffe in der Oberfläche (ADR-051): Entwurf, Meilenstein, Übernehmen, Zur Prüfung geben,
   Zurückholen, Ableiten, Verlauf. Kein Speichern-Knopf; Konflikte nur als Entscheidungskarten.
 - Nichts wird gelöscht, was andere nutzen oder was Wissen trägt: Entwürfe werden verworfen (mit Begründung)

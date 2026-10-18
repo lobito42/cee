@@ -16,7 +16,9 @@ Gilt für das automatische Review jedes Pull Requests und für den Reviewer-Agen
 - Datenmodell-Logik außerhalb des Rust-Kerns nachgebaut (Server, Client, SDK) (ADR-029).
 - Geometrie im Server-Prozess statt im Worker; ein Prozess je Element statt je Dokument (ADR-030/032).
 - Elementtyp mit Sonderfeldern statt der einheitlichen Elementform (ADR-028).
-- KI-Änderung wird ohne Änderungskarte übernommen (ADR-021).
+- KI-Änderung wird ohne Entscheidungskarte übernommen (ADR-021).
+- Eine Aufgabe, für die es im Musterkatalog (`docs/design/muster.md`) schon ein Muster gibt, ist anders gelöst;
+  neues Muster ohne ADR; Farb-, Schrift- oder Abstandswerte außerhalb der Tokens (ADR-061).
 - Netzwerkzugriffe außerhalb des Sync-Protokolls zwischen Client und Server; Kern und Worker haben keinen Netzzugriff.
 - Neue gespeicherte Angaben zu Personen ohne Vermerk und ohne Grundlage in ADR-056; Rechteprüfung fehlt im
   Server (ADR-055).
