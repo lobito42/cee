@@ -24,6 +24,7 @@
       "Bash(git commit *)",
       "Bash(git switch *)",
       "Bash(git checkout -b *)",
+      "Bash(git merge *)",
       "Bash(git push -u origin spec/*)",
       "Bash(git push -u origin tests/*)",
       "Bash(git push -u origin change/*)",
