@@ -116,6 +116,7 @@ jobs:
             Führe den Skill /nachtschicht aus. Der Schrittplaner hat bereits entschieden:
             ${{ steps.next.outputs.json }}
             Protokoll-Issue: #${{ steps.issue.outputs.nr }}. Halte dich strikt an die Grenzen des Skills.
+          show_full_output: true   # vorübergehend: Fehlersuche Rechte-Verweigerungen
           claude_args: |
             --model ${{ steps.next.outputs.model }}
             --max-turns 200
