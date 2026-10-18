@@ -151,6 +151,27 @@ jobs:
             exit 1
           fi
 
+      # Sicherheitsnetz: Commits auf einem Agenten-Branch, die Claude nicht pushen konnte, gingen mit dem Runner
+      # verloren (Probelauf 2026-10-18). Nur Commits, keine ungesicherten Änderungen; nie main.
+      # Push mit GITHUB_TOKEN löst keine CI aus – die läuft beim nächsten Push des Agenten.
+      - if: always() && steps.next.outputs.step != 'stop'
+        name: Commits sichern
+        shell: bash
+        env:
+          RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          b=$(git branch --show-current)
+          case "$b" in spec/*|tests/*|change/*) ;; *) exit 0 ;; esac
+          [ -z "$(git status --porcelain)" ] || echo "::warning::Nicht committete Änderungen auf $b gehen verloren"
+          remote="https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+          if git ls-remote --exit-code --heads "$remote" "$b" >/dev/null; then
+            git fetch -q "$remote" "$b"
+            [ -n "$(git rev-list FETCH_HEAD..HEAD)" ] || exit 0
+          fi
+          git push "$remote" "HEAD:refs/heads/$b"
+          gh issue comment ${{ steps.issue.outputs.nr }} --body "$(date -u +%F) · \`$b\` · Commits nach dem \
+          Lauf automatisch gesichert (Claude konnte nicht pushen) · [Lauf]($RUN)"
+
       - name: Abbruch protokollieren
         if: (failure() || cancelled()) && steps.pruef.outcome != 'failure'
         shell: bash
