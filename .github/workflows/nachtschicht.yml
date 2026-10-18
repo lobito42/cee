@@ -33,6 +33,7 @@ jobs:
     env:
       CEE_STRICT: "1"
       GH_TOKEN: ${{ github.token }}
+      OPENSPEC_TELEMETRY: "0"   # keine Telemetrie ohne Zustimmung (ADR-037)
     services:
       postgres:
         image: postgres:16

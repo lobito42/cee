@@ -8,6 +8,9 @@ on:
 permissions:
   contents: read
 
+env:
+  OPENSPEC_TELEMETRY: "0"   # keine Telemetrie ohne Zustimmung (ADR-037)
+
 jobs:
   vertrag:
     name: Vertrag und Konfiguration

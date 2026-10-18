@@ -12,6 +12,9 @@ concurrency:
   group: claude-review-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
+env:
+  OPENSPEC_TELEMETRY: "0"   # keine Telemetrie ohne Zustimmung (ADR-037)
+
 jobs:
   review:
     if: github.event.label.name == 'review'
