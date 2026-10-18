@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="CEE">
+  <!-- Vorlage für alle Symbolgrößen. Farben: Tokens farbe.dunkel.flaeche und farbe.dunkel.text (ADR-061).
+       Zeichen aus C und E: Bogen links (Halbkreis), Arme oben und unten, Mittelstrich mit rundem Anfang im
+       Bogenmittelpunkt. Um 35 px nach links versetzt, weil der Bogen den Rand nur punktuell berührt. -->
+  <rect width="1024" height="1024" rx="220" fill="#15171A"/>
+  <g fill="#E6E8EA">
+    <path d="M757 212H497A300 300 0 0 0 497 812H757V716H497A204 204 0 0 1 497 308H757Z"/>
+    <path d="M757 464H497A48 48 0 0 0 497 560H757Z"/>
+  </g>
+</svg>

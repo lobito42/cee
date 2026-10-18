@@ -4,7 +4,10 @@ version = "0.0.1"
 description = "Python-Teil: Geometrie-Worker (build123d/OpenCascade), Python-SDK und Harness-Werkzeuge"
 requires-python = ">=3.11,<3.14"
 license = "MPL-2.0"  # Worker; sdk/python erhält eigenes pyproject mit Apache-2.0 (ADR-034)
-dependencies = []
+dependencies = ["cee-worker"]
+
+[tool.uv.sources]
+cee-worker = { workspace = true }
 
 [project.optional-dependencies]
 cad = [
@@ -23,7 +26,7 @@ package = false
 default-groups = ["dev"]
 
 [tool.uv.workspace]
-members = []  # worker und sdk/python werden in ap-00-setup als Workspace-Mitglieder ergänzt
+members = ["worker"]  # sdk/python folgt mit dem SDK
 
 [tool.ruff]
 line-length = 110

@@ -1,0 +1,17 @@
+[package]
+name = "cee-desktop"
+version = "0.0.1"
+description = "CEE Desktop-Hülle (Tauri 2)"
+edition = "2021"
+license = "MPL-2.0"
+rust-version = "1.80"
+publish = false
+
+# Eigenständig: nicht Teil des Rust-Workspaces der Kernkisten.
+[workspace]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
