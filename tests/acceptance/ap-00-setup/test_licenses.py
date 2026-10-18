@@ -72,6 +72,11 @@ def test_ak6_rust_dependencies():
     need("cargo-deny")
     res = sh(["cargo", "deny", "check", "licenses"])
     assert res.returncode == 0, res.stderr[-2000:]
+    # Die Tauri-Hülle ist ein eigener Cargo-Workspace; deny.toml im Wurzelverzeichnis gilt auch dort.
+    tauri = ROOT / "client" / "src-tauri" / "Cargo.toml"
+    if tauri.exists():
+        res = sh(["cargo", "deny", "--manifest-path", str(tauri), "check", "licenses"])
+        assert res.returncode == 0, res.stderr[-2000:]
 
 
 def _lgpl_modules() -> set[str]:
