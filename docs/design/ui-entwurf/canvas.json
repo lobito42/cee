@@ -1,0 +1,18 @@
+{
+  "v": 3,
+  "createdOnFiles": {"v": 1, "at": "2026-10-18T13:20:00Z"},
+  "title": "CEE – UI-Entwurf",
+  "launch": {"view": "canvas"},
+  "pages": [],
+  "boards": {
+    "Main.dc.html": {"x": 0, "y": 0, "w": 1440, "h": 900, "title": "Desktop · Arbeitsbereich Akustik", "expand": "fill"},
+    "Suche.dc.html": {"x": 1520, "y": 0, "w": 1440, "h": 900, "title": "Eine Suche (⌘K)", "expand": "fill"},
+    "Uebernehmen.dc.html": {"x": 0, "y": 1020, "w": 1440, "h": 900, "title": "Übernehmen mit Entscheidungskarten", "expand": "fill"},
+    "iPad.dc.html": {"x": 1520, "y": 1020, "w": 1194, "h": 834, "title": "iPad · Layout Tablet beim Kunden"}
+  },
+  "order": ["Main.dc.html", "Suche.dc.html", "Uebernehmen.dc.html", "iPad.dc.html"],
+  "notes": {
+    "titel": {"x": 0, "y": -300, "text": "CEE – ein Muster je Aufgabe", "kind": "title1", "maxW": 2960}
+  },
+  "designSystems": []
+}

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>CEE – eine Suche für Befehle und Inhalte</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#3A69AD}a:hover{color:#2B5590}
+</style>
+</helmet>
+<div style="min-height: 900px; position: relative; background: {{c.viewport}}; color: {{c.text}}; font-family: Inter, system-ui, sans-serif; font-size: 13px; line-height: 1.45; font-feature-settings: 'tnum' 1, 'cv05' 1; overflow: hidden;">
+  <div aria-hidden="true" style="position: absolute; inset: 0; display: flex; flex-direction: column;">
+    <div style="height: 48px; background: {{c.flaeche}}; border-bottom: 1px solid {{c.linie}};"></div>
+    <div style="flex: 1; display: flex;">
+      <div style="width: 248px; background: {{c.flaeche}}; border-right: 1px solid {{c.linie}};"></div>
+      <div style="flex: 1;"></div>
+      <div style="width: 312px; background: {{c.flaeche}}; border-left: 1px solid {{c.linie}};"></div>
+    </div>
+  </div>
+  <div aria-hidden="true" style="position: absolute; inset: 0; background: {{c.schleier}};"></div>
+
+  <section role="dialog" aria-label="Suchen oder Befehl" style="position: relative; width: 640px; max-width: calc(100% - 32px); margin: 96px auto 0; background: {{c.flaeche}}; border: 1px solid {{c.linie}}; border-radius: 12px; overflow: hidden;">
+    <label style="display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 14px; border-bottom: 1px solid {{c.linie}};">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{c.text2}}" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+      <span style="position: absolute; left: -9999px;">Suchen</span>
+      <input value="deckensegel α500 ≥ 0,8" style="flex: 1; border: 0; outline: 0; background: transparent; font: inherit; font-size: 15px; color: {{c.text}};">
+      <span style="font-size: 12px; color: {{c.text3}};">esc</span>
+    </label>
+    <div style="display: flex; gap: 6px; padding: 8px 14px; border-bottom: 1px solid {{c.linie}}; flex-wrap: wrap;">
+      <span style="font-size: 12px; padding: 2px 8px; border-radius: 999px; background: {{c.akzentFlaeche}}; color: {{c.akzent}}; font-weight: 500;">Typ: Komponente ✕</span>
+      <span style="font-size: 12px; padding: 2px 8px; border-radius: 999px; background: {{c.erfolgFlaeche}}; color: {{c.erfolg}}; font-weight: 500;">Freigegeben ✕</span>
+      <span style="font-size: 12px; padding: 2px 8px; border-radius: 999px; border: 1px dashed {{c.linieStark}}; color: {{c.text2}};">+ Facette</span>
+    </div>
+
+    <div style="padding: 6px;">
+      <div style="padding: 6px 8px; font-size: 12px; color: {{c.text3}}; font-weight: 500;">Befehle</div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 7px 8px; border-radius: 6px; background: {{c.akzentFlaeche}};">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{c.akzent}}" stroke-width="1.5" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+        <span style="flex: 1;">Deckensegel einfügen</span><span style="font-size: 12px; color: {{c.text3}};">↵</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 7px 8px; border-radius: 6px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{c.text2}}" stroke-width="1.5" aria-hidden="true"><rect x="4" y="4" width="6" height="6"></rect><rect x="14" y="4" width="6" height="6"></rect><rect x="4" y="14" width="6" height="6"></rect><rect x="14" y="14" width="6" height="6"></rect></svg>
+        <span style="flex: 1;">Raster aus Auswahl</span><span style="font-size: 12px; color: {{c.text3}};">⌘R</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 7px 8px; border-radius: 6px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{c.text2}}" stroke-width="1.5" aria-hidden="true"><path d="M4 7l8-4 8 4-8 4z"></path><path d="M4 12l8 4 8-4M4 17l8 4 8-4"></path></svg>
+        <span style="flex: 1;">Varianten vergleichen</span>
+      </div>
+
+      <div style="padding: 10px 8px 6px; font-size: 12px; color: {{c.text3}}; font-weight: 500;">Elemente</div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 7px 8px; border-radius: 6px;">
+        <span aria-hidden="true" style="width: 28px; height: 20px; border-radius: 4px; background: {{c.flaeche2}}; border: 1px solid {{c.linie}};"></span>
+        <span style="flex: 1; min-width: 0;"><span style="font-weight: 500;">Deckensegel 1200 × 600</span><span style="color: {{c.text2}};"> · Absorber-Katalog · AS-1042 Rev. C</span></span>
+        <span style="font-size: 12px; color: {{c.text2}};">α500 0,95</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 7px 8px; border-radius: 6px;">
+        <span aria-hidden="true" style="width: 28px; height: 20px; border-radius: 10px; background: {{c.flaeche2}}; border: 1px solid {{c.linie}};"></span>
+        <span style="flex: 1; min-width: 0;"><span style="font-weight: 500;">Deckensegel rund Ø 900</span><span style="color: {{c.text2}};"> · Absorber-Katalog · AS-1077 Rev. A</span></span>
+        <span style="font-size: 12px; color: {{c.text2}};">α500 0,85</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 7px 8px; border-radius: 6px;">
+        <span aria-hidden="true" style="width: 28px; height: 20px; border-radius: 4px; background: {{c.flaeche2}}; border: 1px solid {{c.linie}};"></span>
+        <span style="flex: 1; min-width: 0;"><span style="font-weight: 500;">Deckensegel 3</span><span style="color: {{c.text2}};"> · in Besprechungsraum 2.14 und 11 weiteren</span></span>
+        <span style="font-size: 12px; color: {{c.text2}};">Verwendung</span>
+      </div>
+
+      <div style="padding: 10px 8px 6px; font-size: 12px; color: {{c.text3}}; font-weight: 500;">Projekte</div>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 7px 8px; border-radius: 6px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{c.text2}}" stroke-width="1.5" aria-hidden="true"><path d="M3 7h7l2 2h9v10H3z"></path></svg>
+        <span style="flex: 1;">Großraumbüro 3. OG <span style="color: {{c.text2}};">· Raumakustik · 18 Deckensegel</span></span>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 16px; padding: 8px 14px; border-top: 1px solid {{c.linie}}; font-size: 12px; color: {{c.text3}};">
+      <span>↑↓ wählen</span><span>↵ ausführen</span><span>⇥ Facette</span><span style="margin-left: auto;">Befehle, Elemente, Projekte und Hilfe in einem Feld</span>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dunkel":{"editor":"boolean","default":false,"section":"Darstellung"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var hell = {flaeche:'#FDFDFE',flaeche2:'#EEF0F3',linie:'#DDE0E3',linieStark:'#C8CBCE',text:'#1B2025',text2:'#595E64',text3:'#6E7378',akzent:'#3A69AD',akzentFlaeche:'#DFECFF',viewport:'#E6E8EA',erfolg:'#227849',erfolgFlaeche:'#DAF3E1',schleier:'rgba(27,32,37,0.28)'};
+    var dunkel = {flaeche:'#15171A',flaeche2:'#1E2124',linie:'#2B2E32',linieStark:'#3A3D41',text:'#E6E8EA',text2:'#A1A5A9',text3:'#8A8E92',akzent:'#79A6E9',akzentFlaeche:'#1E2E47',viewport:'#1B1D20',erfolg:'#60BB83',erfolgFlaeche:'#12301E',schleier:'rgba(0,0,0,0.5)'};
+    return { c: this.props.dunkel ? dunkel : hell };
+  }
+}
+</script>
+</body>
+</html>

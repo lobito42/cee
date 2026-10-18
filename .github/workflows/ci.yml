@@ -142,6 +142,12 @@ jobs:
           targets=$(CEE_ROOT="$PWD" uv run python "$sel")
           echo "Abnahmetests: ${targets:-keine}"
           if [ -n "$targets" ]; then uv run pytest -q $targets; fi
+          # Auf tests/<id>: neue Abnahmetests sind absichtlich rot – nur prüfen, dass sie sich sammeln lassen.
+          head="${{ github.head_ref }}"
+          if [[ "$head" =~ ^(claude/)?tests/([a-z0-9][a-z0-9-]*)$ ]]; then
+            own="tests/acceptance/${BASH_REMATCH[2]}"
+            if [ -d "$own" ]; then uv run pytest -q --collect-only "$own"; fi
+          fi
 
   client:
     name: Client (Web)

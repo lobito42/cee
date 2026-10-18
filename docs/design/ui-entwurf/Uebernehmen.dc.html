@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>CEE – Entwurf übernehmen mit Entscheidungskarten</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#3A69AD}a:hover{color:#2B5590}
+button{font:inherit;cursor:pointer}
+</style>
+</helmet>
+<div style="min-height: 900px; display: flex; flex-direction: column; background: {{c.grund}}; color: {{c.text}}; font-family: Inter, system-ui, sans-serif; font-size: 13px; line-height: 1.45; font-feature-settings: 'tnum' 1, 'cv05' 1;">
+
+<header style="min-height: 56px; display: flex; align-items: center; gap: 16px; padding: 8px 16px; border-bottom: 1px solid {{c.linie}}; background: {{c.flaeche}}; flex-wrap: wrap; box-sizing: border-box;">
+  <a href="Main.dc.html" aria-label="Zurück zum Modell" style="display: flex; color: {{c.text2}};"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg></a>
+  <div>
+    <h1 style="margin: 0; font-size: 16px; font-weight: 600;">Entwurf „Segel Variante B“ übernehmen</h1>
+    <div style="color: {{c.text2}};">in den Stand „Abstimmung Kunde“ · seit dem Ableiten hat Jana Schulz 2 Dinge geändert</div>
+  </div>
+  <div style="margin-left: auto; display: flex; align-items: center; gap: 12px;">
+    <span style="color: {{c.text2}};">1 Entscheidung offen</span>
+    <button style="height: 32px; padding: 0 14px; border-radius: 6px; border: 1px solid {{c.linieStark}}; background: {{c.flaeche}}; color: {{c.text}};">Später</button>
+    <button style="height: 32px; padding: 0 14px; border: 0; border-radius: 6px; background: {{c.akzent}}; color: {{c.aufAkzent}}; font-weight: 500;">Übernehmen</button>
+  </div>
+</header>
+
+<div style="flex: 1; display: flex; flex-wrap: wrap; min-height: 0;">
+  <main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 12px; padding: 16px; box-sizing: border-box;">
+    <div style="position: relative; flex: 1; min-height: 460px; border-radius: 12px; overflow: hidden; background: {{c.viewport}}; border: 1px solid {{c.linie}};">
+      <svg viewBox="0 0 800 460" role="img" aria-label="Vergleich vorher und nachher: links der Stand ohne Deckensegel, rechts der Entwurf mit sechs Deckensegeln" preserveAspectRatio="xMidYMid slice" style="position: absolute; inset: 0; width: 100%; height: 100%;">
+        <g fill="none" stroke="{{c.text3}}">
+          <path d="M120 330 L400 440 L690 320 L410 220 Z" fill="{{c.flaeche}}" fill-opacity="0.5"></path>
+          <path d="M120 330 L120 100 L410 0 L410 220" fill="{{c.flaeche}}" fill-opacity="0.3"></path>
+          <path d="M410 220 L410 0 L690 90 L690 320" fill="{{c.flaeche}}" fill-opacity="0.15"></path>
+          <path d="M280 330 L450 400 L540 360 L370 292 Z" fill="{{c.flaeche2}}"></path>
+        </g>
+        <g fill="{{c.flaeche}}" stroke="{{c.text3}}">
+          <path d="M430 160 L510 192 L560 172 L480 141 Z"></path><path d="M520 196 L600 228 L650 208 L570 177 Z"></path>
+          <path d="M470 205 L550 237 L600 217 L520 186 Z" fill="{{c.akzentFlaeche}}" stroke="{{c.akzent}}" stroke-width="2"></path>
+        </g>
+        <path d="M400 0 V460" stroke="{{c.akzent}}" stroke-width="2"></path>
+      </svg>
+      <div style="position: absolute; left: calc(50% - 16px); top: calc(50% - 16px); width: 32px; height: 32px; border-radius: 16px; background: {{c.flaeche}}; border: 2px solid {{c.akzent}}; display: flex; align-items: center; justify-content: center; color: {{c.akzent}};" aria-label="Vergleichsschieber">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"></path></svg>
+      </div>
+      <span style="position: absolute; left: 12px; top: 12px; font-size: 12px; padding: 2px 8px; border-radius: 999px; background: {{c.flaeche}}; color: {{c.text2}}; font-weight: 500;">Vorher · Abstimmung Kunde</span>
+      <span style="position: absolute; right: 12px; top: 12px; font-size: 12px; padding: 2px 8px; border-radius: 999px; background: {{c.akzentFlaeche}}; color: {{c.akzent}}; font-weight: 500;">Nachher · mit Entwurf</span>
+    </div>
+
+    <div style="background: {{c.flaeche}}; border: 1px solid {{c.linie}}; border-radius: 12px; overflow-x: auto;">
+      <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+        <thead><tr style="color: {{c.text2}}; text-align: right;"><th style="text-align: left; padding: 8px 12px; font-weight: 500;">Nachhallzeit</th><th style="padding: 8px; font-weight: 500;">125 Hz</th><th style="padding: 8px; font-weight: 500;">250</th><th style="padding: 8px; font-weight: 500;">500</th><th style="padding: 8px; font-weight: 500;">1k</th><th style="padding: 8px; font-weight: 500;">2k</th><th style="padding: 8px; font-weight: 500;">4k</th><th style="padding: 8px 12px; font-weight: 500;">Kosten</th><th style="padding: 8px 12px; font-weight: 500;">CO₂</th></tr></thead>
+        <tbody style="text-align: right;">
+          <tr style="border-top: 1px solid {{c.linie}};"><td style="text-align: left; padding: 8px 12px; color: {{c.text2}};">Vorher</td><td style="padding: 8px;">1,20 s</td><td style="padding: 8px;">1,10 s</td><td style="padding: 8px;">1,00 s</td><td style="padding: 8px;">0,95 s</td><td style="padding: 8px;">0,90 s</td><td style="padding: 8px;">0,85 s</td><td style="padding: 8px 12px;">0 €</td><td style="padding: 8px 12px;">0 kg</td></tr>
+          <tr style="border-top: 1px solid {{c.linie}};"><td style="text-align: left; padding: 8px 12px; color: {{c.text2}};">Nachher</td><td style="padding: 8px; color: {{c.warnungText}}; font-weight: 500;">0,85 s</td><td style="padding: 8px; color: {{c.akzent}}; font-weight: 500;">0,70 s</td><td style="padding: 8px; color: {{c.akzent}}; font-weight: 500;">0,60 s</td><td style="padding: 8px; color: {{c.akzent}}; font-weight: 500;">0,58 s</td><td style="padding: 8px; color: {{c.akzent}}; font-weight: 500;">0,56 s</td><td style="padding: 8px; color: {{c.akzent}}; font-weight: 500;">0,55 s</td><td style="padding: 8px 12px;">3.840 €</td><td style="padding: 8px 12px;">61 kg</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <aside style="flex: 0 0 380px; border-left: 1px solid {{c.linie}}; background: {{c.flaeche}}; padding: 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 12px;">
+    <div style="display: flex; align-items: center; gap: 6px; color: {{c.text2}};"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="{{c.erfolg}}" stroke-width="2" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg>4 Änderungen passen ohne Rückfrage</div>
+
+    <section aria-label="Entscheidungskarte Konflikt" style="border: 1px solid {{c.akzent}}; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 10px;">
+      <div style="font-size: 12px; font-weight: 500; color: {{c.warnungText}};">Beide haben denselben Wert geändert</div>
+      <div style="font-weight: 600; font-size: 14px;">Abhängung von Deckensegel 3</div>
+      <div style="color: {{c.text2}};">Jana: „Leuchte darunter braucht 50 mm mehr Luft.“</div>
+      <label style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; background: {{c.akzentFlaeche}}; box-shadow: inset 0 0 0 1px {{c.akzent}};">
+        <input type="radio" name="wahl" checked style="accent-color: {{c.akzent}};">
+        <span style="flex: 1;">300 mm <span style="color: {{c.text2}};">· dein Entwurf</span></span><span style="font-size: 12px; color: {{c.text2}};">T500 0,60 s</span>
+      </label>
+      <label style="display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; border: 1px solid {{c.linie}};">
+        <input type="radio" name="wahl" style="accent-color: {{c.akzent}};">
+        <span style="flex: 1;">250 mm <span style="color: {{c.text2}};">· Jana, Stand</span></span><span style="font-size: 12px; color: {{c.text2}};">T500 0,61 s</span>
+      </label>
+    </section>
+
+    <section aria-label="Entscheidungskarte Bibliothek" style="border: 1px solid {{c.linie}}; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+      <div style="font-size: 12px; font-weight: 500; color: {{c.text2}};">Neue Version in der Bibliothek</div>
+      <div style="font-weight: 600; font-size: 14px;">Deckensegel 1200 × 600 · Rev. C</div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 12px; padding: 8px; border-radius: 6px; background: {{c.flaeche2}}; font-size: 12px;">
+        <span style="color: {{c.text2}};">Vlies</span><span style="text-align: right;">Grau → Anthrazit</span>
+        <span style="color: {{c.text2}};">α500</span><span style="text-align: right;">0,90 → 0,95</span>
+        <span style="color: {{c.text2}};">Überschreibungen</span><span style="text-align: right;">bleiben (2)</span>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <button style="flex: 1; height: 30px; border-radius: 6px; border: 1px solid {{c.linieStark}}; background: {{c.flaeche}}; color: {{c.text}};">Übernehmen</button>
+        <button style="flex: 1; height: 30px; border-radius: 6px; border: 1px solid {{c.linieStark}}; background: {{c.flaeche}}; color: {{c.text}};">Verwerfen</button>
+      </div>
+    </section>
+
+    <div style="margin-top: auto; padding-top: 10px; border-top: 1px solid {{c.linie}}; color: {{c.text2}}; font-size: 12px;">Alles lässt sich danach mit ⌘Z oder im Verlauf zurückholen.</div>
+  </aside>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dunkel":{"editor":"boolean","default":false,"section":"Darstellung"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var hell = {grund:'#F5F7F9',flaeche:'#FDFDFE',flaeche2:'#EEF0F3',linie:'#DDE0E3',linieStark:'#C8CBCE',text:'#1B2025',text2:'#595E64',text3:'#82878C',akzent:'#3A69AD',akzentFlaeche:'#DFECFF',aufAkzent:'#FFFFFF',viewport:'#E6E8EA',erfolg:'#227849',warnungText:'#7E5403'};
+    var dunkel = {grund:'#0D1012',flaeche:'#15171A',flaeche2:'#1E2124',linie:'#2B2E32',linieStark:'#3A3D41',text:'#E6E8EA',text2:'#A1A5A9',text3:'#777B7F',akzent:'#79A6E9',akzentFlaeche:'#1E2E47',aufAkzent:'#0D1012',viewport:'#1B1D20',erfolg:'#60BB83',warnungText:'#EBB25F'};
+    return { c: this.props.dunkel ? dunkel : hell };
+  }
+}
+</script>
+</body>
+</html>

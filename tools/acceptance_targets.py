@@ -2,8 +2,9 @@
 
 Fällig sind: archivierte Changes (Regressionsschutz), Changes in der Warteschlange mit phase done, Changes
 mit Abnahmetests, deren Tasks alle abgehakt sind (fertig, auch wenn phase noch nicht umgestellt ist), und der
-Change des aktuellen Branches (spec/, tests/ oder change/<id>). So bleibt main grün, während offene Changes
-rot sein dürfen.
+Change des aktuellen Branches (spec/ oder change/<id>). So bleibt main grün, während offene Changes
+rot sein dürfen. Auf tests/<id> sind die neuen Abnahmetests absichtlich rot: Sie laufen dort nicht mit, die CI
+prüft nur, dass sie sich sammeln lassen (siehe ci.yml), und alle anderen fälligen Tests bleiben Pflicht.
 """
 
 from __future__ import annotations
@@ -48,7 +49,7 @@ def change_ids() -> set[str]:
         text = tasks.read_text(encoding="utf-8")
         if re.search(r"^\s*- \[[xX]\]", text, re.M) and not re.search(r"^\s*- \[ \]", text, re.M):
             ids.add(tasks.parent.name)
-    if m := BRANCH_RE.match(branch()):
+    if (m := BRANCH_RE.match(branch())) and not branch().split("/")[-2].endswith("tests"):
         ids.add(m.group(1))
     return ids
 

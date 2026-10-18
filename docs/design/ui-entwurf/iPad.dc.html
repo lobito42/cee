@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>CEE auf dem iPad – Layout Tablet beim Kunden</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#3A69AD}a:hover{color:#2B5590}
+button{font:inherit;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 1194px; height: 834px; box-sizing: border-box; position: relative; overflow: hidden; background: {{c.viewport}}; color: {{c.text}}; font-family: Inter, system-ui, sans-serif; font-size: 15px; line-height: 1.45; font-feature-settings: 'tnum' 1, 'cv05' 1; border-radius: 18px;">
+
+  <svg viewBox="0 0 1194 834" role="img" aria-label="Besprechungsraum in großer 3D-Ansicht mit sechs Deckensegeln" style="position: absolute; inset: 0; width: 100%; height: 100%;">
+    <g fill="none" stroke="{{c.text3}}" stroke-width="1.2">
+      <path d="M230 560 L600 700 L980 540 L610 410 Z" fill="{{c.flaeche}}" fill-opacity="0.55"></path>
+      <path d="M230 560 L230 230 L610 90 L610 410" fill="{{c.flaeche}}" fill-opacity="0.35"></path>
+      <path d="M610 410 L610 90 L980 210 L980 540" fill="{{c.flaeche}}" fill-opacity="0.2"></path>
+      <path d="M430 560 L660 650 L780 595 L550 510 Z" fill="{{c.flaeche2}}"></path>
+    </g>
+    <g fill="{{c.flaeche}}" stroke="{{c.text3}}" stroke-width="1.2">
+      <path d="M380 270 L490 314 L560 286 L450 243 Z"></path><path d="M500 320 L610 364 L680 336 L570 293 Z"></path><path d="M620 370 L730 414 L800 386 L690 343 Z"></path>
+      <path d="M480 225 L590 269 L660 241 L550 198 Z"></path><path d="M600 275 L710 319 L780 291 L670 248 Z"></path><path d="M720 325 L830 369 L900 341 L790 298 Z"></path>
+    </g>
+  </svg>
+
+  <div style="position: absolute; top: 20px; left: 20px; right: 20px; display: flex; align-items: center; gap: 12px;">
+    <button aria-label="Struktur und Bibliothek" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid {{c.linie}}; background: {{c.flaeche}}; color: {{c.text}}; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"></path></svg></button>
+    <div style="height: 44px; display: flex; align-items: center; padding: 0 14px; border-radius: 12px; background: {{c.flaeche}}; border: 1px solid {{c.linie}};"><span style="font-weight: 600;">Besprechungsraum 2.14</span><span style="color: {{c.text2}}; margin-left: 8px;">Präsentation</span></div>
+    <div role="group" aria-label="Vergleich" style="margin-left: auto; display: flex; padding: 3px; border-radius: 12px; background: {{c.flaeche}}; border: 1px solid {{c.linie}};">
+      <button style="height: 38px; padding: 0 18px; border: 0; border-radius: 9px; background: transparent; color: {{c.text2}};">Vorher</button>
+      <button aria-pressed="true" style="height: 38px; padding: 0 18px; border: 0; border-radius: 9px; background: {{c.akzentFlaeche}}; color: {{c.akzent}}; font-weight: 500;">Nachher</button>
+    </div>
+    <button aria-label="Suchen" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid {{c.linie}}; background: {{c.flaeche}}; color: {{c.text}}; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg></button>
+  </div>
+
+  <section aria-label="Schublade mit Ergebnis" style="position: absolute; left: 20px; right: 20px; bottom: 20px; background: {{c.flaeche}}; border: 1px solid {{c.linie}}; border-radius: 18px; padding: 10px 20px 20px; display: flex; flex-direction: column; gap: 14px;">
+    <div aria-hidden="true" style="width: 40px; height: 5px; border-radius: 3px; background: {{c.linieStark}}; margin: 0 auto;"></div>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px;">
+      <div style="padding: 12px 14px; border-radius: 12px; background: {{c.flaeche2}};"><div style="font-size: 13px; color: {{c.text2}};">Nachhallzeit 500 Hz</div><div style="font-size: 24px; font-weight: 600;">0,60 s</div><div style="font-size: 13px; color: {{c.erfolg}}; font-weight: 500;">im Zielband</div></div>
+      <div style="padding: 12px 14px; border-radius: 12px; background: {{c.flaeche2}};"><div style="font-size: 13px; color: {{c.text2}};">Vorher</div><div style="font-size: 24px; font-weight: 600;">1,00 s</div><div style="font-size: 13px; color: {{c.text2}};">40 % kürzer</div></div>
+      <div style="padding: 12px 14px; border-radius: 12px; background: {{c.flaeche2}};"><div style="font-size: 13px; color: {{c.text2}};">Kosten</div><div style="font-size: 24px; font-weight: 600;">3.840 €</div><div style="font-size: 13px; color: {{c.text2}};">6 Deckensegel</div></div>
+      <div style="padding: 12px 14px; border-radius: 12px; background: {{c.flaeche2}};"><div style="font-size: 13px; color: {{c.text2}};">CO₂</div><div style="font-size: 24px; font-weight: 600;">61 kg</div><div style="font-size: 13px; color: {{c.text2}};">aus Materialdaten</div></div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span style="display: flex; align-items: center; gap: 6px; font-size: 13px; padding: 4px 10px; border-radius: 999px; background: {{c.warnungFlaeche}}; color: {{c.warnungText}}; font-weight: 500;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v6l3 2"></path></svg>In Prüfung</span>
+      <span style="color: {{c.text2}};">Angebot AN-2026-118 · Rev. A</span>
+      <button style="margin-left: auto; height: 44px; padding: 0 18px; border-radius: 12px; border: 1px solid {{c.linieStark}}; background: {{c.flaeche}}; color: {{c.text}};">Kommentieren</button>
+      <button style="height: 44px; padding: 0 22px; border: 0; border-radius: 12px; background: {{c.akzent}}; color: {{c.aufAkzent}}; font-weight: 500;">Freigeben</button>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dunkel":{"editor":"boolean","default":false,"section":"Darstellung"},"$preview":{"width":1194,"height":834}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var hell = {flaeche:'#FDFDFE',flaeche2:'#EEF0F3',linie:'#DDE0E3',linieStark:'#C8CBCE',text:'#1B2025',text2:'#595E64',text3:'#82878C',akzent:'#3A69AD',akzentFlaeche:'#DFECFF',aufAkzent:'#FFFFFF',viewport:'#E6E8EA',erfolg:'#227849',warnungText:'#7E5403',warnungFlaeche:'#FAE9CE'};
+    var dunkel = {flaeche:'#15171A',flaeche2:'#1E2124',linie:'#2B2E32',linieStark:'#3A3D41',text:'#E6E8EA',text2:'#A1A5A9',text3:'#777B7F',akzent:'#79A6E9',akzentFlaeche:'#1E2E47',aufAkzent:'#0D1012',viewport:'#1B1D20',erfolg:'#60BB83',warnungText:'#EBB25F',warnungFlaeche:'#3C2A0E'};
+    return { c: this.props.dunkel ? dunkel : hell };
+  }
+}
+</script>
+</body>
+</html>

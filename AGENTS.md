@@ -12,7 +12,7 @@ Graphen.
 Der gesamte Projektzustand liegt im Repository und auf GitHub, nicht in einem Chat. Werkzeug und Gerät
 spielen keine Rolle.
 
-1. `git pull` auf `main` (bzw. auf dem eigenen Branch).
+1. `git pull` auf `main` (bzw. auf dem eigenen Branch); `docs/betrieb/uebergabe.md` zeigt den letzten Stand.
 2. `openspec/queue.yaml` lesen: freigegebene Changes, ihre Phase und Reihenfolge.
 3. `gh pr list` (REST) – offene PRs; ein offener Agenten-PR heißt: erst Review, dann Neues.
 4. Den nächsten Schritt nennen und mit dem Menschen abstimmen (interaktiv) bzw. `/nachtschicht` folgen (unbeaufsichtigt).
