@@ -7,7 +7,7 @@
 
 ## Aktuell gilt (Stand 2026-10-17)
 
-Es gilt das Bedienkonzept nach Figma: eine ruhige Arbeitsfläche, Eigenschaften-Panel, fünf Werkzeuge, Befehlssuche, Änderungskarten, keine Menüleisten und Dialoge. Alles VS-Code-Bezogene (Custom Editor, Primary Sidebar, Theme-Variablen) entfällt mit ADR-031. Ergänzt durch ADR-044 (Arbeitsbereiche, siehe ADR-054), ADR-045 und ADR-051.
+Es gilt das Bedienkonzept nach Figma: eine ruhige Arbeitsfläche, Eigenschaften-Panel, fünf Werkzeuge, Befehlssuche, Änderungskarten, keine Menüleisten und Dialoge. Alles VS-Code-Bezogene (Custom Editor, Primary Sidebar, Theme-Variablen) entfällt mit ADR-031. Ergänzt durch ADR-044 (Arbeitsbereiche, siehe ADR-054), ADR-045 und ADR-051. Einzige Ausnahme bei Menüs: das systemübliche kleine App-Menü auf macOS, dessen Einträge Befehle sind (ADR-060).
 
 ## Kontext
 

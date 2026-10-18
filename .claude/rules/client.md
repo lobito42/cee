@@ -47,15 +47,22 @@ paths:
 - Einstellungen nur über das Einstellungs-Schema (Ebenen Standard, Organisation, Benutzer, Projekt), nie
   verstreut über `localStorage` oder eigene Dateien.
 - Derselbe Code für Browser und Tauri. Plattformzugriffe (Dateien, Worker, HID) nur über `client/src/platform/`.
-- Geräte und Layouts (ADR-060): drei Layouts – Werkbank, Kompakt, Ansicht – mit denselben Befehlen; kein Layout
+- Zielsysteme (ADR-060): Linux und macOS zuerst (Referenzbilder, Feinschliff), Windows läuft mit (CI-Pflicht),
+  iPad als Tablet-Ziel; kein Handy-Layout. Kürzel folgen der Plattform (Cmd bzw. Strg). Unter Linux ist
+  WebKitGTK das schwächste Glied – Leistung dort messen, nicht nur in Chromium.
+- Geräte und Layouts (ADR-060): zwei Layouts – Werkbank und Kompakt – mit denselben Befehlen; kein Layout
   hat eigene Logik. Nichts hängt am Überfahren mit der Maus; jede Hover-Information ist auch per Antippen bzw.
   Fokus erreichbar. Bedienflächen im Layout Kompakt ≥ 44 × 44 px.
 - Eingabe nur über die Eingabeschicht (`client/src/input/`): Maus, Trackpad, Touch, Stift, 3D-Maus,
   XR-Controller und Sprache erzeugen Befehle oder Kameraänderungen, nie direkte Modelländerungen.
   Navigationsprofile und Belegung der 3D-Maus-Tasten sind Einstellungen, keine Sonderfälle im Code.
-- 3D-Maus: WebHID bzw. HID in Tauri, kein proprietäres Hersteller-SDK; fehlt die Unterstützung, ein Hinweis
-  statt eines Fehlers.
-- XR über WebXR auf derselben Interaktionsschicht: ≥ 72 fps (Meta Quest 3, Raum mit 50 Objekten), Teleport als
+- Befehle sind Daten (ID, Parameter-Schema mit Einheiten, Übersetzungsschlüssel); ihre Wirkung ist eine
+  Graph-Operation im Rust-Kern. Keine Befehlslogik nur im TypeScript-Client – ein nativer Client, MCP und die
+  PLM-Schnittstelle nutzen dasselbe Register (ADR-060).
+- 3D-Maus: in Tauri nativ über HID (Hauptweg auf Linux und Mac), im Chromium-Browser über WebHID; kein
+  proprietäres Hersteller-SDK; fehlt die Unterstützung, ein Hinweis statt eines Fehlers.
+- XR zuerst über WebXR auf derselben Interaktionsschicht, später nativ auf iPad und Vision Pro als dünner Client
+  ohne eigene Logik: ≥ 72 fps (Meta Quest 3, Raum mit 50 Objekten), Teleport als
   Standard, keine Kamerabewegung ohne Kopfbewegung. In XR nur Instanzen platzieren, verschieben, austauschen und
   Varianten wählen – kein Modellieren, keine Freigabe. Höreindrücke immer als „Höreindruck, kein Messwert“
   kennzeichnen.

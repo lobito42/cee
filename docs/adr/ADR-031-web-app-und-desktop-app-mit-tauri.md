@@ -6,7 +6,7 @@
 
 ## Aktuell gilt (Stand 2026-10-18)
 
-Tablet und Handy haben eigene Rollen und Layouts (ADR-060): Tablet vor Ort (Aufmaß, Skizze, Präsentation, offline), Handy für Ansehen, Kommentieren, Freigeben und QR-Adressen. XR siehe ADR-060.
+Zielsysteme nach ADR-060: Linux und macOS zuerst, Windows läuft mit (CI-Pflicht). Tablet-Ziel ist das iPad (zuerst Safari, später native App); das Handy ist kein Ziel. XR in zwei Stufen (WebXR, dann native Apple-App für iPad und Vision Pro), siehe ADR-060.
 
 ## Kontext
 

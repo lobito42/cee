@@ -25,7 +25,7 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-019](ADR-019-semantische-pmi-im-code.md) | Semantische PMI im Code | vorgeschlagen, geändert durch ADR-028 |
 | [ADR-020](ADR-020-zeichnungsblaetter-als-code.md) | Zeichnungsblätter als Code | ersetzt durch ADR-028 |
 | [ADR-021](ADR-021-ki-aenderungen-als-pruefbare-aenderungssaetze.md) | KI-Änderungen als prüfbare Änderungssätze | vorgeschlagen, geändert durch ADR-035 |
-| [ADR-022](ADR-022-eine-cad-arbeitsflaeche-mit-figma-bedienkonzept.md) | Eine CAD-Arbeitsfläche mit Figma-Bedienkonzept | vorgeschlagen, geändert durch ADR-031, ADR-044 und ADR-045 |
+| [ADR-022](ADR-022-eine-cad-arbeitsflaeche-mit-figma-bedienkonzept.md) | Eine CAD-Arbeitsfläche mit Figma-Bedienkonzept | vorgeschlagen, geändert durch ADR-031, ADR-044, ADR-045 und ADR-060 |
 | [ADR-023](ADR-023-entwicklung-durch-agenten.md) | Entwicklung durch Agenten | vorgeschlagen |
 | [ADR-024](ADR-024-code-transformation-ueber-den-syntaxbaum.md) | Code-Transformation über den Syntaxbaum | ersetzt durch ADR-028 und ADR-035 |
 | [ADR-025](ADR-025-inkrementeller-rebuild-und-naeherungsvorschau.md) | Inkrementeller Rebuild und Näherungsvorschau | vorgeschlagen, geändert durch ADR-032 und ADR-050 |
@@ -48,7 +48,7 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-042](ADR-042-austauschformate-gltf-ifc-dxf-step.md) | Austauschformate: glTF, IFC, DXF, STEP | akzeptiert |
 | [ADR-043](ADR-043-komponenten-instanzen-bibliotheken.md) | Komponenten, Instanzen und Bibliotheken | akzeptiert, geändert durch ADR-049 und ADR-050 |
 | [ADR-044](ADR-044-bedienmuster-aus-blender.md) | Bedienmuster aus Blender | akzeptiert, geändert durch ADR-054 |
-| [ADR-045](ADR-045-befehle-erweiterungen-vertrauen-nach-vs-code.md) | Befehle, Erweiterungen und Vertrauen nach dem Vorbild von VS Code | akzeptiert |
+| [ADR-045](ADR-045-befehle-erweiterungen-vertrauen-nach-vs-code.md) | Befehle, Erweiterungen und Vertrauen nach dem Vorbild von VS Code | akzeptiert, präzisiert durch ADR-060 |
 | [ADR-046](ADR-046-fachneutraler-kern-muster-aus-onshape.md) | Fachneutraler Kern und Muster aus Onshape | akzeptiert, geändert durch ADR-054 |
 | [ADR-047](ADR-047-freigabe-revisionen-lebenszyklus.md) | Freigabeprozess, Revisionen und Lebenszyklus | akzeptiert, geändert durch ADR-059 |
 | [ADR-048](ADR-048-schnittstelle-plm-erp.md) | Offene Schnittstelle zu PLM und ERP | akzeptiert, geändert durch ADR-059 |

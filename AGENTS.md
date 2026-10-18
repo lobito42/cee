@@ -92,8 +92,9 @@ Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `opens
 - Rechte prüft der Server; Agenten laufen als Dienstkonto ohne Freigaberecht (ADR-055). Datensparsam: keine
   gespeicherte Anwesenheit, Verlauf nur mit Konto-IDs (ADR-056). Jede Zahl ist eine Größe mit Einheit
   (ADR-057). Adressen beruhen auf der Element-ID (ADR-058). Begriffe: `docs/glossar.md`.
-- Geräte nach Aufgabe, drei Layouts mit denselben Befehlen, Eingabe als austauschbare Schicht (3D-Maus,
-  Navigationsprofile), XR über WebXR mit Begehung, Höreindruck und AR (ADR-060).
+- Zielsysteme Linux und Mac zuerst, Windows mit, iPad als Tablet, kein Handy; zwei Layouts mit denselben Befehlen;
+  Befehle sind Daten mit Wirkung im Kern; Eingabe als austauschbare Schicht (3D-Maus, Navigationsprofile); XR
+  erst über WebXR, Endziel native App auf der Vision Pro als dünner Client (ADR-060).
 - Erster Anwendungsfall: Räume mit Schallabsorbern (ADR-038). Material ist ein Element mit Aussehen, Akustik,
   Physik, Kosten und CO₂ (ADR-039); Nachhallzeit rechnet `crates/acoustics` (ADR-041); Rendering im Client
   mit Echtzeit und Fotomodus (ADR-040).

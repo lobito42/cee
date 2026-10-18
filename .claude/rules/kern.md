@@ -44,3 +44,6 @@ paths:
 - Lange Operationen (> 1 ms) als Dirty-NIF kennzeichnen bzw. inkrementell anbieten.
 - Kein `unwrap()`/`expect()` außerhalb von Tests; für neue Logik Property-Tests (proptest) statt nur Beispiele.
 - Prüfen: `cargo fmt --check`, `cargo clippy --all-targets -- -D warnings`, `cargo test -q`.
+- Befehle (ADR-045, ADR-060) wirken als Graph-Operationen im Kern; ihre Beschreibung (ID, Parameter-Schema mit
+  Einheiten) ist Daten. Bindungen so schneiden, dass auch ein nativer Client (Swift über UniFFI o. Ä.) sie nutzen
+  kann – keine Befehlslogik nur in einem Host.

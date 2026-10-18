@@ -34,6 +34,6 @@ Eingabe, XR). Hier liegt, was darüber hinausgeht.
 | Raumscan | LiDAR am iPad/iPhone (Raumerkennung des Systems) bzw. Fotogrammetrie; Ergebnis als Wände, Öffnungen, Möbel | nach ap-44 |
 | Laser-Entfernungsmesser | Bluetooth-Messgeräte übertragen Maße direkt ins Aufmaß | ap-44 |
 | Ist-Messung vor Ort | Nachhallzeit mit dem Tablet-Mikrofon grob messen (Klatschen bzw. Testsignal), mit Rechnung vergleichen | nach ap-44 |
-| QR-Etiketten | Etikett am gelieferten Absorber öffnet Element, Revision, Datenblatt, Montagehinweis (ADR-058) | Beta (Layout Ansicht) |
+| QR-Etiketten | Etikett am gelieferten Absorber öffnet Element, Revision, Datenblatt, Montagehinweis (ADR-058) | Beta (iPad, Safari) |
 | Freigabe per Benachrichtigung | Push-Nachricht „Entwurf wartet auf Prüfung“, Freigabe mit zwei Tippern und Begründung | Beta |
 | Zweiter Bildschirm | Präsentation auf dem Beamer, Steuerung und Notizen auf dem Laptop | mit Arbeitsbereich Präsentation |
