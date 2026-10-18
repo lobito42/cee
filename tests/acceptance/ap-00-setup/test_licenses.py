@@ -13,6 +13,13 @@ PERMISSIVE = re.compile(
 )
 LGPL = re.compile(r"\bLGPL|Lesser General Public", re.I)
 
+# Python-Pakete ohne Lizenz in den PyPI-Metadaten, Lizenz im Repository geprüft (Kernteam, 2026-10-18).
+# Gilt nur, solange die Metadaten leer bzw. UNKNOWN sind; jedes weitere unbekannte Paket bleibt ein Verstoß.
+GEPRUEFT = {
+    "bd_materials": "Apache-2.0",  # github.com/bernhard-42/bd_materials
+    "ocpsvg": "Apache-2.0",  # github.com/snoyer/ocpsvg
+}
+
 
 def _ok_single(lic: str, allow_lgpl: bool) -> bool:
     if LGPL.search(lic):
@@ -49,6 +56,9 @@ def test_ak6_python_dependencies():
     )
     assert res.returncode == 0, res.stderr[-1500:]
     pkgs = json.loads(res.stdout)
+    for p in pkgs:
+        if p["Name"] in GEPRUEFT and (p.get("License") or "UNKNOWN").strip().upper() == "UNKNOWN":
+            p["License"] = GEPRUEFT[p["Name"]]
     offenders = [
         f"{p['Name']} ({p['License']})"
         for p in pkgs
