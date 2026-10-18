@@ -108,6 +108,18 @@ jobs:
           git config core.hooksPath .githooks
           if [ -f server/mix.exs ]; then (cd server && mix local.hex --force && mix local.rebar --force && mix deps.get); fi
 
+      # Die Action wendet permissions.allow/deny aus .claude/settings.json nicht an (Probelauf 2026-10-18:
+      # erlaubte Befehle wie `git pull` wurden verweigert). Deshalb dieselben Listen als Parameter übergeben.
+      - if: steps.next.outputs.step != 'stop'
+        name: Rechte aus .claude/settings.json
+        id: perm
+        shell: bash
+        run: |
+          # Edit/Write zusätzlich: Welche Pfade erlaubt sind, entscheidet der Vertragsschutz (PreToolUse-Hook).
+          echo "allow=Edit,Write,$(jq -r '.permissions.allow | join(",")' .claude/settings.json)" >> "$GITHUB_OUTPUT"
+          echo "deny=$(jq -r '.permissions.deny | join(",")' .claude/settings.json)" >> "$GITHUB_OUTPUT"
+          echo "kommentare=$(gh issue view ${{ steps.issue.outputs.nr }} --json comments --jq '.comments | length')" >> "$GITHUB_OUTPUT"
+
       - if: steps.next.outputs.step != 'stop'
         uses: anthropics/claude-code-action@v1
         with:
@@ -120,9 +132,27 @@ jobs:
           claude_args: |
             --model ${{ steps.next.outputs.model }}
             --max-turns 200
+            --allowedTools "${{ steps.perm.outputs.allow }}"
+            --disallowedTools "${{ steps.perm.outputs.deny }}"
+
+      # Ohne Protokolleintrag hat Claude nicht ordentlich gearbeitet (z. B. Rechte verweigert) – sichtbar machen.
+      - if: steps.next.outputs.step != 'stop'
+        name: Protokolleintrag prüfen
+        id: pruef
+        shell: bash
+        env:
+          NEXT: ${{ steps.next.outputs.json }}
+          RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          jetzt=$(gh issue view ${{ steps.issue.outputs.nr }} --json comments --jq '.comments | length')
+          if [ "$jetzt" -le "${{ steps.perm.outputs.kommentare }}" ]; then
+            gh issue comment ${{ steps.issue.outputs.nr }} --body "$(date -u +%F) · \`$NEXT\` · **ohne \
+          Protokolleintrag beendet** (Rechte verweigert oder vorzeitig aufgegeben) · [Lauf]($RUN)"
+            exit 1
+          fi
 
       - name: Abbruch protokollieren
-        if: failure() || cancelled()
+        if: (failure() || cancelled()) && steps.pruef.outcome != 'failure'
         shell: bash
         env:
           NEXT: ${{ steps.next.outputs.json }}
