@@ -27,5 +27,5 @@ changes:
   - id: ap-02-akustik-nachhallzeit
     phase: build
     model: sonnet
-    night: true    # klar spezifiziert, durch Abnahmetests vollständig prüfbar
+    night: false   # zurückgestellt (Kernteam, 2026-10-19): CAD zuerst, Akustik ist angeschlossenes Fachpaket
     depends_on: []
