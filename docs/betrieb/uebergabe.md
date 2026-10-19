@@ -35,7 +35,7 @@ Prüfen, was die Nachtschicht als Nächstes täte: `python3 tools/next_step.py` 
 | Lernschleife lokaler Modelle | 053 | Prüfer bewerten, nie Selbstbewertung |
 | Fachpakete und Arbeitsbereiche | 054 | interne Fachpaket-API zuerst |
 | Rechte, Datenschutz, Einheiten, Adressen | 055–058 | Dienstkonten ohne Freigaberecht; Größen mit Einheit; ID-Adressen |
-| Meilensteine | 059 | M0 Klären, M1 Erstes Angebot, M2 Zusammen, M3 Beta; Nachtrag Machbarkeit |
+| Meilensteine | 059, 062 | M0 Klären, M1 Modellieren, M2 Zusammen, M3 Beta; Raum und Akustik als F1 nach der Beta (CAD zuerst); Nachtrag Machbarkeit |
 | Geräte, Layouts, Eingabe, XR | 060 | Linux und Mac zuerst, Windows mit, iPad, kein Handy; Layouts Desktop und Tablet; Befehle als Daten; 3D-Maus über HID; XR erst WebXR, Endziel native App auf der Vision Pro |
 | Designsystem | 061 | ein Muster je Aufgabe (`docs/design/muster.md`), Tokens (`docs/design/tokens.json`), Inter, Graphit mit Akzent Stahlblau |
 
@@ -68,8 +68,8 @@ Begriffe stehen in `docs/glossar.md` (u. a. nicht „Werkbank“, „Kompakt“,
 
 | Punkt | Wann | Notiz |
 | --- | --- | --- |
-| Lizenzfrage PlaneGCS (LGPL im Browser) | vor ap-12 | ADR-027 |
-| G2-Schnitt mit der Firma: Zielwerte DIN 18041, Angebotsfelder, Grundriss-Hintergrund | wenn die Firma dazukommt | ADR-059, Nachtrag |
+| Lizenzfrage PlaneGCS (LGPL im Browser); Vergleich mit dem Löser aus CADCraft | Spike zu Beginn von ap-12 | ADR-027, ADR-062 |
+| F1-Schnitt mit der Firma: Zielwerte DIN 18041, Angebotsfelder, Grundriss-Hintergrund | nach der Beta, wenn die Firma dazukommt | ADR-062 |
 | Sachnummernschema, UX-Test (ap-41) | mit der Firma | ADR-047, Konzept |
 | Testkorpora für ap-39 (Identität) und ap-25 (Konflikte) | vor deren Abnahmetests | `tests/golden/<id>/`, vom Kernteam |
 | Hardware für Spike ap-42 (Quest 3, 3D-Maus, iPad, Vision Pro) | wenn gewünscht | vorhanden, kommt später |

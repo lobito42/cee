@@ -43,7 +43,7 @@ Gibt es nichts zu tun: „Nichts zu tun. Alles läuft.“ – fertig.
 | Agenten-PR blockiert (`blocked`) | Die offene Frage aus dem PR in einfachen Worten wiedergeben, eine Antwort vorschlagen; nach Ja als PR-Kommentar posten und die Labels `blocked`, `fix-1`, `fix-2` entfernen. |
 | eigener PR (z. B. `fix/…`) offen und grün | „Soll ich ihn mergen, damit er der Nacht nicht in die Quere kommt?“ |
 | main rot | Ursache aus dem Log in einem Satz; anbieten, sie gemeinsam zu beheben. |
-| Vorlauf < 2 Changes | Den nächsten sinnvollen Change aus dem Konzept vorschlagen (ADR-059-Reihenfolge, nur `night`-taugliche) und anbieten, die Spec jetzt mit `/opsx:propose` zu entwerfen. |
+| Vorlauf < 2 Changes | Den nächsten sinnvollen Change aus dem Konzept vorschlagen (Reihenfolge nach ADR-059 und ADR-062, nur `night`-taugliche) und anbieten, die Spec jetzt mit `/opsx:propose` zu entwerfen. |
 | Nachtschicht aus, obwohl Arbeit da ist | „Soll ich sie einschalten?“ (`gh variable set NACHTSCHICHT --body an`) |
 | Protokoll zeigt Abbruch zweimal in Folge | Ursache aus dem Lauf-Log in einem Satz, Vorschlag zur Behebung. |
 

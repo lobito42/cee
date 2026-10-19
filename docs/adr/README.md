@@ -41,7 +41,7 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-035](ADR-035-drei-projektionen-3d-knoten-text.md) | Drei Projektionen: 3D, Knoten, Text | akzeptiert, geändert durch ADR-044 |
 | [ADR-036](ADR-036-immersives-review-ueber-webxr.md) | Immersives Review über WebXR | vorgeschlagen, geändert durch ADR-060 |
 | [ADR-037](ADR-037-ki-anbieteroffen-und-lokal.md) | KI anbieteroffen und lokal | akzeptiert |
-| [ADR-038](ADR-038-erster-anwendungsfall-raumakustik.md) | Erster Anwendungsfall: Raumgestaltung und Raumakustik | akzeptiert, geändert durch ADR-046 |
+| [ADR-038](ADR-038-erster-anwendungsfall-raumakustik.md) | Erster Anwendungsfall: Raumgestaltung und Raumakustik | akzeptiert, geändert durch ADR-046 und ADR-062 |
 | [ADR-039](ADR-039-material-als-element-mit-eigenschaften.md) | Material als Element mit Eigenschaften | akzeptiert |
 | [ADR-040](ADR-040-rendering-echtzeit-und-fotomodus.md) | Rendering: Echtzeit und Fotomodus im Client | akzeptiert, geändert durch ADR-044 |
 | [ADR-041](ADR-041-akustik-berechnung-im-kern.md) | Akustik-Berechnung im Rust-Kern | akzeptiert, geändert durch ADR-054 |
@@ -49,7 +49,7 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-043](ADR-043-komponenten-instanzen-bibliotheken.md) | Komponenten, Instanzen und Bibliotheken | akzeptiert, geändert durch ADR-049 und ADR-050 |
 | [ADR-044](ADR-044-bedienmuster-aus-blender.md) | Bedienmuster aus Blender | akzeptiert, geändert durch ADR-054 |
 | [ADR-045](ADR-045-befehle-erweiterungen-vertrauen-nach-vs-code.md) | Befehle, Erweiterungen und Vertrauen nach dem Vorbild von VS Code | akzeptiert, präzisiert durch ADR-060 |
-| [ADR-046](ADR-046-fachneutraler-kern-muster-aus-onshape.md) | Fachneutraler Kern und Muster aus Onshape | akzeptiert, geändert durch ADR-054 |
+| [ADR-046](ADR-046-fachneutraler-kern-muster-aus-onshape.md) | Fachneutraler Kern und Muster aus Onshape | akzeptiert, geändert durch ADR-054 und ADR-062 |
 | [ADR-047](ADR-047-freigabe-revisionen-lebenszyklus.md) | Freigabeprozess, Revisionen und Lebenszyklus | akzeptiert, geändert durch ADR-059 |
 | [ADR-048](ADR-048-schnittstelle-plm-erp.md) | Offene Schnittstelle zu PLM und ERP | akzeptiert, geändert durch ADR-059 |
 | [ADR-049](ADR-049-automatisierung-apps-studien-nach-synera.md) | Automatisierung, Apps und Studien nach dem Vorbild von Synera | akzeptiert, geändert durch ADR-059 |
@@ -62,7 +62,7 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-056](ADR-056-datenschutz.md) | Datenschutz | akzeptiert |
 | [ADR-057](ADR-057-einheiten-und-groessen.md) | Einheiten und Größen | akzeptiert |
 | [ADR-058](ADR-058-adressen-auf-id-basis.md) | Adressen auf ID-Basis | akzeptiert |
-| [ADR-059](ADR-059-meilensteine-und-beta-umfang.md) | Meilensteine und Beta-Umfang | akzeptiert |
+| [ADR-059](ADR-059-meilensteine-und-beta-umfang.md) | Meilensteine und Beta-Umfang | akzeptiert, geändert durch ADR-062 |
 | [ADR-060](ADR-060-geraete-layouts-eingabe-xr.md) | Geräte, Layouts, Eingabe und XR | akzeptiert |
 | [ADR-061](ADR-061-designsystem-ein-muster-je-aufgabe.md) | Designsystem – ein Muster je Aufgabe | akzeptiert |
-| [ADR-062](ADR-062-cad-zuerst.md) | CAD zuerst – Meilensteine neu geschnitten | vorgeschlagen |
+| [ADR-062](ADR-062-cad-zuerst.md) | CAD zuerst – Meilensteine neu geschnitten | akzeptiert |

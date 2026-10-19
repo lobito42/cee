@@ -88,7 +88,8 @@ Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `opens
 - Einfach und fehlerarm (ADR-051/052): Oberfläche ohne Git-Begriffe (Entwurf, Meilenstein, Übernehmen),
   Verwerfen statt Löschen, Ordnung aus dem Graphen (Facetten, Suche, Rückverweise) statt Ordnerpflege.
 - Lernschleife für lokale Modelle nur mit Prüfern als Bewertung, nie Selbstbewertung (ADR-053).
-- Reihenfolge nach Meilensteinen M0 bis M3 (ADR-059); nichts aus einem späteren Meilenstein vorziehen.
+- Reihenfolge nach Meilensteinen M0 bis M3 (ADR-059, neu geschnitten durch ADR-062); nichts aus einem späteren
+  Meilenstein vorziehen.
 - Rechte prüft der Server; Agenten laufen als Dienstkonto ohne Freigaberecht (ADR-055). Datensparsam: keine
   gespeicherte Anwesenheit, Verlauf nur mit Konto-IDs (ADR-056). Jede Zahl ist eine Größe mit Einheit
   (ADR-057). Adressen beruhen auf der Element-ID (ADR-058). Begriffe: `docs/glossar.md`.
@@ -97,11 +98,12 @@ Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `opens
   erst über WebXR, Endziel native App auf der Vision Pro als dünner Client (ADR-060).
 - Ein Muster je Aufgabe nach `docs/design/muster.md`; Tokens nur aus `docs/design/tokens.json`; Inter,
   Farbschema Graphit mit einem Akzent (ADR-061).
-- Erster Anwendungsfall: Räume mit Schallabsorbern (ADR-038). Material ist ein Element mit Aussehen, Akustik,
-  Physik, Kosten und CO₂ (ADR-039); Nachhallzeit rechnet `crates/acoustics` (ADR-041); Rendering im Client
-  mit Echtzeit und Fotomodus (ADR-040).
+- CAD zuerst (ADR-062): Bis zur Beta kommt der CAD-Kern – Skizzen, Volumenmodellierung, Teile, Baugruppen mit
+  Verbindungen, Eigenschaften, Export STL für den 3D-Druck. Raum und Akustik (ADR-038 bis ADR-041) sind das erste
+  Fachpaket und folgen nach der Beta. Material ist ein Element mit Eigenschaftsgruppen wie Aussehen, Physik,
+  Kosten, CO₂ und Akustik (ADR-039).
 - Wiederverwendung über Komponenten und Instanzen (ADR-043): Instanzen speichern nur Variante, gewählte
-  Referenzen und Überschreibungen, nie eine Kopie; der Absorber-Katalog ist eine Komponentenbibliothek.
+  Referenzen und Überschreibungen, nie eine Kopie; Kataloge sind Komponentenbibliotheken.
 - Lizenzen: Kern MPL-2.0, `sdk/` und `format/` Apache-2.0. Abhängigkeiten nur freizügig nach der Liste in
   ADR-034; LGPL nur dynamisch oder im Worker-Prozess; kein GPL/AGPL.
 

@@ -1,6 +1,6 @@
 # ADR-062: CAD zuerst – Meilensteine neu geschnitten
 
-- Status: vorgeschlagen
+- Status: akzeptiert
 - Datum: 2026-10-19
 - Entscheider: Kernteam
 - Ändert: ADR-059 (Meilensteine, kritischer Pfad), ADR-038 (Rolle des ersten Anwendungsfalls), ADR-046
@@ -80,9 +80,8 @@ Die Spikes ap-00 und ap-01 sind abgeschlossen, ap-02 (Akustik) ist seit 2026-10-
   wenn ihre Changes entworfen werden; ap-45 bis ap-48 bekommen Einträge in der
   Arbeitspaket-Liste; F-09 (Verbindungen, Kollision) wird Muss vor der Beta; F-05 nennt STL vor der Beta, 3D-Druck-
   Prüfungen rücken aus „nach der Beta“ (F-04, ap-31) nach M3.
-- Nach Annahme nachziehen: Vermerk „geändert durch ADR-062“ in ADR-038 und ADR-059, Index in `docs/adr/README.md`,
-  Roadmap und Arbeitspakete in `docs/konzept.md`, Abschnitt Architekturregeln in `AGENTS.md`
-  („Erster Anwendungsfall …“).
+- Nachgezogen bei der Annahme: Vermerk „geändert durch ADR-062“ in ADR-038, ADR-046 und ADR-059, Index in
+  `docs/adr/README.md`, Roadmap und Arbeitspakete in `docs/konzept.md`, Architekturregeln in `AGENTS.md`.
 
 ## Offene Fragen
 

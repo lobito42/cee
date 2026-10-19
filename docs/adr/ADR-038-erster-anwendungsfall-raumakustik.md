@@ -3,7 +3,8 @@
 - Status: akzeptiert
 - Datum: 2026-10-17
 - Entscheider: Kernteam
-- Geändert durch: ADR-046 (Raum und Akustik als erstes Fachpaket)
+- Geändert durch: ADR-046 (Raum und Akustik als erstes Fachpaket), ADR-062 (bestimmt keinen Meilenstein des
+  Kerns mehr; Fachpaket F1 nach der Beta)
 
 ## Kontext
 

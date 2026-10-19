@@ -3,7 +3,8 @@
 - Status: akzeptiert
 - Datum: 2026-10-17
 - Entscheider: Kernteam
-- Geändert durch: ADR-054 (interne Fachpaket-API vor dem öffentlichen SDK)
+- Geändert durch: ADR-054 (interne Fachpaket-API vor dem öffentlichen SDK), ADR-062 (Verbindungen in
+  Baugruppen gehören zum Kern)
 
 ## Kontext
 
