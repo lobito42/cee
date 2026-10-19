@@ -3,7 +3,8 @@
 - Status: vorgeschlagen
 - Datum: 2026-10-19
 - Entscheider: Kernteam
-- Ändert: ADR-059 (Meilensteine, kritischer Pfad), ADR-038 (Rolle des ersten Anwendungsfalls)
+- Ändert: ADR-059 (Meilensteine, kritischer Pfad), ADR-038 (Rolle des ersten Anwendungsfalls), ADR-046
+  (Verbindungen in Baugruppen gehören zum Kern statt zum Fachpaket Mechanik)
 
 ## Kontext
 
@@ -18,8 +19,11 @@ Die Spikes ap-00 und ap-01 sind abgeschlossen, ap-02 (Akustik) ist seit 2026-10-
 ## Entscheidung
 
 1. **Leitlinie:** Alles, was zum CAD-Kern gehört – Geometrie, Identität, Skizzen, Formelemente, Teile,
-   Baugruppen, Eigenschaften und die Ansichten auf den Graphen –, kommt so früh wie möglich. Fachpakete,
-   Rendering für Präsentation, Angebote und Export folgen danach.
+   Baugruppen mit Verbindungen, Eigenschaften und die Ansichten auf den Graphen –, kommt so früh wie möglich.
+   Fachpakete, Rendering für Präsentation, Angebote und Export folgen danach.
+   Begonnen wird mit regulärer 3D-Modellierung, wie man sie für den 3D-Druck braucht: Volumenkörper aus Skizzen,
+   Schalen, Verrundungen, Muster. Fertigungsoperationen (Bohrung mit Gewinde, Fräs- und Blech-Features,
+   Fertigungsregeln) kommen später als Fachpakete.
 2. **M0 Klären (Gate G1):** Gerüst (ap-00, fertig), Datenmodell (ap-01, fertig), Sync (ap-03), persistente
    Identität (ap-39), UX-Prototyp (ap-41) mit Modellier-Abläufen (Skizze, Formelement, Baugruppe) statt
    Raum-Abläufen. Akustik-Spike ap-02 und Rendering-Spike ap-04 gehören nicht mehr zu G1.
@@ -29,14 +33,17 @@ Die Spikes ap-00 und ap-01 sind abgeschlossen, ap-02 (Akustik) ist seit 2026-10-
      ap-07a Server-Dokument, ap-08a Grundlagen, ap-08b Arbeitsfläche (Darstellung mit three.js-Standardmitteln),
      ap-16 Selbstbetrieb
    - ap-12 Skizzen mit Maßen und Zwangsbedingungen, Extrusion; für beliebige Teile, nicht nur Absorberformen
-   - neu **ap-45 Formelemente:** Drehen, Bohrung, Tasche, Fase, Verrundung, lineares und kreisförmiges Muster,
-     boolesche Operationen – mit stabiler Identität (ap-39)
+   - neu **ap-45 Volumenmodellierung:** Drehen, Ausformen (Loft), Austragen (Sweep), Schale, Verrundung, Fase,
+     Spiegeln, lineares und kreisförmiges Muster, boolesche Operationen – mit stabiler Identität (ap-39)
    - ap-10 Material als Element mit Eigenschaftsgruppen (ADR-039); Akustik ist eine Gruppe unter mehreren
    - ap-13a Komponenten, Varianten und Instanzen mit Verbindungspunkten (ADR-043) an einem fachneutralen Katalog
+   - neu **ap-46 Baugruppen mit Verbindungen:** Verbindungen (fest, Drehen, Schieben, Zylinder, Kugel, eben)
+     zwischen Verbindungspunkten (ADR-043), Bewegen innerhalb der Freiheitsgrade, Kollisionsprüfung
    - ap-18 Eigenschaften auswerten: Volumen, Masse, Schwerpunkt, Mengen und Kosten je Teil und Baugruppe
-   - **G2-Kriterium:** Eine Testperson modelliert allein im Browser ein Referenzteil (Platte mit Bohrungen,
-     Taschen, Fasen und Muster) und eine Baugruppe aus fünf Teilen mit Varianten; 50 Parameteränderungen
-     zerbrechen keine Referenz; Masse und Schwerpunkt stimmen mit der Handrechnung.
+   - **G2-Kriterium:** Eine Testperson modelliert allein im Browser ein typisches 3D-Druck-Teil (Gehäuse mit
+     Deckel: Schale, Verrundungen, Muster) und eine Baugruppe aus fünf Teilen mit Varianten und mindestens einer
+     Dreh- und einer Schiebeverbindung; die Kollisionsprüfung findet eine absichtlich eingebaute Überschneidung;
+     50 Parameteränderungen zerbrechen keine Referenz; Masse und Schwerpunkt stimmen mit der Handrechnung.
 4. **M2 Zusammen:** wie in ADR-059 (ap-07b, ap-25, ap-17, ap-26, ap-13b, ap-33a, ap-37a), zusätzlich vorgezogen
    aus M3 die beiden anderen Ansichten auf den Graphen: ap-24 Textprojektion und ap-23a Knoten-Ansicht (lesen).
 5. **M3 Beta:** ap-15 MCP und KI, ap-08c Arbeitsfläche Ausbau, ap-27 öffentliche Fachpaket-API mit einem
@@ -46,7 +53,7 @@ Die Spikes ap-00 und ap-01 sind abgeschlossen, ap-02 (Akustik) ist seit 2026-10-
    ap-04 und ap-14 Rendering mit Fotomodus, ap-11 Akustik live, ap-19 Bericht und Angebot, ap-20 Regeln. Es nutzt
    nur die Fachpaket-API (ADR-054). Kriterium wie bisher G2: Die Firma erstellt allein ein echtes Angebot.
 7. **Export** (STEP, glTF, STL) ist kein Ziel bis zur Beta; ap-33a bringt STEP nur als Teil des Freigabestands mit.
-8. **Kritischer Pfad:** ap-05 → ap-40 → ap-39 → ap-06 → ap-08a → ap-08b → ap-12 → ap-45 → ap-13a → ap-18.
+8. **Kritischer Pfad:** ap-05 → ap-40 → ap-39 → ap-06 → ap-08a → ap-08b → ap-12 → ap-45 → ap-13a → ap-46 → ap-18.
    ap-07a und ap-10 laufen daneben.
 9. **Warteschlange:** `openspec/queue.yaml` folgt dieser Reihenfolge. Changes aus F1 werden erst nach der Beta
    freigegeben; ap-02 bleibt freigegeben, aber ohne Nachtschicht.
@@ -64,8 +71,10 @@ Die Spikes ap-00 und ap-01 sind abgeschlossen, ap-02 (Akustik) ist seit 2026-10-
   CAD-Fundament, auf dem auch andere Fachpakete aufbauen.
 - ADR-038 gilt weiter als erster *Anwendungsfall*, bestimmt aber keinen Meilenstein des Kerns mehr; ADR-040
   (Fotomodus) und ADR-041 (Akustik-Berechnung) wandern zu F1.
+- Zeichnungsblätter und semantische PMI (F-17, F-18, ap-31) bleiben nach der Beta.
 - Abnahmekriterien von ap-06, ap-10, ap-12, ap-13a, ap-15, ap-08c und ap-23a werden fachneutral umformuliert,
-  wenn ihre Changes entworfen werden; ap-45 bekommt einen Eintrag in der Arbeitspaket-Liste.
+  wenn ihre Changes entworfen werden; ap-45 und ap-46 bekommen Einträge in der
+  Arbeitspaket-Liste; F-09 (Verbindungen, Kollision) wird Muss vor der Beta.
 - Nach Annahme nachziehen: Vermerk „geändert durch ADR-062“ in ADR-038 und ADR-059, Index in `docs/adr/README.md`,
   Roadmap und Arbeitspakete in `docs/konzept.md`, Abschnitt Architekturregeln in `AGENTS.md`
   („Erster Anwendungsfall …“).
@@ -74,6 +83,7 @@ Die Spikes ap-00 und ap-01 sind abgeschlossen, ap-02 (Akustik) ist seit 2026-10-
 
 1. Zwangsbedingungen in Skizzen hängen an der Lizenzklärung für PlaneGCS (ADR-027). Kommt keine Klärung bis
    ap-12, starten Skizzen nur mit Maßen, Zwangsbedingungen folgen als eigener Change.
-2. Baugruppen mit Verbindungen (Joints) und Kollisionsprüfung (F-09) sind bisher „Fachpaket Mechanik nach der
-   Beta“. Sind sie CAD-Kern und rücken nach M2 oder M3?
-3. Zeichnungsblätter und semantische PMI (F-17, F-18, ap-31) sind bisher nach der Beta. Sollen sie vor die Beta?
+2. Zum Drucken braucht es eine Datei für den Slicer (STL oder 3MF). Gehört dieser eine Export doch in M1, oder
+   genügt bis zur Beta das Modellieren?
+3. Prüfungen für den 3D-Druck (Mindestwandstärke, Überhänge, geschlossener Körper) waren nach der Beta geplant.
+   Rücken sie mit dem 3D-Druck als Einstieg vor (M2 oder M3)?
