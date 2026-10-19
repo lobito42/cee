@@ -176,8 +176,10 @@ pauschale Toleranz mit der Schwelle.
   berichtet und in ap-07a als vorkodiertes Dokument gelöst.
 - **Laufzeit auf dem Runner schwankt:** Schwellen haben Abstand zu den Spike-Werten.
 
-## Open Questions
+## Entscheidungen des Kernteams (2026-10-19)
 
-1. **Import 100k:** nur messen (Vorschlag) oder Schwelle, z. B. ≤ 10 s?
-2. **Temperatur in °C:** ausgeschlossen (Vorschlag, Nullpunktverschiebung; reicht K für Materialdaten?) oder
-   schon in ap-05a?
+1. Import 100k wird nur gemessen und berichtet, ohne Schwelle.
+2. Temperatur vorerst nur in K; °C und °F mit Nullpunktverschiebung kommen später per Change.
+3. Ein Change in zwei Teilen: ap-05a (dieser) und ap-05b (Abhängigkeiten, Zustände, Migrationen, Teil-Laden).
+4. Zahl ohne Einheit: bei bekannter Dimension Standard-Einheit annehmen und warnen, sonst unverändert speichern
+   und warnen; nichts wird geraten. Die Beispiele werden von Hand mit Einheiten überführt.
