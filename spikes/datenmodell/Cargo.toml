@@ -2,7 +2,7 @@
 # Eigener Workspace, damit der Spike den Produkt-Workspace (crates/*) nicht berührt.
 [workspace]
 resolver = "2"
-members = ["."]
+members = [".", "nif/native/datenmodell_nif", "wasm/crate"]
 
 [workspace.package]
 edition = "2021"

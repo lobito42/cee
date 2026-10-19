@@ -88,7 +88,7 @@ pub fn project(n: usize) -> Json {
 pub fn editable_ids(n: usize) -> Vec<String> {
     let materials = MATERIALS.min(n.saturating_sub(1));
     (materials + 1..n)
-        .filter(|i| (i - materials - 1) % GROUP != 0)
+        .filter(|i| !(i - materials - 1).is_multiple_of(GROUP))
         .map(element_id)
         .collect()
 }
