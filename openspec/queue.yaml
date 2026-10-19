@@ -29,3 +29,9 @@ changes:
     model: sonnet
     night: false   # zurückgestellt (Kernteam, 2026-10-19): CAD zuerst, Akustik ist angeschlossenes Fachpaket
     depends_on: []
+
+  - id: ap-03-spike-sync
+    phase: tests
+    model: opus    # Spike; Agent kern-specialist
+    night: true    # Kernaussagen automatisch prüfbar; zwei Browser-Scenarios als menschliche Abnahme im PR
+    depends_on: [ap-01-spike-datenmodell]
