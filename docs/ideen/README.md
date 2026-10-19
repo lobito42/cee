@@ -14,3 +14,4 @@ diesem Ordner eigenständig um.
 | [Weitere Anregungen aus klassischem CAD](klassisches-cad-anregungen.md) | abgelegt 2026-10-17 | je Zeile beim passenden Paket |
 | [Ordnung, Suche und Lernschleife – weiter gedacht](ordnung-und-lernen.md) | abgelegt 2026-10-17 | je Zeile beim passenden Paket |
 | [Anregungen aus desigma](desigma-anregungen.md) | abgelegt 2026-10-19 | je Zeile beim passenden Paket |
+| [Anregungen aus CADCraft](cadcraft-anregungen.md) | abgelegt 2026-10-19 | je Zeile beim passenden Paket |
