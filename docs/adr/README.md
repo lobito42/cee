@@ -65,3 +65,4 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-059](ADR-059-meilensteine-und-beta-umfang.md) | Meilensteine und Beta-Umfang | akzeptiert |
 | [ADR-060](ADR-060-geraete-layouts-eingabe-xr.md) | Geräte, Layouts, Eingabe und XR | akzeptiert |
 | [ADR-061](ADR-061-designsystem-ein-muster-je-aufgabe.md) | Designsystem – ein Muster je Aufgabe | akzeptiert |
+| [ADR-062](ADR-062-cad-zuerst.md) | CAD zuerst – Meilensteine neu geschnitten | vorgeschlagen |
