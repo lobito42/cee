@@ -1,0 +1,5 @@
+target/
+nif/_build/
+nif/deps/
+nif/priv/
+wasm/pkg/

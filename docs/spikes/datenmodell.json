@@ -1,0 +1,107 @@
+{
+  "details": {
+    "build_100k_ms": 28563.7,
+    "build_10k_ms": 2519.3,
+    "conflict_cases": 100,
+    "conflict_scan_10k_ms": 1006.257,
+    "hash": "eb7a645d9973a96878b64e9fd1921311445e24711fb08c60410fae33a7572d2f",
+    "merge_findings": 10,
+    "nif_op_median_ms": 0.0443,
+    "op_median_ms": 0.0455,
+    "override_checks": 19800,
+    "save_100k_ms": 153.7,
+    "size_10k_mb": 0.25,
+    "wasm_op_median_ms": 0.0914
+  },
+  "machine": {
+    "arch": "x86_64",
+    "cpu": "AMD EPYC 9V74 80-Core Processor",
+    "os": "linux",
+    "threads": 4
+  },
+  "metrics": {
+    "component_propagate_1000_ms": {
+      "pass": true,
+      "threshold": 50,
+      "unit": "ms",
+      "value": 27.66
+    },
+    "conflicts_detected_pct": {
+      "pass": true,
+      "threshold": 100,
+      "unit": "%",
+      "value": 100
+    },
+    "hash_equal_native_nif_wasm": {
+      "pass": true,
+      "threshold": 1,
+      "unit": "bool",
+      "value": 1
+    },
+    "load_100k_ms": {
+      "pass": true,
+      "threshold": 2000,
+      "unit": "ms",
+      "value": 1059.808
+    },
+    "load_10k_ms": {
+      "pass": true,
+      "threshold": 200,
+      "unit": "ms",
+      "value": 108.174
+    },
+    "merge_2x500_ms": {
+      "pass": true,
+      "threshold": 500,
+      "unit": "ms",
+      "value": 21.268
+    },
+    "nif_op_p95_ms": {
+      "pass": true,
+      "threshold": 1,
+      "unit": "ms",
+      "value": 0.0552
+    },
+    "op_p95_ms": {
+      "pass": true,
+      "threshold": 5,
+      "unit": "ms",
+      "value": 0.058
+    },
+    "overrides_kept_pct": {
+      "pass": true,
+      "threshold": 100,
+      "unit": "%",
+      "value": 100
+    },
+    "schema_special_cases": {
+      "pass": true,
+      "threshold": 0,
+      "unit": "count",
+      "value": 0
+    },
+    "size_100k_mb": {
+      "pass": true,
+      "threshold": 50,
+      "unit": "MB",
+      "value": 2.784
+    },
+    "wasm_op_p95_ms": {
+      "pass": true,
+      "threshold": 5,
+      "unit": "ms",
+      "value": 0.1134
+    }
+  },
+  "recommendation": "Go",
+  "spike": "ap-01-spike-datenmodell",
+  "versions": {
+    "automerge": "0.12.0",
+    "automerge_probe": "0.5.12, 0.7.4, 0.12.0",
+    "elixir": "Elixir 1.18.4 (compiled with Erlang/OTP 27)",
+    "node": "v22.22.0",
+    "rustc": "rustc 1.97.0 (2d8144b78 2026-07-07)",
+    "rustler": "0.39.0",
+    "wasm-bindgen": "0.2.129"
+  }
+}
