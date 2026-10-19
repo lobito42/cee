@@ -55,6 +55,13 @@ jobs:
         uses: EmbarkStudios/cargo-deny-action@v2
         with:
           command: check licenses
+      # Die Tauri-Hülle ist ein eigener Cargo-Workspace und wird von der Prüfung oben nicht erfasst (#5).
+      - name: Lizenzen Desktop-App (ADR-034)
+        if: hashFiles('client/src-tauri/Cargo.toml') != ''
+        uses: EmbarkStudios/cargo-deny-action@v2
+        with:
+          manifest-path: client/src-tauri/Cargo.toml
+          command: check licenses
 
   elixir:
     name: Elixir-Server
