@@ -1,5 +1,5 @@
 # Warteschlange freigegebener Changes – nur das Kernteam ändert diese Datei.
-# Reihenfolge nach Meilensteinen (ADR-059): M0 Klären → M1 Erstes Angebot → M2 Zusammen → M3 Beta.
+# Reihenfolge nach Meilensteinen (ADR-059, ADR-062): M0 Klären → M1 Modellieren → M2 Zusammen → M3 Beta.
 # Ein Eintrag hier ist die Freigabe. Die Nachtschicht nimmt den ersten Eintrag, dessen nächster Schritt offen ist.
 #
 # phase ist nur noch eine Untergrenze: tools/next_step.py leitet den Zustand aus dem Repo ab
@@ -35,3 +35,15 @@ changes:
     model: opus    # Spike; Agent kern-specialist
     night: true    # Kernaussagen automatisch prüfbar; zwei Browser-Scenarios als menschliche Abnahme im PR
     depends_on: [ap-01-spike-datenmodell]
+
+  - id: ap-05a-schema-einheiten
+    phase: tests
+    model: sonnet  # Agent kern-specialist bei Schwierigkeiten
+    night: true    # vollständig automatisch prüfbar
+    depends_on: [ap-01-spike-datenmodell]
+
+  - id: ap-05b-abhaengigkeiten
+    phase: tests
+    model: sonnet
+    night: true    # vollständig automatisch prüfbar
+    depends_on: [ap-05a-schema-einheiten]
