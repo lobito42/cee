@@ -3,70 +3,77 @@
 - Status: vorgeschlagen
 - Datum: 2026-10-19
 - Entscheider: Kernteam
-- Ändert: ADR-059 (Meilensteine M0 und M1, kritischer Pfad), ADR-038 (Rolle des ersten Anwendungsfalls)
+- Ändert: ADR-059 (Meilensteine, kritischer Pfad), ADR-038 (Rolle des ersten Anwendungsfalls)
 
 ## Kontext
 
 CEE ist in erster Linie ein CAD-System: Geometrie und Eigenschaften im Element-Graphen. ADR-059 hat M1 als
 „Erstes Angebot“ für die Absorber-Firma geschnitten – Raum, Absorber, Nachhallzeit live, Fotomodus und Bericht.
 Damit stehen Akustik, Rendering und Angebotsbericht auf dem kritischen Pfad, während allgemeines Modellieren
-(Skizze, Extrusion, Teile, Baugruppen, Export) nur so weit vorkommt, wie die Absorber es brauchen. Das widerspricht
+(Skizze, Formelemente, Teile, Baugruppen) nur so weit vorkommt, wie die Absorber es brauchen. Das widerspricht
 dem fachneutralen Kern (ADR-046) und der Rolle der Akustik als Fachpaket (ADR-054): Ein Fachpaket soll sich an
-einen fertigen Kern anschließen, nicht dessen Reihenfolge bestimmen. Die Spikes ap-00 und ap-01 sind abgeschlossen,
-ap-02 (Akustik) ist seit 2026-10-19 aus der Nachtschicht genommen.
+einen fertigen Kern anschließen, nicht dessen Reihenfolge bestimmen. Akustik und die Firma haben keine Eile.
+Die Spikes ap-00 und ap-01 sind abgeschlossen, ap-02 (Akustik) ist seit 2026-10-19 aus der Nachtschicht genommen.
 
 ## Entscheidung
 
-1. **M0 Klären (Gate G1)** prüft nur noch die Grundlagen eines CAD-Systems: Gerüst (ap-00, fertig), Datenmodell
-   (ap-01, fertig), Sync (ap-03), persistente Identität (ap-39), Rendering (ap-04, nur Echtzeit; Fotomodus wandert
-   zum Fachpaket), UX-Prototyp (ap-41) mit allgemeinen Modellier-Abläufen statt Raum-Abläufen. Der Akustik-Spike
-   ap-02 gehört nicht mehr zu G1.
-2. **M1 Modellieren (Gate G2, bisher „Erstes Angebot“):** Eine Person modelliert im Browser, selbst gehostet,
-   parametrische Teile und Baugruppen mit Eigenschaften und gibt sie als STEP weiter.
+1. **Leitlinie:** Alles, was zum CAD-Kern gehört – Geometrie, Identität, Skizzen, Formelemente, Teile,
+   Baugruppen, Eigenschaften und die Ansichten auf den Graphen –, kommt so früh wie möglich. Fachpakete,
+   Rendering für Präsentation, Angebote und Export folgen danach.
+2. **M0 Klären (Gate G1):** Gerüst (ap-00, fertig), Datenmodell (ap-01, fertig), Sync (ap-03), persistente
+   Identität (ap-39), UX-Prototyp (ap-41) mit Modellier-Abläufen (Skizze, Formelement, Baugruppe) statt
+   Raum-Abläufen. Akustik-Spike ap-02 und Rendering-Spike ap-04 gehören nicht mehr zu G1.
+3. **M1 Modellieren (Gate G2, bisher „Erstes Angebot“):** Eine Person modelliert im Browser, selbst gehostet,
+   parametrische Teile und Baugruppen mit Eigenschaften.
    - ap-05 Graph-Kern, ap-40 Bindungen, ap-06 Kernel-Worker (Abnahme an einem Referenzteil statt am Raum),
-     ap-07a Server-Dokument, ap-08a Grundlagen, ap-08b Arbeitsfläche, ap-16 Selbstbetrieb
-   - ap-12 Skizze und Extrusion für beliebige Teile (nicht nur Absorberformen)
-   - ap-10 Material als Element mit Eigenschaftsgruppen (ADR-039); Akustik ist eine Gruppe unter mehreren, Import
-     von Herstellerdaten bleibt
+     ap-07a Server-Dokument, ap-08a Grundlagen, ap-08b Arbeitsfläche (Darstellung mit three.js-Standardmitteln),
+     ap-16 Selbstbetrieb
+   - ap-12 Skizzen mit Maßen und Zwangsbedingungen, Extrusion; für beliebige Teile, nicht nur Absorberformen
+   - neu **ap-45 Formelemente:** Drehen, Bohrung, Tasche, Fase, Verrundung, lineares und kreisförmiges Muster,
+     boolesche Operationen – mit stabiler Identität (ap-39)
+   - ap-10 Material als Element mit Eigenschaftsgruppen (ADR-039); Akustik ist eine Gruppe unter mehreren
    - ap-13a Komponenten, Varianten und Instanzen mit Verbindungspunkten (ADR-043) an einem fachneutralen Katalog
-   - ap-18 Eigenschaften auswerten: Mengen, Masse, Kosten und CO₂ je Baugruppe, CSV
-   - neu **ap-45 STEP-Export und -Import** von Teilen und Baugruppen (ADR-004, ADR-042), bisher erst mit ap-33a
-   - **G2-Kriterium:** Eine Testperson modelliert ein Referenzteil (Platte mit Bohrungen, Taschen und Fasen) und
-     eine Baugruppe aus fünf Teilen mit Varianten allein im Browser; Mengenliste mit Masse stimmt mit der
-     Handrechnung; STEP öffnet ohne Fehler in einem zweiten CAD-System.
-3. **Fachpaket Raum und Akustik (F1, nach G2, parallel zu M2):** ap-02 Nachhallzeit, ap-09 Raum-Elemente, ap-11
-   Akustik live, ap-14 Fotomodus, ap-19 Bericht und Angebot, später ap-20 Regeln. Es nutzt nur die interne
-   Fachpaket-API (ADR-054) und ist damit ihr erster Prüfstein. Kriterium wie bisher G2: Die Firma erstellt allein
-   ein echtes Angebot.
-4. **M2 Zusammen und M3 Beta** bleiben wie in ADR-059. In M3 wird die Fachpaket-API öffentlich (ap-27); das
-   Fachpaket aus F1 ist dann das mitgelieferte Beispiel.
-5. **Kritischer Pfad:** ap-05 → ap-40 → ap-39 → ap-06 → ap-08a → ap-08b → ap-12 → ap-13a → ap-45, ap-18.
+   - ap-18 Eigenschaften auswerten: Volumen, Masse, Schwerpunkt, Mengen und Kosten je Teil und Baugruppe
+   - **G2-Kriterium:** Eine Testperson modelliert allein im Browser ein Referenzteil (Platte mit Bohrungen,
+     Taschen, Fasen und Muster) und eine Baugruppe aus fünf Teilen mit Varianten; 50 Parameteränderungen
+     zerbrechen keine Referenz; Masse und Schwerpunkt stimmen mit der Handrechnung.
+4. **M2 Zusammen:** wie in ADR-059 (ap-07b, ap-25, ap-17, ap-26, ap-13b, ap-33a, ap-37a), zusätzlich vorgezogen
+   aus M3 die beiden anderen Ansichten auf den Graphen: ap-24 Textprojektion und ap-23a Knoten-Ansicht (lesen).
+5. **M3 Beta:** ap-15 MCP und KI, ap-08c Arbeitsfläche Ausbau, ap-27 öffentliche Fachpaket-API mit einem
+   minimalen Beispiel-Fachpaket. Abnahmen, die bisher an Raum oder Absorbern hängen (ap-15, ap-08c, ap-23a),
+   werden fachneutral formuliert.
+6. **Fachpaket Raum und Akustik (F1, nach der Beta, ohne Termin):** ap-02 Nachhallzeit, ap-09 Raum-Elemente,
+   ap-04 und ap-14 Rendering mit Fotomodus, ap-11 Akustik live, ap-19 Bericht und Angebot, ap-20 Regeln. Es nutzt
+   nur die Fachpaket-API (ADR-054). Kriterium wie bisher G2: Die Firma erstellt allein ein echtes Angebot.
+7. **Export** (STEP, glTF, STL) ist kein Ziel bis zur Beta; ap-33a bringt STEP nur als Teil des Freigabestands mit.
+8. **Kritischer Pfad:** ap-05 → ap-40 → ap-39 → ap-06 → ap-08a → ap-08b → ap-12 → ap-45 → ap-13a → ap-18.
    ap-07a und ap-10 laufen daneben.
-6. **Warteschlange:** `openspec/queue.yaml` folgt dieser Reihenfolge. Changes aus F1 werden erst nach G2
-   freigegeben; ap-02 bleibt freigegeben, aber ohne Nachtschicht, bis F1 beginnt.
+9. **Warteschlange:** `openspec/queue.yaml` folgt dieser Reihenfolge. Changes aus F1 werden erst nach der Beta
+   freigegeben; ap-02 bleibt freigegeben, aber ohne Nachtschicht.
 
 ## Alternativen
 
 - ADR-059 unverändert (Angebot zuerst): früher Nutzen für die Firma, aber der Kern wächst entlang eines
   Fachgebiets, und allgemeines Modellieren kommt spät.
-- Akustik ganz nach der Beta: verliert den ersten echten Nutzer und den Prüfstein für die Fachpaket-API.
-- Kein M1, direkt M2 (Zusammenarbeit): zu viel auf einmal für eine erste Abnahme durch Menschen.
+- F1 parallel zu M2: hält die Firma näher, bindet aber Prüfzeit, die für den CAD-Kern gebraucht wird.
+- Export (STEP) schon in M1: für die ersten Abnahmen nicht nötig.
 
 ## Konsequenzen
 
-- Die Firma bekommt ihr erstes Angebot später (nach G2 und F1 statt mit G2). Dafür steht ein allgemeines,
-  fachneutrales CAD-Fundament, auf dem auch andere Fachpakete aufbauen können.
-- ADR-038 gilt weiter als erster *Anwendungsfall*, ist aber kein Meilenstein des Kerns mehr; ADR-040 (Fotomodus)
-  und ADR-041 (Akustik im Kern bzw. eigenem Crate) wandern zu F1.
-- Abnahmekriterien von ap-06, ap-10, ap-12 und ap-13a werden fachneutral umformuliert, wenn ihre Changes
-  entworfen werden; ap-45 bekommt einen Eintrag in der Arbeitspaket-Liste.
+- Die Firma bekommt ihr erstes Angebot erst nach der Beta. Dafür steht zuerst ein allgemeines, fachneutrales
+  CAD-Fundament, auf dem auch andere Fachpakete aufbauen.
+- ADR-038 gilt weiter als erster *Anwendungsfall*, bestimmt aber keinen Meilenstein des Kerns mehr; ADR-040
+  (Fotomodus) und ADR-041 (Akustik-Berechnung) wandern zu F1.
+- Abnahmekriterien von ap-06, ap-10, ap-12, ap-13a, ap-15, ap-08c und ap-23a werden fachneutral umformuliert,
+  wenn ihre Changes entworfen werden; ap-45 bekommt einen Eintrag in der Arbeitspaket-Liste.
 - Nach Annahme nachziehen: Vermerk „geändert durch ADR-062“ in ADR-038 und ADR-059, Index in `docs/adr/README.md`,
   Roadmap und Arbeitspakete in `docs/konzept.md`, Abschnitt Architekturregeln in `AGENTS.md`
   („Erster Anwendungsfall …“).
 
 ## Offene Fragen
 
-1. Braucht die Firma vor G2 ein Zwischenergebnis (z. B. Nachhallzeit als Kommandozeile, also ap-02 allein)?
-2. Gehört ap-45 (STEP) in M1, oder reicht für G2 ein Export als glTF/STL und STEP folgt in M2?
-3. Bleibt ap-04 (Rendering-Spike) in M0, oder wandert er ganz zu F1, weil Echtzeit-Darstellung im Browser für M1
-   mit der Standard-Darstellung von three.js reicht?
+1. Zwangsbedingungen in Skizzen hängen an der Lizenzklärung für PlaneGCS (ADR-027). Kommt keine Klärung bis
+   ap-12, starten Skizzen nur mit Maßen, Zwangsbedingungen folgen als eigener Change.
+2. Baugruppen mit Verbindungen (Joints) und Kollisionsprüfung (F-09) sind bisher „Fachpaket Mechanik nach der
+   Beta“. Sind sie CAD-Kern und rücken nach M2 oder M3?
+3. Zeichnungsblätter und semantische PMI (F-17, F-18, ap-31) sind bisher nach der Beta. Sollen sie vor die Beta?
