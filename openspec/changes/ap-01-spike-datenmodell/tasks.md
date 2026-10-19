@@ -4,7 +4,7 @@
 - [x] 1.2 `format/examples/raum.json` mit Ursprung, Geschoss, Wänden, Boden, Decke, Fenster, Tür, Möbel, Materialien, drei Absorbern (einer per Skizze und Extrusion) und Nachhallzeit-Analyse – Prüfung: AK-3
 
 - [x] 1.3 Komponente „Deckensegel“ mit Varianten und mindestens drei Instanzen (eine mit Überschreibung) im Beispiel – Prüfung: AK-3
-- [ ] 1.4 `format/examples/baugruppe.json`: fachfremde Baugruppe mit Verbindungspunkten, Projektvariablen und Items; Schema ohne Fachtypen – Prüfung: AK-6
+- [x] 1.4 `format/examples/baugruppe.json`: fachfremde Baugruppe mit Verbindungspunkten, Projektvariablen und Items; Schema ohne Fachtypen – Prüfung: AK-6
 
 ## 2. Prototyp
 
