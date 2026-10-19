@@ -70,10 +70,12 @@ Alle Befehle aus dem Wurzelverzeichnis; `<port>` wählt der Aufrufer frei.
     „Offline“/„Online“, Liste der Befunde; jede empfangene Änderung zeigt ihre Latenz (Sender schickt seinen
     Zeitstempel in ms mit, der Server reicht ihn weiter; gilt nur für zwei Fenster auf demselben Rechner)
 - `node spikes/sync/client/sync.mjs <szenario> --url ws://127.0.0.1:<port>/socket --doc <name> [--seed <n>]
-  [--dump <verzeichnis>] --json` mit den Szenarien
+  [--dump <verzeichnis>] [--delay-ms <n>] --json` mit den Szenarien; `--delay-ms` (Standard 15) verzögert jede
+  Nachricht des Clients beim Senden und beim Empfangen um n ms, also 30 ms Umlaufzeit je Strecke
+  Client–Server (Annahme „gleiche Region“, N-08); `--delay-ms 0` misst reines Loopback
   - `live` – A und B treten bei; je 200 Änderungen A→B und B→A im Abstand von 20 ms
   - `concurrent` – 50 Runden, in jeder setzen A und B im selben Ereignis-Takt denselben Parameter verschieden
-  - `offline` – siehe unten
+  - `offline` – siehe unten; mit `--both` arbeiten beide Clients gleichzeitig offline
   - `poison` – sendet eine ungültige Sync-Nachricht und meldet die Antwort des Servers
   - Ausgabe: JSON mit den Messwerten des Szenarios; `--dump` schreibt `ops_a.json`, `ops_b.json`,
     `project_a.json`, `project_b.json` und `hash_a`/`hash_b` in das Verzeichnis
@@ -90,20 +92,36 @@ Alle Befehle aus dem Wurzelverzeichnis; `<port>` wählt der Aufrufer frei.
    - jeder Wert ist eindeutig (A: 100.000 + k, B: 200.000 + k), damit jede Änderung im Ergebnis auffindbar ist;
    - genau 10 Schlüssel (Element, Feld, Name) setzen A und B beide mit verschiedenen Werten;
    - genau 5-mal entfernt A ein Element, auf das B danach offline per `set_input` neu verweist;
-   - kein Element wird von einer Seite entfernt und von der anderen geändert (siehe Open Questions).
+   - genau 5-mal entfernt A ein Element, dessen Parameter B danach offline ändert (Entfernen gegen Ändern).
 4. B verbindet sich wieder. Gemessen wird die Zeit bis zum gleichen Inhalts-Hash bei A, B und Server.
+
+**Variante `--both`:** Nach Schritt 1 trennen A und B die Verbindung, beide machen offline je 500 Änderungen
+nach denselben Regeln (Rollen von „entfernt“ und „ändert“ je zur Hälfte verteilt, gesamt wieder 10 Wert-
+konflikte, 5 gebrochene Referenzen, 5 Fälle Entfernen gegen Ändern), dann verbinden sich beide wieder.
+Geprüft wird dasselbe wie oben.
+
+**Entfernen gegen Ändern:** Automerge lässt die Offline-Änderungen in einem anderswo entfernten Element aus dem
+sichtbaren Stand verschwinden. Das MUST NOT still geschehen: Der Server meldet jeden Fall als Befund
+`{"kind": "edit_on_removed", "id", "edits": [{"name", "value"}, …]}` mit allen betroffenen Werten, die der
+Abgleich aus dem sichtbaren Stand entfernt hat. Ob das Element entfernt bleibt oder wiederhergestellt wird,
+entscheidet der Mensch (ADR-052 „Verwerfen statt Löschen“); der Spike muss die Werte nur auffindbar halten.
+Woher der Server die Werte nimmt (Historie von Automerge, Patches beim Empfang oder Stand vor dem Abgleich),
+entscheidet die Umsetzung; der Bericht beschreibt den Weg.
 
 **Ohne Datenverlust** heißt: Für jeden Schlüssel, den nur eine Seite gesetzt hat, steht im Endstand ihr letzter
 Wert; für jeden der 10 doppelt gesetzten Schlüssel liegen beide Werte vor (einer sichtbar, beide in den
-Befunden); jedes der 5 Elemente ist entfernt und der Verweis von B als gebrochene Referenz gemeldet; nichts
-wird still aufgelöst (ADR-033). Diese Prüfung rechnet der Abnahmetest selbst aus `--dump` und
+Befunden); jedes der 5 Elemente ist entfernt und der Verweis von B als gebrochene Referenz gemeldet; jede
+Änderung an einem der 5 anderswo entfernten Elemente steht mit ihrem Wert in einem Befund `edit_on_removed`;
+nichts wird still aufgelöst (ADR-033). Diese Prüfung rechnet der Abnahmetest selbst aus `--dump` und
 `GET /docs/<name>/project` bzw. `/findings` nach.
 
 ### Kennzahlen und Schwellwerte
 
 Latenz einer Änderung = Zeit vom lokalen Anwenden beim Sender bis zu dem Moment, in dem der Wert beim
 Empfänger lesbar ist; beide Clients laufen im selben Node-Prozess mit je eigener Verbindung und eigener
-WASM-Dokumentkopie, gemessen mit derselben Uhr (`performance.now()`), Server über Loopback.
+WASM-Dokumentkopie, gemessen mit derselben Uhr (`performance.now()`), Server über Loopback mit der künstlichen
+Verzögerung von `--delay-ms 15` (30 ms Umlaufzeit je Strecke; eine Änderung A→B enthält also mindestens 30 ms
+Netzzeit). Alle Szenarien in `bench.sh` und in den Abnahmetests laufen mit dieser Verzögerung.
 
 | Kennzahl (Schlüssel in `sync.json`) | Messung | Go, wenn |
 | --- | --- | --- |
@@ -113,11 +131,14 @@ WASM-Dokumentkopie, gemessen mit derselben Uhr (`performance.now()`), Server üb
 | `concurrent_converge_p95_ms` | 50 gleichzeitige Änderungen desselben Parameters: Zeit bis A, B und Server denselben Hash haben, p95 | < 200 ms |
 | `concurrent_converged_pct` | Anteil der 50 Runden mit gleichem Hash bei A, B und Server | 100 % |
 | `offline_lost_edits` | verlorene Änderungen im Szenario offline (Definition oben) | 0 |
-| `offline_conflicts_reported_pct` | Anteil der 15 erzeugten Konflikte (10 Werte, 5 Referenzen), die als Befund erscheinen | 100 % |
+| `offline_conflicts_reported_pct` | Anteil der 20 erzeugten Konflikte (10 Werte, 5 Referenzen, 5 Entfernen gegen Ändern), die als Befund erscheinen | 100 % |
 | `offline_hash_equal` | gleicher Inhalts-Hash bei A (WASM), B (WASM) und Server (NIF) nach dem Abgleich (1 = ja) | 1 |
+| `both_offline_lost_edits` | verlorene Änderungen, Variante `--both` | 0 |
+| `both_offline_conflicts_reported_pct` | Anteil der 20 Konflikte als Befund, Variante `--both` | 100 % |
+| `both_offline_hash_equal` | gleicher Inhalts-Hash bei A, B und Server, Variante `--both` (1 = ja) | 1 |
 
-Nur gemeldet (ohne Schwellwert, siehe Open Questions) unter `observations` als `{"value", "unit"}`:
-`live_p50_ms`, `initial_sync_10k_ms` (neuer Client erhält das ganze Dokument), `reconnect_converge_ms`
+Nur gemeldet (ohne Schwellwert, Entscheidung 3) unter `observations` als `{"value", "unit"}`:
+`live_p50_ms`, `live_p95_loopback_ms` (wie `live_a_to_b_p95_ms`, aber `--delay-ms 0`), `initial_sync_10k_ms` (neuer Client erhält das ganze Dokument), `reconnect_converge_ms`
 (Wiederverbinden bis gleicher Hash), `reconnect_bytes_kb` (übertragene Bytes beim Abgleich).
 
 Format von `sync.json` wie ap-01: jede Kennzahl unter `metrics` als
@@ -133,7 +154,8 @@ Die Abnahmetests verlassen sich nicht auf `docs/spikes/sync.json`:
   eigenen Lauf (Latenz < 200 ms gilt auch auf dem Testrechner, da nur Loopback).
 - Datenverlust und Konflikte rechnet der Test aus den gedumpten Operationen und dem Endstand selbst nach.
 - `bench.sh --json` wird erneut ausgeführt: Zählwerte (`live_delivered_pct`, `concurrent_converged_pct`,
-  `offline_lost_edits`, `offline_conflicts_reported_pct`, `offline_hash_equal`) exakt wie in der Datei,
+  `offline_lost_edits`, `offline_conflicts_reported_pct`, `offline_hash_equal` und die drei `both_offline_*`)
+  exakt wie in der Datei,
   Zeitwerte höchstens um den Faktor 3 abweichend.
 
 ### Zuordnung der Abnahmetests
@@ -144,7 +166,8 @@ Die Abnahmetests verlassen sich nicht auf `docs/spikes/sync.json`:
 | AK-2 | `sync.json` vollständig, `pass` passt zum Schwellwert, Empfehlung passt | Bericht und Messwerte |
 | AK-3 | `live`: beide Richtungen p95 < 200 ms, 100 % angekommen | Live-Abgleich |
 | AK-4 | `concurrent`: 100 % konvergiert, p95 < 200 ms | Gleichzeitige Änderungen |
-| AK-5 | `offline`: 0 verlorene Änderungen, 15 von 15 Befunden, gleicher Hash A/B/Server | Offline und Zusammenführen |
+| AK-5 | `offline`: 0 verlorene Änderungen, 20 von 20 Befunden, gleicher Hash A/B/Server | Offline und Zusammenführen |
+| AK-10 | `offline --both`: 0 verlorene Änderungen, 20 von 20 Befunden, gleicher Hash A/B/Server | Offline und Zusammenführen |
 | AK-6 | ein Prozess je Dokument; `kill` trifft nur das eine Dokument | Ein Prozess je Dokument |
 | AK-7 | `poison`: Fehlerantwort, gleiche PID, folgende 20 Live-Änderungen kommen an | Fehlerisolation |
 | AK-8 | Server-Protokoll eines `bench.sh --log` enthält keinen Parameterwert aus den Szenarien | Protokolle |
@@ -154,8 +177,10 @@ Budget für die Abnahmetests: Build höchstens 30 min (wie ap-01), jedes Szenari
 
 ## Risks / Trade-offs
 
-- [Loopback misst kein echtes Netz] → Bericht nennt es ausdrücklich; Zuschlag für „gleiche Region“ siehe
-  Open Questions; die menschliche Abnahme mit zwei Browsern ergänzt den Eindruck.
+- [Loopback misst kein echtes Netz] → feste künstliche Verzögerung von 30 ms Umlaufzeit je Strecke; Schwankungen
+  und Paketverlust bildet sie nicht ab, der Bericht nennt das; die menschliche Abnahme ergänzt den Eindruck.
+- [Werte aus Entfernen gegen Ändern sind schwer zu finden] → wenn der Weg über Automerge nicht trägt, ist das
+  ein Befund des Spikes und gehört als Risiko in den Bericht, nicht in einen abgeschwächten Test.
 - [Volle Konfliktprüfung ~1 s blockiert den Dokumentprozess] → nur auf Abruf, nie im Latenzpfad.
 - [Import von 10.000 Elementen beim ersten Beitritt dauert] → einmal beim Start, gemessen als
   `initial_sync_10k_ms`, nicht Teil der Latenz.
@@ -163,22 +188,16 @@ Budget für die Abnahmetests: Build höchstens 30 min (wie ap-01), jedes Szenari
 - [Rustler und wasm-bindgen im Build] → Vorgehen und Versionsbindung aus `spikes/datenmodell/build.sh`
   übernehmen.
 
-## Open Questions
+## Entscheidungen des Kernteams (2026-10-19)
 
-1. **Spec oder `skip_specs`?** ap-01 lief ohne Specs. Dieser Change bringt eine Capability `spike-sync` mit,
-   damit die Scenarios als [auto]/[mensch] festgehalten sind. Soll sie beim Archivieren in `openspec/specs/`
-   landen, oder archiviert das Kernteam ohne Specs (Spike-Verhalten ist kein Produktverhalten)?
-2. **„Gleiche Region“ (N-08):** Reicht Loopback für den Nachweis, oder sollen die headless Clients eine feste
-   künstliche Netzverzögerung einrechnen? Falls ja: welcher Wert (Umlaufzeit in ms)?
-3. **Schwellwerte für Wiederverbinden und Erstabgleich:** `reconnect_converge_ms`, `reconnect_bytes_kb` und
-   `initial_sync_10k_ms` werden nur gemeldet, weil Konzept und ADRs dafür keine Zahl nennen. Soll das Kernteam
-   eine festlegen (z. B. abgeleitet aus `merge_2x500_ms` ≤ 500 ms von ap-01)?
-4. **Entfernen gegen Ändern:** Entfernt eine Seite ein Element, das die andere offline ändert, verwirft
-   Automerge die Änderung im entfernten Element. Ist das Datenverlust, ein eigener Befund oder gewollt
-   („Verwerfen statt Löschen“, ADR-052)? Bis zur Klärung schließt der Generator diesen Fall aus.
-5. **Referenzdaten:** Der Generator aus ap-01 (`synth::project`, `synth::Rng`) mit der Erweiterung oben
-   liefert Konfliktfälle mit bekanntem Sollergebnis; echte Daten unter `tests/golden/ap-03-spike-sync/` sind
-   dafür nicht nötig. Will das Kernteam trotzdem echte Offline-Konfliktfälle (z. B. aus der Firma) liefern,
-   müssten sie vor den Abnahmetests vorliegen – oder sie gehören zu ap-17.
-6. **Umfang offline:** Das Arbeitspaket nennt „einer offline“. Sollen zusätzlich beide Clients gleichzeitig
-   offline arbeiten (wie im Konzept-Ziel „zwei Entwürfe mit je 500 Änderungen“), oder bleibt das für ap-17?
+1. **Archivieren ohne Specs:** Spike-Verhalten ist kein Produktverhalten. `specs/spike-sync/` hält nur die
+   Scenarios fest; archiviert wird mit `openspec archive ap-03-spike-sync --skip-specs`, nichts landet in
+   `openspec/specs/`.
+2. **„Gleiche Region“:** feste künstliche Verzögerung von 30 ms Umlaufzeit je Strecke Client–Server
+   (`--delay-ms 15`); reines Loopback nur als Beobachtung.
+3. **Wiederverbinden, Bytes, Erstabgleich:** nur messen und unter `observations` melden; Schwellwerte legt
+   das Kernteam später fest (ap-07a, ap-17).
+4. **Entfernen gegen Ändern:** ist ein Konflikt und erscheint als Befund `edit_on_removed` mit allen
+   betroffenen Werten; nichts verschwindet still. Der Generator erzeugt 5 solche Fälle.
+5. **Referenzdaten:** Der erweiterte synthetische Generator aus ap-01 reicht; kein `tests/golden/ap-03-spike-sync/`.
+6. **Beide offline:** gehört dazu, als Variante `offline --both` mit eigenen Kennzahlen (AK-10).

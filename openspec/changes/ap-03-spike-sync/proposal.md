@@ -15,8 +15,8 @@ Bevor ap-07a den produktiven Dokumentprozess baut, muss belegt sein, dass eine �
     als Pfad-Abhängigkeit
   - Elixir: minimaler Phoenix-Server nur mit Channels, ein überwachter Prozess je geöffnetem Dokument, Dokument
     nur im Arbeitsspeicher
-  - Node: headless Testclients mit dem WASM-Kern und dem Phoenix-JS-Client; Szenarien live, gleichzeitig und
-    offline
+  - Node: headless Testclients mit dem WASM-Kern und dem Phoenix-JS-Client; Szenarien live, gleichzeitig,
+    einer offline und beide offline, mit künstlicher Netzverzögerung (30 ms Umlaufzeit)
   - Browser: eine schlichte Demo-Seite für die menschliche Abnahme mit zwei echten Browsern
 - Messungen zu Latenz zwischen zwei Clients, Konvergenz, Zusammenführen nach Offline-Arbeit, Fehlerisolation
 - Bericht `docs/spikes/sync.md` und maschinenlesbare Messwerte `docs/spikes/sync.json`, Empfehlung Go oder No-Go
@@ -26,7 +26,7 @@ Bevor ap-07a den produktiven Dokumentprozess baut, muss belegt sein, dass eine �
 ### New Capabilities
 
 - `spike-sync`: Nachweis von Live-Abgleich, Offline-Arbeit und Zusammenführen über Phoenix Channels mit dem
-  Rust-Kern (Spike, Prototyp-Verhalten; siehe design.md, Open Questions zur Archivierung)
+  Rust-Kern (Spike, Prototyp-Verhalten; wird ohne Übernahme in `openspec/specs/` archiviert, `--skip-specs`)
 
 ### Modified Capabilities
 
@@ -40,11 +40,10 @@ Keine.
   ADR-059 (M0, Gate G1). Kein Widerspruch zu einem ADR bekannt.
 - Baut auf ap-01 auf: `spikes/datenmodell/` (automerge 0.12, Elementform, Inhalts-Hash, Konfliktprüfung,
   synthetischer Generator) und die Empfehlung aus `docs/spikes/datenmodell.md`.
-- Abnahmetests: `tests/acceptance/ap-03-spike-sync/` (AK-1 bis AK-9, Zuordnung in design.md)
+- Abnahmetests: `tests/acceptance/ap-03-spike-sync/` (AK-1 bis AK-10, Zuordnung in design.md)
 - Gate G1
-- Referenzdaten: keine unter `tests/golden/ap-03-spike-sync/` vorgesehen; die Konfliktfälle erzeugt ein
-  Generator mit bekanntem Sollergebnis (design.md). Ob das Kernteam echte Fälle beisteuern will, steht unter
-  Open Questions.
+- Referenzdaten: keine unter `tests/golden/ap-03-spike-sync/`; die Konfliktfälle erzeugt ein Generator mit
+  bekanntem Sollergebnis (design.md, Entscheidung des Kernteams).
 - Neue Abhängigkeiten nur im Spike: phoenix, bandit, jason, rustler (Elixir), `phoenix` (npm), wasm-bindgen –
   alle MIT oder Apache-2.0 (ADR-034).
 - Nicht-Ziele (ADR-059, alles aus M1/M2):

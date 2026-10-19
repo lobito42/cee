@@ -3,7 +3,8 @@
 ### Requirement: Live-Abgleich zwischen zwei Clients
 Der Prototyp SHALL eine Änderung, die ein Client am Dokument macht, über den Phoenix-Server an einen zweiten
 verbundenen Client weitergeben, sodass sie dort in weniger als 200 ms lesbar ist. Beide Clients nutzen den
-Rust-Kern als WASM mit je eigener Verbindung und eigener Dokumentkopie, der Server nutzt ihn als NIF.
+Rust-Kern als WASM mit je eigener Verbindung und eigener Dokumentkopie, der Server nutzt ihn als NIF. Gemessen
+wird mit einer künstlichen Netzverzögerung von 30 ms Umlaufzeit je Strecke Client–Server („gleiche Region“).
 
 #### Scenario: [auto] Änderungen von A kommen bei B an
 - **WHEN** Client A an einem Dokument mit 10.000 Elementen 200 Parameteränderungen im Abstand von 20 ms macht
@@ -40,11 +41,18 @@ Semantische Konflikte SHALL als Befund erscheinen und MUST NOT still aufgelöst 
 - **THEN** haben A, B und Server danach denselben Inhalts-Hash, und für jeden Schlüssel, den nur eine Seite
   gesetzt hat, steht im Endstand deren letzter Wert (0 verlorene Änderungen)
 
+#### Scenario: [auto] Beide offline
+- **WHEN** Client A und Client B beide die Verbindung trennen, offline je 500 Änderungen am Dokument mit 10.000
+  Elementen machen und sich wieder verbinden
+- **THEN** haben A, B und Server danach denselben Inhalts-Hash, es gehen 0 Änderungen verloren, und 20 von 20
+  erzeugten Konflikten erscheinen als Befund
+
 #### Scenario: [auto] Konflikte erscheinen als Befund
-- **WHEN** im selben Ablauf 10 Schlüssel von beiden Seiten mit verschiedenen Werten gesetzt wurden und A 5
-  Elemente entfernt hat, auf die B offline neu verweist
-- **THEN** meldet der Server 10 von 10 Wertkonflikten mit beiden Werten und 5 von 5 gebrochenen Referenzen
-  als Befund
+- **WHEN** im selben Ablauf 10 Schlüssel von beiden Seiten mit verschiedenen Werten gesetzt wurden, A 5
+  Elemente entfernt hat, auf die B offline neu verweist, und A 5 weitere Elemente entfernt hat, deren Parameter
+  B offline ändert
+- **THEN** meldet der Server 10 von 10 Wertkonflikten mit beiden Werten, 5 von 5 gebrochenen Referenzen und
+  5 von 5 Fällen „Entfernen gegen Ändern“ mit allen Werten von B als Befund
 
 #### Scenario: [mensch] Ein Browser offline
 - **WHEN** eine Person in einem von zwei Browserfenstern der Demo-Seite „Offline“ wählt, in beiden Fenstern
@@ -84,7 +92,7 @@ Der Spike SHALL seine Messwerte in `docs/spikes/sync.json` und einen Bericht mit
 
 #### Scenario: [auto] Messwerte vollständig und stimmig
 - **WHEN** `docs/spikes/sync.json` gelesen wird
-- **THEN** enthält sie alle 8 Kennzahlen aus design.md mit Wert, Einheit, Schwellwert und `pass`, jedes
+- **THEN** enthält sie alle 11 Kennzahlen aus design.md mit Wert, Einheit, Schwellwert und `pass`, jedes
   `pass` passt zum Schwellwert, und die Empfehlung ist genau dann „Go“, wenn alle `pass` wahr sind
 
 #### Scenario: [auto] Nachmessen

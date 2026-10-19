@@ -20,11 +20,14 @@
 
 ## 3. Clients und Szenarien
 
-- [ ] 3.1 Node-Client in `spikes/sync/client/` (WASM-Kern, npm-Paket `phoenix`) und Szenario `live` mit
-  Latenzmessung – Prüfung: AK-3
+- [ ] 3.1 Node-Client in `spikes/sync/client/` (WASM-Kern, npm-Paket `phoenix`, `--delay-ms`) und Szenario
+  `live` mit Latenzmessung – Prüfung: AK-3
 - [ ] 3.2 Szenario `concurrent` und Befehl `poison` – Prüfung: AK-4, AK-7
-- [ ] 3.3 Generator und Szenario `offline` mit `--dump` (Operationen, Endstände, Hashes) – Prüfung: AK-5
-- [ ] 3.4 `bench.sh --json [--log <datei>]` mit allen Kennzahlen und Beobachtungen – Prüfung: AK-8, AK-9
+- [ ] 3.3 Generator und Szenario `offline` mit `--dump` (Operationen, Endstände, Hashes), zunächst ohne die
+  Fälle „Entfernen gegen Ändern“ – Prüfung: `cd spikes/sync/server && mix test`
+- [ ] 3.4 Befund `edit_on_removed` im Server und die 5 Fälle im Generator – Prüfung: AK-5
+- [ ] 3.5 Variante `offline --both` – Prüfung: AK-10
+- [ ] 3.6 `bench.sh --json [--log <datei>]` mit allen Kennzahlen und Beobachtungen – Prüfung: AK-8, AK-9
 
 ## 4. Demo und Bericht
 
@@ -37,6 +40,6 @@
 ## Workflow follow-up
 
 - Menschliche Abnahme: zwei Browser live und einer offline nach den Scenarios [mensch] (Kernteam)
-- ADR-Workshop: Ergebnis besprechen; ADR-030 und ADR-033 bestätigen oder überarbeiten; Open Questions klären
+- ADR-Workshop: Ergebnis besprechen; ADR-030 und ADR-033 bestätigen oder überarbeiten
   (Kernteam)
-- Change archivieren (Kernteam)
+- Change archivieren mit `--skip-specs` (Kernteam)
