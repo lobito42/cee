@@ -86,5 +86,10 @@ Die Spikes ap-00 und ap-01 sind abgeschlossen, ap-02 (Akustik) ist seit 2026-10-
 
 ## Offene Fragen
 
-1. Zwangsbedingungen in Skizzen hängen an der Lizenzklärung für PlaneGCS (ADR-027). Kommt keine Klärung bis
-   ap-12, starten Skizzen nur mit Maßen, Zwangsbedingungen folgen als eigener Change.
+1. Zwangsbedingungen in Skizzen hängen an der Lizenzklärung für PlaneGCS (ADR-027). Option ohne diese Frage:
+   der Löser aus [CADCraft](https://github.com/storytold/cadcraft) (`crates/constraints`, reines Rust,
+   MIT oder Apache-2.0, eigenes gedämpftes Gauss-Newton-Verfahren, Freiheitsgrade, Formeln, Widerspruchserkennung,
+   läuft auch als WASM); er hängt am Dokumentmodell von CADCraft und müsste herausgelöst oder als Vorlage für
+   einen eigenen Löser genutzt werden. Ein kurzer Spike zu Beginn von ap-12 vergleicht PlaneGCS, den
+   CADCraft-Löser und einen eigenen Löser (Lizenz, Robustheit an Referenzskizzen, Zeit, WASM). Bis dahin starten
+   Skizzen nur mit Maßen, Zwangsbedingungen folgen als eigener Change.
