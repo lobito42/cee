@@ -24,9 +24,9 @@ Wir bauen eine offene, kollaborative Plattform für Produktdefinition: CEE, das 
 
 **Das Fundament ist das atomare Datenmodell.** Jedes Element – Punkt, Achse, Skizze, Feature, Fläche, Körper, Bauteil, Baugruppe, Maß, Zeichnungsblatt, Regel, Anforderung – hat dieselbe Form, eine stabile ID und eine eigene Historie. Deshalb lässt sich alles gleich adressieren, veröffentlichen, kommentieren, versionieren und zusammenführen.
 
-**Ziel bis zur öffentlichen Beta:** Ein kleines Team modelliert einen Raum mit Grundriss, Wänden, Decke, Boden, Fenstern, Türen und Möbeln, platziert Schallabsorber aus dem eigenen Katalog und sieht die Nachhallzeit je Oktavband live. Materialien tragen Aussehen, Akustik, Physik, Kosten und CO₂; daraus entstehen Mengen, Kosten und ein Bericht für das Angebot, dazu ein fotorealistisches Bild. Alle arbeiten live gemeinsam oder offline, Agenten helfen über MCP – auch mit einem lokalen Modell – und alles läuft auf eigener Hardware. Dazu kommen Entwürfe, Freigabe mit Revisionen, Suche, Textprojektion, Regeln und eine Knoten-Ansicht (ADR-059). Das Tempo bestimmen die Agenten, nicht feste Termine; die Monatsangaben in der Roadmap sind Richtwerte.
+**Ziel bis zur öffentlichen Beta (ADR-062, CAD zuerst):** Ein kleines Team modelliert parametrische Teile und Baugruppen – Skizzen mit Maßen, Volumenkörper mit Schale, Verrundung und Muster, Komponenten mit Varianten, Verbindungen mit Freiheitsgraden und Kollisionsprüfung – und exportiert STL für den 3D-Druck. Materialien tragen Aussehen, Physik, Kosten und CO₂; daraus entstehen Volumen, Masse, Schwerpunkt, Mengen und Kosten. Raum und Akustik mit Nachhallzeit, Fotomodus und Angebot folgen als erstes Fachpaket nach der Beta. Alle arbeiten live gemeinsam oder offline, Agenten helfen über MCP – auch mit einem lokalen Modell – und alles läuft auf eigener Hardware. Dazu kommen Entwürfe, Freigabe mit Revisionen, Suche, Textprojektion, Regeln und eine Knoten-Ansicht (ADR-059). Das Tempo bestimmen die Agenten, nicht feste Termine; die Monatsangaben in der Roadmap sind Richtwerte.
 
-**Nicht-Ziele bis zur Beta:** Freiformflächen in Class-A-Qualität, native Feature-Bäume in kommerziellen CAD-Systemen, PLM- und ERP-Anbindung (Schnittstelle nach der Beta, ADR-048), FEM, Fertigungsregeln (Fräsen, 3D-Druck, Blech, Spritzguss), vollständiges BIM (Statik, Haustechnik, Bauantrag), ein eigener Geometrie-Kernel, Modellieren in XR, eine VS-Code-Integration, ein eigener KI-Dienst mit Abrechnung, Funktionen für Konzerne (PLM, feingranulare Rechteverwaltung); nach ADR-059 außerdem Bearbeiten im Knoten-Editor, Apps und Studien, IFC- und DXF-Import, Möbel aus glTF und das Änderungswesen.
+**Nicht-Ziele bis zur Beta:** Freiformflächen in Class-A-Qualität, native Feature-Bäume in kommerziellen CAD-Systemen, PLM- und ERP-Anbindung (Schnittstelle nach der Beta, ADR-048), FEM, Fertigungsregeln (Fräsen, Blech, Spritzguss; nur 3D-Druck-Prüfungen sind dabei), vollständiges BIM (Statik, Haustechnik, Bauantrag), ein eigener Geometrie-Kernel, Modellieren in XR, eine VS-Code-Integration, ein eigener KI-Dienst mit Abrechnung, Funktionen für Konzerne (PLM, feingranulare Rechteverwaltung); nach ADR-059 und ADR-062 außerdem das Fachpaket Raum und Akustik, Zeichnungen und PMI, Bearbeiten im Knoten-Editor, Apps und Studien, IFC- und DXF-Import, Möbel aus glTF und das Änderungswesen.
 
 ## Erster Anwendungsfall: Raumakustik mit Schallabsorbern
 
@@ -79,12 +79,12 @@ Die Lösung muss fachneutral sein (jede Branche über Fachpakete), über offene 
 | F-01 | Modell als Element-Graph bearbeiten und live in Browser und Desktop-App anzeigen | Muss |
 | F-02 | KI-Agenten beliebiger Anbieter, lokal oder in der Cloud, steuern Bauen, Messen, Rendern, Prüfen und Exportieren über MCP-Werkzeuge | Muss |
 | F-03 | Anforderungen strukturiert erfassen (Bauraum, Lasten, Schnittstellen, Werkstoff, Verfahren) als Elemente vom Typ requirement (ap-05, ap-15) | Muss |
-| F-04 | Konstruktionsrichtlinien als ausführbare Regeln: Raumakustik und Modellierrichtlinien vor der Beta (ap-20), Fertigungsverfahren danach (ap-31) | Muss |
-| F-05 | Export STEP AP242 vor der Beta (ap-33a); STL/3MF und Zeichnungsansichten als SVG/DXF nach der Beta (ap-31) | Muss |
+| F-04 | Konstruktionsrichtlinien als ausführbare Regeln: Prüfungen für den 3D-Druck vor der Beta (ap-48); Raumakustik und Modellierrichtlinien mit dem Fachpaket (ap-20) und weitere Fertigungsverfahren (ap-31) nach der Beta | Muss |
+| F-05 | Export STL für den 3D-Druck vor der Beta (ap-47), STEP AP242 im Freigabestand (ap-33a); 3MF, STEP einzeln, glTF und Zeichnungsansichten als SVG/DXF nach der Beta (ap-31) | Muss |
 | F-06 | Auswahl von Elementen, Flächen und Kanten wird als Kontext an den KI-Assistenten übergeben | Muss |
 | F-07 | Parametrische Bibliothek geprüfter Komponenten (ap-13); Normteile mit einem Fachpaket Mechanik nach der Beta | Muss |
 | F-08 | Blech: Abwicklung mit K-Faktor, Biegeradien, Freischnitte (nach der Beta) | Soll |
-| F-09 | Baugruppen mit Verbindungen (Joints) und Kollisionsprüfung (Fachpaket Mechanik, nach der Beta) | Soll |
+| F-09 | Baugruppen mit Verbindungen (Joints) und Kollisionsprüfung im Kern (ap-46, M1, ADR-062) | Muss |
 | F-10 | FEM-Vorabschätzung (linear-statisch) | Kann |
 | F-11 | Import bestehender STEP-Teile als Referenz/Schnittstelle | Soll |
 | F-12 | Stabile Identität für jedes Element (Parameter, Punkt, Achse, Ebene, Kante, Fläche, Körper, Skizze, Annotation, Zeichnungsblatt, Instanz) über Modelländerungen hinweg | Muss |
@@ -524,7 +524,8 @@ Die frühen ADRs 001 bis 027 stammen aus einer früheren Richtung (VS-Code-Erwei
 | 056 | Datenschutz: Anwesenheit nie speichern, Verlauf mit Konto-IDs, Export, keine Weitergabe ohne Wahl | Vollständiger Verlauf mit Klarnamen |
 | 057 | Einheiten und Größen: jede Zahl mit Dimension, kanonisch mm, rad, kg, s; Geld als Dezimalzahl mit Währung | Einheitenlose Zahlen nach Konvention |
 | 058 | Adressen auf ID-Basis, Namen als Aliase, Weiterleitung beim Verschieben | Namensbasierte Adressen |
-| 059 | Vier Meilensteine bis zur Beta (Klären, Erstes Angebot, Zusammen, Beta); Architektur vollständig ab M1; Teil-Changes; Knoten in der Beta nur lesend | Beta mit allen Funktionen; Zusammenarbeit schon in M1 |
+| 059 | Vier Meilensteine bis zur Beta (Klären, Erstes Angebot, Zusammen, Beta); Architektur vollständig ab M1; Teil-Changes; Knoten in der Beta nur lesend; geändert durch ADR-062 | Beta mit allen Funktionen; Zusammenarbeit schon in M1 |
+| 062 | CAD zuerst: M1 Modellieren (Skizzen, Volumenmodellierung, Baugruppen mit Verbindungen, Eigenschaften, STL); Raum und Akustik als Fachpaket F1 nach der Beta | Angebot für die Firma zuerst |
 
 ### ADR-001: Geometriekernel OpenCascade
 
@@ -786,7 +787,7 @@ Die frühen ADRs 001 bis 027 stammen aus einer früheren Richtung (VS-Code-Erwei
 
 **Entscheidung:** Die ersten Elementtypen sind `level`, `wall`, `slab`, `opening`, `furniture`, `absorber`, `material` und `analysis`; Absorber-Bauteile entstehen per Skizze und Extrusion. Ein Raum ist ein Element mit Untergraph; der Grundriss ist eine 2D-Ansicht derselben Elemente.
 
-**Konsequenzen:** Fertigungsregeln folgen nach der Beta. Kein volles BIM (Statik, Haustechnik, Bauantrag); IFC dient zum Übernehmen von Räumen.
+**Konsequenzen:** Fertigungsregeln folgen nach der Beta. Kein volles BIM (Statik, Haustechnik, Bauantrag); IFC dient zum Übernehmen von Räumen. Geändert durch ADR-062: bestimmt keinen Meilenstein des Kerns mehr, Fachpaket F1 nach der Beta.
 
 ### ADR-039: Material als Element mit Eigenschaften
 
@@ -836,7 +837,7 @@ Die frühen ADRs 001 bis 027 stammen aus einer früheren Richtung (VS-Code-Erwei
 
 **Entscheidung:** (1) Der Kern kennt nur fachneutrale Grundtypen (Element, Komponente, Instanz, Verbindungspunkt, Variable, Material, Analyse, Item); Fachtypen leben in Fachpaketen wie `raum`, `akustik`, später `mechanik`. (2) Auch mitgelieferte Fachpakete nutzen nur das Plugin-SDK. (3) Verbindungspunkte (`frame`) zum Platzieren von Instanzen. (4) Projektvariablen (`variables`) mit Einheiten. (5) Verweise über Projekte nur auf feste Versionen.
 
-**Konsequenzen:** Ändert ADR-038: Raum und Akustik sind das erste Fachpaket. ap-01 prüft zusätzlich eine fachfremde Baugruppe gegen dasselbe Schema.
+**Konsequenzen:** Ändert ADR-038: Raum und Akustik sind das erste Fachpaket. ap-01 prüft zusätzlich eine fachfremde Baugruppe gegen dasselbe Schema. Geändert durch ADR-062: Verbindungen in Baugruppen gehören zum Kern, nicht zum Fachpaket Mechanik.
 
 ### ADR-047: Freigabeprozess, Revisionen und Lebenszyklus
 
@@ -914,7 +915,7 @@ Die frühen ADRs 001 bis 027 stammen aus einer früheren Richtung (VS-Code-Erwei
 
 **Entscheidung:** (1) Vier Meilensteine bis zur Beta: M0 Klären (G1), M1 Erstes Angebot – die Firma erstellt allein ein echtes Angebot, eine Person, im Browser, selbst gehostet (G2), M2 Zusammen, M3 Beta (G3). (2) Nach der Beta: Knoten-Editor zum Bearbeiten, Apps und Studien, direktes Bearbeiten, IFC/DXF, Möbel aus glTF, Änderungswesen, PLM/ERP, Lernschleife und weiterer Ausbau. (3) Architektur-Grundlagen vollständig ab M1, verschoben werden nur Funktionen. (4) Große Pakete als Teil-Changes, ein Change je Nacht. (5) Die Warteschlange folgt den Meilensteinen.
 
-**Konsequenzen:** M1 ist für eine Person, das Datenmodell bleibt auf Zusammenarbeit ausgelegt; der Knoten-Editor ist in der Beta eine lesende Ansicht.
+**Konsequenzen:** M1 ist für eine Person, das Datenmodell bleibt auf Zusammenarbeit ausgelegt; der Knoten-Editor ist in der Beta eine lesende Ansicht. Geändert durch ADR-062 (M1 Modellieren statt Erstes Angebot).
 
 ### ADR-060: Geräte, Layouts, Eingabe und XR
 
@@ -931,6 +932,14 @@ Die frühen ADRs 001 bis 027 stammen aus einer früheren Richtung (VS-Code-Erwei
 **Entscheidung:** (1) Verbindlicher Musterkatalog `docs/design/muster.md`, je Aufgabe genau ein Muster: eine Entscheidungskarte für jede vorgeschlagene Änderung (KI, Konflikt, Bibliotheks-Update, Befund, Studie, Freigabe-Prüfung), ein Wertfeld mit Einheit, eine Suche für Befehle und Inhalte, eine Statussprache (Farbe, Symbol und Wort), Rückgängig statt Sicherheitsabfragen; neue Muster nur per ADR. (2) Standards: WAI-ARIA-Muster, WCAG 2.2 AA, Design-Tokens im W3C-Format, Farben in OKLCH, ISO 80000, Achsfarben X rot, Y grün, Z blau, Symbole aus Lucide. (3) Schrift Inter mit tabellarischen Ziffern, JetBrains Mono für Code, selbst gehostet; Grundgröße 13 px (Desktop) bzw. 15 px (Tablet). (4) Farbschema Graphit mit einem Akzent Stahlblau, gedämpfte Statusfarben, Kontraste ≥ 4,5 : 1 in hell und dunkel. (5) Eine Quelle `docs/design/tokens.json`, daraus CSS, TypeScript und später Swift. (6) Durchsetzung über Bausteine in `client/src/ui/`, Lint, Katalogseite, Referenzbilder auf Linux und Mac, Kontrast-Test.
 
 **Konsequenzen:** Präzisiert ADR-021, ADR-022, ADR-045, ADR-051 und ADR-052; ergänzt ADR-034 um Schriften unter der SIL Open Font License. ap-41 baut auf Katalog und Tokens auf, ap-08a erzeugt die Tokens und richtet Lint und Katalogseite ein, ap-08b baut die Bausteine.
+
+### ADR-062: CAD zuerst – Meilensteine neu geschnitten
+
+**Kontext:** ADR-059 hat M1 als „Erstes Angebot“ für die Absorber-Firma geschnitten; damit standen Akustik, Rendering und Bericht auf dem kritischen Pfad, allgemeines Modellieren nur so weit, wie Absorber es brauchen. Ein Fachpaket soll sich an einen fertigen Kern anschließen, nicht dessen Reihenfolge bestimmen.
+
+**Entscheidung:** (1) Alles, was zum CAD-Kern gehört, kommt so früh wie möglich; begonnen wird mit regulärer 3D-Modellierung für den 3D-Druck, Fertigungsoperationen folgen als Fachpakete. (2) M0 ohne ap-02 und ap-04. (3) M1 Modellieren mit ap-12, neu ap-45 Volumenmodellierung, ap-46 Baugruppen mit Verbindungen und Kollisionsprüfung, ap-47 Export STL, ap-18 Eigenschaften. (4) M2 zusätzlich ap-24 und ap-23a. (5) M3 zusätzlich ap-48 Prüfungen für den 3D-Druck. (6) Raum und Akustik als Fachpaket F1 nach der Beta, ohne Termin.
+
+**Konsequenzen:** Ändert ADR-038, ADR-046 (Verbindungen gehören zum Kern) und ADR-059. Die Firma bekommt ihr erstes Angebot erst nach der Beta. Zeichnungen und PMI bleiben nach der Beta. Zwangsbedingungen in Skizzen: Spike zu Beginn von ap-12 vergleicht PlaneGCS, den Löser aus CADCraft und einen eigenen Löser.
 
 ## Regelwerk und Verifikationsschleife
 
@@ -965,31 +974,28 @@ Die Zahlen sind Platzhalter aus gängigen Konstruktionsrichtlinien; jedes Untern
 
 ## Arbeitspakete
 
-Die Arbeit ist in Arbeitspakete geschnitten und nach vier Meilensteinen bis zur Beta geordnet (ADR-059): **M0 Klären**, **M1 Erstes Angebot** (die Firma erstellt allein ein echtes Angebot), **M2 Zusammen**, **M3 Beta**; danach folgt der Ausbau. Jedes Paket ist ein OpenSpec-Change mit Abnahmetests (`ap-xx-kurzname`); große Pakete sind in Teil-Changes (a, b) geteilt, damit jeder in eine Nacht passt. Die Tabelle steht in Umsetzungsreihenfolge; bis zur Beta sind es 35 Changes.
+Die Arbeit ist in Arbeitspakete geschnitten und nach vier Meilensteinen bis zur Beta geordnet (ADR-059, neu geschnitten durch ADR-062 „CAD zuerst“): **M0 Klären**, **M1 Modellieren** (eine Person modelliert parametrische Teile und Baugruppen mit Eigenschaften), **M2 Zusammen**, **M3 Beta**; danach folgen das Fachpaket Raum und Akustik (**F1**) und der Ausbau. Jedes Paket ist ein OpenSpec-Change mit Abnahmetests (`ap-xx-kurzname`); große Pakete sind in Teil-Changes (a, b) geteilt, damit jeder in eine Nacht passt. Die Tabelle steht in Umsetzungsreihenfolge; bis zur Beta sind es 32 Changes.
 
 | AP | Meilenstein | Inhalt | Abnahme | Abhängig von |
 | --- | --- | --- | --- | --- |
 | ap-00-setup | M0 | Gerüst für Rust, Elixir, TypeScript/Tauri, Python; CI; Lizenzprüfung; Credo und Dialyzer | Alle Sprachen bauen und testen in der CI; 0 Lizenzverstöße | – |
 | ap-01-spike-datenmodell | M0 | Elementschema, Automerge, Textprojektion, NIF und WASM, Komponenten und Instanzen; Beispiele: Raum mit Absorbern und fachfremde Baugruppe mit Verbindungspunkten, Variablen und Items | 12 Kennzahlen gemessen, Go oder No-Go | – |
-| ap-02-akustik-nachhallzeit | M0 | Crate `crates/acoustics`: Sabine und Eyring je Oktavband, Fehler, Kommandozeile | ≤ 0,1 % zur Formel; 1.000 Flächen ≤ 1 ms | – |
 | ap-39-spike-identitaet | M0 | Persistente Identität von Flächen und Kanten (ADR-016) an Referenzteilen: Topologie-Historie aus OCP, Stresstests mit geteilten und verschmolzenen Flächen | ≥ 95 % der Referenzen überleben 50 Parameteränderungen; Rest als Nachfrage, nie geraten | ap-00 |
 | ap-03-spike-sync | M0 | Phoenix Channels mit Rust-Kern: zwei Browser live, einer offline, Zusammenführen | Änderung bei beiden < 200 ms; Merge ohne Datenverlust | ap-01 |
-| ap-04-spike-rendering | M0 | Echtzeit-PBR und Fotomodus (Path Tracing mit Denoiser) in Browser und Tauri auf drei Systemen | Raum mit 50 Objekten ≥ 30 fps; Fotomodus 1920 × 1080 in ≤ 60 s auf Mittelklasse-GPU | ap-00 |
-| ap-41-ux-prototyp | M0 | Klickbarer Prototyp: Arbeitsfläche, Akustik-Panel, Entwürfe und Suche, gebaut aus Musterkatalog und Tokens (ADR-061); Test mit der Firma | 4 von 5 Testpersonen lösen drei Kernabläufe ohne Einweisung | – |
+| ap-41-ux-prototyp | M0 | Klickbarer Prototyp: Arbeitsfläche mit Modellier-Abläufen (Skizze, Formelement, Baugruppe), Entwürfe und Suche, gebaut aus Musterkatalog und Tokens (ADR-061) | 4 von 5 Testpersonen lösen drei Kernabläufe ohne Einweisung | – |
 | ap-05-graph-kern | M1 | Graph-Kern produktiv: Schema v1, Validierung, Abhängigkeiten, Migrationen, Teil-Laden, Berechnungszustände | 100.000 Elemente laden ≤ 2 s | ap-01 |
 | ap-40-bindungen-sdk | M1 | Produktive Bindungen des Kerns: Rustler-NIF, WASM, PyO3; Python-SDK; dieselben Bindungen für Fachpaket-Crates | Gleicher Inhalts-Hash in Rust, Elixir, Browser und Python; Operation ≤ 1 ms (NIF) bzw. ≤ 5 ms (WASM) | ap-05 |
-| ap-06-kernel-worker | M1 | Kernel-Protokoll, Python-Worker mit OCCT, Cache nach Inhalts-Hash, Detailstufen, robuste Neuberechnung | Raum mit 6 Wänden und 2 Öffnungen baut < 1 s; Worker-Absturz ohne Serverausfall | ap-05, ap-39, ap-40 |
+| ap-06-kernel-worker | M1 | Kernel-Protokoll, Python-Worker mit OCCT, Cache nach Inhalts-Hash, Detailstufen, robuste Neuberechnung | Referenzteil (Gehäuse mit Schale, Verrundungen und Muster) baut < 1 s; Worker-Absturz ohne Serverausfall | ap-05, ap-39, ap-40 |
 | ap-07a-server-dokument | M1 | Dokumentprozess, Speichern in PostgreSQL, Channels für eine Person, lokale Anmeldung, Export aller Projektdaten im offenen Format | Dokument mit 10.000 Elementen speichern und laden ≤ 2 s; Absturz ohne Datenverlust | ap-03, ap-05, ap-40 |
 | ap-08a-grundlagen | M1 | Befehlsregister mit Befehlssuche, Einstellungen, interne Fachpaket-API (ADR-054), Übersetzungen Deutsch und Englisch, Einheiten in Ein- und Ausgabe (ADR-057); Befehle als Daten mit Wirkung im Kern (ADR-060); Tokens erzeugt, Lint und Katalogseite (ADR-061) | Jede Funktion über die Befehlssuche erreichbar; keine festen Texte im Code; ein Beispiel-Fachpaket lädt über die API | ap-05, ap-40 |
-| ap-08b-arbeitsflaeche | M1 | Arbeitsfläche mit 3D und 2D-Grundriss, Featurebaum, Eigenschaften, Werte beim Ziehen tippen; Bausteine aus dem Musterkatalog (ADR-061); Bedienelemente nach WCAG 2.2 AA; Testzustände per Adresse (Testprojekt, Auswahl, Panel, Thema) für Screenshots ohne Klicken | 4 von 5 Testpersonen der Firma lösen Kernabläufe; Auswahl < 100 ms; vollständig per Tastatur bedienbar; jeder Referenz-Screenshot entsteht ohne Klicken aus einer Adresse | ap-04, ap-07a, ap-08a, ap-41 |
-| ap-09-raum-elemente | M1 | Geschoss, Wand, Boden, Decke, Fenster, Tür, einfache Möbel (Quader mit Absorptionsfläche); Wände im Grundriss zeichnen | Besprechungsraum in ≤ 5 min modelliert; Öffnungen schneiden Wände korrekt | ap-06, ap-08b |
-| ap-10-materialbibliothek | M1 | Material-Elemente mit allen Eigenschaftsgruppen, Import von Herstellerdaten (CSV) | 20 Materialien der Firma importiert, αw und Absorberklasse korrekt | ap-05, ap-08b |
-| ap-11-akustik-live | M1 | Analyse-Element Nachhallzeit, Live-Anzeige je Band, Zielband, Kern als WASM | Aktualisierung beim Verschieben < 100 ms | ap-02, ap-09, ap-10, ap-40 |
-| ap-12-skizze-extrusion | M1 | Skizzen und Extrusion für Absorberformen, Identität der Flächen; Zwangsbedingungen mit PlaneGCS erst nach Lizenzklärung (ADR-027) | Absorber-Form per Skizze in ≤ 3 Schritten; IDs stabil über 50 Parameteränderungen | ap-06, ap-08b, ap-39 |
-| ap-13a-komponenten-katalog | M1 | Komponenten mit Varianten und Instanzen (ADR-043); Absorber-Katalog der Firma als Bibliothek im selben Projekt; Platzieren an Wand und Decke über Verbindungspunkte, abgehängt, Reihen und Raster | 12 Deckensegel als Raster in einem Schritt; Wirkung sofort in der Nachhallzeit; eine Katalogänderung erreicht alle Instanzen, Überschreibungen bleiben | ap-10, ap-11, ap-12 |
-| ap-14-rendering-fotomodus | M1 | Echtzeit-PBR, HDRI, Fotomodus mit Denoiser produktiv, Bild als PNG | Referenzraum fotorealistisch; Materialien entsprechen Mustern der Firma | ap-04, ap-10 |
-| ap-18-mengen-kosten-co2 | M1 | Mengen, Kosten, Gewicht und CO₂ je Raum; CSV-Mengenliste | Summen stimmen mit Handrechnung für 3 Räume | ap-10, ap-13a |
-| ap-19-bericht-angebot | M1 | PDF-Bericht: Nachhallzeit vorher/nachher, Bilder, Grundriss, Mengen, Kosten, CO₂ | Firma versendet einen echten Bericht ohne Nacharbeit | ap-14, ap-18 |
+| ap-08b-arbeitsflaeche | M1 | Arbeitsfläche mit 3D-Ansicht und Skizzenebene, Featurebaum, Eigenschaften, Werte beim Ziehen tippen; Bausteine aus dem Musterkatalog (ADR-061); Bedienelemente nach WCAG 2.2 AA; Testzustände per Adresse (Testprojekt, Auswahl, Panel, Thema) für Screenshots ohne Klicken | 4 von 5 Testpersonen lösen Kernabläufe; Auswahl < 100 ms; vollständig per Tastatur bedienbar; jeder Referenz-Screenshot entsteht ohne Klicken aus einer Adresse | ap-07a, ap-08a, ap-41 |
+| ap-12-skizze-extrusion | M1 | Skizzen mit Maßen und Extrusion für beliebige Teile, Identität der Flächen; Zwangsbedingungen nach Vergleich PlaneGCS, Löser aus CADCraft und eigener Löser (Spike zu Beginn, ADR-027, ADR-062) | Grundkörper eines Gehäuses per Skizze in ≤ 3 Schritten; IDs stabil über 50 Parameteränderungen | ap-06, ap-08b, ap-39 |
+| ap-45-volumenmodellierung | M1 | Drehen, Ausformen (Loft), Austragen (Sweep), Schale, Verrundung, Fase, Spiegeln, lineares und kreisförmiges Muster, boolesche Operationen mit stabiler Identität (ap-39) | Gehäuse mit Deckel (Schale, Verrundungen, Muster) modelliert; Referenzen überleben 50 Parameteränderungen | ap-12, ap-39 |
+| ap-10-materialbibliothek | M1 | Material-Elemente mit Eigenschaftsgruppen (Aussehen, Physik, Kosten, CO₂, Akustik als eine Gruppe unter mehreren; ADR-039), Import von Herstellerdaten (CSV) | 20 Materialien importiert, Dichte, Kosten und Einheiten korrekt | ap-05, ap-08b |
+| ap-13a-komponenten-katalog | M1 | Komponenten mit Varianten und Instanzen (ADR-043) mit Verbindungspunkten; fachneutraler Katalog als Bibliothek im selben Projekt; Reihen und Raster | Schraube in drei Varianten 12-mal als Raster in einem Schritt platziert; eine Katalogänderung erreicht alle Instanzen, Überschreibungen bleiben | ap-10, ap-45 |
+| ap-46-baugruppen-verbindungen | M1 | Baugruppen mit Verbindungen (fest, Drehen, Schieben, Zylinder, Kugel, eben) zwischen Verbindungspunkten (ADR-043), Bewegen innerhalb der Freiheitsgrade, Kollisionsprüfung | Baugruppe aus fünf Teilen mit Dreh- und Schiebeverbindung bewegt sich nur in ihren Freiheitsgraden; eine absichtlich eingebaute Überschneidung wird gefunden | ap-13a |
+| ap-47-export-stl | M1 | Export STL von Teilen und Baugruppen für den Slicer, Auflösung wählbar | STL des Gehäuses öffnet in PrusaSlicer ohne Reparaturhinweis | ap-45 |
+| ap-18-mengen-kosten-co2 | M1 | Eigenschaften auswerten: Volumen, Masse, Schwerpunkt, Mengen, Kosten und CO₂ je Teil und Baugruppe; CSV-Mengenliste | Masse, Schwerpunkt und Summen stimmen mit der Handrechnung für 3 Baugruppen | ap-10, ap-46 |
 | ap-16-selbstbetrieb | M1 | Container mit Server und Datenbank, Backups mit Wiederherstellungstest (lokales Modell mit ap-15, OIDC mit ap-07b) | Installation in < 15 min | ap-07a |
 | ap-07b-server-zusammenarbeit | M2 | Mehrere Personen live: Presence, Cursor, Kommentare an Elementen, Rollen und Rechte, Anmeldung über OIDC (ADR-055) | 20 gleichzeitige Nutzer je Dokument, Änderung < 200 ms; Rechte im Server geprüft | ap-07a |
 | ap-25-entwuerfe | M2 | Entwürfe, Meilensteine, Übernehmen mit Entscheidungskarten, Zur Prüfung geben, Verwerfen mit Begründung, Herkunft, semantische Konflikte (ADR-051) | 100 % der Konflikte im Testkorpus erkannt | ap-07b |
@@ -998,12 +1004,19 @@ Die Arbeit ist in Arbeitspakete geschnitten und nach vier Meilensteinen bis zur 
 | ap-13b-bibliotheken | M2 | Referenz-Eingänge an Komponenten mit Ersetzen und Umhängen (ADR-050); Bibliotheken über Projektgrenzen mit Versionen und Aktualisierung mit Vorschau | Katalog aus einem Bibliotheksprojekt in drei Raumprojekten; Update mit Vorschau übernommen, Überschreibungen bleiben | ap-13a, ap-26 |
 | ap-33a-freigabe | M2 | Items, Sachnummern, Revisionen, Lebenszyklus, Selbstfreigabe bzw. Vier-Augen-Prinzip, Freigabestand mit STEP, Bericht und Mengenliste als Stückliste | Absorber und Raumangebot freigegeben, geändert und als Revision B erneut freigegeben; Freigabestand bitgleich reproduzierbar | ap-25, ap-26 |
 | ap-37a-suche | M2 | Struktur Organisation › Bereich › Projekt, Suche mit Facetten, Rückverweise, Startseite | 20 typische Such-Aufgaben der Firma in je ≤ 30 s gelöst; Suche über 100.000 Elemente < 300 ms | ap-07b, ap-25 |
-| ap-15-mcp-ki | M3 | MCP-Endpunkt, Anbieter-Schnittstelle (lokal und Cloud), Änderungssätze, Eval-Suite mit Aufgabengenerator und Prüfern (ADR-053) | Agent bringt die Nachhallzeit eines Referenzraums in das Zielband, mit Cloud- und lokalem Modell | ap-07b, ap-08a, ap-13a |
-| ap-24-textprojektion-git | M3 | Textprojektion produktiv, Git-Export und -Import | Roundtrip verlustfrei; eine Parameteränderung = eine Zeile | ap-05 |
-| ap-20-regeln-raumakustik | M3 | Zielwerte als Regelpaket (z. B. nach DIN 18041), geprüft durch die Firma; Messungen mit Grenzwert, Modellierrichtlinien | Zielbänder für 5 Raumarten stimmen mit Firmenprüfung | ap-11 |
-| ap-08c-arbeitsflaeche-ausbau | M3 | Stapel, Arbeitsbereiche aus Fachpaketen, Aktionsprotokoll, Avatare; Layout Tablet für das iPad (ansehen, kommentieren, freigeben, präsentieren) | Stapel und Arbeitsbereiche für Raum und Akustik; jede Aktion als Textzeile kopierbar; Freigabe am iPad in Safari | ap-07b, ap-08b |
-| ap-23a-knoten-ansicht | M3 | Knoten-Ansicht des Graphen: lesen, durchsuchen, Werte an jeder Kante; Auswahl synchron mit 3D | Absorber-Raster vollständig als Knoten sichtbar; Auswahl in beide Richtungen < 100 ms | ap-08b, ap-24 |
+| ap-24-textprojektion-git | M2 | Textprojektion produktiv, Git-Export und -Import | Roundtrip verlustfrei; eine Parameteränderung = eine Zeile | ap-05 |
+| ap-23a-knoten-ansicht | M2 | Knoten-Ansicht des Graphen: lesen, durchsuchen, Werte an jeder Kante; Auswahl synchron mit 3D | Baugruppe aus fünf Teilen vollständig als Knoten sichtbar; Auswahl in beide Richtungen < 100 ms | ap-08b, ap-24 |
+| ap-15-mcp-ki | M3 | MCP-Endpunkt, Anbieter-Schnittstelle (lokal und Cloud), Änderungssätze, Eval-Suite mit Aufgabengenerator und Prüfern (ADR-053) | Agent ändert eine Baugruppe nach Vorgabe als Änderungssatz (z. B. Wandstärke und Muster), mit Cloud- und lokalem Modell | ap-07b, ap-08a, ap-46 |
+| ap-08c-arbeitsflaeche-ausbau | M3 | Stapel, Arbeitsbereiche aus Fachpaketen, Aktionsprotokoll, Avatare; Layout Tablet für das iPad (ansehen, kommentieren, freigeben, präsentieren) | Stapel und Arbeitsbereiche aus einem Beispiel-Fachpaket; jede Aktion als Textzeile kopierbar; Freigabe am iPad in Safari | ap-07b, ap-08b |
 | ap-27-plugin-sdk | M3 | Fachpaket-API öffentlich und minimal: Manifest, Sandbox und Rechte, Projekt-Vertrauen, Beispiel-Fachpaket | Fremd-Plugin ohne Änderung am Kern | ap-05, ap-08c |
+| ap-48-druck-pruefungen | M3 | Prüfungen für den 3D-Druck als Regeln (ADR-008): Mindestwandstärke, Überhänge, geschlossener Körper | Alle Fehler in 10 präparierten Referenzteilen gefunden, keine Falschmeldung an 10 sauberen | ap-45, ap-47 |
+| ap-02-akustik-nachhallzeit | F1 nach Beta | Crate `crates/acoustics`: Sabine und Eyring je Oktavband, Fehler, Kommandozeile | ≤ 0,1 % zur Formel; 1.000 Flächen ≤ 1 ms | – |
+| ap-09-raum-elemente | F1 nach Beta | Geschoss, Wand, Boden, Decke, Fenster, Tür, einfache Möbel (Quader mit Absorptionsfläche); Wände im Grundriss zeichnen | Besprechungsraum in ≤ 5 min modelliert; Öffnungen schneiden Wände korrekt | ap-06, ap-08b |
+| ap-04-spike-rendering | F1 nach Beta | Echtzeit-PBR und Fotomodus (Path Tracing mit Denoiser) in Browser und Tauri auf drei Systemen | Raum mit 50 Objekten ≥ 30 fps; Fotomodus 1920 × 1080 in ≤ 60 s auf Mittelklasse-GPU | ap-00, ap-08b |
+| ap-14-rendering-fotomodus | F1 nach Beta | Echtzeit-PBR, HDRI, Fotomodus mit Denoiser produktiv, Bild als PNG | Referenzraum fotorealistisch; Materialien entsprechen Mustern der Firma | ap-04, ap-10 |
+| ap-11-akustik-live | F1 nach Beta | Analyse-Element Nachhallzeit, Live-Anzeige je Band, Zielband, Kern als WASM | Aktualisierung beim Verschieben < 100 ms | ap-02, ap-09, ap-10, ap-13a, ap-40 |
+| ap-19-bericht-angebot | F1 nach Beta | PDF-Bericht: Nachhallzeit vorher/nachher, Bilder, Grundriss, Mengen, Kosten, CO₂ | Firma versendet einen echten Bericht ohne Nacharbeit | ap-14, ap-18 |
+| ap-20-regeln-raumakustik | F1 nach Beta | Zielwerte als Regelpaket (z. B. nach DIN 18041), geprüft durch die Firma; Messungen mit Grenzwert, Modellierrichtlinien | Zielbänder für 5 Raumarten stimmen mit Firmenprüfung | ap-11 |
 | ap-42-spike-xr-eingabe | Spike, jederzeit | WebXR auf Meta Quest 3 und PC-VR mit einem Referenzraum, Höreindruck aus der Nachhallzeit, Webviews von Tauri auf WebXR prüfen; 3D-Maus über WebHID und HID in Tauri, Konflikte mit Hersteller-Treibern | Raum mit 50 Objekten ≥ 72 fps auf der Brille; 3D-Maus mit sechs Achsen in Chrome und Tauri auf 3 Systemen | ap-04 |
 | ap-43-eingabegeraete | nach Beta | Navigationsprofile (Onshape, SolidWorks, Fusion, Blender), 3D-Maus mit Objekt- und Kameramodus und belegbaren Tasten (HID in Tauri, WebHID in Chromium), Trackpad-Gesten, Bearbeiten im Layout Tablet mit Stift (ADR-060) | Begehung eines Raums nur mit der 3D-Maus auf Linux und Mac; Umsteiger navigiert ohne Einweisung mit seinem Profil | ap-08c, ap-42 |
 | ap-29-webxr | nach Beta | XR, Stufe 1 über WebXR (ADR-060): Begehung in Originalgröße und als Puppenhaus, Höreindruck vorher/nachher aus der Nachhallzeit, Instanzen platzieren und austauschen, AR mit Ebenenerkennung (wo der Browser es kann), gemischte Sitzungen mit Anwesenheit und Kommentaren | Review-Sitzung mit 3 Personen (Brille und Desktop); ≥ 72 fps auf Meta Quest 3; Absorber in AR an die echte Decke gesetzt und als Entwurf übernommen | ap-07b, ap-11, ap-14, ap-42 |
@@ -1019,7 +1032,7 @@ Die Arbeit ist in Arbeitspakete geschnitten und nach vier Meilensteinen bis zur 
 | ap-38-lernschleife | nach Beta | Erfahrungsspeicher, Versuche mit Prüfern, LoRA-Adapter aus geprüften Erfolgen, geheime Prüfaufgaben, Regressionsschranke | Lokales 8B-Modell mit Adapter löst ≥ 20 Prozentpunkte mehr geheime Aufgaben, ohne Rückschritt in einer Kategorie | ap-15 |
 | ap-28-hosting | nach Beta | Gehosteter Dienst mit Organisationen | Erste externe Organisation | ap-16 |
 | ap-30-akustik-geometrisch | nach Beta | Spiegelquellen bzw. Strahlverfolgung, Auralisation (hörbar machen) | Abweichung zu Messung in 3 Räumen dokumentiert | ap-11 |
-| ap-31-fertigung | nach Beta | Fertigungsregeln (Fräsen, 3D-Druck, Blech), STEP mit PMI, Zeichnungen | Absorber-Bauteil fertigungsgerecht exportiert | ap-12 |
+| ap-31-fertigung | nach Beta | Fertigungsregeln (Fräsen, Blech, Spritzguss), STEP mit PMI, Zeichnungen | Referenzbauteil fertigungsgerecht mit Zeichnung exportiert | ap-12 |
 | ap-32-zweiter-kernel | nach Beta | Spezialisierter Kernel (implizite Modelle, Gitter, z. B. für Absorberstrukturen) | Gitterabsorber als 3MF exportiert | ap-06 |
 
 ### Entwicklung mit Agenten
@@ -1043,8 +1056,8 @@ Beide haben keine Erfahrung mit Rust und Elixir; den Code schreiben und prüfen 
 
 ### Fokus bis zur Beta
 
-- Bis zur Beta in vier Meilensteinen (ADR-059): M0 Klären, M1 Erstes Angebot, M2 Zusammen, M3 Beta mit KI, Textprojektion, Regeln, Knoten-Ansicht und öffentlicher Fachpaket-API.
-- Nach der Beta: Knoten-Editor zum Bearbeiten, Apps und Studien, direktes Bearbeiten und Skelett, IFC/DXF, Möbel aus glTF, Änderungswesen, PLM/ERP, Lernschleife, gehosteter Dienst, WebXR, geometrische Akustik, Fertigung, zweiter Kernel. Im Ideenspeicher (`docs/ideen/`): unter anderem 3D-gedruckte, auf den Raum optimierte Resonator-Absorber.
+- Bis zur Beta in vier Meilensteinen (ADR-059, ADR-062): M0 Klären, M1 Modellieren, M2 Zusammen mit Textprojektion und Knoten-Ansicht, M3 Beta mit KI, Prüfungen für den 3D-Druck und öffentlicher Fachpaket-API.
+- Nach der Beta: Fachpaket Raum und Akustik (F1) mit Nachhallzeit, Fotomodus und Angebot, Zeichnungen und PMI, Knoten-Editor zum Bearbeiten, Apps und Studien, direktes Bearbeiten und Skelett, IFC/DXF, Möbel aus glTF, Änderungswesen, PLM/ERP, Lernschleife, gehosteter Dienst, WebXR, geometrische Akustik, Fertigung, zweiter Kernel. Im Ideenspeicher (`docs/ideen/`): unter anderem 3D-gedruckte, auf den Raum optimierte Resonator-Absorber.
 - Prinzip: Das Datenmodell zuerst und richtig. Alles andere lässt sich später verbessern, ein falsches Datenmodell nicht.
 
 ## Entwicklungsumgebung und Agenten-Setup
@@ -1104,18 +1117,18 @@ Abnahmetests sind immer pytest-Tests unter `tests/acceptance/<change-id>/`; sie 
 
 ## Roadmap und Meilensteine
 
-Die Roadmap wird über Meilensteine und Gates gesteuert, nicht über Termine (ADR-059). Die Monatsangaben sind Richtwerte bei etwa zwei Nachtläufen je Change und Reviews mehrmals pro Woche; das Tempo bestimmen Nachtschicht und menschliche Prüfzeit. Kritischer Pfad: ap-05 → ap-40 → ap-06, ap-07a und ap-08a → ap-08b → Fachpaket Raum (ap-09 bis ap-13a) → ap-14, ap-18, ap-19. Architektur-Grundlagen (Befehlsregister, Fachpaket-API, Einheiten, CRDT) kommen vollständig in M1; verschoben werden nur Funktionen.
+Die Roadmap wird über Meilensteine und Gates gesteuert, nicht über Termine (ADR-059). Die Monatsangaben sind Richtwerte bei etwa zwei Nachtläufen je Change und Reviews mehrmals pro Woche; das Tempo bestimmen Nachtschicht und menschliche Prüfzeit. Kritischer Pfad (ADR-062): ap-05 → ap-40 → ap-39 → ap-06 → ap-08a → ap-08b → ap-12 → ap-45 → ap-13a → ap-46 → ap-18; ap-47 nach ap-45; ap-07a und ap-10 laufen daneben. Architektur-Grundlagen (Befehlsregister, Fachpaket-API, Einheiten, CRDT) kommen vollständig in M1; verschoben werden nur Funktionen.
 
 &#91;embedded content: Roadmap · vier Meilensteine bis zur Beta, vier Gates\]
 
 | Gate | Richtwert | Kriterium |
 | --- | --- | --- |
-| G1 Architektur trägt (Ende M0) | Monat 1–2 | ap-01 bis ap-04, Identitäts-Spike ap-39 und UX-Prototyp ap-41 mit Go (oder angepasste ADRs); Nachhallzeit korrekt und schnell; Gerüst in vier Sprachen grün |
-| G2 Erstes Angebot (Ende M1) | Monat 3–4 | Die Firma erstellt allein im Browser, selbst gehostet, ein echtes Angebot: Raum mit Absorbern aus dem Katalog, Nachhallzeit live, Fotomodus-Bild, Bericht mit Mengen, Kosten und CO₂ |
-| G3 Öffentliche Beta (Ende M3) | Monat 6 | Mehrere Personen live und offline, Entwürfe, Freigabe mit Revisionen, Suche; KI über MCP mit lokalem und Cloud-Modell; Textprojektion, Regeln, Knoten-Ansicht, öffentliche Fachpaket-API; die Firma nutzt CEE für alle Angebote |
-| G4 Ökosystem | ab Monat 7 | Knoten-Editor, Apps und Studien, IFC und DXF, Möbel aus glTF, Änderungswesen, PLM/ERP-Schnittstelle, Lernschleife, Hosting, WebXR, geometrische Akustik, Fertigung, externe Beiträge |
+| G1 Architektur trägt (Ende M0) | Monat 1–2 | ap-01 und ap-03, Identitäts-Spike ap-39 und UX-Prototyp ap-41 mit Go (oder angepasste ADRs); Gerüst in vier Sprachen grün |
+| G2 Modellieren (Ende M1) | Monat 3–4 | Eine Testperson modelliert allein im Browser, selbst gehostet, ein Gehäuse mit Deckel (Schale, Verrundungen, Muster) und eine Baugruppe aus fünf Teilen mit Varianten, Dreh- und Schiebeverbindung; die Kollisionsprüfung findet eine eingebaute Überschneidung; 50 Parameteränderungen zerbrechen keine Referenz; Masse und Schwerpunkt stimmen; die STL öffnet in PrusaSlicer ohne Reparaturhinweis |
+| G3 Öffentliche Beta (Ende M3) | Monat 6 | Mehrere Personen live und offline, Entwürfe, Freigabe mit Revisionen, Suche; KI über MCP mit lokalem und Cloud-Modell; Textprojektion, Prüfungen für den 3D-Druck, Knoten-Ansicht, öffentliche Fachpaket-API |
+| G4 Ökosystem | ab Monat 7 | Fachpaket Raum und Akustik (F1: die Firma erstellt allein ein echtes Angebot), Zeichnungen und PMI, Knoten-Editor, Apps und Studien, IFC und DXF, Möbel aus glTF, Änderungswesen, PLM/ERP-Schnittstelle, Lernschleife, Hosting, WebXR, geometrische Akustik, Fertigung, externe Beiträge |
 
-**Machbarkeit (dritte Prüfschleife, ADR-059 Nachtrag):** Die Monate gelten nur, wenn Agenten-PRs meist am selben Werktag gemergt werden; bei zwei bis drei Reviews pro Woche liegt G2 eher im Monat 5–6 und G3 im Monat 9–10. Engpass ist die Wartezeit auf Menschen, nicht das Abo-Kontingent. Deshalb bestimmt `tools/next_step.py` den nächsten Schritt aus dem Repository, rote PRs werden automatisch bis zu zweimal repariert, und die Nachtschicht läuft als GitHub-Action mit derselben Werkzeugkette wie die CI. Scenarios sind `[auto]` (Abnahmetest) oder `[mensch]` (Checkliste im PR); Testkorpora liefert das Kernteam. Ob für G2 Zielwerte nach DIN 18041, Angebotsfelder und ein Grundriss-Hintergrund nötig sind, klären wir, sobald die Firma dazukommt.
+**Machbarkeit (dritte Prüfschleife, ADR-059 Nachtrag):** Die Monate gelten nur, wenn Agenten-PRs meist am selben Werktag gemergt werden; bei zwei bis drei Reviews pro Woche liegt G2 eher im Monat 5–6 und G3 im Monat 9–10. Engpass ist die Wartezeit auf Menschen, nicht das Abo-Kontingent. Deshalb bestimmt `tools/next_step.py` den nächsten Schritt aus dem Repository, rote PRs werden automatisch bis zu zweimal repariert, und die Nachtschicht läuft als GitHub-Action mit derselben Werkzeugkette wie die CI. Scenarios sind `[auto]` (Abnahmetest) oder `[mensch]` (Checkliste im PR); Testkorpora liefert das Kernteam. Ob für F1 Zielwerte nach DIN 18041, Angebotsfelder und ein Grundriss-Hintergrund nötig sind, klären wir, sobald die Firma dazukommt.
 
 ## Risiken und Gegenmaßnahmen
 

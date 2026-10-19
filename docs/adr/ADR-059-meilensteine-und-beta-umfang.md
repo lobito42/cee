@@ -3,6 +3,8 @@
 - Status: akzeptiert
 - Datum: 2026-10-17
 - Entscheider: Kernteam
+- Geändert durch: ADR-062 (CAD zuerst: M1 „Modellieren“ statt „Erstes Angebot“, Raum und Akustik als F1 nach
+  der Beta)
 
 ## Kontext
 
