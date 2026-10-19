@@ -5,6 +5,8 @@
 //! - `hash <projekt.json> <ops.json>` – Inhalts-Hash nach den Operationen
 //! - `bench --json` – alle Messungen, Ausgabe wie `docs/spikes/datenmodell.json`
 
+mod bench;
+
 use std::process::ExitCode;
 
 use datenmodell::{canonical_pretty, text, Error, Op, Result, Store};
@@ -38,6 +40,15 @@ fn run(args: &[String]) -> Result<String> {
             let mut store = Store::from_project(&read_json(arg(1)?)?)?;
             store.apply_all(&Op::parse_list(&read(arg(2)?)?)?)?;
             Ok(format!("{{\"hash\": \"{}\"}}\n", store.hash()?))
+        }
+        Some("bench") => {
+            let out = canonical_pretty(&bench::run()?)? + "\n";
+            // `--out <datei>` schreibt das Ergebnis zusätzlich in eine Datei.
+            if let Some(pos) = args.iter().position(|a| a == "--out") {
+                let path = arg(pos + 1)?;
+                std::fs::write(path, &out).map_err(|e| Error::Json(format!("{path}: {e}")))?;
+            }
+            Ok(out)
         }
         _ => Err(Error::Json(format!(
             "Aufruf: datenmodell to-text|from-text|hash|bench …; erhalten: {args:?}"

@@ -30,7 +30,8 @@ echo "== WASM"
 if ! rustup target list --installed | grep -qx wasm32-unknown-unknown; then
   rustup target add wasm32-unknown-unknown
 fi
-# getrandom 0.3 braucht für wasm32-unknown-unknown das JS-Backend (Actor-IDs von Automerge).
+# Zufall für Actor-IDs kommt in WASM aus der JS-Laufzeit (Feature `wasm` von automerge, getrandom/wasm_js;
+# ältere getrandom-Versionen verlangen zusätzlich die cfg-Angabe).
 RUSTFLAGS='--cfg getrandom_backend="wasm_js"' \
   cargo build --release -q -p datenmodell_wasm --target wasm32-unknown-unknown
 

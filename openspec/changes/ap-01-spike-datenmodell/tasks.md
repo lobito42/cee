@@ -18,7 +18,7 @@
 
 ## 3. Messen und berichten
 
-- [ ] 3.1 `bench --json` erzeugt `docs/spikes/datenmodell.json` mit allen Kennzahlen – Prüfung: AK-2, AK-8
+- [x] 3.1 `bench --json` erzeugt `docs/spikes/datenmodell.json` mit allen Kennzahlen – Prüfung: AK-2, AK-8
 - [ ] 3.2 Bericht `docs/spikes/datenmodell.md` mit Textformat-Vergleich und Empfehlung – Prüfung: AK-1
 
 ## Workflow follow-up
