@@ -3,6 +3,7 @@
 - Status: akzeptiert
 - Datum: 2026-10-17
 - Entscheider: Kernteam
+- Ergänzt: 2026-10-19 (Nachtrag: UCUM-Codes, Standard-Einheit je Parameter)
 
 ## Kontext
 
@@ -27,7 +28,23 @@ in der Produktentwicklung teuer; Fachpakete aus verschiedenen Branchen nutzen ve
 
 Einheitenlose Zahlen mit Konvention; alles in SI-Basiseinheiten (m) speichern.
 
+## Nachtrag 2026-10-19: Einheitentabelle und Standard-Einheit
+
+Einheiten kommen aus vielen Quellen (Oberfläche, Import, KI über MCP, Skripte, Fachpakete, Textprojektion). Die
+Oberfläche bietet Einheiten als Auswahl an; prüfen und umrechnen muss trotzdem der Kern, weil alle anderen Wege
+keine Auswahlliste haben.
+
+5. **Codes nach UCUM:** Einheiten werden nach dem Unified Code for Units of Measure geschrieben (`mm`, `deg`,
+   `kg`, `[in_i]`, `kg{CO2e}`). Dimensionen sind Exponenten der SI-Grundgrößen; Winkel und CO₂-Äquivalent
+   sind eigene Achsen. Abgeleitete Größen speichern im Produkt der kanonischen Einheiten (Druck N/mm² = MPa).
+6. **Eine Einheitentabelle im Kern:** Codes, Dimensionen und exakte Faktoren nach NIST SP 811; Oberfläche,
+   Import und Fachpakete nutzen dieselbe Tabelle. Neue Einheiten nur per Change.
+7. **Standard-Einheit je Parameter:** Typdefinitionen der Fachpakete legen je Parameter Dimension und
+   Standard-Einheit fest. Eine Zahl ohne Einheit bekommt die Standard-Einheit und eine Warnung; ohne
+   Typdefinition bleibt sie unverändert mit Warnung. Eine Einheit mit falscher Dimension wird abgelehnt. Der
+   Kern rät keine Dimension.
+
 ## Konsequenzen
 
-Ergänzt ADR-028, ADR-044 und ADR-046. Festgelegt im Schema von ap-05; der Spike ap-01 prüft Einheiten bisher
-nur an Projektvariablen.
+Ergänzt ADR-028, ADR-044 und ADR-046. Festgelegt im Schema von ap-05a (Einheitentabelle, Typdefinitionen,
+Regeln); die Auswahl in der Oberfläche kommt mit ap-08a. Temperatur zunächst nur in K.
