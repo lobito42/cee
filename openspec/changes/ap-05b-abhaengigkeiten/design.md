@@ -112,7 +112,7 @@ Die Abnahmetests messen selbst nach (Median aus 3 Läufen von `graphctl bench --
 - **Teil-Laden spart nur Aufbereitung,** nicht das Laden der Bytes; für G2 genügt das.
 - **Beispiel-Migration nur in Tests:** belegt den Mechanismus, ohne das echte Schema zu ändern.
 
-## Open Questions
+## Entscheidungen des Kernteams (2026-10-19)
 
-1. **Teil-Laden:** Aufbereitung bei Bedarf in einem Dokument (Vorschlag) oder schon jetzt getrennte Dokumente
-   je Bauteil?
+1. Teil-Laden als Aufbereitung bei Bedarf in einem Dokument je Projekt; getrennte Dokumente je Bauteil bleiben
+   Ausweichlösung, falls große Baugruppen es verlangen.
