@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cee.dev/format/schema/element.schema.json",
+  "title": "CEE-Projekt (Entwurf, Schema-Version 1)",
+  "description": "Ein Projekt ist ein Graph aus Elementen. Jedes Element hat dieselbe Form (ADR-028), vom Achsenursprung bis zur Baugruppe. Das Schema zählt keine Fachtypen auf (ADR-046): `type` ist ein freier Bezeichner, die Bedeutung legen Fachpakete fest (ADR-054).",
+  "type": "object",
+  "required": ["schema_version", "elements"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "description": "Version des Speicherformats. Änderung nur mit Migration.",
+      "type": "integer",
+      "minimum": 1
+    },
+    "elements": {
+      "description": "Elemente der obersten Ebene in stabiler Reihenfolge.",
+      "$ref": "#/$defs/elementList"
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "description": "Stabile Element-ID; wird nie wiederverwendet (ADR-058). Enthält keinen Punkt, weil der Punkt ID und Ausgang einer Referenz trennt.",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$"
+    },
+    "name": {
+      "description": "Name eines Eingangs, Ausgangs, Parameters oder Meta-Eintrags.",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_][A-Za-z0-9_-]*$"
+    },
+    "reference": {
+      "description": "Verweis auf den Ausgang eines Elements: `<id>.<output>`. Nie auf Positionen oder Indizes (ADR-016).",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*\\.[A-Za-z0-9_][A-Za-z0-9_-]*$"
+    },
+    "elementList": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/element" }
+    },
+    "element": {
+      "description": "Einheitliche Elementform. Alle sieben Felder sind immer vorhanden; es gibt keine Felder, die nur für einzelne Typen gelten.",
+      "type": "object",
+      "required": ["id", "type", "inputs", "params", "outputs", "content", "meta"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/identifier" },
+        "type": {
+          "description": "Freier Typbezeichner (keine feste Liste, ADR-046).",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_.-]*$"
+        },
+        "inputs": {
+          "description": "Eingänge: Name → Referenz auf einen Ausgang.",
+          "type": "object",
+          "propertyNames": { "$ref": "#/$defs/name" },
+          "additionalProperties": { "$ref": "#/$defs/reference" }
+        },
+        "params": {
+          "description": "Parameter: Name → beliebiger JSON-Wert. Zahlen mit Einheit als Objekt `{value, unit}` oder in kanonischen Einheiten (ADR-057).",
+          "type": "object",
+          "propertyNames": { "$ref": "#/$defs/name" }
+        },
+        "outputs": {
+          "description": "Ausgänge: Name → Ausgabetyp.",
+          "type": "object",
+          "propertyNames": { "$ref": "#/$defs/name" },
+          "additionalProperties": { "type": "string", "minLength": 1 }
+        },
+        "content": {
+          "description": "Untergraph (leer, wenn das Element keinen hat). Bauteile und Baugruppen sind Elemente mit Untergraph.",
+          "$ref": "#/$defs/elementList"
+        },
+        "meta": {
+          "description": "Beschreibende Angaben ohne Einfluss auf die Berechnung (Name, Herkunft, Notizen).",
+          "type": "object"
+        }
+      }
+    }
+  }
+}
