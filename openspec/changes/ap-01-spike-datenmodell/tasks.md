@@ -10,7 +10,7 @@
 
 - [x] 2.1 `spikes/datenmodell/`: Graph auf automerge-rs, Laden und Speichern – Prüfung: `cargo test --manifest-path spikes/datenmodell/Cargo.toml`
 - [x] 2.2 Textprojektion `to-text` und `from-text`, deterministisch und verlustfrei – Prüfung: AK-4, AK-5
-- [ ] 2.3 Erkennung semantischer Konflikte nach Merge – Prüfung: Kennzahl `conflicts_detected_pct`
+- [x] 2.3 Erkennung semantischer Konflikte nach Merge – Prüfung: Kennzahl `conflicts_detected_pct`
 - [ ] 2.4 Rustler-NIF-Prototyp unter `spikes/datenmodell/nif/` und WASM-Build für Node – Prüfung: Kennzahlen `nif_op_p95_ms`, `wasm_op_p95_ms`, `hash_equal_native_nif_wasm`
 
 - [ ] 2.5 Auflösung von Instanzen und Weitergabe von Definitionsänderungen – Prüfung: Kennzahlen `component_propagate_1000_ms`, `overrides_kept_pct`
