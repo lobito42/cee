@@ -1,0 +1,130 @@
+{
+  "spike": "ap-03-spike-sync",
+  "command": "bash spikes/sync/bench.sh --json",
+  "metrics": {
+    "live_a_to_b_p95_ms": {
+      "value": 33.9,
+      "unit": "ms",
+      "threshold": 200,
+      "pass": true
+    },
+    "live_b_to_a_p95_ms": {
+      "value": 34.3,
+      "unit": "ms",
+      "threshold": 200,
+      "pass": true
+    },
+    "live_delivered_pct": {
+      "value": 100,
+      "unit": "%",
+      "threshold": 100,
+      "pass": true
+    },
+    "concurrent_converge_p95_ms": {
+      "value": 46.1,
+      "unit": "ms",
+      "threshold": 200,
+      "pass": true
+    },
+    "concurrent_converged_pct": {
+      "value": 100,
+      "unit": "%",
+      "threshold": 100,
+      "pass": true
+    },
+    "offline_lost_edits": {
+      "value": 0,
+      "unit": "Änderungen",
+      "threshold": 0,
+      "pass": true
+    },
+    "offline_conflicts_reported_pct": {
+      "value": 100,
+      "unit": "%",
+      "threshold": 100,
+      "pass": true
+    },
+    "offline_hash_equal": {
+      "value": 1,
+      "unit": "1 = ja",
+      "threshold": 1,
+      "pass": true
+    },
+    "both_offline_lost_edits": {
+      "value": 0,
+      "unit": "Änderungen",
+      "threshold": 0,
+      "pass": true
+    },
+    "both_offline_conflicts_reported_pct": {
+      "value": 100,
+      "unit": "%",
+      "threshold": 100,
+      "pass": true
+    },
+    "both_offline_hash_equal": {
+      "value": 1,
+      "unit": "1 = ja",
+      "threshold": 1,
+      "pass": true
+    }
+  },
+  "observations": {
+    "live_p50_ms": {
+      "value": 32.8,
+      "unit": "ms"
+    },
+    "live_p95_loopback_ms": {
+      "value": 1.8,
+      "unit": "ms"
+    },
+    "initial_sync_10k_ms": {
+      "value": 221.5,
+      "unit": "ms"
+    },
+    "reconnect_converge_ms": {
+      "value": 510.6,
+      "unit": "ms"
+    },
+    "reconnect_bytes_kb": {
+      "value": 525.9,
+      "unit": "KiB"
+    }
+  },
+  "details": {
+    "live_b_to_a_p95_loopback_ms": 1.8,
+    "both_offline_reconnect_converge_ms": 805.2,
+    "both_offline_reconnect_bytes_kb": 1064.6,
+    "hash_wasm_10k_p50_ms": 792.6,
+    "offline_cases": {
+      "lost": 0,
+      "generated": 20,
+      "reported": 20,
+      "both": 10,
+      "broken": 5,
+      "eor": 5
+    },
+    "both_offline_cases": {
+      "lost": 0,
+      "generated": 20,
+      "reported": 20,
+      "both": 10,
+      "broken": 5,
+      "eor": 5
+    }
+  },
+  "environment": {
+    "machine": "AMD EPYC 7763 64-Core Processor, 4 Kerne, 16 GiB, linux 6.17.0-1022-azure",
+    "rust": "rustc 1.97.0 (2d8144b78 2026-07-07)",
+    "automerge": "0.12.0",
+    "rustler": "0.39.0",
+    "wasm_bindgen": "0.2.129",
+    "elixir_otp": "Erlang/OTP 27 [erts-15.2.7] [source] [64-bit] [smp:4:4] [ds:4:4:10] [async-threads:1] [jit:ns]; Elixir 1.18.4 (compiled with Erlang/OTP 27)",
+    "phoenix": "1.8.15",
+    "bandit": "1.13.1",
+    "node": "v22.22.0",
+    "phoenix_js": "1.8.15",
+    "network": "Loopback 127.0.0.1 mit künstlicher Verzögerung --delay-ms 15 je Richtung (30 ms Umlaufzeit je Strecke)"
+  },
+  "recommendation": "Go"
+}

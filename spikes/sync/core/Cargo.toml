@@ -1,0 +1,18 @@
+[package]
+name = "sync_core"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[lib]
+name = "sync_core"
+path = "src/lib.rs"
+
+[dependencies]
+datenmodell.workspace = true
+automerge.workspace = true
+serde_json.workspace = true
+
+[lints]
+workspace = true

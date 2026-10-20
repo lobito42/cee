@@ -1,0 +1,7 @@
+target/
+wasm/pkg-node/
+wasm/pkg-web/
+server/_build/
+server/deps/
+server/priv/native/
+client/node_modules/

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CEE Sync-Spike – Demo</title>
+    <style>
+      body {
+        font-family: Inter, system-ui, sans-serif;
+        background: #1f2124;
+        color: #e6e7e9;
+        margin: 2rem;
+        max-width: 42rem;
+      }
+      h1 {
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 7rem 10rem 1fr;
+        gap: 0.75rem;
+        align-items: center;
+        margin: 0.4rem 0;
+      }
+      input {
+        background: #2b2e33;
+        color: inherit;
+        border: 1px solid #44484f;
+        border-radius: 4px;
+        padding: 0.3rem 0.5rem;
+        font: inherit;
+      }
+      button {
+        background: #3b82f6;
+        color: white;
+        border: 0;
+        border-radius: 4px;
+        padding: 0.4rem 0.9rem;
+        font: inherit;
+        cursor: pointer;
+      }
+      .muted {
+        color: #9aa0a8;
+        font-size: 0.9rem;
+      }
+      .latency {
+        font-variant-numeric: tabular-nums;
+      }
+      .conflict {
+        color: #f5b041;
+      }
+      #status.offline {
+        color: #f5b041;
+      }
+      ul {
+        padding-left: 1.2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Sync-Spike ap-03: zwei Fenster, ein Dokument</h1>
+    <p class="muted">
+      Dokument <strong id="doc"></strong> · Element <strong id="element"></strong> · Status
+      <strong id="status">verbinde …</strong>
+    </p>
+    <p><button id="toggle" disabled>Offline</button></p>
+    <div id="fields"></div>
+    <h2 style="font-size: 1rem">Befunde</h2>
+    <p class="muted">Konflikte am Element nach dem Zusammenführen (vom Server geprüft).</p>
+    <ul id="findings"><li class="muted">noch keine</li></ul>
+    <p class="muted">
+      Die Latenz gilt nur für zwei Fenster auf demselben Rechner: Der Sender schickt seine Uhrzeit mit, der
+      Server reicht sie weiter.
+    </p>
+    <script type="module" src="/demo/demo.js"></script>
+  </body>
+</html>
