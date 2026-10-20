@@ -12,7 +12,7 @@
 
 - [x] 2.1 Mix-Projekt `spikes/sync/server/` mit Phoenix-Endpoint (Bandit), Socket, `GET /health` und
   `serve.sh <port>` – Prüfung: `cd spikes/sync/server && mix test`
-- [ ] 2.2 Dokumentprozess je Dokument (Registry, DynamicSupervisor) mit NIF-Ressource, Channel-Beitritt mit
+- [x] 2.2 Dokumentprozess je Dokument (Registry, DynamicSupervisor) mit NIF-Ressource, Channel-Beitritt mit
   Erstabgleich, Weitergabe an alle anderen Verbindungen, HTTP `/docs`, `/hash`, `/project`, `/findings`,
   `/kill` – Prüfung: `cd spikes/sync/server && mix test`; AK-6
 - [ ] 2.3 Fehlerisolation: ungültige Nachrichten und NIF-Fehler als Fehlerantwort, keine Modellinhalte im
