@@ -52,11 +52,13 @@ def test_keine_anfrage_an_fremde_hosts():
     assert fremd == [], fremd[:10]
 
 
-def test_keine_fremden_urls_in_quelle_und_dist():
-    """Statisch: in `src/` und `dist/` keine http(s)-URLs zu fremden Hosts (außer XML-Namensräumen)."""
+def test_keine_fremden_urls_in_quelle():
+    """Statisch: in `src/` keine http(s)-URLs zu fremden Hosts (außer XML-Namensräumen). `dist/` enthält
+    Bibliothekscode mit Links in Meldungen und Lizenzköpfen; dort zählt, was zur Laufzeit angefragt wird
+    (test_keine_anfrage_an_fremde_hosts)."""
     bauen()
     funde = []
-    for wurzel in (P / "src", P / "dist"):
+    for wurzel in (P / "src",):
         assert wurzel.is_dir(), f"{wurzel.relative_to(ROOT)} fehlt"
         for p in wurzel.rglob("*"):
             if not p.is_file() or p.suffix in (".png", ".woff", ".woff2", ".ttf", ".ico", ".jpg", ".webp"):
