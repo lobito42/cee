@@ -66,6 +66,35 @@ fn new_doc(n: usize) -> Result<ResourceArc<Doc>, String> {
     })
 }
 
+/// Leeres Dokument (Gegenstelle in Tests: erhält den Stand erst über den Abgleich).
+#[rustler::nif]
+fn new_empty() -> ResourceArc<Doc> {
+    ResourceArc::new(Doc {
+        peer: Mutex::new(Peer::empty()),
+    })
+}
+
+/// Operation oder Operationsliste (JSON-Text wie `ops.json`) anwenden (Tests).
+#[rustler::nif(schedule = "DirtyCpu")]
+fn apply_json(doc: ResourceArc<Doc>, ops_json: String) -> Result<usize, String> {
+    with_peer(&doc, |peer| {
+        peer.apply_json(&ops_json).map_err(|e| e.to_string())
+    })
+}
+
+/// Wert eines Felds als JSON-Text oder `nil` (Tests).
+#[rustler::nif]
+fn field_json(
+    doc: ResourceArc<Doc>,
+    id: String,
+    field: String,
+    name: String,
+) -> Result<Option<String>, String> {
+    with_peer(&doc, |peer| {
+        Ok(peer.field(&id, &field, &name).map(|v| v.to_string()))
+    })
+}
+
 /// Neuer Sync-Zustand für eine Verbindung.
 #[rustler::nif]
 fn new_conn() -> ResourceArc<Conn> {
@@ -76,7 +105,7 @@ fn new_conn() -> ResourceArc<Conn> {
 
 /// Nächste Sync-Nachricht für die Verbindung; `nil`, wenn nichts zu senden ist.
 #[rustler::nif(schedule = "DirtyCpu")]
-fn generate<'a>(
+fn generate_message<'a>(
     env: Env<'a>,
     doc: ResourceArc<Doc>,
     conn: ResourceArc<Conn>,
@@ -90,7 +119,7 @@ fn generate<'a>(
 
 /// Sync-Nachricht der Verbindung anwenden; liefert die Köpfe danach.
 #[rustler::nif(schedule = "DirtyCpu")]
-fn receive(
+fn receive_message(
     doc: ResourceArc<Doc>,
     conn: ResourceArc<Conn>,
     message: Binary,

@@ -10,7 +10,7 @@
 
 ## 2. Server
 
-- [ ] 2.1 Mix-Projekt `spikes/sync/server/` mit Phoenix-Endpoint (Bandit), Socket, `GET /health` und
+- [x] 2.1 Mix-Projekt `spikes/sync/server/` mit Phoenix-Endpoint (Bandit), Socket, `GET /health` und
   `serve.sh <port>` – Prüfung: `cd spikes/sync/server && mix test`
 - [ ] 2.2 Dokumentprozess je Dokument (Registry, DynamicSupervisor) mit NIF-Ressource, Channel-Beitritt mit
   Erstabgleich, Weitergabe an alle anderen Verbindungen, HTTP `/docs`, `/hash`, `/project`, `/findings`,
