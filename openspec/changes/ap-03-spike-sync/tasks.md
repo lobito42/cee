@@ -23,7 +23,7 @@
 - [x] 3.1 Node-Client in `spikes/sync/client/` (WASM-Kern, npm-Paket `phoenix`, `--delay-ms`) und Szenario
   `live` mit Latenzmessung – Prüfung: AK-3
 - [x] 3.2 Szenario `concurrent` und Befehl `poison` – Prüfung: AK-4, AK-7
-- [ ] 3.3 Generator und Szenario `offline` mit `--dump` (Operationen, Endstände, Hashes), zunächst ohne die
+- [x] 3.3 Generator und Szenario `offline` mit `--dump` (Operationen, Endstände, Hashes), zunächst ohne die
   Fälle „Entfernen gegen Ändern“ – Prüfung: `cd spikes/sync/server && mix test`
 - [ ] 3.4 Befund `edit_on_removed` im Server und die 5 Fälle im Generator – Prüfung: AK-5
 - [ ] 3.5 Variante `offline --both` – Prüfung: AK-10
