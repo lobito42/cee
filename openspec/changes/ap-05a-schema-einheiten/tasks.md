@@ -7,16 +7,16 @@
 
 ## 2. Schema und Dokument
 
-- [ ] 2.1 `schema.rs` (Element, Größe, Geld) und `doc.rs` (Operationen, Speichern, Laden, Merge, Hash,
+- [x] 2.1 `schema.rs` (Element, Größe, Geld) und `doc.rs` (Operationen, Speichern, Laden, Merge, Hash,
   Export); `graphctl apply`, `export`, `hash`, `merge` – Prüfung: AK-8
-- [ ] 2.2 Regeln für Zahlen beim Schreiben und Stapel-Import in einer Transaktion; `graphctl import` –
+- [x] 2.2 Regeln für Zahlen beim Schreiben und Stapel-Import in einer Transaktion; `graphctl import` –
   Prüfung: AK-4
 - [ ] 2.3 `format/schema/element.schema.json` auf v1, `format/examples/` von Hand mit Einheiten überführt –
   Prüfung: AK-5
 
 ## 3. Prüfung, Messung, Abschluss
 
-- [ ] 3.1 `synth.rs` (Projekte, Korpora mit erwarteten Befunden) und `validate.rs` mit allen Codes;
+- [x] 3.1 `synth.rs` (Projekte, Korpora mit erwarteten Befunden) und `validate.rs` mit allen Codes;
   `graphctl synth`, `validate` – Prüfung: AK-6, AK-7
 - [ ] 3.2 `graphctl bench --json` mit allen Kennzahlen; Budgets einhalten – Prüfung: AK-9
 - [ ] 3.3 Rustdoc an öffentlichen Funktionen, `crates/graph/README.md` mit Einheitentabelle und Messwerten –

@@ -8,8 +8,12 @@
 //! - [`validate`]: Prüfung mit Befunden
 //! - [`synth`]: deterministischer Generator für Projekte und Prüfkorpora
 
+pub mod doc;
+pub mod schema;
+pub mod synth;
 pub mod types;
 pub mod units;
+pub mod validate;
 
 use std::fmt;
 
