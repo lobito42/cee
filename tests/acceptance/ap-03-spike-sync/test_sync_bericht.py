@@ -4,6 +4,7 @@ Requirement: „Nachmessbare Messwerte und Bericht“.
 """
 
 import json
+import re
 
 from conftest import ROOT
 
@@ -44,7 +45,7 @@ def test_ak1_report_complete():
     for section in SECTIONS:
         assert section in text, f"Abschnitt '{section}' fehlt"
     first = text.split("## Empfehlung", 1)[1].strip().splitlines()[0]
-    assert first.startswith(("Go", "No-Go")), "Empfehlung muss mit Go oder No-Go beginnen"
+    assert re.match(r"(Go|No-Go)\b", first), "Empfehlung muss mit Go oder No-Go beginnen"
 
 
 def test_ak2_all_metrics_measured_and_consistent():
