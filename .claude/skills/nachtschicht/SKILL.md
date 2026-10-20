@@ -31,6 +31,14 @@ nicht erkunden. Felder: `step`, `id`, `branch`, `resume`, `model`, ggf. `pr`, `a
 weiterarbeiten (nie neu von main anlegen); steht `pr` dabei, ist das der offene Entwurfs-PR – keinen neuen
 öffnen. Sonst `git switch -c <branch>`.
 
+**Befehle, die nachts durchgehen** (alles andere wird verweigert und kostet einen Anlauf):
+- Kein `cd`: statt `cd spikes/x && npm run lint` → `npm --prefix spikes/x run lint`; Skripte als
+  `bash spikes/…/skript.sh` aufrufen.
+- Kein `$(…)`, kein `export`, kein `timeout`, kein `sed -i`, kein `cat > datei <<EOF`, kein `python3 -c`:
+  Dateien mit Write/Edit schreiben, Umgebungsvariablen nur als `CEE_STRICT=1 uv run …`, temporäre Ordner
+  fest benennen (z. B. `mkdir -p /tmp/cee-pruefen`).
+- PR-Text als Datei schreiben und mit `gh pr create --body-file` bzw. `gh pr edit --body-file` übergeben.
+
 - **tests** → Abnahmetests nach dem Vorgehen des Agenten `test-author`. Prüfen, dass sie rot sind.
 - **build** → umsetzen nach dem Vorgehen des Agenten `implementer` (Tasks in Reihenfolge,
   `uv run pytest -q -x tests/acceptance/<id>`).
@@ -56,15 +64,18 @@ Runde 1 · seit 05:27 UTC · Tests 5 von 12 grün · Tasks 3 von 9 · gerade: Of
 
 **Fertig** ist ein Schritt erst, wenn die Abnahmetests des Changes im strengen Modus grün sind und
 **nichts übersprungen** wurde (`pytest -q -rs` zeigt keine `SKIPPED`). Dann den PR mit
-`gh pr ready <pr>` aus dem Entwurf holen. Bei `tests` gilt das Umgekehrte: Tests laufen, sind aber rot.
+`gh pr ready <pr>` aus dem Entwurf holen. Bei `tests` ist der Schritt fertig, wenn alle Scenarios abgedeckt
+sind und die Tests im strengen Modus ohne Sammelfehler und ohne `SKIPPED` laufen, aber rot sind – dann ebenso
+`gh pr ready <pr>`. **Ein Entwurf heißt für die nächste Runde „unfertig, weitermachen“**: Wer fertig ist und den
+PR als Entwurf lässt, blockiert die übrigen Runden der Nacht.
 
 ## 4. Protokoll (immer, auch bei „Nichts zu tun“ und Abbruch)
 
-Kommentar im Issue „Nachtschicht-Protokoll“ (Label `nachtschicht`; fehlt es, anlegen):
+Kommentar im Issue „Nachtschicht-Protokoll“ (Nummer 2), als eigener Befehl ohne `$(…)` (Befehle mit
+`$(…)` werden in der Nacht verweigert):
 
 ```
-gh issue list --label nachtschicht --state open --json number --jq '.[0].number'
-gh issue comment <nr> --body "<Datum> · <id> · <step> · <Ergebnis> · <PR-Link> · <offene Fragen>"
+gh issue comment 2 --body "<Datum> · <id> · <step> · <Ergebnis> · <PR-Link> · <offene Fragen>"
 ```
 
 Ergebnis ist eines von: `fertig`, `teilweise (Task x.y offen)`, `rot nach 3 Anläufen`, `gestoppt: <reason>`.
