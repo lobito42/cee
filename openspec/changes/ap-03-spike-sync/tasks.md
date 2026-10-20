@@ -31,7 +31,7 @@
 
 ## 4. Demo und Bericht
 
-- [ ] 4.1 Demo-Seite unter `GET /` für zwei echte Browser (Werte, Offline-Schalter, Latenzanzeige, Befunde) –
+- [x] 4.1 Demo-Seite unter `GET /` für zwei echte Browser (Werte, Offline-Schalter, Latenzanzeige, Befunde) –
   Prüfung: Punkt „Menschliche Abnahme“ in der PR-Checkliste (zwei Scenarios [mensch])
 - [ ] 4.2 `docs/spikes/sync.json` aus `bench.sh --json` und Bericht `docs/spikes/sync.md` mit Fragestellung,
   Vorgehen, Messwerten, Empfehlung (inkl. Einordnung Loopback und Folgen für ap-07a und ap-17) – Prüfung:
