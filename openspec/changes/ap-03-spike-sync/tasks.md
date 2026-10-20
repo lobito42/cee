@@ -5,7 +5,7 @@
   erweiterte Operationsliste mit `set_input` und `remove_element`, Hash, Projekt-JSON, Befunde) samt
   Rust-Test, in dem zwei Dokumente nur über Sync-Nachrichten denselben Hash erreichen – Prüfung:
   `cargo test -q --manifest-path spikes/sync/Cargo.toml` und `uv run pytest -q tests/acceptance/ap-01-spike-datenmodell`
-- [ ] 1.2 `spikes/sync/build.sh` baut NIF, WASM (nodejs und web), Node-Abhängigkeiten und Mix-Projekt –
+- [x] 1.2 `spikes/sync/build.sh` baut NIF, WASM (nodejs und web), Node-Abhängigkeiten und Mix-Projekt –
   Prüfung: `bash spikes/sync/build.sh`
 
 ## 2. Server

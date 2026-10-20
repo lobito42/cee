@@ -1,0 +1,14 @@
+{
+  "name": "cee-spike-sync-client",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Headless Testclients und Demo-Seite für den Sync-Spike ap-03 (kein Produktcode)",
+  "license": "MPL-2.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "phoenix": "1.8.15"
+  }
+}
