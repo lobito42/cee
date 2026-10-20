@@ -165,6 +165,7 @@ jobs:
             | "\(.tool_name): \(.tool_input.command // .tool_input.file_path // "" | tostring | .[0:160])"' \
             "$EXEC" | sort | uniq -c | sort -rn > verweigert.txt || true
           [ -s verweigert.txt ] || exit 0
+          echo "Verweigerte Befehle (Runde ${{ matrix.runde }}):"; head -30 verweigert.txt
           { echo "### Verweigerte Befehle (Runde ${{ matrix.runde }})"; echo '```'; head -30 verweigert.txt; echo '```'; } \
             >> "$GITHUB_STEP_SUMMARY"
           echo "::warning::$(wc -l < verweigert.txt) verschiedene Befehle verweigert – siehe Zusammenfassung des Laufs"
