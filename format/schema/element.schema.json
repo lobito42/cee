@@ -1,16 +1,15 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://cee.dev/format/schema/element.schema.json",
-  "title": "CEE-Projekt (Entwurf, Schema-Version 1)",
-  "description": "Ein Projekt ist ein Graph aus Elementen. Jedes Element hat dieselbe Form (ADR-028), vom Achsenursprung bis zur Baugruppe. Das Schema zählt keine Fachtypen auf (ADR-046): `type` ist ein freier Bezeichner, die Bedeutung legen Fachpakete fest (ADR-054).",
+  "title": "CEE-Projekt (Schema-Version 1)",
+  "description": "Ein Projekt ist ein Graph aus Elementen. Jedes Element hat dieselbe Form (ADR-028), vom Achsenursprung bis zur Baugruppe. Das Schema zählt keine Fachtypen auf (ADR-046): `type` ist ein freier Bezeichner, die Bedeutung legen Fachpakete fest (ADR-054). Jede Zahl in `params` ist eine Größe mit Einheit in kanonischer Form (ADR-057); Geld ist eine Dezimalzeichenkette mit Währung.",
   "type": "object",
   "required": ["schema_version", "elements"],
   "additionalProperties": false,
   "properties": {
     "schema_version": {
       "description": "Version des Speicherformats. Änderung nur mit Migration.",
-      "type": "integer",
-      "minimum": 1
+      "const": 1
     },
     "elements": {
       "description": "Elemente der obersten Ebene in stabiler Reihenfolge.",
@@ -32,6 +31,51 @@
       "description": "Verweis auf den Ausgang eines Elements: `<id>.<output>`. Nie auf Positionen oder Indizes (ADR-016).",
       "type": "string",
       "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*\\.[A-Za-z0-9_][A-Za-z0-9_-]*$"
+    },
+    "quantity": {
+      "description": "Größe: Zahl mit Einheit (UCUM-Code) in kanonischer Einheit der Dimension, z. B. mm, rad, kg, s, Hz, MPa, kg/mm3, kg{CO2e}, 1 für dimensionslos (ADR-057). `per` nennt optional die Bezugsgröße, z. B. `m2` bei einem Wert je Quadratmeter.",
+      "type": "object",
+      "required": ["value", "unit"],
+      "additionalProperties": false,
+      "properties": {
+        "value": { "type": "number" },
+        "unit": { "type": "string", "minLength": 1 },
+        "per": { "type": "string", "minLength": 1 }
+      }
+    },
+    "money": {
+      "description": "Geld: Dezimalzahl als Zeichenkette (nie Gleitkomma) und Währung nach ISO 4217. `per` nennt optional die Bezugsgröße.",
+      "type": "object",
+      "required": ["amount", "currency"],
+      "additionalProperties": false,
+      "properties": {
+        "amount": { "type": "string", "pattern": "^-?[0-9]+(\\.[0-9]+)?$" },
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+        "per": { "type": "string", "minLength": 1 }
+      }
+    },
+    "paramValue": {
+      "description": "Wert eines Parameters: Größe, Geld, Text, Wahrheitswert, null oder Liste bzw. Objekt aus solchen Werten. Nackte Zahlen sind nicht zulässig; die Schlüssel `value`, `unit`, `amount` und `currency` sind den Größen und dem Geld vorbehalten.",
+      "anyOf": [
+        { "$ref": "#/$defs/quantity" },
+        { "$ref": "#/$defs/money" },
+        { "type": "string" },
+        { "type": "boolean" },
+        { "type": "null" },
+        { "type": "array", "items": { "$ref": "#/$defs/paramValue" } },
+        {
+          "type": "object",
+          "not": {
+            "anyOf": [
+              { "required": ["value"] },
+              { "required": ["unit"] },
+              { "required": ["amount"] },
+              { "required": ["currency"] }
+            ]
+          },
+          "additionalProperties": { "$ref": "#/$defs/paramValue" }
+        }
+      ]
     },
     "elementList": {
       "type": "array",
@@ -56,9 +100,10 @@
           "additionalProperties": { "$ref": "#/$defs/reference" }
         },
         "params": {
-          "description": "Parameter: Name → beliebiger JSON-Wert. Zahlen mit Einheit als Objekt `{value, unit}` oder in kanonischen Einheiten (ADR-057).",
+          "description": "Parameter: Name → Wert. Jede Zahl ist eine Größe `{value, unit}`, Geld ist `{amount, currency}` (ADR-057).",
           "type": "object",
-          "propertyNames": { "$ref": "#/$defs/name" }
+          "propertyNames": { "$ref": "#/$defs/name" },
+          "additionalProperties": { "$ref": "#/$defs/paramValue" }
         },
         "outputs": {
           "description": "Ausgänge: Name → Ausgabetyp.",

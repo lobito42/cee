@@ -1,10 +1,20 @@
 [package]
 name = "cee-graph"
 version = "0.0.1"
-description = "Element-Graph: Schema, Abhängigkeiten, CRDT-Dokument, Textprojektion (ADR-028/029)"
+description = "Element-Graph: Schema, Einheiten, CRDT-Dokument, Prüfung (ADR-028/029/057)"
 edition.workspace = true
 license.workspace = true
 rust-version.workspace = true
 
 [lints]
 workspace = true
+
+[dependencies]
+# Lizenzen (ADR-034): automerge MIT, serde_json MIT/Apache-2.0, sha2 MIT/Apache-2.0
+automerge = "0.12"
+serde_json = "1"
+sha2 = "0.10"
+
+[dev-dependencies]
+# MIT/Apache-2.0
+proptest = "1"

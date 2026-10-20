@@ -5,115 +5,459 @@
       "id": "origin",
       "type": "origin",
       "inputs": {},
-      "params": { "x": 0, "y": 0, "z": 0 },
-      "outputs": { "frame": "frame" },
+      "params": {
+        "x": {
+          "value": 0,
+          "unit": "mm"
+        },
+        "y": {
+          "value": 0,
+          "unit": "mm"
+        },
+        "z": {
+          "value": 0,
+          "unit": "mm"
+        }
+      },
+      "outputs": {
+        "frame": "frame"
+      },
       "content": [],
-      "meta": { "name": "Projektursprung", "units": "mm" }
+      "meta": {
+        "name": "Projektursprung",
+        "units": "mm"
+      }
     },
     {
       "id": "mat-beton",
       "type": "material",
       "inputs": {},
       "params": {
-        "alpha": { "125": 0.01, "250": 0.01, "500": 0.02, "1000": 0.02, "2000": 0.02, "4000": 0.03 },
-        "appearance": { "color": "#9a9a96", "roughness": 0.8 },
-        "density": 2400,
-        "cost": { "value": 85.0, "currency": "EUR", "per": "m2" },
-        "co2": { "value": 48.0, "unit": "kg CO2e/m2" }
+        "alpha": {
+          "125": {
+            "value": 0.01,
+            "unit": "1"
+          },
+          "250": {
+            "value": 0.01,
+            "unit": "1"
+          },
+          "500": {
+            "value": 0.02,
+            "unit": "1"
+          },
+          "1000": {
+            "value": 0.02,
+            "unit": "1"
+          },
+          "2000": {
+            "value": 0.02,
+            "unit": "1"
+          },
+          "4000": {
+            "value": 0.03,
+            "unit": "1"
+          }
+        },
+        "appearance": {
+          "color": "#9a9a96",
+          "roughness": {
+            "value": 0.8,
+            "unit": "1"
+          }
+        },
+        "density": {
+          "value": 2.4e-06,
+          "unit": "kg/mm3"
+        },
+        "cost": {
+          "amount": "85.00",
+          "currency": "EUR",
+          "per": "m2"
+        },
+        "co2": {
+          "value": 48.0,
+          "unit": "kg{CO2e}",
+          "per": "m2"
+        }
       },
-      "outputs": { "material": "material" },
+      "outputs": {
+        "material": "material"
+      },
       "content": [],
-      "meta": { "name": "Beton, glatt" }
+      "meta": {
+        "name": "Beton, glatt"
+      }
     },
     {
       "id": "mat-putz",
       "type": "material",
       "inputs": {},
       "params": {
-        "alpha": { "125": 0.02, "250": 0.02, "500": 0.03, "1000": 0.04, "2000": 0.05, "4000": 0.05 },
-        "appearance": { "color": "#f2f0eb", "roughness": 0.9 },
-        "density": 1400,
-        "cost": { "value": 22.0, "currency": "EUR", "per": "m2" },
-        "co2": { "value": 4.5, "unit": "kg CO2e/m2" }
+        "alpha": {
+          "125": {
+            "value": 0.02,
+            "unit": "1"
+          },
+          "250": {
+            "value": 0.02,
+            "unit": "1"
+          },
+          "500": {
+            "value": 0.03,
+            "unit": "1"
+          },
+          "1000": {
+            "value": 0.04,
+            "unit": "1"
+          },
+          "2000": {
+            "value": 0.05,
+            "unit": "1"
+          },
+          "4000": {
+            "value": 0.05,
+            "unit": "1"
+          }
+        },
+        "appearance": {
+          "color": "#f2f0eb",
+          "roughness": {
+            "value": 0.9,
+            "unit": "1"
+          }
+        },
+        "density": {
+          "value": 1.4e-06,
+          "unit": "kg/mm3"
+        },
+        "cost": {
+          "amount": "22.00",
+          "currency": "EUR",
+          "per": "m2"
+        },
+        "co2": {
+          "value": 4.5,
+          "unit": "kg{CO2e}",
+          "per": "m2"
+        }
       },
-      "outputs": { "material": "material" },
+      "outputs": {
+        "material": "material"
+      },
       "content": [],
-      "meta": { "name": "Kalkputz" }
+      "meta": {
+        "name": "Kalkputz"
+      }
     },
     {
       "id": "mat-estrich-parkett",
       "type": "material",
       "inputs": {},
       "params": {
-        "alpha": { "125": 0.04, "250": 0.04, "500": 0.07, "1000": 0.06, "2000": 0.06, "4000": 0.07 },
-        "appearance": { "color": "#b98a5a", "roughness": 0.5 },
-        "density": 700,
-        "cost": { "value": 65.0, "currency": "EUR", "per": "m2" },
-        "co2": { "value": 12.0, "unit": "kg CO2e/m2" }
+        "alpha": {
+          "125": {
+            "value": 0.04,
+            "unit": "1"
+          },
+          "250": {
+            "value": 0.04,
+            "unit": "1"
+          },
+          "500": {
+            "value": 0.07,
+            "unit": "1"
+          },
+          "1000": {
+            "value": 0.06,
+            "unit": "1"
+          },
+          "2000": {
+            "value": 0.06,
+            "unit": "1"
+          },
+          "4000": {
+            "value": 0.07,
+            "unit": "1"
+          }
+        },
+        "appearance": {
+          "color": "#b98a5a",
+          "roughness": {
+            "value": 0.5,
+            "unit": "1"
+          }
+        },
+        "density": {
+          "value": 7e-07,
+          "unit": "kg/mm3"
+        },
+        "cost": {
+          "amount": "65.00",
+          "currency": "EUR",
+          "per": "m2"
+        },
+        "co2": {
+          "value": 12.0,
+          "unit": "kg{CO2e}",
+          "per": "m2"
+        }
       },
-      "outputs": { "material": "material" },
+      "outputs": {
+        "material": "material"
+      },
       "content": [],
-      "meta": { "name": "Parkett auf Estrich" }
+      "meta": {
+        "name": "Parkett auf Estrich"
+      }
     },
     {
       "id": "mat-gipskarton",
       "type": "material",
       "inputs": {},
       "params": {
-        "alpha": { "125": 0.29, "250": 0.1, "500": 0.05, "1000": 0.04, "2000": 0.07, "4000": 0.09 },
-        "appearance": { "color": "#ffffff", "roughness": 0.85 },
-        "density": 800,
-        "cost": { "value": 38.0, "currency": "EUR", "per": "m2" },
-        "co2": { "value": 6.0, "unit": "kg CO2e/m2" }
+        "alpha": {
+          "125": {
+            "value": 0.29,
+            "unit": "1"
+          },
+          "250": {
+            "value": 0.1,
+            "unit": "1"
+          },
+          "500": {
+            "value": 0.05,
+            "unit": "1"
+          },
+          "1000": {
+            "value": 0.04,
+            "unit": "1"
+          },
+          "2000": {
+            "value": 0.07,
+            "unit": "1"
+          },
+          "4000": {
+            "value": 0.09,
+            "unit": "1"
+          }
+        },
+        "appearance": {
+          "color": "#ffffff",
+          "roughness": {
+            "value": 0.85,
+            "unit": "1"
+          }
+        },
+        "density": {
+          "value": 8e-07,
+          "unit": "kg/mm3"
+        },
+        "cost": {
+          "amount": "38.00",
+          "currency": "EUR",
+          "per": "m2"
+        },
+        "co2": {
+          "value": 6.0,
+          "unit": "kg{CO2e}",
+          "per": "m2"
+        }
       },
-      "outputs": { "material": "material" },
+      "outputs": {
+        "material": "material"
+      },
       "content": [],
-      "meta": { "name": "Gipskarton abgehängt" }
+      "meta": {
+        "name": "Gipskarton abgehängt"
+      }
     },
     {
       "id": "mat-glas",
       "type": "material",
       "inputs": {},
       "params": {
-        "alpha": { "125": 0.35, "250": 0.25, "500": 0.18, "1000": 0.12, "2000": 0.07, "4000": 0.04 },
-        "appearance": { "color": "#cfe3ea", "roughness": 0.05, "transmission": 0.9 },
-        "density": 2500,
-        "cost": { "value": 180.0, "currency": "EUR", "per": "m2" },
-        "co2": { "value": 35.0, "unit": "kg CO2e/m2" }
+        "alpha": {
+          "125": {
+            "value": 0.35,
+            "unit": "1"
+          },
+          "250": {
+            "value": 0.25,
+            "unit": "1"
+          },
+          "500": {
+            "value": 0.18,
+            "unit": "1"
+          },
+          "1000": {
+            "value": 0.12,
+            "unit": "1"
+          },
+          "2000": {
+            "value": 0.07,
+            "unit": "1"
+          },
+          "4000": {
+            "value": 0.04,
+            "unit": "1"
+          }
+        },
+        "appearance": {
+          "color": "#cfe3ea",
+          "roughness": {
+            "value": 0.05,
+            "unit": "1"
+          },
+          "transmission": {
+            "value": 0.9,
+            "unit": "1"
+          }
+        },
+        "density": {
+          "value": 2.5e-06,
+          "unit": "kg/mm3"
+        },
+        "cost": {
+          "amount": "180.00",
+          "currency": "EUR",
+          "per": "m2"
+        },
+        "co2": {
+          "value": 35.0,
+          "unit": "kg{CO2e}",
+          "per": "m2"
+        }
       },
-      "outputs": { "material": "material" },
+      "outputs": {
+        "material": "material"
+      },
       "content": [],
-      "meta": { "name": "Isolierverglasung" }
+      "meta": {
+        "name": "Isolierverglasung"
+      }
     },
     {
       "id": "mat-holz",
       "type": "material",
       "inputs": {},
       "params": {
-        "alpha": { "125": 0.14, "250": 0.1, "500": 0.06, "1000": 0.08, "2000": 0.1, "4000": 0.1 },
-        "appearance": { "color": "#8b5a2b", "roughness": 0.6 },
-        "density": 650,
-        "cost": { "value": 120.0, "currency": "EUR", "per": "m2" },
-        "co2": { "value": -15.0, "unit": "kg CO2e/m2" }
+        "alpha": {
+          "125": {
+            "value": 0.14,
+            "unit": "1"
+          },
+          "250": {
+            "value": 0.1,
+            "unit": "1"
+          },
+          "500": {
+            "value": 0.06,
+            "unit": "1"
+          },
+          "1000": {
+            "value": 0.08,
+            "unit": "1"
+          },
+          "2000": {
+            "value": 0.1,
+            "unit": "1"
+          },
+          "4000": {
+            "value": 0.1,
+            "unit": "1"
+          }
+        },
+        "appearance": {
+          "color": "#8b5a2b",
+          "roughness": {
+            "value": 0.6,
+            "unit": "1"
+          }
+        },
+        "density": {
+          "value": 6.5e-07,
+          "unit": "kg/mm3"
+        },
+        "cost": {
+          "amount": "120.00",
+          "currency": "EUR",
+          "per": "m2"
+        },
+        "co2": {
+          "value": -15.0,
+          "unit": "kg{CO2e}",
+          "per": "m2"
+        }
       },
-      "outputs": { "material": "material" },
+      "outputs": {
+        "material": "material"
+      },
       "content": [],
-      "meta": { "name": "Eiche massiv" }
+      "meta": {
+        "name": "Eiche massiv"
+      }
     },
     {
       "id": "mat-akustikvlies",
       "type": "material",
       "inputs": {},
       "params": {
-        "alpha": { "125": 0.3, "250": 0.65, "500": 0.95, "1000": 1.0, "2000": 0.95, "4000": 0.9 },
-        "appearance": { "color": "#5b6770", "roughness": 1.0 },
-        "density": 60,
-        "cost": { "value": 95.0, "currency": "EUR", "per": "m2" },
-        "co2": { "value": 3.2, "unit": "kg CO2e/m2" }
+        "alpha": {
+          "125": {
+            "value": 0.3,
+            "unit": "1"
+          },
+          "250": {
+            "value": 0.65,
+            "unit": "1"
+          },
+          "500": {
+            "value": 0.95,
+            "unit": "1"
+          },
+          "1000": {
+            "value": 1.0,
+            "unit": "1"
+          },
+          "2000": {
+            "value": 0.95,
+            "unit": "1"
+          },
+          "4000": {
+            "value": 0.9,
+            "unit": "1"
+          }
+        },
+        "appearance": {
+          "color": "#5b6770",
+          "roughness": {
+            "value": 1.0,
+            "unit": "1"
+          }
+        },
+        "density": {
+          "value": 6e-08,
+          "unit": "kg/mm3"
+        },
+        "cost": {
+          "amount": "95.00",
+          "currency": "EUR",
+          "per": "m2"
+        },
+        "co2": {
+          "value": 3.2,
+          "unit": "kg{CO2e}",
+          "per": "m2"
+        }
       },
-      "outputs": { "material": "material" },
+      "outputs": {
+        "material": "material"
+      },
       "content": [],
-      "meta": { "name": "Mineralwolle mit Akustikvlies, 50 mm" }
+      "meta": {
+        "name": "Mineralwolle mit Akustikvlies, 50 mm"
+      }
     },
     {
       "id": "deckensegel",
@@ -121,27 +465,94 @@
       "inputs": {},
       "params": {
         "parameters": {
-          "breite": { "default": 1200, "unit": "mm" },
-          "laenge": { "default": 1200, "unit": "mm" },
-          "dicke": { "default": 50, "unit": "mm" },
-          "abhaengehoehe": { "default": 300, "unit": "mm" },
-          "x": { "default": 0, "unit": "mm" },
-          "y": { "default": 0, "unit": "mm" }
+          "breite": {
+            "default": {
+              "value": 1200,
+              "unit": "mm"
+            }
+          },
+          "laenge": {
+            "default": {
+              "value": 1200,
+              "unit": "mm"
+            }
+          },
+          "dicke": {
+            "default": {
+              "value": 50,
+              "unit": "mm"
+            }
+          },
+          "abhaengehoehe": {
+            "default": {
+              "value": 300,
+              "unit": "mm"
+            }
+          },
+          "x": {
+            "default": {
+              "value": 0,
+              "unit": "mm"
+            }
+          },
+          "y": {
+            "default": {
+              "value": 0,
+              "unit": "mm"
+            }
+          }
         },
         "variants": {
-          "1200x1200": { "breite": 1200, "laenge": 1200 },
-          "1200x2400": { "breite": 1200, "laenge": 2400 },
-          "600x1200": { "breite": 600, "laenge": 1200 }
+          "1200x1200": {
+            "breite": {
+              "value": 1200,
+              "unit": "mm"
+            },
+            "laenge": {
+              "value": 1200,
+              "unit": "mm"
+            }
+          },
+          "1200x2400": {
+            "breite": {
+              "value": 1200,
+              "unit": "mm"
+            },
+            "laenge": {
+              "value": 2400,
+              "unit": "mm"
+            }
+          },
+          "600x1200": {
+            "breite": {
+              "value": 600,
+              "unit": "mm"
+            },
+            "laenge": {
+              "value": 1200,
+              "unit": "mm"
+            }
+          }
         }
       },
-      "outputs": { "definition": "component" },
+      "outputs": {
+        "definition": "component"
+      },
       "content": [
         {
           "id": "ds-absorber",
           "type": "absorber",
-          "inputs": { "material": "mat-akustikvlies.material", "shape": "ds-extrusion.solid" },
-          "params": { "mounting": "abgehaengt", "absorber_class": "A" },
-          "outputs": { "absorber": "absorber" },
+          "inputs": {
+            "material": "mat-akustikvlies.material",
+            "shape": "ds-extrusion.solid"
+          },
+          "params": {
+            "mounting": "abgehaengt",
+            "absorber_class": "A"
+          },
+          "outputs": {
+            "absorber": "absorber"
+          },
           "content": [
             {
               "id": "ds-skizze",
@@ -150,71 +561,299 @@
               "params": {
                 "plane": "xy",
                 "profile": "rectangle",
-                "width": { "parameter": "breite" },
-                "length": { "parameter": "laenge" },
-                "corner_radius": 10
+                "width": {
+                  "parameter": "breite"
+                },
+                "length": {
+                  "parameter": "laenge"
+                },
+                "corner_radius": {
+                  "value": 10,
+                  "unit": "mm"
+                }
               },
-              "outputs": { "profile": "profile" },
+              "outputs": {
+                "profile": "profile"
+              },
               "content": [],
               "meta": {}
             },
             {
               "id": "ds-extrusion",
               "type": "extrude",
-              "inputs": { "profile": "ds-skizze.profile" },
-              "params": { "distance": { "parameter": "dicke" }, "direction": "-z" },
-              "outputs": { "solid": "solid" },
+              "inputs": {
+                "profile": "ds-skizze.profile"
+              },
+              "params": {
+                "distance": {
+                  "parameter": "dicke"
+                },
+                "direction": "-z"
+              },
+              "outputs": {
+                "solid": "solid"
+              },
               "content": [],
               "meta": {}
             }
           ],
-          "meta": { "name": "Absorberkörper" }
+          "meta": {
+            "name": "Absorberkörper"
+          }
         }
       ],
-      "meta": { "name": "Deckensegel", "catalog": "Absorber-Katalog" }
+      "meta": {
+        "name": "Deckensegel",
+        "catalog": "Absorber-Katalog"
+      }
     },
     {
       "id": "level-eg",
       "type": "level",
-      "inputs": { "origin": "origin.frame" },
-      "params": { "elevation": 0, "height": 3000 },
-      "outputs": { "level": "level" },
+      "inputs": {
+        "origin": "origin.frame"
+      },
+      "params": {
+        "elevation": {
+          "value": 0,
+          "unit": "mm"
+        },
+        "height": {
+          "value": 3000,
+          "unit": "mm"
+        }
+      },
+      "outputs": {
+        "level": "level"
+      },
       "content": [
         {
           "id": "boden",
           "type": "slab",
-          "inputs": { "level": "level-eg.level", "material": "mat-estrich-parkett.material" },
-          "params": { "outline": [[0, 0], [6000, 0], [6000, 4500], [0, 4500]], "thickness": 80, "offset": 0 },
-          "outputs": { "solid": "solid", "surface": "surface" },
+          "inputs": {
+            "level": "level-eg.level",
+            "material": "mat-estrich-parkett.material"
+          },
+          "params": {
+            "outline": [
+              [
+                {
+                  "value": 0,
+                  "unit": "mm"
+                },
+                {
+                  "value": 0,
+                  "unit": "mm"
+                }
+              ],
+              [
+                {
+                  "value": 6000,
+                  "unit": "mm"
+                },
+                {
+                  "value": 0,
+                  "unit": "mm"
+                }
+              ],
+              [
+                {
+                  "value": 6000,
+                  "unit": "mm"
+                },
+                {
+                  "value": 4500,
+                  "unit": "mm"
+                }
+              ],
+              [
+                {
+                  "value": 0,
+                  "unit": "mm"
+                },
+                {
+                  "value": 4500,
+                  "unit": "mm"
+                }
+              ]
+            ],
+            "thickness": {
+              "value": 80,
+              "unit": "mm"
+            },
+            "offset": {
+              "value": 0,
+              "unit": "mm"
+            }
+          },
+          "outputs": {
+            "solid": "solid",
+            "surface": "surface"
+          },
           "content": [],
-          "meta": { "name": "Boden" }
+          "meta": {
+            "name": "Boden"
+          }
         },
         {
           "id": "decke",
           "type": "slab",
-          "inputs": { "level": "level-eg.level", "material": "mat-gipskarton.material" },
-          "params": { "outline": [[0, 0], [6000, 0], [6000, 4500], [0, 4500]], "thickness": 25, "offset": 3000 },
-          "outputs": { "solid": "solid", "surface": "surface" },
+          "inputs": {
+            "level": "level-eg.level",
+            "material": "mat-gipskarton.material"
+          },
+          "params": {
+            "outline": [
+              [
+                {
+                  "value": 0,
+                  "unit": "mm"
+                },
+                {
+                  "value": 0,
+                  "unit": "mm"
+                }
+              ],
+              [
+                {
+                  "value": 6000,
+                  "unit": "mm"
+                },
+                {
+                  "value": 0,
+                  "unit": "mm"
+                }
+              ],
+              [
+                {
+                  "value": 6000,
+                  "unit": "mm"
+                },
+                {
+                  "value": 4500,
+                  "unit": "mm"
+                }
+              ],
+              [
+                {
+                  "value": 0,
+                  "unit": "mm"
+                },
+                {
+                  "value": 4500,
+                  "unit": "mm"
+                }
+              ]
+            ],
+            "thickness": {
+              "value": 25,
+              "unit": "mm"
+            },
+            "offset": {
+              "value": 3000,
+              "unit": "mm"
+            }
+          },
+          "outputs": {
+            "solid": "solid",
+            "surface": "surface"
+          },
           "content": [],
-          "meta": { "name": "Decke" }
+          "meta": {
+            "name": "Decke"
+          }
         },
         {
           "id": "wand-nord",
           "type": "wall",
-          "inputs": { "level": "level-eg.level", "material": "mat-putz.material" },
-          "params": { "start": [0, 4500], "end": [6000, 4500], "height": 3000, "thickness": 175 },
-          "outputs": { "solid": "solid", "surface": "surface" },
+          "inputs": {
+            "level": "level-eg.level",
+            "material": "mat-putz.material"
+          },
+          "params": {
+            "start": [
+              {
+                "value": 0,
+                "unit": "mm"
+              },
+              {
+                "value": 4500,
+                "unit": "mm"
+              }
+            ],
+            "end": [
+              {
+                "value": 6000,
+                "unit": "mm"
+              },
+              {
+                "value": 4500,
+                "unit": "mm"
+              }
+            ],
+            "height": {
+              "value": 3000,
+              "unit": "mm"
+            },
+            "thickness": {
+              "value": 175,
+              "unit": "mm"
+            }
+          },
+          "outputs": {
+            "solid": "solid",
+            "surface": "surface"
+          },
           "content": [],
-          "meta": { "name": "Wand Nord (Flur)" }
+          "meta": {
+            "name": "Wand Nord (Flur)"
+          }
         },
         {
           "id": "wand-ost",
           "type": "wall",
-          "inputs": { "level": "level-eg.level", "material": "mat-putz.material" },
-          "params": { "start": [6000, 0], "end": [6000, 4500], "height": 3000, "thickness": 175 },
-          "outputs": { "solid": "solid", "surface": "surface" },
+          "inputs": {
+            "level": "level-eg.level",
+            "material": "mat-putz.material"
+          },
+          "params": {
+            "start": [
+              {
+                "value": 6000,
+                "unit": "mm"
+              },
+              {
+                "value": 0,
+                "unit": "mm"
+              }
+            ],
+            "end": [
+              {
+                "value": 6000,
+                "unit": "mm"
+              },
+              {
+                "value": 4500,
+                "unit": "mm"
+              }
+            ],
+            "height": {
+              "value": 3000,
+              "unit": "mm"
+            },
+            "thickness": {
+              "value": 175,
+              "unit": "mm"
+            }
+          },
+          "outputs": {
+            "solid": "solid",
+            "surface": "surface"
+          },
           "content": [],
-          "meta": { "name": "Wand Ost" }
+          "meta": {
+            "name": "Wand Ost"
+          }
         },
         {
           "id": "wand-sued",
@@ -225,133 +864,447 @@
             "material_1": "mat-putz.material"
           },
           "params": {
-            "start": [0, 0],
-            "end": [6000, 0],
-            "height": 3000,
-            "thickness": 240,
-            "layers": [{ "thickness": 225 }, { "thickness": 15 }]
+            "start": [
+              {
+                "value": 0,
+                "unit": "mm"
+              },
+              {
+                "value": 0,
+                "unit": "mm"
+              }
+            ],
+            "end": [
+              {
+                "value": 6000,
+                "unit": "mm"
+              },
+              {
+                "value": 0,
+                "unit": "mm"
+              }
+            ],
+            "height": {
+              "value": 3000,
+              "unit": "mm"
+            },
+            "thickness": {
+              "value": 240,
+              "unit": "mm"
+            },
+            "layers": [
+              {
+                "thickness": {
+                  "value": 225,
+                  "unit": "mm"
+                }
+              },
+              {
+                "thickness": {
+                  "value": 15,
+                  "unit": "mm"
+                }
+              }
+            ]
           },
-          "outputs": { "solid": "solid", "surface": "surface" },
+          "outputs": {
+            "solid": "solid",
+            "surface": "surface"
+          },
           "content": [],
-          "meta": { "name": "Außenwand Süd" }
+          "meta": {
+            "name": "Außenwand Süd"
+          }
         },
         {
           "id": "wand-west",
           "type": "wall",
-          "inputs": { "level": "level-eg.level", "material": "mat-putz.material" },
-          "params": { "start": [0, 0], "end": [0, 4500], "height": 3000, "thickness": 175 },
-          "outputs": { "solid": "solid", "surface": "surface" },
+          "inputs": {
+            "level": "level-eg.level",
+            "material": "mat-putz.material"
+          },
+          "params": {
+            "start": [
+              {
+                "value": 0,
+                "unit": "mm"
+              },
+              {
+                "value": 0,
+                "unit": "mm"
+              }
+            ],
+            "end": [
+              {
+                "value": 0,
+                "unit": "mm"
+              },
+              {
+                "value": 4500,
+                "unit": "mm"
+              }
+            ],
+            "height": {
+              "value": 3000,
+              "unit": "mm"
+            },
+            "thickness": {
+              "value": 175,
+              "unit": "mm"
+            }
+          },
+          "outputs": {
+            "solid": "solid",
+            "surface": "surface"
+          },
           "content": [],
-          "meta": { "name": "Wand West" }
+          "meta": {
+            "name": "Wand West"
+          }
         },
         {
           "id": "fenster-1",
           "type": "opening",
-          "inputs": { "host": "wand-sued.solid", "glazing": "mat-glas.material" },
-          "params": { "position": 1500, "sill": 900, "width": 3000, "height": 1500 },
-          "outputs": { "opening": "opening" },
+          "inputs": {
+            "host": "wand-sued.solid",
+            "glazing": "mat-glas.material"
+          },
+          "params": {
+            "position": {
+              "value": 1500,
+              "unit": "mm"
+            },
+            "sill": {
+              "value": 900,
+              "unit": "mm"
+            },
+            "width": {
+              "value": 3000,
+              "unit": "mm"
+            },
+            "height": {
+              "value": 1500,
+              "unit": "mm"
+            }
+          },
+          "outputs": {
+            "opening": "opening"
+          },
           "content": [],
-          "meta": { "name": "Fensterband" }
+          "meta": {
+            "name": "Fensterband"
+          }
         },
         {
           "id": "tuer-1",
           "type": "opening",
-          "inputs": { "host": "wand-nord.solid", "leaf": "mat-holz.material" },
-          "params": { "position": 600, "sill": 0, "width": 1010, "height": 2135 },
-          "outputs": { "opening": "opening" },
+          "inputs": {
+            "host": "wand-nord.solid",
+            "leaf": "mat-holz.material"
+          },
+          "params": {
+            "position": {
+              "value": 600,
+              "unit": "mm"
+            },
+            "sill": {
+              "value": 0,
+              "unit": "mm"
+            },
+            "width": {
+              "value": 1010,
+              "unit": "mm"
+            },
+            "height": {
+              "value": 2135,
+              "unit": "mm"
+            }
+          },
+          "outputs": {
+            "opening": "opening"
+          },
           "content": [],
-          "meta": { "name": "Tür" }
+          "meta": {
+            "name": "Tür"
+          }
         },
         {
           "id": "wandabsorber-1",
           "type": "absorber",
-          "inputs": { "material": "mat-akustikvlies.material", "on": "wand-west.surface" },
-          "params": { "position": [1000, 900], "width": 2500, "height": 1200, "thickness": 40 },
-          "outputs": { "absorber": "absorber" },
+          "inputs": {
+            "material": "mat-akustikvlies.material",
+            "on": "wand-west.surface"
+          },
+          "params": {
+            "position": [
+              {
+                "value": 1000,
+                "unit": "mm"
+              },
+              {
+                "value": 900,
+                "unit": "mm"
+              }
+            ],
+            "width": {
+              "value": 2500,
+              "unit": "mm"
+            },
+            "height": {
+              "value": 1200,
+              "unit": "mm"
+            },
+            "thickness": {
+              "value": 40,
+              "unit": "mm"
+            }
+          },
+          "outputs": {
+            "absorber": "absorber"
+          },
           "content": [],
-          "meta": { "name": "Wandabsorber West" }
+          "meta": {
+            "name": "Wandabsorber West"
+          }
         },
         {
           "id": "tisch",
           "type": "furniture",
-          "inputs": { "level": "level-eg.level" },
-          "params": { "position": [3000, 2250], "rotation": 0 },
-          "outputs": { "solid": "solid" },
+          "inputs": {
+            "level": "level-eg.level"
+          },
+          "params": {
+            "position": [
+              {
+                "value": 3000,
+                "unit": "mm"
+              },
+              {
+                "value": 2250,
+                "unit": "mm"
+              }
+            ],
+            "rotation": {
+              "value": 0,
+              "unit": "rad"
+            }
+          },
+          "outputs": {
+            "solid": "solid"
+          },
           "content": [
             {
               "id": "tischplatte",
               "type": "part",
-              "inputs": { "material": "mat-holz.material", "shape": "tischplatte-extrusion.solid" },
-              "params": { "elevation": 720 },
-              "outputs": { "solid": "solid" },
+              "inputs": {
+                "material": "mat-holz.material",
+                "shape": "tischplatte-extrusion.solid"
+              },
+              "params": {
+                "elevation": {
+                  "value": 720,
+                  "unit": "mm"
+                }
+              },
+              "outputs": {
+                "solid": "solid"
+              },
               "content": [
                 {
                   "id": "tischplatte-skizze",
                   "type": "sketch",
                   "inputs": {},
-                  "params": { "plane": "xy", "profile": "rectangle", "width": 1000, "length": 2400, "corner_radius": 0 },
-                  "outputs": { "profile": "profile" },
+                  "params": {
+                    "plane": "xy",
+                    "profile": "rectangle",
+                    "width": {
+                      "value": 1000,
+                      "unit": "mm"
+                    },
+                    "length": {
+                      "value": 2400,
+                      "unit": "mm"
+                    },
+                    "corner_radius": {
+                      "value": 0,
+                      "unit": "mm"
+                    }
+                  },
+                  "outputs": {
+                    "profile": "profile"
+                  },
                   "content": [],
                   "meta": {}
                 },
                 {
                   "id": "tischplatte-extrusion",
                   "type": "extrude",
-                  "inputs": { "profile": "tischplatte-skizze.profile" },
-                  "params": { "distance": 30, "direction": "+z" },
-                  "outputs": { "solid": "solid" },
+                  "inputs": {
+                    "profile": "tischplatte-skizze.profile"
+                  },
+                  "params": {
+                    "distance": {
+                      "value": 30,
+                      "unit": "mm"
+                    },
+                    "direction": "+z"
+                  },
+                  "outputs": {
+                    "solid": "solid"
+                  },
                   "content": [],
                   "meta": {}
                 }
               ],
-              "meta": { "name": "Tischplatte" }
+              "meta": {
+                "name": "Tischplatte"
+              }
             }
           ],
-          "meta": { "name": "Besprechungstisch, 8 Plätze" }
+          "meta": {
+            "name": "Besprechungstisch, 8 Plätze"
+          }
         },
         {
           "id": "segel-1",
           "type": "instance",
-          "inputs": { "definition": "deckensegel.definition", "on": "decke.surface" },
-          "params": { "variant": "1200x2400", "overrides": { "x": 1200, "y": 1500 } },
-          "outputs": { "absorber": "absorber" },
+          "inputs": {
+            "definition": "deckensegel.definition",
+            "on": "decke.surface"
+          },
+          "params": {
+            "variant": "1200x2400",
+            "overrides": {
+              "x": {
+                "value": 1200,
+                "unit": "mm"
+              },
+              "y": {
+                "value": 1500,
+                "unit": "mm"
+              }
+            }
+          },
+          "outputs": {
+            "absorber": "absorber"
+          },
           "content": [],
-          "meta": { "name": "Deckensegel 1" }
+          "meta": {
+            "name": "Deckensegel 1"
+          }
         },
         {
           "id": "segel-2",
           "type": "instance",
-          "inputs": { "definition": "deckensegel.definition", "on": "decke.surface" },
-          "params": { "variant": "1200x2400", "overrides": { "x": 3000, "y": 1500 } },
-          "outputs": { "absorber": "absorber" },
+          "inputs": {
+            "definition": "deckensegel.definition",
+            "on": "decke.surface"
+          },
+          "params": {
+            "variant": "1200x2400",
+            "overrides": {
+              "x": {
+                "value": 3000,
+                "unit": "mm"
+              },
+              "y": {
+                "value": 1500,
+                "unit": "mm"
+              }
+            }
+          },
+          "outputs": {
+            "absorber": "absorber"
+          },
           "content": [],
-          "meta": { "name": "Deckensegel 2" }
+          "meta": {
+            "name": "Deckensegel 2"
+          }
         },
         {
           "id": "segel-3",
           "type": "instance",
-          "inputs": { "definition": "deckensegel.definition", "on": "decke.surface" },
-          "params": { "variant": "1200x1200", "overrides": { "x": 4800, "y": 1500, "abhaengehoehe": 450 } },
-          "outputs": { "absorber": "absorber" },
+          "inputs": {
+            "definition": "deckensegel.definition",
+            "on": "decke.surface"
+          },
+          "params": {
+            "variant": "1200x1200",
+            "overrides": {
+              "x": {
+                "value": 4800,
+                "unit": "mm"
+              },
+              "y": {
+                "value": 1500,
+                "unit": "mm"
+              },
+              "abhaengehoehe": {
+                "value": 450,
+                "unit": "mm"
+              }
+            }
+          },
+          "outputs": {
+            "absorber": "absorber"
+          },
           "content": [],
-          "meta": { "name": "Deckensegel 3 (über Monitor, tiefer abgehängt)" }
+          "meta": {
+            "name": "Deckensegel 3 (über Monitor, tiefer abgehängt)"
+          }
         }
       ],
-      "meta": { "name": "Erdgeschoss, Besprechungsraum" }
+      "meta": {
+        "name": "Erdgeschoss, Besprechungsraum"
+      }
     },
     {
       "id": "nachhallzeit",
       "type": "analysis",
-      "inputs": { "space": "level-eg.level" },
+      "inputs": {
+        "space": "level-eg.level"
+      },
       "params": {
         "method": "sabine",
-        "bands": [125, 250, 500, 1000, 2000, 4000],
-        "target": { "value": 0.6, "unit": "s" },
+        "bands": [
+          {
+            "value": 125,
+            "unit": "Hz"
+          },
+          {
+            "value": 250,
+            "unit": "Hz"
+          },
+          {
+            "value": 500,
+            "unit": "Hz"
+          },
+          {
+            "value": 1000,
+            "unit": "Hz"
+          },
+          {
+            "value": 2000,
+            "unit": "Hz"
+          },
+          {
+            "value": 4000,
+            "unit": "Hz"
+          }
+        ],
+        "target": {
+          "value": 0.6,
+          "unit": "s"
+        },
         "standard": "DIN 18041, Nutzungsart A3"
       },
-      "outputs": { "rt60": "spectrum" },
+      "outputs": {
+        "rt60": "spectrum"
+      },
       "content": [],
-      "meta": { "name": "Nachhallzeit Besprechungsraum" }
+      "meta": {
+        "name": "Nachhallzeit Besprechungsraum"
+      }
     }
   ]
 }

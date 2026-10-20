@@ -5,53 +5,136 @@
       "id": "origin",
       "type": "origin",
       "inputs": {},
-      "params": { "x": 0, "y": 0, "z": 0 },
-      "outputs": { "frame": "frame" },
+      "params": {
+        "x": {
+          "value": 0,
+          "unit": "mm"
+        },
+        "y": {
+          "value": 0,
+          "unit": "mm"
+        },
+        "z": {
+          "value": 0,
+          "unit": "mm"
+        }
+      },
+      "outputs": {
+        "frame": "frame"
+      },
       "content": [],
-      "meta": { "name": "Ursprung", "units": "mm" }
+      "meta": {
+        "name": "Ursprung",
+        "units": "mm"
+      }
     },
     {
       "id": "projektvariablen",
       "type": "variables",
       "inputs": {},
       "params": {
-        "plattendicke": { "value": 8, "unit": "mm" },
-        "lochabstand": { "value": 80, "unit": "mm" },
-        "randabstand": { "value": 10, "unit": "mm" }
+        "plattendicke": {
+          "value": 8,
+          "unit": "mm"
+        },
+        "lochabstand": {
+          "value": 80,
+          "unit": "mm"
+        },
+        "randabstand": {
+          "value": 10,
+          "unit": "mm"
+        }
       },
-      "outputs": { "plattendicke": "length", "lochabstand": "length", "randabstand": "length" },
+      "outputs": {
+        "plattendicke": "length",
+        "lochabstand": "length",
+        "randabstand": "length"
+      },
       "content": [],
-      "meta": { "name": "Projektvariablen Halter" }
+      "meta": {
+        "name": "Projektvariablen Halter"
+      }
     },
     {
       "id": "mat-alu",
       "type": "material",
       "inputs": {},
       "params": {
-        "appearance": { "color": "#c8ccd0", "roughness": 0.35, "metallic": 1.0 },
-        "density": 2700,
-        "cost": { "value": 6.5, "currency": "EUR", "per": "kg" },
-        "co2": { "value": 8.6, "unit": "kg CO2e/kg" },
+        "appearance": {
+          "color": "#c8ccd0",
+          "roughness": {
+            "value": 0.35,
+            "unit": "1"
+          },
+          "metallic": {
+            "value": 1.0,
+            "unit": "1"
+          }
+        },
+        "density": {
+          "value": 2.7e-06,
+          "unit": "kg/mm3"
+        },
+        "cost": {
+          "amount": "6.50",
+          "currency": "EUR",
+          "per": "kg"
+        },
+        "co2": {
+          "value": 8.6,
+          "unit": "kg{CO2e}",
+          "per": "kg"
+        },
         "designation": "EN AW-5754"
       },
-      "outputs": { "material": "material" },
+      "outputs": {
+        "material": "material"
+      },
       "content": [],
-      "meta": { "name": "Aluminium AlMg3" }
+      "meta": {
+        "name": "Aluminium AlMg3"
+      }
     },
     {
       "id": "mat-stahl",
       "type": "material",
       "inputs": {},
       "params": {
-        "appearance": { "color": "#7d8187", "roughness": 0.3, "metallic": 1.0 },
-        "density": 7900,
-        "cost": { "value": 3.1, "currency": "EUR", "per": "kg" },
-        "co2": { "value": 2.1, "unit": "kg CO2e/kg" },
+        "appearance": {
+          "color": "#7d8187",
+          "roughness": {
+            "value": 0.3,
+            "unit": "1"
+          },
+          "metallic": {
+            "value": 1.0,
+            "unit": "1"
+          }
+        },
+        "density": {
+          "value": 7.9e-06,
+          "unit": "kg/mm3"
+        },
+        "cost": {
+          "amount": "3.10",
+          "currency": "EUR",
+          "per": "kg"
+        },
+        "co2": {
+          "value": 2.1,
+          "unit": "kg{CO2e}",
+          "per": "kg"
+        },
         "designation": "A2-70"
       },
-      "outputs": { "material": "material" },
+      "outputs": {
+        "material": "material"
+      },
       "content": [],
-      "meta": { "name": "Edelstahl A2" }
+      "meta": {
+        "name": "Edelstahl A2"
+      }
     },
     {
       "id": "schraube",
@@ -59,149 +142,414 @@
       "inputs": {},
       "params": {
         "parameters": {
-          "durchmesser": { "default": 5, "unit": "mm" },
-          "laenge": { "default": 16, "unit": "mm" },
-          "kopf": { "default": "zylinder" }
+          "durchmesser": {
+            "default": {
+              "value": 5,
+              "unit": "mm"
+            }
+          },
+          "laenge": {
+            "default": {
+              "value": 16,
+              "unit": "mm"
+            }
+          },
+          "kopf": {
+            "default": "zylinder"
+          }
         },
         "variants": {
-          "M5x16": { "durchmesser": 5, "laenge": 16 },
-          "M5x20": { "durchmesser": 5, "laenge": 20 },
-          "M6x20": { "durchmesser": 6, "laenge": 20 }
+          "M5x16": {
+            "durchmesser": {
+              "value": 5,
+              "unit": "mm"
+            },
+            "laenge": {
+              "value": 16,
+              "unit": "mm"
+            }
+          },
+          "M5x20": {
+            "durchmesser": {
+              "value": 5,
+              "unit": "mm"
+            },
+            "laenge": {
+              "value": 20,
+              "unit": "mm"
+            }
+          },
+          "M6x20": {
+            "durchmesser": {
+              "value": 6,
+              "unit": "mm"
+            },
+            "laenge": {
+              "value": 20,
+              "unit": "mm"
+            }
+          }
         }
       },
-      "outputs": { "definition": "component" },
+      "outputs": {
+        "definition": "component"
+      },
       "content": [
         {
           "id": "schraube-teil",
           "type": "part",
-          "inputs": { "material": "mat-stahl.material", "shape": "schraube-extrusion.solid" },
-          "params": { "standard": "ISO 4762" },
-          "outputs": { "solid": "solid" },
+          "inputs": {
+            "material": "mat-stahl.material",
+            "shape": "schraube-extrusion.solid"
+          },
+          "params": {
+            "standard": "ISO 4762"
+          },
+          "outputs": {
+            "solid": "solid"
+          },
           "content": [
             {
               "id": "schraube-skizze",
               "type": "sketch",
               "inputs": {},
-              "params": { "plane": "xy", "profile": "circle", "diameter": { "parameter": "durchmesser" } },
-              "outputs": { "profile": "profile" },
+              "params": {
+                "plane": "xy",
+                "profile": "circle",
+                "diameter": {
+                  "parameter": "durchmesser"
+                }
+              },
+              "outputs": {
+                "profile": "profile"
+              },
               "content": [],
               "meta": {}
             },
             {
               "id": "schraube-extrusion",
               "type": "extrude",
-              "inputs": { "profile": "schraube-skizze.profile" },
-              "params": { "distance": { "parameter": "laenge" }, "direction": "-z" },
-              "outputs": { "solid": "solid" },
+              "inputs": {
+                "profile": "schraube-skizze.profile"
+              },
+              "params": {
+                "distance": {
+                  "parameter": "laenge"
+                },
+                "direction": "-z"
+              },
+              "outputs": {
+                "solid": "solid"
+              },
               "content": [],
               "meta": {}
             }
           ],
-          "meta": { "name": "Zylinderschraube" }
+          "meta": {
+            "name": "Zylinderschraube"
+          }
         },
         {
           "id": "schraube-kopfauflage",
           "type": "frame",
-          "inputs": { "on": "schraube-teil.solid" },
-          "params": { "position": [0, 0, 0], "normal": [0, 0, 1] },
-          "outputs": { "frame": "frame" },
+          "inputs": {
+            "on": "schraube-teil.solid"
+          },
+          "params": {
+            "position": [
+              {
+                "value": 0,
+                "unit": "mm"
+              },
+              {
+                "value": 0,
+                "unit": "mm"
+              },
+              {
+                "value": 0,
+                "unit": "mm"
+              }
+            ],
+            "normal": [
+              {
+                "value": 0,
+                "unit": "1"
+              },
+              {
+                "value": 0,
+                "unit": "1"
+              },
+              {
+                "value": 1,
+                "unit": "1"
+              }
+            ]
+          },
+          "outputs": {
+            "frame": "frame"
+          },
           "content": [],
-          "meta": { "name": "Kopfauflage" }
+          "meta": {
+            "name": "Kopfauflage"
+          }
         }
       ],
-      "meta": { "name": "Zylinderschraube ISO 4762" }
+      "meta": {
+        "name": "Zylinderschraube ISO 4762"
+      }
     },
     {
       "id": "halter",
       "type": "assembly",
-      "inputs": { "origin": "origin.frame" },
+      "inputs": {
+        "origin": "origin.frame"
+      },
       "params": {},
-      "outputs": { "assembly": "assembly" },
+      "outputs": {
+        "assembly": "assembly"
+      },
       "content": [
         {
           "id": "platte",
           "type": "part",
-          "inputs": { "material": "mat-alu.material", "shape": "platte-extrusion.solid" },
-          "params": { "finish": "eloxiert" },
-          "outputs": { "solid": "solid", "top": "face" },
+          "inputs": {
+            "material": "mat-alu.material",
+            "shape": "platte-extrusion.solid"
+          },
+          "params": {
+            "finish": "eloxiert"
+          },
+          "outputs": {
+            "solid": "solid",
+            "top": "face"
+          },
           "content": [
             {
               "id": "platte-skizze",
               "type": "sketch",
-              "inputs": { "lochabstand": "projektvariablen.lochabstand", "randabstand": "projektvariablen.randabstand" },
-              "params": { "plane": "xy", "profile": "rectangle", "width": 100, "length": 60, "holes": 2, "hole_diameter": 5.5 },
-              "outputs": { "profile": "profile" },
+              "inputs": {
+                "lochabstand": "projektvariablen.lochabstand",
+                "randabstand": "projektvariablen.randabstand"
+              },
+              "params": {
+                "plane": "xy",
+                "profile": "rectangle",
+                "width": {
+                  "value": 100,
+                  "unit": "mm"
+                },
+                "length": {
+                  "value": 60,
+                  "unit": "mm"
+                },
+                "holes": {
+                  "value": 2,
+                  "unit": "1"
+                },
+                "hole_diameter": {
+                  "value": 5.5,
+                  "unit": "mm"
+                }
+              },
+              "outputs": {
+                "profile": "profile"
+              },
               "content": [],
               "meta": {}
             },
             {
               "id": "platte-extrusion",
               "type": "extrude",
-              "inputs": { "profile": "platte-skizze.profile", "distance": "projektvariablen.plattendicke" },
-              "params": { "direction": "+z" },
-              "outputs": { "solid": "solid" },
+              "inputs": {
+                "profile": "platte-skizze.profile",
+                "distance": "projektvariablen.plattendicke"
+              },
+              "params": {
+                "direction": "+z"
+              },
+              "outputs": {
+                "solid": "solid"
+              },
               "content": [],
               "meta": {}
             }
           ],
-          "meta": { "name": "Grundplatte" }
+          "meta": {
+            "name": "Grundplatte"
+          }
         },
         {
           "id": "loch-1",
           "type": "frame",
-          "inputs": { "on": "platte.top" },
-          "params": { "position": [10, 30, 8], "normal": [0, 0, 1] },
-          "outputs": { "frame": "frame" },
+          "inputs": {
+            "on": "platte.top"
+          },
+          "params": {
+            "position": [
+              {
+                "value": 10,
+                "unit": "mm"
+              },
+              {
+                "value": 30,
+                "unit": "mm"
+              },
+              {
+                "value": 8,
+                "unit": "mm"
+              }
+            ],
+            "normal": [
+              {
+                "value": 0,
+                "unit": "1"
+              },
+              {
+                "value": 0,
+                "unit": "1"
+              },
+              {
+                "value": 1,
+                "unit": "1"
+              }
+            ]
+          },
+          "outputs": {
+            "frame": "frame"
+          },
           "content": [],
-          "meta": { "name": "Bohrung links" }
+          "meta": {
+            "name": "Bohrung links"
+          }
         },
         {
           "id": "loch-2",
           "type": "frame",
-          "inputs": { "on": "platte.top" },
-          "params": { "position": [90, 30, 8], "normal": [0, 0, 1] },
-          "outputs": { "frame": "frame" },
+          "inputs": {
+            "on": "platte.top"
+          },
+          "params": {
+            "position": [
+              {
+                "value": 90,
+                "unit": "mm"
+              },
+              {
+                "value": 30,
+                "unit": "mm"
+              },
+              {
+                "value": 8,
+                "unit": "mm"
+              }
+            ],
+            "normal": [
+              {
+                "value": 0,
+                "unit": "1"
+              },
+              {
+                "value": 0,
+                "unit": "1"
+              },
+              {
+                "value": 1,
+                "unit": "1"
+              }
+            ]
+          },
+          "outputs": {
+            "frame": "frame"
+          },
           "content": [],
-          "meta": { "name": "Bohrung rechts" }
+          "meta": {
+            "name": "Bohrung rechts"
+          }
         },
         {
           "id": "schraube-1",
           "type": "instance",
-          "inputs": { "definition": "schraube.definition", "at": "loch-1.frame" },
-          "params": { "variant": "M5x16", "overrides": {}, "frame": "schraube-kopfauflage" },
-          "outputs": { "solid": "solid" },
+          "inputs": {
+            "definition": "schraube.definition",
+            "at": "loch-1.frame"
+          },
+          "params": {
+            "variant": "M5x16",
+            "overrides": {},
+            "frame": "schraube-kopfauflage"
+          },
+          "outputs": {
+            "solid": "solid"
+          },
           "content": [],
-          "meta": { "name": "Schraube links" }
+          "meta": {
+            "name": "Schraube links"
+          }
         },
         {
           "id": "schraube-2",
           "type": "instance",
-          "inputs": { "definition": "schraube.definition", "at": "loch-2.frame" },
-          "params": { "variant": "M5x16", "overrides": { "laenge": 18 }, "frame": "schraube-kopfauflage" },
-          "outputs": { "solid": "solid" },
+          "inputs": {
+            "definition": "schraube.definition",
+            "at": "loch-2.frame"
+          },
+          "params": {
+            "variant": "M5x16",
+            "overrides": {
+              "laenge": {
+                "value": 18,
+                "unit": "mm"
+              }
+            },
+            "frame": "schraube-kopfauflage"
+          },
+          "outputs": {
+            "solid": "solid"
+          },
           "content": [],
-          "meta": { "name": "Schraube rechts (Sonderlänge)" }
+          "meta": {
+            "name": "Schraube rechts (Sonderlänge)"
+          }
         }
       ],
-      "meta": { "name": "Halter, verschraubt" }
+      "meta": {
+        "name": "Halter, verschraubt"
+      }
     },
     {
       "id": "item-halter",
       "type": "item",
-      "inputs": { "definition": "halter.assembly" },
-      "params": { "number": "100-0001", "revision": "A", "state": "released" },
+      "inputs": {
+        "definition": "halter.assembly"
+      },
+      "params": {
+        "number": "100-0001",
+        "revision": "A",
+        "state": "released"
+      },
       "outputs": {},
       "content": [],
-      "meta": { "name": "Halter", "released_by": "konto-7f3a" }
+      "meta": {
+        "name": "Halter",
+        "released_by": "konto-7f3a"
+      }
     },
     {
       "id": "item-platte",
       "type": "item",
-      "inputs": { "definition": "platte.solid" },
-      "params": { "number": "100-0002", "revision": "B", "state": "in_work" },
+      "inputs": {
+        "definition": "platte.solid"
+      },
+      "params": {
+        "number": "100-0002",
+        "revision": "B",
+        "state": "in_work"
+      },
       "outputs": {},
       "content": [],
-      "meta": { "name": "Grundplatte" }
+      "meta": {
+        "name": "Grundplatte"
+      }
     }
   ]
 }
