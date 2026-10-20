@@ -25,6 +25,7 @@ sie verwendet werden. In Klammern: der englische Bezeichner im Code.
 | Analyse (`analysis`) | Berechnetes Element, z. B. Nachhallzeit, Masse, Messung mit Grenzwert |
 | Studie (`study`) | Automatisch durchgerechnete Varianten eines Untergraphen (ADR-049) |
 | Befund | Ergebnis einer Regel oder Analyse mit Ort, Schwere und optional Korrektur |
+| Vorschlag | Jede Änderung, die man nicht selbst direkt macht (KI, Konflikt, Update, Korrektur, Studie); erscheint als Entscheidungskarte mit Vorschau, Übernehmen und Verwerfen (ADR-021, `docs/design/leitbild.md`) |
 | Regel, Regelpaket | Ausführbare Prüfung bzw. Sammlung davon (ADR-008) |
 | Berechnungszustand | aktuell, veraltet, fehlerhaft, pausiert (ADR-050) |
 | Detailstufe | Hülle, vereinfacht, voll (ADR-050) |

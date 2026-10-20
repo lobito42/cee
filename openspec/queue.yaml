@@ -47,3 +47,15 @@ changes:
     model: sonnet
     night: true    # vollständig automatisch prüfbar
     depends_on: [ap-05a-schema-einheiten]
+
+  - id: ap-41-ux-prototyp
+    phase: tests
+    model: sonnet
+    night: true    # automatisch prüfbare Teile; Testpersonen-Abnahme [mensch] durch das Kernteam (Pilot TP1)
+    depends_on: []
+
+  - id: ap-40-bindungen-sdk
+    phase: tests
+    model: opus    # Agent kern-specialist (Rustler, WASM, PyO3)
+    night: true    # vollständig automatisch prüfbar
+    depends_on: [ap-05b-abhaengigkeiten]
