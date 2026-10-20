@@ -1,0 +1,21 @@
+[package]
+name = "sync_nif"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[lib]
+name = "sync_nif"
+crate-type = ["cdylib"]
+# Die Symbole der BEAM gibt es erst beim Laden; ein Test-Binary ließe sich nicht linken. Getestet wird die
+# Logik in `sync_core` und die Bindung über `mix test` im Server.
+test = false
+doctest = false
+
+[dependencies]
+sync_core = { path = "../../core" }
+rustler = "=0.39.0"
+
+[lints]
+workspace = true

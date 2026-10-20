@@ -435,6 +435,19 @@ impl Store {
         &self.doc
     }
 
+    /// Leeres Automerge-Dokument ohne Grundstruktur: ein Teilnehmer, der den ganzen Stand erst über das
+    /// Sync-Protokoll erhält (Sync-Spike ap-03). Lesen schlägt fehl, bis der erste Abgleich da ist.
+    pub fn empty() -> Store {
+        Store {
+            doc: AutoCommit::new(),
+        }
+    }
+
+    /// Veränderlicher Zugriff auf das Automerge-Dokument (Sync-Protokoll im Sync-Spike ap-03).
+    pub fn doc_mut(&mut self) -> &mut AutoCommit {
+        &mut self.doc
+    }
+
     pub(crate) fn elements_obj(&self) -> Result<ObjId> {
         self.obj(&ROOT, "elements")
     }

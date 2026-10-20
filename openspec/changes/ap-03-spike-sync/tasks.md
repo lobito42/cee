@@ -1,6 +1,6 @@
 ## 1. Kern-Bindungen
 
-- [ ] 1.1 `spikes/sync/Cargo.toml` als eigener Workspace mit `native/sync_nif` und `wasm/crate` auf
+- [x] 1.1 `spikes/sync/Cargo.toml` als eigener Workspace mit `native/sync_nif` und `wasm/crate` auf
   `spikes/datenmodell` als Pfad-Abhängigkeit; Sync-Funktionen (Sync-Nachricht erzeugen und empfangen,
   erweiterte Operationsliste mit `set_input` und `remove_element`, Hash, Projekt-JSON, Befunde) samt
   Rust-Test, in dem zwei Dokumente nur über Sync-Nachrichten denselben Hash erreichen – Prüfung:

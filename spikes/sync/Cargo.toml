@@ -1,0 +1,23 @@
+# Prototyp für den Sync-Spike (ap-03). Kein Produktcode: wird nicht übernommen, dient als Beleg.
+# Eigener Workspace; alle Datenmodell-Logik kommt aus dem ap-01-Prototyp (spikes/datenmodell) als
+# Pfad-Abhängigkeit. `core` bündelt die Sync-Funktionen einmal für beide Bindungen (NIF und WASM).
+[workspace]
+resolver = "2"
+members = ["core", "native/sync_nif", "wasm/crate"]
+
+[workspace.package]
+edition = "2021"
+license = "MPL-2.0"
+publish = false
+
+[workspace.dependencies]
+datenmodell = { path = "../datenmodell" }
+# Gleiche Versionen wie ap-01 (spikes/datenmodell/Cargo.lock), damit NIF und WASM denselben Kern nutzen.
+automerge = "=0.12.0"
+serde_json = "1"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[profile.release]
+debug = false
