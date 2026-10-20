@@ -31,8 +31,10 @@ def test_beispiele_ohne_befunde_und_schemafehler():
 def test_schema_ist_version_1_und_ohne_typliste():
     """Requirement Schema v1: keine Aufzählung von Werten für `type`, Version 1, nicht mehr Entwurf."""
     _, schema = _validator()
-    text = SCHEMA.read_text(encoding="utf-8")
-    assert "Entwurf" not in text and "draft" not in text.lower().replace("2020-12", "")
+    # Die offizielle Kennung des Metaschemas („…/draft/2020-12/schema“) ist kein Entwurfsvermerk.
+    text = SCHEMA.read_text(encoding="utf-8").replace(schema.get("$schema", ""), "")
+    assert schema.get("$schema") == "https://json-schema.org/draft/2020-12/schema"
+    assert "Entwurf" not in text and "draft" not in text.lower()
     type_schemas = []
 
     def walk(node):

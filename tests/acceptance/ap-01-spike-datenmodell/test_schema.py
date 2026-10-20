@@ -6,6 +6,10 @@ from conftest import ROOT, need_module
 
 SCHEMA = ROOT / "format" / "schema" / "element.schema.json"
 EXAMPLE = ROOT / "format" / "examples" / "raum.json"
+# Stand des Formats zum Ende des Spikes: ap-05a führt Größen mit Einheit ein (ADR-057), damit sind
+# nackte Zahlen und α ohne Einheit im lebenden Beispiel absichtlich weg. Tests, die genau diese
+# Spike-Form prüfen, lesen den eingefrorenen Stand.
+SPIKE_EXAMPLE = ROOT / "tests" / "golden" / "ap-01-spike-datenmodell" / "raum.json"
 FORM = {"id", "type", "inputs", "params", "outputs", "content", "meta"}
 TYPES = {
     "origin",
@@ -93,7 +97,7 @@ def test_ak3_component_with_variants_and_instances():
 
 def test_ak3_materials_carry_acoustics_and_are_referenced():
     """AK-3: Materialien tragen α je Oktavband; Wand, Decke, Boden, Absorber verweisen darauf."""
-    project = json.loads(EXAMPLE.read_text(encoding="utf-8"))
+    project = json.loads(SPIKE_EXAMPLE.read_text(encoding="utf-8"))
     elements = list(_walk(project["elements"]))
     materials = {e["id"] for e in elements if e["type"] == "material"}
     for m in (e for e in elements if e["type"] == "material"):
