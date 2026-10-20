@@ -122,8 +122,21 @@ def test_main_red_stops():
 
 
 def test_open_green_pr_waits_for_review():
-    out = ns.decide(entries(), {}, [pr("change/ap-a")], set(), "success")
+    done = {"ap-b": "done", "ap-c": "done", "ap-d": "done"}
+    out = ns.decide(entries(), done, [pr("change/ap-a")], set(), "success")
     assert out["step"] == "stop" and "Review" in out["reason"]
+
+
+def test_waiting_pr_does_not_block_other_changes():
+    # ap-a wartet auf Review, ap-b hängt an ap-a, ap-c nicht nachts → die Nacht arbeitet an ap-d weiter
+    out = ns.decide(entries(), {"ap-a": "build"}, [pr("change/ap-a")], set(), "success")
+    assert out["step"] == "tests" and out["id"] == "ap-d"
+
+
+def test_too_many_waiting_prs_stop():
+    prs = [pr(f"tests/ap-{c}", number=n) for n, c in enumerate("xyz", 1)]
+    out = ns.decide(entries(), {}, prs, set(), "success")
+    assert out["step"] == "stop" and "3 PRs" in out["reason"] and out["pr"] == 1
 
 
 def test_human_pr_does_not_block():
@@ -139,7 +152,8 @@ def test_draft_pr_resumes_instead_of_fix():
 
 
 def test_red_tests_pr_waits_for_review():
-    out = ns.decide(entries(), {}, [pr("tests/ap-b", checks=("FAILURE",))], set(), "success")
+    done = {"ap-a": "done", "ap-d": "done"}
+    out = ns.decide(entries(), done, [pr("tests/ap-b", checks=("FAILURE",))], set(), "success")
     assert out["step"] == "stop" and "Review" in out["reason"]
     draft = pr("tests/ap-b", checks=("FAILURE",))
     draft["isDraft"] = True
@@ -163,10 +177,11 @@ def test_red_pr_gets_fixed_twice_then_stops():
 
 
 def test_blocked_and_pending():
-    assert ns.decide(entries(), {}, [pr("tests/ap-b", ["blocked"])], set(), "success")["step"] == "stop"
+    done = {"ap-a": "done", "ap-d": "done"}
+    assert ns.decide(entries(), done, [pr("tests/ap-b", ["blocked"])], set(), "success")["step"] == "stop"
     pending = pr("change/ap-a")
     pending["statusCheckRollup"] = [{"status": "IN_PROGRESS", "conclusion": None}]
-    out = ns.decide(entries(), {}, [pending], set(), "success")
+    out = ns.decide(entries(), {"ap-d": "done"}, [pending], set(), "success")
     assert out["step"] == "stop" and "läuft" in out["reason"]
 
 
