@@ -10,6 +10,7 @@
 
 pub mod findings;
 pub mod plan;
+pub mod project;
 
 use automerge::sync::{Message, State, SyncDoc};
 use datenmodell::{synth, Error, Result, Store};
@@ -178,14 +179,24 @@ impl Peer {
         heads
     }
 
-    /// Inhalts-Hash über die kanonische Form (wie ap-01).
+    /// Inhalts-Hash über die kanonische Form (bitgleich zu ap-01, schneller berechnet: [`project`]).
     pub fn hash(&self) -> Result<String> {
-        self.store.hash()
+        project::hash(&self.store)
     }
 
     /// Kanonisches Projekt-JSON (wie `from-text` in ap-01: sortierte Schlüssel, zwei Leerzeichen).
     pub fn project_json(&self) -> Result<String> {
-        datenmodell::canonical_pretty(&self.store.to_project()?)
+        datenmodell::canonical_pretty(&project::to_project(&self.store)?)
+    }
+
+    /// Teilnehmer aus einem vorhandenen Dokument (Tests, Messungen).
+    pub fn from_store(store: Store) -> Peer {
+        Peer { store }
+    }
+
+    /// Das Dokument des Teilnehmers (Tests, Messungen).
+    pub fn into_store(self) -> Store {
+        self.store
     }
 
     /// Wert eines Felds als JSON; `None`, wenn Element oder Eintrag fehlen (z. B. vor dem Abgleich).

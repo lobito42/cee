@@ -7,8 +7,9 @@ defmodule SyncSpike.DocChannel do
   - Client → Server `sync` `%{"m" => base64, "t" => ms}` → Antwort `{:ok, %{heads}}` oder
     `{:error, %{code, message, element_id, hint}}`
   - Client → Server `hash`, `heads` → Antwort mit dem Wert des Servers
-  - Server → Client `sync` `%{m: base64, t: ms | nil}`; `t` ist der Zeitstempel des Senders, den der Server
-    nur weiterreicht (Latenzanzeige der Demo-Seite)
+  - Server → Client `sync` `%{m: base64, t: ms | nil, h: köpfe}`; `t` ist der Zeitstempel des Senders, den
+    der Server nur weiterreicht (Latenzanzeige der Demo-Seite); `h` sind die Köpfe des Servers, damit
+    Clients erkennen, wann alle denselben Stand haben
 
   Beitritte und eingehende Nachrichten werden nicht protokolliert: ihre Parameter sind Modellinhalte
   (ADR-056).
@@ -56,8 +57,8 @@ defmodule SyncSpike.DocChannel do
   end
 
   @impl true
-  def handle_info({:sync_out, message, t}, socket) do
-    push(socket, "sync", %{m: Base.encode64(message), t: t})
+  def handle_info({:sync_out, message, t, heads}, socket) do
+    push(socket, "sync", %{m: Base.encode64(message), t: t, h: heads})
     {:noreply, socket}
   end
 

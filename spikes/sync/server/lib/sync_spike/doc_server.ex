@@ -16,8 +16,11 @@ defmodule SyncSpike.DocServer do
 
   @call_timeout 120_000
 
-  @typedoc "Ausgehende Nachricht an einen Channel-Prozess."
-  @type outgoing :: {:sync_out, binary(), number() | nil}
+  @typedoc """
+  Ausgehende Nachricht an einen Channel-Prozess: Sync-Nachricht, Zeitstempel des Senders (nur
+  weitergereicht) und die Köpfe des Servers nach dem Anwenden (damit Clients Konvergenz erkennen).
+  """
+  @type outgoing :: {:sync_out, binary(), number() | nil, [String.t()]}
 
   # --- Schnittstelle -----------------------------------------------------------------------------------
 
@@ -123,8 +126,15 @@ defmodule SyncSpike.DocServer do
     ref = Process.monitor(chan)
     conns = Map.put(state.conns, chan, %{conn: Native.new_conn(), mon: ref})
     state = %{state | conns: conns}
-    push_to(state, chan, nil)
-    {:reply, :ok, state}
+
+    case Native.heads(state.doc) do
+      {:ok, heads} ->
+        push_to(state, chan, nil, heads)
+        {:reply, :ok, state}
+
+      {:error, reason} ->
+        {:reply, {:error, reason}, state}
+    end
   end
 
   def handle_call({:sync, chan, message, t}, _from, state) do
@@ -132,7 +142,7 @@ defmodule SyncSpike.DocServer do
       {:ok, %{conn: conn}} ->
         case Native.receive_message(state.doc, conn, message) do
           {:ok, heads} ->
-            Enum.each(Map.keys(state.conns), &push_to(state, &1, t))
+            Enum.each(Map.keys(state.conns), &push_to(state, &1, t, heads))
             {:reply, {:ok, heads}, state}
 
           {:error, reason} ->
@@ -157,7 +167,7 @@ defmodule SyncSpike.DocServer do
   end
 
   # Nächste Sync-Nachricht für eine Verbindung erzeugen und an den Channel-Prozess schicken.
-  defp push_to(state, chan, t) do
+  defp push_to(state, chan, t, heads) do
     %{conn: conn} = Map.fetch!(state.conns, chan)
 
     case Native.generate_message(state.doc, conn) do
@@ -165,7 +175,7 @@ defmodule SyncSpike.DocServer do
         :ok
 
       {:ok, message} ->
-        send(chan, {:sync_out, message, t})
+        send(chan, {:sync_out, message, t, heads})
 
       {:error, _reason} ->
         Logger.warning("Dokumentprozess #{state.name}: Sync-Nachricht nicht erzeugt")

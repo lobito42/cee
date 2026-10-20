@@ -20,7 +20,7 @@
 
 ## 3. Clients und Szenarien
 
-- [ ] 3.1 Node-Client in `spikes/sync/client/` (WASM-Kern, npm-Paket `phoenix`, `--delay-ms`) und Szenario
+- [x] 3.1 Node-Client in `spikes/sync/client/` (WASM-Kern, npm-Paket `phoenix`, `--delay-ms`) und Szenario
   `live` mit Latenzmessung – Prüfung: AK-3
 - [ ] 3.2 Szenario `concurrent` und Befehl `poison` – Prüfung: AK-4, AK-7
 - [ ] 3.3 Generator und Szenario `offline` mit `--dump` (Operationen, Endstände, Hashes), zunächst ohne die

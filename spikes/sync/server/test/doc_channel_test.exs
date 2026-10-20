@@ -100,7 +100,7 @@ defmodule SyncSpike.DocChannelTest do
     end
 
     receive do
-      {:sync_out, msg, _t} ->
+      {:sync_out, msg, _t, _heads} ->
         {:ok, _} = Native.receive_message(peer.doc, peer.conn, msg)
         settle_direct(peer, pid)
     after
