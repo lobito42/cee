@@ -1,8 +1,8 @@
 ## 1. Einheiten
 
-- [ ] 1.1 `crates/graph`: Abhängigkeiten, Fehlertyp, `units.rs` mit Dimensionen, Einheitentabelle und
+- [x] 1.1 `crates/graph`: Abhängigkeiten, Fehlertyp, `units.rs` mit Dimensionen, Einheitentabelle und
   Umrechnung; `graphctl units` und `convert` – Prüfung: AK-1, AK-2
-- [ ] 1.2 Eingaben lesen (`parse`) und `types.rs` mit Typdefinitionen – Prüfung: AK-3,
+- [x] 1.2 Eingaben lesen (`parse`) und `types.rs` mit Typdefinitionen – Prüfung: AK-3,
   `cargo test -q -p cee-graph types`
 
 ## 2. Schema und Dokument
