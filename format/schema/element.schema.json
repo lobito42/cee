@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json-schema.org/dr%61ft/2020-12/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://cee.dev/format/schema/element.schema.json",
   "title": "CEE-Projekt (Schema-Version 1)",
   "description": "Ein Projekt ist ein Graph aus Elementen. Jedes Element hat dieselbe Form (ADR-028), vom Achsenursprung bis zur Baugruppe. Das Schema zählt keine Fachtypen auf (ADR-046): `type` ist ein freier Bezeichner, die Bedeutung legen Fachpakete fest (ADR-054). Jede Zahl in `params` ist eine Größe mit Einheit in kanonischer Form (ADR-057); Geld ist eine Dezimalzeichenkette mit Währung.",
