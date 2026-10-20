@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+
 from graphctl5b import ctl, ctl_json, element, flat, make_doc
 
 
@@ -29,10 +31,16 @@ def test_idempotent_und_konvergent(tmp_path):
     ctl_json("migrate", doc, "--out", tmp_path / "l.doc", demo=True)
     ctl_json("migrate", doc, "--out", tmp_path / "r.doc", demo=True)
     ctl_json("merge", tmp_path / "l.doc", tmp_path / "r.doc", "--out", tmp_path / "lr.doc", demo=True)
-    ctl_json("migrate", tmp_path / "single.doc", "--out", tmp_path / "twice.doc", demo=True)
+    ctl_json("migrate", doc, "--out", tmp_path / "once.doc", demo=True)
+    ctl_json("migrate", doc, "--out", tmp_path / "again.doc", demo=True)  # dasselbe v1-Dokument zweimal
+    ctl_json("migrate", tmp_path / "single.doc", "--out", tmp_path / "twice.doc", demo=True)  # v2 -> v2
     want = ctl_json("hash", tmp_path / "single.doc", demo=True)
     assert ctl_json("hash", tmp_path / "lr.doc", demo=True) == want
     assert ctl_json("hash", tmp_path / "twice.doc", demo=True) == want
+    assert ctl_json("hash", tmp_path / "once.doc", demo=True) == ctl_json(
+        "hash", tmp_path / "again.doc", demo=True
+    )
+    assert ctl_json("hash", tmp_path / "again.doc", demo=True) == want
 
 
 def test_zu_neue_version(tmp_path):
@@ -43,9 +51,9 @@ def test_zu_neue_version(tmp_path):
     for cmd in ("hash", "export", "validate"):
         res = ctl(cmd, tmp_path / "v2.doc")
         assert res.returncode != 0, cmd
-        assert "schema_too_new" in res.stdout, (cmd, res.stdout, res.stderr)
+        assert json.loads(res.stdout)["error"] == "schema_too_new", (cmd, res.stdout, res.stderr)
     res = ctl("migrate", tmp_path / "v2.doc", "--out", tmp_path / "x.doc")
-    assert res.returncode != 0 and "schema_too_new" in res.stdout
+    assert res.returncode != 0 and json.loads(res.stdout)["error"] == "schema_too_new"
     assert (tmp_path / "v2.doc").read_bytes() == raw
 
 
