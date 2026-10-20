@@ -27,7 +27,7 @@
   Fälle „Entfernen gegen Ändern“ – Prüfung: `cd spikes/sync/server && mix test`
 - [x] 3.4 Befund `edit_on_removed` im Server und die 5 Fälle im Generator – Prüfung: AK-5
 - [x] 3.5 Variante `offline --both` – Prüfung: AK-10
-- [ ] 3.6 `bench.sh --json [--log <datei>]` mit allen Kennzahlen und Beobachtungen – Prüfung: AK-8, AK-9
+- [x] 3.6 `bench.sh --json [--log <datei>]` mit allen Kennzahlen und Beobachtungen – Prüfung: AK-8, AK-9
 
 ## 4. Demo und Bericht
 
