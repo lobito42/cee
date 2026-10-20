@@ -6,6 +6,10 @@ import json
 from conftest import ROOT, sh
 
 EXAMPLE = ROOT / "format" / "examples" / "raum.json"
+# Stand des Formats zum Ende des Spikes: ap-05a führt Größen mit Einheit ein (ADR-057), damit sind
+# nackte Zahlen und α ohne Einheit im lebenden Beispiel absichtlich weg. Tests, die genau diese
+# Spike-Form prüfen, lesen den eingefrorenen Stand.
+SPIKE_EXAMPLE = ROOT / "tests" / "golden" / "ap-01-spike-datenmodell" / "raum.json"
 MANIFEST = ROOT / "spikes" / "datenmodell" / "Cargo.toml"
 
 
@@ -33,7 +37,7 @@ def test_ak4_roundtrip_is_lossless_and_deterministic(tmp_path):
 
 def test_ak5_one_parameter_change_is_one_line(tmp_path):
     """AK-5: Eine geänderte Zahl in einem Parameter ändert genau eine Zeile der Textprojektion."""
-    project = json.loads(EXAMPLE.read_text(encoding="utf-8"))
+    project = json.loads(SPIKE_EXAMPLE.read_text(encoding="utf-8"))
 
     def first_numeric(elements):
         for e in elements:
@@ -46,7 +50,7 @@ def test_ak5_one_parameter_change_is_one_line(tmp_path):
         return None
 
     element, key = first_numeric(project["elements"])
-    before = cli("to-text", str(EXAMPLE))
+    before = cli("to-text", str(SPIKE_EXAMPLE))
     element["params"][key] = element["params"][key] + 1
     changed = tmp_path / "changed.json"
     changed.write_text(json.dumps(project), encoding="utf-8")
