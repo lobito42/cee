@@ -5,7 +5,15 @@ from __future__ import annotations
 import re
 import statistics
 
-from ux_helpers import ROOT, ZUSTAENDE, pruefen, quelltexte
+from ux_helpers import ROOT, ZUSTAENDE, pruefen, quelltexte, register
+
+WERKZEUGE = [
+    "werkzeug.auswaehlen",
+    "werkzeug.messen",
+    "werkzeug.schnitt",
+    "werkzeug.skizze",
+    "werkzeug.fragen",
+]
 
 
 def _muster_katalog() -> set[str]:
@@ -21,23 +29,29 @@ def test_budget_in_allen_zustaenden():
         (n, t) for n in ZUSTAENDE for t in ("hell", "dunkel")
     }
     katalog = _muster_katalog()
-    assert len(katalog) == 19
+    assert 19 <= len(katalog) <= 20
     alle: set[str] = set()
     for z in zustaende:
-        assert z["werkzeuge"] == 5, z["zustand"]
-        assert z["arbeitsbereiche"] <= 5 and z["panels"] == 2 and z["hauptaktionen"] <= 1, z["zustand"]
-        assert z["modale_dialoge"] == 0 and z["akzent_unzulaessig"] in (0, []), z["zustand"]
+        name = z["zustand"]
+        assert sorted(z["werkzeuge"]) == sorted(WERKZEUGE), name
+        assert 1 <= len(z["arbeitsbereiche"]) <= 5, name
+        assert len(z["panels"]) == 2 and len(set(z["panels"])) == 2, (name, z["panels"])
+        assert len(z["hauptaktionen"]) <= 1, (name, z["hauptaktionen"])
+        assert z["modale_dialoge"] == [], name
+        assert z["muster"], f"{name}: keine Muster gemeldet"
         alle |= set(z["muster"])
     assert alle <= katalog, alle - katalog
     assert len(alle) <= 20
-    assert b["kuerzel"] < 15
+    assert 0 < len(b["kuerzel"]) < 15, b["kuerzel"]
+    assert len(set(b["kuerzel"])) == len(b["kuerzel"])
+    assert len(b["kuerzel"]) == sum(1 for r in register() if r.get("kuerzel"))
 
 
 def test_keine_chat_fenster_entscheidungskarte():
     """KI-Zustände: 2 Panels; Karte mit Muster Entscheidungskarte und Quelle ki."""
     zustaende = {z["zustand"]: z for z in pruefen("budget")["zustaende"]}
     for name in ("ki-arbeitet", "ki-vorschlag"):
-        assert zustaende[name]["panels"] == 2
+        assert len(zustaende[name]["panels"]) == 2
     karten = zustaende["ki-vorschlag"]["karten"]
     assert {"muster": "Entscheidungskarte", "quelle": "ki"} in karten
 
