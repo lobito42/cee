@@ -7,6 +7,8 @@ name: Nachtschicht
 # Voraussetzungen: Secret CLAUDE_CODE_OAUTH_TOKEN (Abo, `claude setup-token`) und die Claude-GitHub-App für
 # dieses Repository – nur mit ihr lösen Pushes und PRs des Agenten die CI aus.
 # Kontingent: Ist nichts zu tun, startet Claude gar nicht (tools/next_step.py entscheidet ohne KI).
+# Bis zu drei Runden je Nacht nacheinander, je Runde ein Schritt; wartet ein PR auf Review, nimmt die nächste
+# Runde einen anderen Change. Zeitbudget der Nacht: neue Runden starten nur in den ersten 4 Stunden.
 
 on:
   schedule:
@@ -29,7 +31,12 @@ jobs:
   schicht:
     if: vars.NACHTSCHICHT == 'an'
     runs-on: ubuntu-latest
-    timeout-minutes: 300
+    timeout-minutes: 150
+    strategy:
+      matrix:
+        runde: [1, 2, 3]
+      max-parallel: 1   # nacheinander: jede Runde sieht die PRs der vorigen
+      fail-fast: false
     env:
       CEE_STRICT: "1"
       GH_TOKEN: ${{ github.token }}
@@ -65,8 +72,14 @@ jobs:
         id: next
         shell: bash
         run: |
-          out=$(python3 tools/next_step.py)
-          echo "$out"
+          start=$(gh api "repos/${{ github.repository }}/actions/runs/${{ github.run_id }}" --jq .run_started_at)
+          minuten=$(( ( $(date -u +%s) - $(date -u -d "$start" +%s) ) / 60 ))
+          if [ "$minuten" -ge 240 ]; then
+            out='{"step": "stop", "reason": "Zeitbudget der Nacht erschöpft"}'
+          else
+            out=$(python3 tools/next_step.py)
+          fi
+          echo "Runde ${{ matrix.runde }} nach ${minuten} min: $out"
           echo "json=$out" >> "$GITHUB_OUTPUT"
           echo "step=$(jq -r .step <<<"$out")" >> "$GITHUB_OUTPUT"
           echo "model=$(jq -r '.model // "sonnet"' <<<"$out")" >> "$GITHUB_OUTPUT"
@@ -81,6 +94,8 @@ jobs:
           reason=$(jq -r .reason <<<"$NEXT")
           label=$(jq -r '.label // empty' <<<"$NEXT"); pr=$(jq -r '.pr // empty' <<<"$NEXT")
           if [ -n "$label" ] && [ -n "$pr" ]; then gh pr edit "$pr" --add-label "$label"; fi
+          # Ab Runde 2 nur protokollieren, wenn sich etwas ändert (Label), sonst stünde jeder Halt dreimal da.
+          if [ "${{ matrix.runde }}" != "1" ] && [ -z "$label" ]; then exit 0; fi
           gh issue comment ${{ steps.issue.outputs.nr }} --body "$(date -u +%F) · gestoppt: ${reason} · [Lauf]($RUN)"
 
       # Ab hier nur, wenn es etwas zu tun gibt
@@ -122,18 +137,37 @@ jobs:
           echo "kommentare=$(gh issue view ${{ steps.issue.outputs.nr }} --json comments --jq '.comments | length')" >> "$GITHUB_OUTPUT"
 
       - if: steps.next.outputs.step != 'stop'
+        id: claude
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
             Führe den Skill /nachtschicht aus. Der Schrittplaner hat bereits entschieden:
             ${{ steps.next.outputs.json }}
-            Protokoll-Issue: #${{ steps.issue.outputs.nr }}. Halte dich strikt an die Grenzen des Skills.
+            Protokoll-Issue: #${{ steps.issue.outputs.nr }}. Runde ${{ matrix.runde }} von 3.
+            Halte dich strikt an die Grenzen des Skills.
           claude_args: |
             --model ${{ steps.next.outputs.model }}
             --max-turns 200
             --allowedTools "${{ steps.perm.outputs.allow }}"
             --disallowedTools "${{ steps.perm.outputs.deny }}"
+
+      # Verweigerte Befehle sichtbar machen, damit die Rechte gezielt angepasst werden können (Lauf 2026-10-20:
+      # 36 Verweigerungen, Ursache im Log nicht erkennbar). Nur Werkzeug und Befehl, kein Verlauf.
+      - if: always() && steps.next.outputs.step != 'stop'
+        name: Verweigerte Befehle
+        shell: bash
+        env:
+          EXEC: ${{ steps.claude.outputs.execution_file }}
+        run: |
+          [ -f "$EXEC" ] || exit 0
+          jq -r '[.[] | select(.type == "result")][-1].permission_denials // [] | .[]
+            | "\(.tool_name): \(.tool_input.command // .tool_input.file_path // "" | tostring | .[0:160])"' \
+            "$EXEC" | sort | uniq -c | sort -rn > verweigert.txt || true
+          [ -s verweigert.txt ] || exit 0
+          { echo "### Verweigerte Befehle (Runde ${{ matrix.runde }})"; echo '```'; head -30 verweigert.txt; echo '```'; } \
+            >> "$GITHUB_STEP_SUMMARY"
+          echo "::warning::$(wc -l < verweigert.txt) verschiedene Befehle verweigert – siehe Zusammenfassung des Laufs"
 
       # Ohne Protokolleintrag hat Claude nicht ordentlich gearbeitet (z. B. Rechte verweigert) – sichtbar machen.
       - if: steps.next.outputs.step != 'stop'

@@ -1,4 +1,4 @@
-# Übergabe – Stand 2026-10-19
+# Übergabe – Stand 2026-10-20
 
 Für die nächste Sitzung (Claude CLI am Rechner, Claude in der Cloud oder ein anderer Agent). Der Projektzustand liegt
 vollständig im Repository; diese Seite fasst zusammen, was zuletzt passiert ist und was offen ist. Wie der Alltag läuft: `docs/betrieb/arbeitsweise.md`
@@ -47,12 +47,21 @@ Begriffe stehen in `docs/glossar.md` (u. a. nicht „Werkbank“, „Kompakt“,
   Repository-Variable `NACHTSCHICHT=an`. Betrieb und Morgenroutine: `docs/betrieb/routine-nachtschicht.md`.
 - `tools/next_step.py` entscheidet ohne KI, Zustand aus dem Repo (Tests auf main → Umsetzung; Tasks abgehakt oder
   `change/<id>` gemergt → fertig); Entwurfs-PRs werden fortgesetzt, rote PRs bis zu zweimal repariert, dann `blocked`.
+- Bis zu drei Runden je Nacht (eine Runde = ein Schritt, je höchstens 150 min); nach 240 min startet keine neue
+  Runde. Ein wartender PR (Review, CI, `blocked`) hält nur seinen eigenen Change auf; ab drei wartenden PRs ist
+  Schluss. Jeder Agenten-PR trägt oben einen Abschnitt „Stand“ (Runde, Tests, Tasks, gerade, Lage); verweigerte
+  Befehle stehen in der Lauf-Übersicht der Action.
+- Arbeitsteilung: Der Mensch macht kein Code-Review. Claude reviewt fertige Agenten-PRs von sich aus
+  (`/review-change`), behebt Kleinigkeiten und legt eine Merge-Empfehlung in einem Satz vor; der Mensch sagt
+  ja/nein und macht die „Menschliche Abnahme“ an laufender Software nach Klick-Anleitung. Nie parallel zu einem
+  laufenden Nachtschicht-Lauf arbeiten; danach ohne Wartezeit weiter (`/stand`).
 - Strenger Testmodus (`CI` bzw. `CEE_STRICT=1`): fehlende Werkzeuge sind Fehler.
 - Feste Versionen: `.tool-versions`, `rust-toolchain.toml`.
 - Abnahmetest-PRs (`tests/<id>`): die neuen Tests sind absichtlich rot; die CI prüft dort nur, dass sie sich sammeln
   lassen, alle anderen fälligen Tests bleiben Pflicht – so können sie trotz Branch-Schutz gemergt werden.
-- Warteschlange: ap-00 (Gerüst) ist fertig und archiviert. Offen: ap-01 (Spike Datenmodell, Opus) und ap-02
-  (Akustik), beide mit Abnahmetests auf main. Nächster Schritt der Nachtschicht: `build` für ap-01.
+- Warteschlange: ap-00, ap-01 und ap-03 (Spike Sync, Empfehlung Go, `docs/spikes/sync.md`) sind umgesetzt.
+  Nächster Schritt der Nachtschicht: Abnahmetests für ap-05a (Schema und Einheiten). Die Menschliche Abnahme von
+  ap-03 im Browser (zwei Fenster, `spikes/sync/serve.sh`) steht noch aus.
 
 ## Wo was liegt
 

@@ -24,7 +24,8 @@ Fachbegriffe ohne Erklärung, keine langen Listen, keine Befehle zum Abtippen.
 
 ```
 **Letzte Nacht:** <ein Satz, was passiert ist – oder „nichts gelaufen“ mit Grund>
-**Heute Nacht:** <ein Satz: welcher Change, welcher Schritt – oder „nichts zu tun“>
+**Heute Nacht:** <welcher Change, welcher Schritt, wie weit die Nacht voraussichtlich kommt und wo sie anhält –
+oder „nichts zu tun“>
 
 **Für dich zu tun (n):**
 1. <Handgriff in Alltagssprache, warum, wie lange er dauert> – Soll ich …? (ja/nein)
@@ -39,7 +40,7 @@ Gibt es nichts zu tun: „Nichts zu tun. Alles läuft.“ – fertig.
 
 | Lage | Vorschlag |
 | --- | --- |
-| Agenten-PR fertig (kein Entwurf, CI grün) | In 3–5 Sätzen erklären, was er baut und wo das Risiko liegt (aus „In einfachen Worten“ und dem Diff). Fragen: „Soll ich ein unabhängiges Review machen?“ (dann `/review-change <nr>`) und danach „Soll ich mergen?“ (`gh pr merge <nr> --merge`). Bei Abnahmetest-PRs zusätzlich in 2 Sätzen sagen, was die Tests verlangen – sie sind der Vertrag. |
+| Agenten-PR fertig (kein Entwurf, CI grün) | **Ohne zu fragen** `/review-change <nr>` ausführen; Kleinigkeiten selbst auf dem Branch beheben (auf `tests/` nur Tests, auf `change/` nur Produktcode). Dann in 3–5 Sätzen erklären, was er baut und wo das Risiko liegt, mit einer Merge-Empfehlung in einem Satz, und fragen: „Soll ich mergen?“ (`gh pr merge <nr> --merge`). Bei Abnahmetest-PRs zusätzlich in 2 Sätzen sagen, was die Tests verlangen – sie sind der Vertrag. Hat der Change Kriterien `[mensch]`: eine Klick-Anleitung zum Ausprobieren der gebauten Software. **Der Mensch macht kein Code-Review.** |
 | Agenten-PR blockiert (`blocked`) | Die offene Frage aus dem PR in einfachen Worten wiedergeben, eine Antwort vorschlagen; nach Ja als PR-Kommentar posten und die Labels `blocked`, `fix-1`, `fix-2` entfernen. |
 | eigener PR (z. B. `fix/…`) offen und grün | „Soll ich ihn mergen, damit er der Nacht nicht in die Quere kommt?“ |
 | main rot | Ursache aus dem Log in einem Satz; anbieten, sie gemeinsam zu beheben. |
@@ -48,6 +49,8 @@ Gibt es nichts zu tun: „Nichts zu tun. Alles läuft.“ – fertig.
 | Protokoll zeigt Abbruch zweimal in Folge | Ursache aus dem Lauf-Log in einem Satz, Vorschlag zur Behebung. |
 
 ## Grenzen
+
+- Nie parallel zu einem laufenden Nachtschicht-Lauf arbeiten; erst nach seinem Ende prüfen.
 
 - Nichts mergen, freigeben, löschen oder an `openspec/queue.yaml` ändern ohne ausdrückliches Ja.
 - Nie Freigaben im Sinne von ADR-047 erteilen – das ist Sache des Menschen in der Oberfläche.

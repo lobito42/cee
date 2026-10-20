@@ -3,7 +3,8 @@ name: nachtschicht
 description: Unbeaufsichtigter Lauf – bestimmt mit tools/next_step.py genau einen Schritt (Abnahmetests schreiben, Change umsetzen oder roten Agenten-PR reparieren), arbeitet ihn ab, öffnet bzw. aktualisiert den Pull Request und schreibt ins Nachtschicht-Protokoll. Für geplante Läufe als GitHub-Action, in der Cloud oder lokal.
 ---
 
-Du arbeitest unbeaufsichtigt. Niemand beantwortet Fragen. Erledige **genau einen** Schritt, sparsam.
+Du arbeitest unbeaufsichtigt. Niemand beantwortet Fragen. Erledige **genau einen** Schritt, sparsam. Die
+GitHub-Action startet bis zu drei Runden je Nacht; jede Runde ist ein eigener Lauf mit einem Schritt.
 
 ## 1. Vorbereitung
 
@@ -38,9 +39,20 @@ weiterarbeiten (nie neu von main anlegen); steht `pr` dabei, ist das der offene 
   rot, zusätzlich Label `blocked`.
 
 **Sicher speichern:** Nach jeder abgehakten Task bzw. jedem fertigen Testmodul committen (`git commit -s`)
-und pushen (`git push -u origin <branch>`). Gibt es noch keinen PR, nach dem ersten Push sofort einen
+und pushen, immer mit Ziel: `git push -u origin <branch>` (nie ein blankes `git push` – das ist nicht
+freigegeben). Gibt es noch keinen PR, nach dem ersten Push sofort einen
 **Entwurfs-PR** öffnen (`gh pr create --draft`, Vorlage `.github/pull_request_template.md`). Bricht der Lauf
-ab, macht die nächste Nacht dort weiter.
+ab, macht die nächste Runde dort weiter.
+
+**Stand im PR:** Nach jeder Task bzw. jedem Testmodul den Abschnitt `## Stand` ganz oben im PR-Text
+aktualisieren (`gh pr edit <pr> --body-file <datei>`), damit der Mensch unterwegs sieht, wie weit der Lauf ist:
+
+```
+## Stand
+Runde 1 · seit 05:27 UTC · Tests 5 von 12 grün · Tasks 3 von 9 · gerade: Offline-Abgleich · Lage: gut
+```
+
+„Lage“ ist `gut` oder `hängt seit <n> Anläufen an <Problem>` – aus Zahlen abgeleitet, nicht geschätzt.
 
 **Fertig** ist ein Schritt erst, wenn die Abnahmetests des Changes im strengen Modus grün sind und
 **nichts übersprungen** wurde (`pytest -q -rs` zeigt keine `SKIPPED`). Dann den PR mit
