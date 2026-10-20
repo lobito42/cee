@@ -24,6 +24,12 @@ def _ids(proj: dict) -> list[str]:
     return out
 
 
+def _flat(els):
+    for e in els:
+        yield e
+        yield from _flat(e["content"])
+
+
 def _set_ops(ids: list[str], rng: random.Random, n: int) -> list[dict]:
     return [
         {
@@ -40,14 +46,19 @@ def test_speichern_und_laden_ohne_verlust(tmp_path):
     """Requirement Dokument: 10.000 Elemente, 1.000 Operationen, Roundtrip gleich in Hash und JSON."""
     proj = synth(10_000, 1)
     doc = make_doc(tmp_path, proj["elements"])
-    ops = write(tmp_path / "ops.json", _set_ops(_ids(proj), random.Random(7), 1000))
-    ctl_json("apply", doc, ops, "--out", tmp_path / "a.doc")
+    set_ops = _set_ops(_ids(proj), random.Random(7), 1000)
+    ctl_json("apply", doc, write(tmp_path / "ops.json", set_ops), "--out", tmp_path / "a.doc")
     # `export`/`hash` laden das gespeicherte Dokument von der Platte neu; zweiter Roundtrip über apply mit []
     ctl_json("apply", tmp_path / "a.doc", write(tmp_path / "none.json", []), "--out", tmp_path / "b.doc")
     assert ctl_json("hash", tmp_path / "a.doc") == ctl_json("hash", tmp_path / "b.doc")
     assert ctl_json("export", tmp_path / "a.doc") == ctl_json("export", tmp_path / "b.doc")
-    # Gegenprobe: Export gleicht dem Eingabeprojekt, bis auf die 1.000 Änderungen (Anzahl Elemente)
-    assert sorted(_ids(ctl_json("export", tmp_path / "a.doc"))) == sorted(_ids(proj))
+    # Gegenprobe: dieselben Elemente wie im Eingabeprojekt, und die 1.000 Änderungen sind wirklich gespeichert
+    exported = ctl_json("export", tmp_path / "b.doc")
+    assert sorted(_ids(exported)) == sorted(_ids(proj))
+    by_id = {e["id"]: e for e in _flat(exported["elements"])}
+    last = {(op["id"], op["param"]): op["value"] for op in set_ops}
+    for (id_, param), value in last.items():
+        assert by_id[id_]["params"][param] == value, (id_, param)
 
 
 def test_hash_unabhaengig_von_historie_und_actor(tmp_path):
@@ -87,17 +98,9 @@ def test_zwei_zweige_zusammenfuehren(tmp_path):
     ctl_json("merge", tmp_path / "l.doc", tmp_path / "r.doc", "--out", tmp_path / "lr.doc")
     ctl_json("merge", tmp_path / "r.doc", tmp_path / "l.doc", "--out", tmp_path / "rl.doc")
     assert ctl_json("hash", tmp_path / "lr.doc") == ctl_json("hash", tmp_path / "rl.doc")
-    merged = {e["id"]: e for e in ctl_json("export", tmp_path / "lr.doc")["elements"]}
-
-    def flat(els):
-        for e in els:
-            yield e
-            yield from flat(e["content"])
-
-    by_id = {e["id"]: e for e in flat(ctl_json("export", tmp_path / "lr.doc")["elements"])}
+    by_id = {e["id"]: e for e in _flat(ctl_json("export", tmp_path / "lr.doc")["elements"])}
     for op in lops + rops:
         assert by_id[op["id"]]["params"]["w"]["value"] == op["value"]["value"], op["id"]
-    assert merged  # Wurzelelemente vorhanden
 
 
 def test_alle_codes_werden_erkannt():

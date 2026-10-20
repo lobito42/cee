@@ -6,7 +6,7 @@ import math
 
 from graphctl_helpers import BRACKET_TYPES, ctl_json, element, make_doc, project, rel_close, write
 
-# Die sechs Werte aus dem Scenario: (Element, Parameter, Wert)
+# Die sechs Werte aus dem Scenario und die übrigen Zeilen der Regeltabelle: (Element, Parameter, Wert)
 VALUES = [
     ("b1", "height", 1200),
     ("b2", "height", {"value": 1.2, "unit": "m"}),
@@ -14,6 +14,9 @@ VALUES = [
     ("b4", "height", {"value": 1, "unit": "furlong"}),
     ("b5", "angle", 90),
     ("x1", "x", 5),
+    ("b6", "height", {"value": 250, "unit": "mm"}),  # kanonisch, bekannte Dimension
+    ("x2", "x", {"value": 1, "unit": "m"}),  # andere Einheit, unbekannte Dimension
+    ("x3", "x", {"value": 1, "unit": "furlong"}),  # unbekannter Code, unbekannte Dimension
 ]
 TYPE_OF = {"b": "bracket", "x": "plain"}
 
@@ -35,17 +38,20 @@ def test_regeltabelle_als_operation(tmp_path):
     types = _types(tmp_path)
     doc = make_doc(tmp_path, [element(i, TYPE_OF[i[0]]) for i, _, _ in VALUES], types)
     results = {}
+    nxt = tmp_path / "next.doc"
     for i, name, value in VALUES:
         before = _hash(doc)
+        nxt.unlink(missing_ok=True)
         ops = write(tmp_path / "ops.json", [{"op": "set_param", "id": i, "param": name, "value": value}])
-        out = ctl_json("apply", doc, ops, "--types", types, "--out", tmp_path / "next.doc", ok=False)
+        out = ctl_json("apply", doc, ops, "--types", types, "--out", nxt, ok=False)
         res = out["results"][0]
         results[i] = res
         if res["result"] == "ok":
             doc = tmp_path / f"{i}.doc"
-            (tmp_path / "next.doc").replace(doc)
-        else:
-            assert _hash(doc) == before, f"{i}: Dokument nach Ablehnung verändert"
+            nxt.replace(doc)
+        elif nxt.exists():
+            # Eine Ablehnung darf nichts schreiben – oder nur das unveränderte Dokument.
+            assert _hash(nxt) == before, f"{i}: Dokument nach Ablehnung verändert"
     exp = ctl_json("export", doc)
     assert results["b1"]["result"] == "ok" and results["b1"]["warnings"] == ["unit_assumed"]
     assert _param(exp, "b1", "height") == {"value": 1200, "unit": "mm"}
@@ -59,12 +65,19 @@ def test_regeltabelle_als_operation(tmp_path):
     assert angle["unit"] == "rad" and rel_close(angle["value"], math.pi / 2)
     assert results["x1"]["result"] == "ok" and results["x1"]["warnings"] == ["unit_missing"]
     assert _param(exp, "x1", "x") == 5
+    assert results["b6"]["result"] == "ok" and results["b6"]["warnings"] == []
+    assert _param(exp, "b6", "height") == {"value": 250, "unit": "mm"}
+    assert results["x2"]["result"] == "ok" and results["x2"]["warnings"] == []
+    assert _param(exp, "x2", "x")["unit"] == "mm" and rel_close(_param(exp, "x2", "x")["value"], 1000)
+    assert results["x3"]["result"] == "unknown_unit"
+    assert "x" not in next(e for e in exp["elements"] if e["id"] == "x3")["params"]
 
 
 def test_regeltabelle_als_import(tmp_path):
     """Requirement Regeln für Zahlen: Import lehnt nichts als Ganzes ab; unzulässige Werte werden Befunde."""
     types = _types(tmp_path)
     elements = [element(i, TYPE_OF[i[0]], {name: value}) for i, name, value in VALUES]
+    elements.append(element("m1", "plain", {"cost": {"amount": 12.5, "currency": "EUR"}}))
     out = ctl_json(
         "import", write(tmp_path / "p.json", project(elements)), "--types", types, "--out", tmp_path / "i.doc"
     )
@@ -75,8 +88,17 @@ def test_regeltabelle_als_import(tmp_path):
     assert _param(exp, "b4", "height") == {"value": 1, "unit": "furlong"}
     assert rel_close(_param(exp, "b5", "angle")["value"], math.pi / 2)
     assert _param(exp, "x1", "x") == 5
+    assert _param(exp, "b6", "height") == {"value": 250, "unit": "mm"}
+    assert _param(exp, "x2", "x")["unit"] == "mm" and rel_close(_param(exp, "x2", "x")["value"], 1000)
+    assert _param(exp, "x3", "x") == {"value": 1, "unit": "furlong"}
+    assert _param(exp, "m1", "cost") == {"amount": 12.5, "currency": "EUR"}
     errors = {(f["element"], f["code"]) for f in out["findings"] if f["severity"] == "error"}
-    assert errors == {("b3", "dimension_mismatch"), ("b4", "unknown_unit")}
+    assert errors == {
+        ("b3", "dimension_mismatch"),
+        ("b4", "unknown_unit"),
+        ("x3", "unknown_unit"),
+        ("m1", "invalid_money"),
+    }
     warns = {(f["element"], f["code"]) for f in out["findings"] if f["severity"] == "warning"}
     assert warns == {("b1", "unit_assumed"), ("b5", "unit_assumed"), ("x1", "unit_missing")}
 
@@ -85,9 +107,7 @@ def test_warnung_verschwindet_mit_einheit(tmp_path):
     """Requirement Regeln für Zahlen: Warnung bleibt, bis der Wert mit Einheit gesetzt ist."""
     doc = make_doc(tmp_path, [element("x1", "plain", {"x": 5})])
     findings = ctl_json("validate", doc)["findings"]
-    assert [(f["element"], f["field"], f["code"]) for f in findings] == [("x1", "x", "unit_missing")] or [
-        f["code"] for f in findings
-    ] == ["unit_missing"]
+    assert [(f["element"], f["field"], f["code"]) for f in findings] == [("x1", "x", "unit_missing")]
     ops = write(
         tmp_path / "ops.json",
         [{"op": "set_param", "id": "x1", "param": "x", "value": {"value": 5, "unit": "mm"}}],
@@ -99,12 +119,15 @@ def test_warnung_verschwindet_mit_einheit(tmp_path):
 def test_geld_ohne_waehrung_oder_als_gleitkomma_abgelehnt(tmp_path):
     """Requirement Regeln für Zahlen / Größe und Geld: `invalid_money` bei Operation."""
     doc = make_doc(tmp_path, [element("m1", "plain")])
+    nxt = tmp_path / "n.doc"
     for value in ({"amount": 12.5, "currency": "EUR"}, {"amount": "12.50"}):
         before = _hash(doc)
+        nxt.unlink(missing_ok=True)
         ops = write(tmp_path / "ops.json", [{"op": "set_param", "id": "m1", "param": "cost", "value": value}])
-        out = ctl_json("apply", doc, ops, "--out", tmp_path / "n.doc", ok=False)
+        out = ctl_json("apply", doc, ops, "--out", nxt, ok=False)
         assert out["results"][0]["result"] == "invalid_money", value
-        assert _hash(doc) == before
+        if nxt.exists():
+            assert _hash(nxt) == before, f"{value}: Dokument nach Ablehnung verändert"
     ok = write(
         tmp_path / "ok.json",
         [{"op": "set_param", "id": "m1", "param": "cost", "value": {"amount": "12.50", "currency": "EUR"}}],

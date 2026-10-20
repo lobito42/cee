@@ -5,10 +5,13 @@ Annahmen zur Ausgabe von `graphctl` (design.md legt nur „JSON auf stdout“ fe
   (fehlende Achsen = 0).
 - `parse`/`convert`: `{"value": <Zahl>, "unit": "<kanonischer Code>"}` bzw. `{"value": <Zahl>}`;
   Fehler: `{"error": "<code>"}`, Rückgabecode ≠ 0.
-- `import`/`validate`: `{"findings": [{"element","field","name","code","severity","message"}]}`.
+- `import`/`validate`: `{"findings": [{"element","field","name","code","severity","message"}]}`; Befunde sind
+  kein Fehler des Aufrufs, Rückgabecode 0.
 - `apply`: `{"results": [{"result": "ok"|"<fehlercode>", "warnings": ["<code>", ...]}]}`.
 - `hash`: `{"hash": "<hex>"}`. `export`: Projekt-JSON. `merge`: `{"hash": ...}`.
-- `synth --corpus validate`: `{"project": {...}, "expected": [{"element","code","severity"}]}`.
+- `synth --corpus validate`: `{"project": {...}, "expected": [{"element","code","severity"}]}`, optional
+  `"types": [...]` mit den Typdefinitionen des Korpus.
+- `apply` mit abgelehnter Operation schreibt kein `--out` oder nur das unveränderte Dokument.
 - Operationen in `ops.json` (Liste): `{"op": "create", "id", "type", "params"?, "inputs"?}`,
   `{"op": "set_param", "id", "param", "value"}`, `{"op": "set_input", "id", "name", "target"}`,
   `{"op": "set_meta", "id", "key", "value"}`, `{"op": "remove", "id"}`.

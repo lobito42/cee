@@ -50,8 +50,8 @@ def test_schema_ist_version_1_und_ohne_typliste():
     for t in type_schemas:
         assert "enum" not in t and "const" not in t, t
     defs = schema.get("$defs", {})
-    assert any("quantity" in k.lower() or "groesse" in k.lower() or "size" in k.lower() for k in defs) or defs
-    assert any("money" in k.lower() or "geld" in k.lower() for k in defs)
+    # Größe und Geld als `$defs` (design.md); Namen frei, die Wirkung prüft test_schema_erzwingt_groessen.
+    assert len(defs) >= 2, f"Schema hat nur {len(defs)} $defs, erwartet Größe und Geld"
 
 
 def test_schema_erzwingt_groessen():
