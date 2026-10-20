@@ -15,7 +15,7 @@
 - [x] 2.2 Dokumentprozess je Dokument (Registry, DynamicSupervisor) mit NIF-Ressource, Channel-Beitritt mit
   Erstabgleich, Weitergabe an alle anderen Verbindungen, HTTP `/docs`, `/hash`, `/project`, `/findings`,
   `/kill` – Prüfung: `cd spikes/sync/server && mix test`; AK-6
-- [ ] 2.3 Fehlerisolation: ungültige Nachrichten und NIF-Fehler als Fehlerantwort, keine Modellinhalte im
+- [x] 2.3 Fehlerisolation: ungültige Nachrichten und NIF-Fehler als Fehlerantwort, keine Modellinhalte im
   Protokoll – Prüfung: AK-7, AK-8
 
 ## 3. Clients und Szenarien
