@@ -11,7 +11,7 @@
   Export); `graphctl apply`, `export`, `hash`, `merge` – Prüfung: AK-8
 - [x] 2.2 Regeln für Zahlen beim Schreiben und Stapel-Import in einer Transaktion; `graphctl import` –
   Prüfung: AK-4
-- [ ] 2.3 `format/schema/element.schema.json` auf v1, `format/examples/` von Hand mit Einheiten überführt –
+- [x] 2.3 `format/schema/element.schema.json` auf v1, `format/examples/` von Hand mit Einheiten überführt –
   Prüfung: AK-5
 
 ## 3. Prüfung, Messung, Abschluss
