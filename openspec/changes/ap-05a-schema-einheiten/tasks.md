@@ -18,8 +18,8 @@
 
 - [x] 3.1 `synth.rs` (Projekte, Korpora mit erwarteten Befunden) und `validate.rs` mit allen Codes;
   `graphctl synth`, `validate` – Prüfung: AK-6, AK-7
-- [ ] 3.2 `graphctl bench --json` mit allen Kennzahlen; Budgets einhalten – Prüfung: AK-9
-- [ ] 3.3 Rustdoc an öffentlichen Funktionen, `crates/graph/README.md` mit Einheitentabelle und Messwerten –
+- [x] 3.2 `graphctl bench --json` mit allen Kennzahlen; Budgets einhalten – Prüfung: AK-9
+- [x] 3.3 Rustdoc an öffentlichen Funktionen, `crates/graph/README.md` mit Einheitentabelle und Messwerten –
   Prüfung: AK-10; gesamt `uv run pytest -q tests/acceptance/ap-05a-schema-einheiten`
 
 ## Workflow follow-up

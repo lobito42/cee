@@ -8,6 +8,8 @@
 //! - [`validate`]: Prüfung mit Befunden
 //! - [`synth`]: deterministischer Generator für Projekte und Prüfkorpora
 
+#![deny(missing_docs)]
+
 pub mod doc;
 pub mod schema;
 pub mod synth;
