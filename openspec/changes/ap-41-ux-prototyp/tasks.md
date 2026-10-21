@@ -40,7 +40,7 @@ pruefen -- befehle --json`; AK-5
 ablauf a --json`; AK-6
 - [x] 3.2 Ablauf B: Tiefe im Eigenschaften-Panel, Kanten auswählen, Verrunden, Befund bei Radius über 24 mm mit
       Korrektur; Prüfbefehl `ablauf b` – Prüfung: `cd P && npm run --silent pruefen -- ablauf b --json`; AK-6
-- [ ] 3.3 Ablauf C: Baugruppe anlegen, Verbinden über Verbindungspunkte, Auswahlfeld „Art“, Einrasten;
+- [x] 3.3 Ablauf C: Baugruppe anlegen, Verbinden über Verbindungspunkte, Auswahlfeld „Art“, Einrasten;
       Prüfbefehl `ablauf c` – Prüfung: `cd P && npm run --silent pruefen -- ablauf c --json`; AK-6
 - [ ] 3.4 Entwürfe: Liste in der Kopfzeile, Entwurf anlegen, Vergleich, Übernehmen, Verwerfen mit Begründung,
       Ansichten „Ergebnis“ und „Alle Entwürfe“; Prüfbefehle `ablauf d` und `ablauf e` – Prüfung: `cd P && npm run

@@ -120,8 +120,17 @@
       "werte": "Wandstärke: 0 mm → 2 mm"
     }
   },
-  "art": { "fest": "Fest", "dreh": "Drehbar", "gleit": "Gleitend" },
+  "art": {
+    "fest": "Fest",
+    "dreh": "Drehbar",
+    "gleit": "Gleitend",
+    "zylinder": "Zylinder",
+    "kugel": "Kugel",
+    "eben": "Eben"
+  },
   "ablauf": {
+    "versatz": "Versatz",
+    "punkte": "Verbindungspunkte wählen",
     "ebene": "Ebene wählen",
     "skizze": "Skizze",
     "laenge": "Länge",

@@ -296,6 +296,25 @@ const BEFEHLE = {
         await seite.close();
         return ergebnis;
       },
+      // Ablauf C: Baugruppe anlegen, Verbindungspunkte anklicken, Art Fest (nur Klicks).
+      async 'c/'() {
+        const { seite } = await oeffnen(browser, adresse(basis, 'teile', 'hell'));
+        let eingaben = 0;
+        const klick = async (selektor, optionen) => {
+          await seite.click(selektor, optionen);
+          eingaben += 1;
+        };
+        await klick('[data-element="gehaeuse"]');
+        await klick('[data-element="deckel"]', { modifiers: ['Shift'] });
+        await klick('[data-panel="eigenschaften"] [data-befehl="baugruppe.anlegen"]');
+        await klick('[data-element="instanz-deckel"]');
+        await klick('[data-panel="eigenschaften"] [data-befehl="verbindung.anlegen"]');
+        await klick('[data-verbindungspunkt="deckel-unterseite"]');
+        await klick('[data-verbindungspunkt="gehaeuse-oberkante"]');
+        const ergebnis = { eingaben, ...(await stand(seite)) };
+        await seite.close();
+        return ergebnis;
+      },
       // Ablauf B: Tiefe im Panel, Kanten wählen, Verrunden (nur Klicks und Tasten).
       async 'b/'() {
         const { seite, klicks } = await dickerUndGerundet(3);

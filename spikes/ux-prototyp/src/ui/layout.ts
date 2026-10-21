@@ -12,6 +12,7 @@ import {
   wirkungenRegistrieren as verrundungWirkungen,
   zielTeil,
 } from './verrundung';
+import { verbindenKarte, wirkungenRegistrieren as baugruppeWirkungen } from './baugruppe';
 import { wertfeldBauen } from './skizzenablauf';
 import type { Groesse } from '../wert/wertfeld';
 import './ui.css';
@@ -127,6 +128,25 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
       if (teil) verrundenKarte({ sitzung, t, flaeche, teil: teil.id, fertig: zeichnen });
       return;
     }
+    if (id === 'baugruppe.anlegen' && !parameter.teile) parameter = { teile: [...auswahl] };
+    if (id === 'verbindung.anlegen' && !parameter.von) {
+      verbindenKarte({
+        sitzung,
+        t,
+        flaeche,
+        start: auswahl[0] ?? '',
+        fertig: (art) => {
+          nachjustieren.replaceChildren(
+            Object.assign(el('span'), { textContent: t('app.nachjustieren') }),
+            Object.assign(el('span'), {
+              textContent: `${t('zustand.verbindung.art')}: ${t(`art.${art}`)} · ${t('ablauf.versatz')}: ${anzeigen(mm(0))}`,
+            }),
+          );
+          zeichnen();
+        },
+      });
+      return;
+    }
     sitzung.ausfuehren(id, parameter);
     if (id === 'suche.oeffnen') suche.focus();
     if (id === 'thema.umschalten') {
@@ -157,6 +177,7 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
   const f3d = new Flaeche3d(canvas);
   skizzenWirkungenRegistrieren(sitzung);
   verrundungWirkungen(sitzung);
+  baugruppeWirkungen(sitzung);
   const ablauf = skizzenablaufAufbauen({
     sitzung,
     t,
@@ -207,9 +228,11 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
     const ids =
       k.type === 'sketch'
         ? ['feature.extrudieren', 'ki.fragen']
-        : ['part', 'extrusion'].includes(k.type)
-          ? ['feature.verrunden', 'feature.schale', 'ki.fragen']
-          : ['ki.fragen'];
+        : k.type === 'instance'
+          ? ['verbindung.anlegen', 'ki.fragen']
+          : ['part', 'extrusion'].includes(k.type)
+            ? ['feature.verrunden', 'feature.schale', 'ki.fragen']
+            : ['ki.fragen'];
     const box = el('div', 'Kontextaktionen');
     for (const id of ids) {
       const b = knopf(t, id);
@@ -231,7 +254,15 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
     titel.textContent = t('app.eigenschaften');
     eigenschaften.replaceChildren(titel);
     const gewaehlt = auswahl.length === 1 ? finde(projekt, auswahl[0] ?? '') : undefined;
-    if (!gewaehlt) {
+    if (auswahl.length > 1) {
+      const namen = el('p');
+      namen.textContent = auswahl.map((id) => finde(projekt, id)?.meta.name ?? id).join(', ');
+      const box = el('div', 'Kontextaktionen');
+      const b = knopf(t, 'baugruppe.anlegen');
+      b.addEventListener('click', () => ausloesen('baugruppe.anlegen'));
+      box.append(b);
+      eigenschaften.append(namen, box);
+    } else if (!gewaehlt) {
       const leer = el('p', 'Leerer Zustand');
       leer.textContent = t('app.leer');
       eigenschaften.append(leer);

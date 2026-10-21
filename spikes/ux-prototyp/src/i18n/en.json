@@ -116,8 +116,17 @@
       "werte": "Wall thickness: 0 mm → 2 mm"
     }
   },
-  "art": { "fest": "Fixed", "dreh": "Rotating", "gleit": "Sliding" },
+  "art": {
+    "fest": "Fixed",
+    "dreh": "Rotating",
+    "gleit": "Sliding",
+    "zylinder": "Cylinder",
+    "kugel": "Ball",
+    "eben": "Planar"
+  },
   "ablauf": {
+    "versatz": "Offset",
+    "punkte": "Pick connection points",
     "ebene": "Choose a plane",
     "skizze": "Sketch",
     "laenge": "Length",
