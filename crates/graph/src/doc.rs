@@ -444,6 +444,7 @@ impl Doc {
     /// Verwirft Index und aufbereitete Elemente (werden bei Bedarf neu aufgebaut).
     fn drop_derived(&mut self) {
         self.index = None;
+        self.sidecar = None;
         self.cache.clear();
     }
 
