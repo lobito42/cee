@@ -18,7 +18,7 @@ WERKZEUGE = [
 
 def _muster_katalog() -> set[str]:
     text = (ROOT / "docs" / "design" / "muster.md").read_text("utf-8")
-    return {m.group(1) for m in re.finditer(r"^\| \*\*([^*]+)\*\* \|", text, re.M)}
+    return {m.group(1) for m in re.finditer(r"^\| \*\*([^*]+)\*\*[^|]*\|", text, re.M)}
 
 
 def test_budget_in_allen_zustaenden():
