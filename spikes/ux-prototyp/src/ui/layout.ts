@@ -148,6 +148,7 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
     }
     if (id === 'baugruppe.anlegen' && !parameter.teile) parameter = { teile: [...auswahl] };
     if (id === 'verbindung.anlegen' && !parameter.von) {
+      sitzung.ausfuehren(id, parameter); // Start im Protokoll; die Wirkung folgt mit den Verbindungspunkten
       verbindenKarte({
         sitzung,
         t,
@@ -280,10 +281,12 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
     const titel = el('h2');
     titel.textContent = t('app.eigenschaften');
     eigenschaften.replaceChildren(titel);
-    const gewaehlt = auswahl.length === 1 ? finde(projekt, auswahl[0] ?? '') : undefined;
-    if (auswahl.length > 1) {
+    // Nur Elemente des Modells; Kanten und andere Flächenobjekte stehen nicht im Panel.
+    const vorhanden = auswahl.flatMap((id) => finde(projekt, id) ?? []);
+    const gewaehlt = vorhanden.length === 1 ? vorhanden[0] : undefined;
+    if (vorhanden.length > 1) {
       const namen = el('p');
-      namen.textContent = auswahl.map((id) => finde(projekt, id)?.meta.name ?? id).join(', ');
+      namen.textContent = vorhanden.map((k) => k.meta.name).join(', ');
       const box = el('div', 'Kontextaktionen');
       const b = knopf(t, 'baugruppe.anlegen');
       b.addEventListener('click', () => ausloesen('baugruppe.anlegen'));
