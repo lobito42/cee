@@ -2,8 +2,8 @@
 
 - Bedienkonzept nach Figma (ADR-022): keine Menüleisten, keine modalen Dialoge, kein Ribbon. Neue
   Funktionen kommen in die Befehlssuche (Strg/Cmd+K), ins Eigenschaften-Panel oder an die Auswahl.
-- Die Werkzeugleiste hat genau fünf Werkzeuge (Auswählen, Messen, Schnitt, Skizze, Fragen). Ein sechstes
-  nur per ADR.
+- Fünf Zonen, erst wählen, dann tun (ADR-063): keine Werkzeugleiste; Aktionen erscheinen über dem Gewählten
+  und in der Suche. Zahlen stehen nur im Inspektor, am Modell gibt es Griffe.
 - Ein Muster je Aufgabe (ADR-061): vor jedem neuen Bedienelement `docs/design/muster.md` lesen und das
   vorhandene Muster benutzen. Neue Muster oder Abweichungen nur per ADR. Bausteine nur in `client/src/ui/`;
   außerhalb davon keine rohen Bedienelemente, keine Farbwerte, keine Schriftangaben (Lint).

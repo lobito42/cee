@@ -48,10 +48,10 @@ changes:
     night: true    # vollständig automatisch prüfbar
     depends_on: [ap-05a-schema-einheiten]
 
-  - id: ap-41-ux-prototyp
+  - id: ap-41b-ux-bedienkonzept
     phase: tests
     model: sonnet
-    night: true    # automatisch prüfbare Teile; Testpersonen-Abnahme [mensch] durch das Kernteam (Pilot TP1)
+    night: true    # ersetzt ap-41 (No-Go im Pilot TP1); Pilotlauf A–H [mensch] durch das Kernteam vor dem Merge
     depends_on: []
 
   - id: ap-40-bindungen-sdk

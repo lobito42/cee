@@ -3,11 +3,11 @@
 - Status: vorgeschlagen
 - Datum: 2026-10-16
 - Entscheider: Kernteam
-- Geändert durch: ADR-031, ADR-044, ADR-045
+- Geändert durch: ADR-031, ADR-044, ADR-045, ADR-063
 
-## Aktuell gilt (Stand 2026-10-17)
+## Aktuell gilt (Stand 2026-10-21)
 
-Es gilt das Bedienkonzept nach Figma: eine ruhige Arbeitsfläche, Eigenschaften-Panel, fünf Werkzeuge, Befehlssuche, Änderungskarten, keine Menüleisten und Dialoge. Alles VS-Code-Bezogene (Custom Editor, Primary Sidebar, Theme-Variablen) entfällt mit ADR-031. Ergänzt durch ADR-044 (Arbeitsbereiche, siehe ADR-054), ADR-045 und ADR-051. Einzige Ausnahme bei Menüs: das systemübliche kleine App-Menü auf macOS, dessen Einträge Befehle sind (ADR-060). Bausteine, Tokens, Schrift und Farben nach ADR-061 (Musterkatalog `docs/design/muster.md`).
+Es gilt das Bedienkonzept nach Figma: eine ruhige Arbeitsfläche, Eigenschaften-Panel (Inspektor), Befehlssuche, Änderungskarten, keine Menüleisten und Dialoge. Alles VS-Code-Bezogene (Custom Editor, Primary Sidebar, Theme-Variablen) entfällt mit ADR-031. Ergänzt durch ADR-044 (Arbeitsbereiche, siehe ADR-054), ADR-045 und ADR-051. Einzige Ausnahme bei Menüs: das systemübliche kleine App-Menü auf macOS, dessen Einträge Befehle sind (ADR-060). Bausteine, Tokens, Schrift und Farben nach ADR-061 (Musterkatalog `docs/design/muster.md`). Keine feste Werkzeugleiste: Aufteilung in fünf Zonen und Aktionen am Gewählten nach ADR-063.
 
 ## Kontext
 

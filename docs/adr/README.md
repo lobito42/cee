@@ -25,7 +25,7 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-019](ADR-019-semantische-pmi-im-code.md) | Semantische PMI im Code | vorgeschlagen, geändert durch ADR-028 |
 | [ADR-020](ADR-020-zeichnungsblaetter-als-code.md) | Zeichnungsblätter als Code | ersetzt durch ADR-028 |
 | [ADR-021](ADR-021-ki-aenderungen-als-pruefbare-aenderungssaetze.md) | KI-Änderungen als prüfbare Änderungssätze | vorgeschlagen, geändert durch ADR-035 |
-| [ADR-022](ADR-022-eine-cad-arbeitsflaeche-mit-figma-bedienkonzept.md) | Eine CAD-Arbeitsfläche mit Figma-Bedienkonzept | vorgeschlagen, geändert durch ADR-031, ADR-044, ADR-045, ADR-060 und ADR-061 |
+| [ADR-022](ADR-022-eine-cad-arbeitsflaeche-mit-figma-bedienkonzept.md) | Eine CAD-Arbeitsfläche mit Figma-Bedienkonzept | vorgeschlagen, geändert durch ADR-031, ADR-044, ADR-045, ADR-060, ADR-061 und ADR-063 |
 | [ADR-023](ADR-023-entwicklung-durch-agenten.md) | Entwicklung durch Agenten | vorgeschlagen |
 | [ADR-024](ADR-024-code-transformation-ueber-den-syntaxbaum.md) | Code-Transformation über den Syntaxbaum | ersetzt durch ADR-028 und ADR-035 |
 | [ADR-025](ADR-025-inkrementeller-rebuild-und-naeherungsvorschau.md) | Inkrementeller Rebuild und Näherungsvorschau | vorgeschlagen, geändert durch ADR-032 und ADR-050 |
@@ -66,3 +66,4 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-060](ADR-060-geraete-layouts-eingabe-xr.md) | Geräte, Layouts, Eingabe und XR | akzeptiert |
 | [ADR-061](ADR-061-designsystem-ein-muster-je-aufgabe.md) | Designsystem – ein Muster je Aufgabe | akzeptiert |
 | [ADR-062](ADR-062-cad-zuerst.md) | CAD zuerst – Meilensteine neu geschnitten | akzeptiert |
+| [ADR-063](ADR-063-bedienkonzept-fuenf-zonen.md) | Bedienkonzept – fünf Zonen, erst wählen, dann tun | akzeptiert |
