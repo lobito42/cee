@@ -47,7 +47,7 @@ Begriffe stehen in `docs/glossar.md` (u. a. nicht „Werkbank“, „Kompakt“,
   Repository-Variable `NACHTSCHICHT=an`. Betrieb und Morgenroutine: `docs/betrieb/routine-nachtschicht.md`.
 - `tools/next_step.py` entscheidet ohne KI, Zustand aus dem Repo (Tests auf main → Umsetzung; Tasks abgehakt oder
   `change/<id>` gemergt → fertig); Entwurfs-PRs werden fortgesetzt, rote PRs bis zu zweimal repariert, dann `blocked`.
-- Bis zu drei Runden je Nacht (eine Runde = ein Schritt, je höchstens 150 min); nach 240 min startet keine neue
+- Bis zu acht Runden je Nacht ab 20:07 UTC (eine Runde = ein Schritt, je höchstens 150 min); nach 240 min startet keine neue
   Runde. Ein wartender PR (Review, CI, `blocked`) hält nur seinen eigenen Change auf; ab drei wartenden PRs ist
   Schluss. Jeder Agenten-PR trägt oben einen Abschnitt „Stand“ (Runde, Tests, Tasks, gerade, Lage); verweigerte
   Befehle stehen in der Lauf-Übersicht der Action.

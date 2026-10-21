@@ -23,7 +23,7 @@ Reihenfolge der Regeln:
    ``change/<id>``-PR gilt als fertig.
 5. Sonst: anhalten mit dem Grund des ältesten wartenden PRs bzw. „Nichts zu tun“.
 
-Die Nachtschicht ruft den Planer bis zu dreimal je Nacht auf (eine Runde je Schritt, siehe Workflow).
+Die Nachtschicht ruft den Planer bis zu achtmal je Nacht auf (eine Runde je Schritt, siehe Workflow).
 
 Aufruf: ``python3 tools/next_step.py`` (fragt GitHub über ``gh`` ab) oder mit ``--offline`` und Dateien
 für Tests. Ausgabe: eine JSON-Zeile, z. B.
@@ -235,7 +235,19 @@ def gather_online() -> tuple[list[dict], set[str], str, set[str]]:
     }
     runs = _api(f"repos/{own}/actions/workflows/ci.yml/runs?branch=main&per_page=1")["workflow_runs"]
     main = (runs[0].get("conclusion") or "pending") if runs else "unknown"
+    if main == "failure":
+        jobs = _api(f"repos/{own}/actions/runs/{runs[0]['id']}/jobs?per_page=100")["jobs"]
+        main = main_status(main, [j.get("conclusion") for j in jobs])
     return prs, remote, main, merged
+
+
+def main_status(conclusion: str, job_conclusions: list[str | None]) -> str:
+    """Ein Lauf auf main, in dem kein Job fehlschlug, sondern nur welche abgebrochen wurden (hängender
+    GitHub-Runner), gilt nicht als rot – sonst hält ein Zufall die ganze Nacht an."""
+    if conclusion != "failure":
+        return conclusion
+    bad = [c for c in job_conclusions if c not in {"success", "skipped", "neutral"}]
+    return "success" if bad and all(c == "cancelled" for c in bad) else "failure"
 
 
 def main() -> None:
