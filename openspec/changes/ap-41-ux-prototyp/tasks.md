@@ -51,7 +51,7 @@ ablauf a --json`; AK-6
 
 ## 4. Messung und Leitfaden
 
-- [ ] 4.1 Prüfbefehl `messen` (Auswahl, Werkzeugwechsel, Suche, je 20 Messungen, p95) und Nacharbeit, bis alle
+- [x] 4.1 Prüfbefehl `messen` (Auswahl, Werkzeugwechsel, Suche, je 20 Messungen, p95) und Nacharbeit, bis alle
       Schwellen halten – Prüfung: `cd P && npm run --silent pruefen -- messen --json`; AK-10
 - [ ] 4.2 Testleitfaden mit Ergebnisvorlage `docs/spikes/ux-prototyp.md` nach design.md (Aufgaben A bis F,
       Ergebnisbogen TP1 bis TP5, Datenschutz, Auswertung); Hinweis zum Start des Prototyps (`npm run preview`) –

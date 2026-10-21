@@ -735,6 +735,53 @@ const BEFEHLE = {
     return { zustaende };
   },
 
+  /** Je 20 Messungen (Auswahl, Werkzeugwechsel, Suche): Eingabe bis zum nächsten gezeichneten Bild, p95 in ms. */
+  async messen({ browser, basis }) {
+    const N = 20;
+    const p95 = (werte) => {
+      const s = [...werte].sort((a, b) => a - b);
+      return Math.round(s[Math.ceil(s.length * 0.95) - 1] * 10) / 10;
+    };
+    const { seite } = await oeffnen(browser, adresse(basis, 'teile', 'hell'));
+    // Klick im Browser auslösen und bis nach dem nächsten Zeichnen warten.
+    const klickMessen = (selektor) =>
+      seite.evaluate(async (sel) => {
+        const e = document.querySelector(sel);
+        const t0 = performance.now();
+        e.click();
+        await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+        return performance.now() - t0;
+      }, selektor);
+    const auswahl = [];
+    const werkzeug = [];
+    const suche = [];
+    for (let i = 0; i < N; i++) {
+      auswahl.push(
+        await klickMessen(i % 2 ? '[data-element="gehaeuse"]' : '[data-element="deckel"]'),
+      );
+      werkzeug.push(
+        await klickMessen(
+          i % 2 ? '[data-befehl="werkzeug.auswaehlen"]' : '[data-befehl="werkzeug.messen"]',
+        ),
+      );
+      const t0 = Date.now();
+      await seite.keyboard.press('Control+K');
+      await seite.keyboard.type('Ver');
+      await seite.waitForSelector('[data-suche] [role="option"]');
+      await seite.evaluate(
+        () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))),
+      );
+      suche.push(Date.now() - t0);
+      await seite.keyboard.press('Escape');
+    }
+    await seite.close();
+    return {
+      auswahl_p95_ms: p95(auswahl),
+      werkzeug_p95_ms: p95(werkzeug),
+      suche_p95_ms: p95(suche),
+    };
+  },
+
   async anfragen({ browser, basis }) {
     const urls = [];
     await jeZustand(browser, basis, async (zustand, thema, _s, url) => {
