@@ -2,7 +2,13 @@
   "app": {
     "titel": "CEE Prototyp",
     "arbeitsbereich": "Modell",
-    "stand": { "haupt": "Hauptstand" }
+    "stand": { "haupt": "Hauptstand" },
+    "baum": "Featurebaum",
+    "eigenschaften": "Eigenschaften",
+    "leer": "Wähle ein Element im Baum oder im Modell.",
+    "suche": "Befehle und Elemente suchen",
+    "nachjustieren": "Letzte Aktion",
+    "bereit": "Bereit"
   },
   "befehl": {
     "werkzeug": {

@@ -21,7 +21,7 @@ npm test)`; AK-1, AK-11 (Abhängigkeiten, Lizenzen)
 
 ## 2. Arbeitsfläche und Prüfwerkzeug
 
-- [ ] 2.1 Bausteine in `src/ui/` je Katalogmuster mit `data-muster` und `data-befehl`; Layout: Kopfzeile
+- [x] 2.1 Bausteine in `src/ui/` je Katalogmuster mit `data-muster` und `data-befehl`; Layout: Kopfzeile
       (Arbeitsbereich „Modell“, Stand/Entwurf, Suche), Featurebaum, 3D-Fläche (three.js, Farben aus Tokens),
       Eigenschaften-Panel, Werkzeugleiste mit fünf Werkzeugen, Letzte Aktion nachjustieren, Rückmeldung –
       Prüfung: `cd P && npm run lint && npm test`

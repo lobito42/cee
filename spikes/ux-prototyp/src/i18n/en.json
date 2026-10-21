@@ -2,7 +2,13 @@
   "app": {
     "titel": "CEE prototype",
     "arbeitsbereich": "Model",
-    "stand": { "haupt": "Main version" }
+    "stand": { "haupt": "Main version" },
+    "baum": "Feature tree",
+    "eigenschaften": "Properties",
+    "leer": "Pick an element in the tree or in the model.",
+    "suche": "Search commands and elements",
+    "nachjustieren": "Last action",
+    "bereit": "Ready"
   },
   "befehl": {
     "werkzeug": {

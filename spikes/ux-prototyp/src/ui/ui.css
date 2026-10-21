@@ -1,0 +1,88 @@
+#app {
+  display: grid;
+  grid-template-columns: 240px 1fr 280px;
+  grid-template-rows: auto 1fr auto auto;
+  height: 100vh;
+  background: var(--farbe-grund);
+  color: var(--farbe-text);
+  font-family: var(--schrift-familie-ui);
+  font-size: var(--schrift-groesse-basis);
+}
+[data-muster='Arbeitsbereiche'] {
+  display: flex;
+  gap: var(--abstand-2);
+}
+.kopfzeile {
+  grid-column: 1 / 4;
+  display: flex;
+  align-items: center;
+  gap: var(--abstand-4);
+  padding: var(--abstand-2) var(--abstand-4);
+  border-bottom: var(--linie-breite) solid var(--farbe-linie);
+}
+.kopfzeile .suche {
+  margin-left: auto;
+  min-width: 280px;
+}
+[data-panel] {
+  padding: var(--abstand-3);
+  overflow: auto;
+  background: var(--farbe-flaeche);
+}
+[data-panel] h2 {
+  margin: 0 0 var(--abstand-2);
+  font-size: var(--schrift-groesse-klein);
+  color: var(--farbe-text-2);
+}
+.baum ul {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 var(--abstand-3);
+}
+.baum li > button {
+  width: 100%;
+  text-align: left;
+  min-height: var(--bedienflaeche-desktop);
+}
+button {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: var(--linie-breite) solid transparent;
+  border-radius: var(--radius-klein);
+}
+button[aria-selected='true'] {
+  background: var(--farbe-akzent-flaeche);
+  border-color: var(--farbe-akzent);
+}
+button:focus-visible {
+  outline: 2px solid var(--farbe-akzent);
+}
+.flaeche3d {
+  position: relative;
+  background: var(--farbe-viewport);
+}
+.flaeche3d canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.werkzeugleiste {
+  grid-column: 1 / 4;
+  display: flex;
+  justify-content: center;
+  gap: var(--abstand-2);
+  padding: var(--abstand-2);
+  border-top: var(--linie-breite) solid var(--farbe-linie);
+}
+.werkzeugleiste button {
+  min-height: var(--bedienflaeche-desktop);
+  padding: 0 var(--abstand-3);
+}
+.nachjustieren,
+.rueckmeldung {
+  grid-column: 1 / 4;
+  padding: var(--abstand-1) var(--abstand-4);
+  font-size: var(--schrift-groesse-klein);
+  color: var(--farbe-text-2);
+}
