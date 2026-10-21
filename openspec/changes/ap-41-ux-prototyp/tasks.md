@@ -25,7 +25,7 @@ npm test)`; AK-1, AK-11 (Abhängigkeiten, Lizenzen)
       (Arbeitsbereich „Modell“, Stand/Entwurf, Suche), Featurebaum, 3D-Fläche (three.js, Farben aus Tokens),
       Eigenschaften-Panel, Werkzeugleiste mit fünf Werkzeugen, Letzte Aktion nachjustieren, Rückmeldung –
       Prüfung: `cd P && npm run lint && npm test`
-- [ ] 2.2 Prüfwerkzeug `P/pruefen/` mit `npm run pruefen` (lokale Vorschau, headless Chromium 1440 × 900) und
+- [x] 2.2 Prüfwerkzeug `P/pruefen/` mit `npm run pruefen` (lokale Vorschau, headless Chromium 1440 × 900) und
       den Befehlen `zustaende`, `budget`, `texte`, `anfragen`; Testzustände per Adresse (13 Zustände, Themen,
       Sprache, `tempo=0`, unbekannter Zustand) – Prüfung: `cd P && npm run --silent pruefen -- zustaende --out
 "$(mktemp -d)" --json && npm run --silent pruefen -- budget --json`; AK-2, AK-3, AK-4, AK-9

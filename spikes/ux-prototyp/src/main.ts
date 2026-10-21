@@ -4,17 +4,17 @@ import './erzeugt/tokens.css';
 import { befehle, Sitzung } from './modell/register';
 import { spracheAusAdresse, uebersetzer } from './i18n';
 import { aufbauen } from './ui/layout';
+import { anwenden } from './zustaende';
 
 const sitzung = new Sitzung();
 const adresse = new URLSearchParams(window.location.search);
-const zustand = adresse.get('zustand') ?? '';
 const thema = adresse.get('thema');
-if (thema === 'hell' || thema === 'dunkel') document.documentElement.dataset.thema = thema;
+document.documentElement.dataset.thema = thema === 'dunkel' ? 'dunkel' : 'hell';
 
 const wurzel = document.getElementById('app');
-const ui = wurzel
-  ? aufbauen(wurzel, sitzung, uebersetzer(spracheAusAdresse(window.location.search)))
-  : undefined;
+const t = uebersetzer(spracheAusAdresse(window.location.search));
+const ui = wurzel ? aufbauen(wurzel, sitzung, t) : undefined;
+const zustand = ui ? anwenden(adresse.get('zustand') ?? '', ui, t, sitzung) : '';
 
 // Nur lesende Testschnittstelle; Aktionen laufen über echte Eingaben (design.md, Testschnittstelle).
 Object.defineProperty(window, '__cee', {
@@ -28,5 +28,4 @@ Object.defineProperty(window, '__cee', {
   }),
 });
 
-if (wurzel) wurzel.dataset.muster = 'Arbeitsflaeche';
 document.documentElement.dataset.bereit = '1';

@@ -1,12 +1,24 @@
+body {
+  margin: 0;
+  font: var(--schrift-schnitt-normal) var(--schrift-groesse-basis) / var(--schrift-zeilenhoehe)
+    var(--schrift-familie-ui);
+  font-feature-settings: var(--schrift-merkmale);
+}
 #app {
   display: grid;
   grid-template-columns: 240px 1fr 280px;
   grid-template-rows: auto 1fr auto auto;
   height: 100vh;
-  background: var(--farbe-grund);
+  /* Nicht --farbe-grund: im dunklen Thema ist das derselbe Wert wie --farbe-auf-akzent. */
+  background: var(--farbe-flaeche);
   color: var(--farbe-text);
-  font-family: var(--schrift-familie-ui);
-  font-size: var(--schrift-groesse-basis);
+}
+input {
+  font: inherit;
+  color: var(--farbe-text);
+  background: var(--farbe-flaeche-2);
+  border: var(--linie-breite) solid var(--farbe-linie);
+  border-radius: var(--radius-klein);
 }
 [data-muster='Arbeitsbereiche'] {
   display: flex;
@@ -31,7 +43,8 @@
 }
 [data-panel] h2 {
   margin: 0 0 var(--abstand-2);
-  font-size: var(--schrift-groesse-klein);
+  font: var(--schrift-schnitt-normal) var(--schrift-groesse-klein) / var(--schrift-zeilenhoehe)
+    var(--schrift-familie-ui);
   color: var(--farbe-text-2);
 }
 .baum ul {
@@ -83,6 +96,7 @@ button:focus-visible {
 .rueckmeldung {
   grid-column: 1 / 4;
   padding: var(--abstand-1) var(--abstand-4);
-  font-size: var(--schrift-groesse-klein);
+  font: var(--schrift-schnitt-normal) var(--schrift-groesse-klein) / var(--schrift-zeilenhoehe)
+    var(--schrift-familie-ui);
   color: var(--farbe-text-2);
 }

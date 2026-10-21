@@ -11,6 +11,9 @@ const knoten = {
   window: 'readonly',
   performance: 'readonly',
   requestAnimationFrame: 'readonly',
+  URLSearchParams: 'readonly',
+  getComputedStyle: 'readonly',
+  NodeFilter: 'readonly',
 };
 
 export default tseslint.config(

@@ -50,6 +50,56 @@
     "ki": { "fragen": "Ask AI", "anhalten": "Stop" },
     "vorschlag": { "uebernehmen": "Apply", "verwerfen": "Discard" }
   },
+  "zustand": {
+    "unbekannt": "State unknown",
+    "leer": { "titel": "Nothing modelled yet", "text": "Create the first sketch." },
+    "skizze": {
+      "titel": "Sketch on XY",
+      "text": "Drag a rectangle, enter the length.",
+      "laenge": "Length"
+    },
+    "extrusion": {
+      "titel": "Extrusion (preview)",
+      "text": "Drag the handle or enter the depth.",
+      "tiefe": "Depth"
+    },
+    "platte": { "titel": "Plate done", "text": "80 × 50 × 5 mm" },
+    "verrundung": {
+      "titel": "Fillet (preview)",
+      "text": "Four edges selected.",
+      "radius": "Radius"
+    },
+    "befund": {
+      "titel": "Fillet faulty",
+      "text": "The radius 30 mm is larger than the plate allows.",
+      "korrektur": "Correct to 24 mm"
+    },
+    "teile": { "titel": "Housing and lid", "text": "No assembly yet." },
+    "verbindung": { "titel": "Assembly 1", "text": "The lid sits on the housing.", "art": "Type" },
+    "suche": { "befehle": "Commands", "elemente": "Elements" },
+    "entwuerfe": {
+      "titel": "All drafts",
+      "text": "Discarded: too heavy.",
+      "liste": "Thicker plate"
+    },
+    "vergleich": {
+      "titel": "Draft “Thicker plate” against main version",
+      "vorher": "Main version",
+      "nachher": "Draft"
+    },
+    "ki-arbeitet": {
+      "titel": "Working",
+      "schritt1": "Reading plate",
+      "schritt2": "Checking wall thickness",
+      "schritt3": "Preparing shell"
+    },
+    "ki-vorschlag": {
+      "titel": "Shell 2 mm",
+      "grund": "Saves material, the wall stays stable.",
+      "werte": "Wall thickness: 0 mm → 2 mm"
+    }
+  },
+  "art": { "fest": "Fixed", "dreh": "Rotating", "gleit": "Sliding" },
   "wert": {
     "fehler": {
       "nicht-lesbar": "This cannot be read.",

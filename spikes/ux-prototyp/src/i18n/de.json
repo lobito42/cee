@@ -50,6 +50,60 @@
     "ki": { "fragen": "KI fragen", "anhalten": "Anhalten" },
     "vorschlag": { "uebernehmen": "Übernehmen", "verwerfen": "Verwerfen" }
   },
+  "zustand": {
+    "unbekannt": "Zustand unbekannt",
+    "leer": { "titel": "Noch nichts modelliert", "text": "Lege die erste Skizze an." },
+    "skizze": {
+      "titel": "Skizze auf XY",
+      "text": "Rechteck aufziehen, Länge eingeben.",
+      "laenge": "Länge"
+    },
+    "extrusion": {
+      "titel": "Extrusion (Vorschau)",
+      "text": "Ziehe am Griff oder gib die Tiefe ein.",
+      "tiefe": "Tiefe"
+    },
+    "platte": { "titel": "Platte fertig", "text": "80 × 50 × 5 mm" },
+    "verrundung": {
+      "titel": "Verrundung (Vorschau)",
+      "text": "Vier Kanten ausgewählt.",
+      "radius": "Radius"
+    },
+    "befund": {
+      "titel": "Verrundung fehlerhaft",
+      "text": "Der Radius 30 mm ist größer, als die Platte erlaubt.",
+      "korrektur": "Auf 24 mm korrigieren"
+    },
+    "teile": { "titel": "Gehäuse und Deckel", "text": "Noch keine Baugruppe." },
+    "verbindung": {
+      "titel": "Baugruppe 1",
+      "text": "Der Deckel liegt auf dem Gehäuse.",
+      "art": "Art"
+    },
+    "suche": { "befehle": "Befehle", "elemente": "Elemente" },
+    "entwuerfe": {
+      "titel": "Alle Entwürfe",
+      "text": "Verworfen: zu schwer.",
+      "liste": "Dickere Platte"
+    },
+    "vergleich": {
+      "titel": "Entwurf „Dickere Platte“ gegen Hauptstand",
+      "vorher": "Hauptstand",
+      "nachher": "Entwurf"
+    },
+    "ki-arbeitet": {
+      "titel": "Arbeitet",
+      "schritt1": "Platte lesen",
+      "schritt2": "Wandstärke prüfen",
+      "schritt3": "Schale vorbereiten"
+    },
+    "ki-vorschlag": {
+      "titel": "Schale 2 mm",
+      "grund": "Spart Material, die Wand bleibt stabil.",
+      "werte": "Wandstärke: 0 mm → 2 mm"
+    }
+  },
+  "art": { "fest": "Fest", "dreh": "Drehbar", "gleit": "Gleitend" },
   "wert": {
     "fehler": {
       "nicht-lesbar": "Das kann nicht gelesen werden.",

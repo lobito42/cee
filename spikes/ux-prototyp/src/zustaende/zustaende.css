@@ -1,0 +1,35 @@
+.zustand {
+  position: absolute;
+  top: var(--abstand-4);
+  left: var(--abstand-4);
+  max-width: 360px;
+  padding: var(--abstand-3);
+  background: var(--farbe-flaeche);
+  color: var(--farbe-text);
+  border: var(--linie-breite) solid var(--farbe-linie);
+  border-radius: var(--radius-mittel);
+}
+.zustand h3,
+.zustand h4,
+.zustand p {
+  margin: 0 0 var(--abstand-2);
+}
+.zustand button,
+.zustand input {
+  min-height: var(--bedienflaeche-desktop);
+  margin-right: var(--abstand-2);
+  font: inherit;
+  color: inherit;
+}
+.zustand input {
+  background: var(--farbe-flaeche-2);
+  border: var(--linie-breite) solid var(--farbe-linie);
+  border-radius: var(--radius-klein);
+}
+.zustand[data-quelle='ki'] {
+  border-color: var(--farbe-akzent);
+}
+[data-hauptaktion] {
+  background: var(--farbe-akzent);
+  color: var(--farbe-auf-akzent);
+}

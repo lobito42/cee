@@ -30,6 +30,13 @@ function knopf(t: T, id: string): HTMLButtonElement {
 export interface Oberflaeche {
   auswahl: () => string[];
   zeichnen: () => void;
+  waehlen: (ids: string[]) => void;
+  /** Elemente, in die die Testzustände Inhalt setzen. */
+  flaeche: HTMLElement;
+  suche: HTMLInputElement;
+  stand: HTMLElement;
+  nachjustieren: HTMLElement;
+  rueckmeldung: HTMLElement;
 }
 
 export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaeche {
@@ -46,6 +53,7 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
   const bereiche = el('div', 'Arbeitsbereiche');
   const reiter = el('button');
   reiter.type = 'button';
+  reiter.dataset.befehl = 'ansicht.einpassen';
   reiter.setAttribute('aria-current', 'page');
   reiter.textContent = t('app.arbeitsbereich');
   bereiche.append(reiter);
@@ -53,6 +61,7 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
   stand.textContent = t('app.stand.haupt');
   const suche = el('input', 'Suche', 'suche');
   suche.type = 'search';
+  suche.dataset.befehl = 'suche.oeffnen';
   suche.placeholder = t('app.suche');
   suche.setAttribute('aria-label', t('befehl.suche.oeffnen'));
   kopf.append(bereiche, stand, suche);
@@ -74,7 +83,11 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
       sitzung.ausfuehren(`werkzeug.${id}`);
       leiste.querySelectorAll('button').forEach((x) => x.removeAttribute('aria-current'));
       b.setAttribute('aria-current', 'true');
-      nachjustieren.textContent = `${t('app.nachjustieren')}: ${b.textContent ?? ''}`;
+      const label = el('span');
+      label.textContent = t('app.nachjustieren');
+      const wert = el('span');
+      wert.textContent = b.textContent ?? '';
+      nachjustieren.replaceChildren(label, wert);
     });
     leiste.append(b);
   }
@@ -143,5 +156,14 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
 
   window.addEventListener('resize', () => f3d.zeichnen());
   zeichnen();
-  return { auswahl: () => [...auswahl], zeichnen };
+  return {
+    auswahl: () => [...auswahl],
+    zeichnen,
+    waehlen,
+    flaeche,
+    suche,
+    stand,
+    nachjustieren,
+    rueckmeldung,
+  };
 }
