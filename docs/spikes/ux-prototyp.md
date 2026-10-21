@@ -12,8 +12,10 @@ und ap-08b. Geprüft wird das Programm, nicht die Testperson.
 ## Rahmen
 
 - Rechner mit Maus; Chromium, Firefox oder Safari; Fenster mindestens 1440 × 900 px.
-- Start des Prototyps: `npm --prefix spikes/ux-prototyp run build`, danach
-  `npm --prefix spikes/ux-prototyp run preview` und die ausgegebene Adresse öffnen.
+- Start des Prototyps (Node.js 22, aus dem Wurzelverzeichnis des Repositorys):
+  `npm --prefix spikes/ux-prototyp ci --legacy-peer-deps` (einmalig), `npm --prefix spikes/ux-prototyp run
+  build`, danach `npm --prefix spikes/ux-prototyp run preview` und die ausgegebene Adresse öffnen (meist
+  `http://localhost:4173`). Dunkles Thema: `&thema=dunkel` an die Adresse anhängen.
 - Startadressen je Aufgabe: `<Adresse>/?zustand=<name>` (siehe Aufgaben).
 - Fünf Testpersonen (TP1 bis TP5). Ein Pilotlauf des Kernteams wird als solcher gekennzeichnet.
 
