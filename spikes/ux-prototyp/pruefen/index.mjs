@@ -1,7 +1,7 @@
 // Prüfwerkzeug (ap-41): startet eine lokale Vorschau und fragt sie mit headless Chromium ab.
 // Aufruf: npm run --silent pruefen -- <befehl> [--out <dir>] [--variante <name>] --json
 // Liefert nur Rohdaten als ein JSON-Wert auf stdout; Urteile fällt der Test (design.md, Testschnittstelle).
-import { mkdirSync } from 'node:fs';
+import { mkdirSync, readFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
@@ -182,6 +182,74 @@ const BEFEHLE = {
     return { zustaende, kuerzel: register.map((b) => b.kuerzel).filter(Boolean) };
   },
 
+  /** Je Befehl: Strg+K, deutschen Titel tippen, Treffer lesen, Enter, neue Protokolleinträge. */
+  async befehle({ browser, basis }) {
+    const de = JSON.parse(readFileSync(join(WURZEL, 'src', 'i18n', 'de.json'), 'utf8'));
+    const titel = (schluessel) => schluessel.split('.').reduce((k, teil) => k?.[teil], de);
+    const { seite: lesen } = await oeffnen(browser, adresse(basis, 'teile', 'hell'));
+    const register = await lesen.evaluate(() => window.__cee.befehle());
+    await lesen.close();
+    const ergebnis = [];
+    for (const b of register) {
+      const { seite } = await oeffnen(browser, adresse(basis, 'teile', 'hell'));
+      const vorher = await seite.evaluate(() => window.__cee.protokoll().length);
+      await seite.keyboard.press('Control+K');
+      await seite.keyboard.type(titel(b.titel));
+      const treffer = await seite.evaluate(() =>
+        [...document.querySelectorAll('[data-suche] [data-gruppe="befehle"] [role="option"]')].map(
+          (e) => ({
+            befehl: e.dataset.befehl,
+            kuerzel_text: e.querySelector('kbd')?.textContent ?? '',
+          }),
+        ),
+      );
+      await seite.keyboard.press('Enter');
+      const protokoll_neu = await seite.evaluate((n) => window.__cee.protokoll().slice(n), vorher);
+      ergebnis.push({ befehl: b.id, treffer, protokoll_neu });
+      await seite.close();
+    }
+    return ergebnis;
+  },
+
+  /** Abläufe nur mit echten Eingaben; jeder liefert `eingaben`, `modell` und `protokoll`. */
+  async ablauf({ browser, basis, optionen, positionen }) {
+    const [name] = positionen;
+    const variante = optionen.variante ?? '';
+    const ablaeufe = {
+      // Suche nach einem Elementnamen: Gruppe Elemente, danach genau dieses Element ausgewählt.
+      async 'e/elemente'() {
+        const { seite } = await oeffnen(browser, adresse(basis, 'teile', 'hell'));
+        await seite.keyboard.press('Control+K');
+        await seite.keyboard.type('Deckel');
+        const gruppe_elemente = await seite.evaluate(() =>
+          [
+            ...document.querySelectorAll('[data-suche] [data-gruppe="elemente"] [role="option"]'),
+          ].map((e) => e.textContent.trim()),
+        );
+        await seite.keyboard.press('Enter');
+        const stand = await seite.evaluate(() => {
+          const modell = window.__cee.modell();
+          const nach_id = new Map();
+          const sammle = (k) => {
+            nach_id.set(k.id, k.meta.name);
+            k.content.forEach(sammle);
+          };
+          sammle(modell);
+          return {
+            modell,
+            protokoll: window.__cee.protokoll(),
+            auswahl_namen: window.__cee.auswahl().map((id) => nach_id.get(id)),
+          };
+        });
+        await seite.close();
+        return { eingaben: 'Deckel'.length + 2, gruppe_elemente, ...stand };
+      },
+    };
+    const lauf = ablaeufe[`${name}/${variante}`];
+    if (!lauf) throw new Error(`Unbekannter Ablauf: ${name} ${variante}`);
+    return lauf();
+  },
+
   async texte({ browser, basis }) {
     const zustaende = await jeZustand(
       browser,
@@ -208,7 +276,7 @@ const BEFEHLE = {
   },
 };
 
-const { befehl, optionen } = argumente(process.argv.slice(2));
+const { befehl, optionen, positionen } = argumente(process.argv.slice(2));
 if (!befehl || !BEFEHLE[befehl]) {
   process.stderr.write(
     `Unbekannter Befehl: ${befehl ?? '(keiner)'}; bekannt: ${Object.keys(BEFEHLE).join(', ')}\n`,
@@ -224,7 +292,7 @@ const adr = server.httpServer.address();
 const basis = `http://127.0.0.1:${typeof adr === 'object' && adr ? adr.port : 4173}`;
 const browser = await chromium.launch();
 try {
-  const ergebnis = await BEFEHLE[befehl]({ browser, basis, optionen });
+  const ergebnis = await BEFEHLE[befehl]({ browser, basis, optionen, positionen });
   process.stdout.write(`${JSON.stringify(ergebnis)}\n`);
 } finally {
   await browser.close();

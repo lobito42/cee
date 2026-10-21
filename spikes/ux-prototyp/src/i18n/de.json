@@ -50,6 +50,23 @@
     "ki": { "fragen": "KI fragen", "anhalten": "Anhalten" },
     "vorschlag": { "uebernehmen": "Übernehmen", "verwerfen": "Verwerfen" }
   },
+  "taste": { "mod": "Strg", "shift": "Umschalt" },
+  "suche": {
+    "gruppe": { "befehle": "Befehle", "elemente": "Elemente" },
+    "kein-treffer": "Nichts gefunden.",
+    "berechnung": { "aktuell": "aktuell", "fehlerhaft": "fehlerhaft" }
+  },
+  "synonym": {
+    "feature": {
+      "verrunden": "abrunden rundung fillet kante",
+      "extrudieren": "ziehen aufdicken dicke",
+      "schale": "aushöhlen hohl wände kästchen"
+    },
+    "bearbeiten": { "rueckgaengig": "zurueck undo", "wiederholen": "redo" },
+    "skizze": { "rechteck": "viereck" },
+    "verbindung": { "anlegen": "verbinden fuegen koppeln" },
+    "ki": { "fragen": "assistent hilfe" }
+  },
   "zustand": {
     "unbekannt": "Zustand unbekannt",
     "leer": { "titel": "Noch nichts modelliert", "text": "Lege die erste Skizze an." },

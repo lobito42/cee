@@ -29,7 +29,7 @@ npm test)`; AK-1, AK-11 (Abhängigkeiten, Lizenzen)
       den Befehlen `zustaende`, `budget`, `texte`, `anfragen`; Testzustände per Adresse (13 Zustände, Themen,
       Sprache, `tempo=0`, unbekannter Zustand) – Prüfung: `cd P && npm run --silent pruefen -- zustaende --out
 "$(mktemp -d)" --json && npm run --silent pruefen -- budget --json`; AK-2, AK-3, AK-4, AK-9
-- [ ] 2.3 Suche (Cmd/Strg+K) für Befehle und Elemente mit Gruppen, Facetten, Kürzeln, Synonymen und Angebot
+- [x] 2.3 Suche (Cmd/Strg+K) für Befehle und Elemente mit Gruppen, Facetten, Kürzeln, Synonymen und Angebot
       „KI fragen: …“; Kontextaktionen an der Auswahl; Prüfbefehl `befehle` – Prüfung: `cd P && npm run --silent
 pruefen -- befehle --json`; AK-5
 

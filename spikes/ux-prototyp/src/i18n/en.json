@@ -50,6 +50,23 @@
     "ki": { "fragen": "Ask AI", "anhalten": "Stop" },
     "vorschlag": { "uebernehmen": "Apply", "verwerfen": "Discard" }
   },
+  "taste": { "mod": "Ctrl", "shift": "Shift" },
+  "suche": {
+    "gruppe": { "befehle": "Commands", "elemente": "Elements" },
+    "kein-treffer": "Nothing found.",
+    "berechnung": { "aktuell": "current", "fehlerhaft": "faulty" }
+  },
+  "synonym": {
+    "feature": {
+      "verrunden": "fillet round edge",
+      "extrudieren": "extrude pull thicken",
+      "schale": "shell hollow walls box"
+    },
+    "bearbeiten": { "rueckgaengig": "undo back", "wiederholen": "redo" },
+    "skizze": { "rechteck": "rectangle box" },
+    "verbindung": { "anlegen": "connect join mate" },
+    "ki": { "fragen": "assistant help" }
+  },
   "zustand": {
     "unbekannt": "State unknown",
     "leer": { "titel": "Nothing modelled yet", "text": "Create the first sketch." },

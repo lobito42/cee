@@ -4,6 +4,7 @@ import { befehle, type Sitzung } from '../modell/register';
 import { alle, finde, type Element } from '../modell/projekt';
 import { anzeigen } from '../wert/wertfeld';
 import { Flaeche3d } from './viewport';
+import { sucheAufbauen } from './suche';
 import './ui.css';
 
 type T = (schluessel: string) => string;
@@ -100,6 +101,39 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
 
   wurzel.replaceChildren(kopf, baum, flaeche, eigenschaften, leiste, nachjustieren, rueckmeldung);
 
+  /** Gemeinsamer Weg für Suche, Kontextaktionen und Kürzel: genau ein Befehl aus dem Register. */
+  const ausloesen = (id: string, parameter: Record<string, unknown> = {}): void => {
+    if (id.startsWith('werkzeug.')) {
+      leiste.querySelector<HTMLButtonElement>(`[data-befehl="${id}"]`)?.click();
+      return;
+    }
+    sitzung.ausfuehren(id, parameter);
+    if (id === 'suche.oeffnen') suche.focus();
+    if (id === 'thema.umschalten') {
+      const dunkel = document.documentElement.dataset.thema === 'dunkel';
+      document.documentElement.dataset.thema = dunkel ? 'hell' : 'dunkel';
+    }
+    zeichnen();
+  };
+  sucheAufbauen({ feld: suche, t, projekt: () => sitzung.modell(), ausloesen, waehlen });
+
+  // Einzeltasten sowie Rückgängig/Wiederholen nach den Kürzeln im Register.
+  document.addEventListener('keydown', (ev) => {
+    const ziel = ev.target;
+    if (ziel instanceof HTMLElement && ziel.matches('input,textarea,select')) return;
+    const mod = ev.metaKey || ev.ctrlKey;
+    const taste = ev.key.toUpperCase();
+    const b = befehle.find((x) => {
+      const teile = x.kuerzel?.split('+');
+      if (!teile || teile.at(-1) !== taste) return false;
+      return teile.includes('Mod') === mod && teile.includes('Shift') === ev.shiftKey;
+    });
+    if (b && b.id !== 'suche.oeffnen') {
+      ev.preventDefault();
+      ausloesen(b.id);
+    }
+  });
+
   const f3d = new Flaeche3d(canvas);
 
   function zeile(k: Element): HTMLLIElement {
@@ -118,6 +152,20 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
       li.append(ul);
     }
     return li;
+  }
+
+  /** Befehle, die zur Auswahl passen; dieselben wie in der Suche. */
+  function kontextaktionen(k: Element): HTMLElement {
+    const ids = ['part', 'extrusion', 'sketch'].includes(k.type)
+      ? ['feature.verrunden', 'feature.schale', 'ki.fragen']
+      : ['ki.fragen'];
+    const box = el('div', 'Kontextaktionen');
+    for (const id of ids) {
+      const b = knopf(t, id);
+      b.addEventListener('click', () => ausloesen(id));
+      box.append(b);
+    }
+    return box;
   }
 
   function zeichnen(): void {
@@ -139,7 +187,7 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
     } else {
       const name = el('p');
       name.textContent = gewaehlt.meta.name;
-      eigenschaften.append(name);
+      eigenschaften.append(name, kontextaktionen(gewaehlt));
       for (const [schluessel, wert] of Object.entries(gewaehlt.params)) {
         if (wert && typeof wert === 'object' && 'unit' in wert) {
           const p = el('p');
