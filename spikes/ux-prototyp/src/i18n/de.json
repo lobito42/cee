@@ -68,7 +68,7 @@
       "extrudieren": "ziehen aufdicken dicke",
       "schale": "aushöhlen hohl wände kästchen"
     },
-    "bearbeiten": { "rueckgaengig": "zurueck undo", "wiederholen": "redo" },
+    "bearbeiten": { "rueckgaengig": "zurueck zurück undo", "wiederholen": "redo" },
     "skizze": { "rechteck": "viereck" },
     "verbindung": { "anlegen": "verbinden fuegen koppeln" },
     "ki": { "fragen": "assistent hilfe" }

@@ -42,7 +42,7 @@ ablauf a --json`; AK-6
       Korrektur; Prüfbefehl `ablauf b` – Prüfung: `cd P && npm run --silent pruefen -- ablauf b --json`; AK-6
 - [x] 3.3 Ablauf C: Baugruppe anlegen, Verbinden über Verbindungspunkte, Auswahlfeld „Art“, Einrasten;
       Prüfbefehl `ablauf c` – Prüfung: `cd P && npm run --silent pruefen -- ablauf c --json`; AK-6
-- [ ] 3.4 Entwürfe: Liste in der Kopfzeile, Entwurf anlegen, Vergleich, Übernehmen, Verwerfen mit Begründung,
+- [x] 3.4 Entwürfe: Liste in der Kopfzeile, Entwurf anlegen, Vergleich, Übernehmen, Verwerfen mit Begründung,
       Ansichten „Ergebnis“ und „Alle Entwürfe“; Prüfbefehle `ablauf d` und `ablauf e` – Prüfung: `cd P && npm run
 --silent pruefen -- ablauf d --json && npm run --silent pruefen -- ablauf e --json`; AK-7
 - [ ] 3.5 Simulierter KI-Ablauf: drei Wege, drei Absichten, Fortschritt mit Anhalten, Entscheidungskarte mit

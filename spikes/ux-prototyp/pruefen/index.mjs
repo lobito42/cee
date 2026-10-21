@@ -44,9 +44,13 @@ function adresse(basis, zustand, thema, sprache = 'de') {
 }
 
 /** Öffnet einen Zustand; liefert Seite und die Zeit bis `bereit`. */
-async function oeffnen(browser, url, anfragen) {
+async function oeffnen(browser, url, anfragen, konsolenfehler) {
   const seite = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   if (anfragen) seite.on('request', (r) => anfragen.push(r.url()));
+  if (konsolenfehler) {
+    seite.on('console', (m) => m.type() === 'error' && konsolenfehler.push(m.text()));
+    seite.on('pageerror', (f) => konsolenfehler.push(String(f)));
+  }
   const start = Date.now();
   await seite.goto(url);
   await seite.waitForSelector('html[data-bereit="1"]', { timeout: 10000 });
@@ -461,6 +465,52 @@ const BEFEHLE = {
           ansicht_alle_entwuerfe,
           verworfen_name: 'Dickere Platte',
           verwerfen_ausloesbar_ohne_begruendung,
+          ...(await stand(seite)),
+        };
+        await seite.close();
+        return ergebnis;
+      },
+      // Ablauf E: Befehl über die Suche finden („zurück“), mit Kürzel; Enter führt den ersten Treffer aus.
+      async 'e/'() {
+        const { seite } = await oeffnen(browser, adresse(basis, 'platte', 'hell'));
+        await seite.keyboard.press('Control+K');
+        await seite.keyboard.type('zurück');
+        const treffer = await seite.evaluate(() =>
+          [
+            ...document.querySelectorAll('[data-suche] [data-gruppe="befehle"] [role="option"]'),
+          ].map((e) => ({
+            befehl: e.dataset.befehl,
+            kuerzel_text: e.querySelector('kbd')?.textContent ?? '',
+          })),
+        );
+        await seite.keyboard.press('Enter');
+        const ergebnis = {
+          eingaben: 'zurück'.length + 2,
+          suche_zurueck: { treffer },
+          ...(await stand(seite)),
+        };
+        await seite.close();
+        return ergebnis;
+      },
+      async 'e/unbekannter-zustand'() {
+        const konsolenfehler = [];
+        const { seite, bereit_ms } = await oeffnen(
+          browser,
+          adresse(basis, 'gibt-es-nicht', 'hell'),
+          undefined,
+          konsolenfehler,
+        );
+        const gezeigt = await seite.evaluate(() => ({
+          zustand_gezeigt: window.__cee.zustand,
+          befunde: [...document.querySelectorAll('[data-muster="Befund"]')]
+            .map((e) => e.textContent.trim())
+            .filter(Boolean),
+        }));
+        const ergebnis = {
+          eingaben: 0,
+          bereit_ms,
+          ...gezeigt,
+          konsolenfehler: konsolenfehler.length,
           ...(await stand(seite)),
         };
         await seite.close();

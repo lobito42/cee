@@ -48,7 +48,7 @@ function kuerzelText(k: string, t: T): string {
 function rang(b: Befehl, frage: string, t: T): number | undefined {
   const titel = normal(t(b.titel));
   const syn = t(`synonym.${b.id}`);
-  const synonyme = syn.startsWith('synonym.') ? normal(syn) : '';
+  const synonyme = syn.startsWith('synonym.') ? '' : normal(syn);
   if (titel === frage) return 0;
   if (titel.startsWith(frage)) return 1;
   if (titel.includes(frage)) return 2;
