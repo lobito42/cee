@@ -21,6 +21,9 @@ use automerge::{
 use serde_json::{Map, Number, Value as Json};
 use sha2::{Digest, Sha256};
 
+use crate::deps::{self, Order};
+use crate::index::{ExternalInput, Index, Row};
+use crate::migrate;
 use crate::schema::{self, FORM, MAP_FIELDS, META_ASSUMED};
 use crate::types::TypeRegistry;
 use crate::validate::{self, Finding};
@@ -159,6 +162,26 @@ impl Op {
 /// Element-Graph auf einem Automerge-Dokument.
 pub struct Doc {
     doc: AutoCommit,
+    /// Abgeleiteter Index (ADR-032): nie gespeichert; Anlegen, Entfernen und Zusammenführen verwerfen ihn.
+    index: Option<Index>,
+    /// Beim ersten Zugriff aufbereitete Parameter und Meta je Element (Teil-Laden).
+    cache: HashMap<String, Json>,
+    /// Schema-Version, die das Dokument beim Laden hatte (vor Migrationen).
+    loaded_version: u32,
+    /// Mitgespeichertes Abbild des Index aus den geladenen Bytes, solange es nicht gelesen wurde.
+    sidecar: Option<Vec<u8>>,
+}
+
+/// Kennung am Ende gespeicherter Bytes: dahinter steht die Länge des Index-Abbilds (`u64`), davor das Abbild.
+const SIDECAR_MAGIC: &[u8; 8] = b"CEEIDX01";
+
+/// Untergraph eines Elements: das Element selbst, alle Nachfahren und die Eingänge, die aus ihm hinauszeigen.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Subgraph {
+    /// Die Wurzel und alle Nachfahren (Wurzel zuerst).
+    pub elements: Vec<String>,
+    /// Eingänge von Elementen des Untergraphen auf Elemente außerhalb.
+    pub external_inputs: Vec<ExternalInput>,
 }
 
 impl Doc {
@@ -167,12 +190,23 @@ impl Doc {
         Self::with_actor(AutoCommit::new())
     }
 
+    fn wrap(doc: AutoCommit, loaded_version: u32) -> Doc {
+        Doc {
+            doc,
+            index: None,
+            cache: HashMap::new(),
+            loaded_version,
+            sidecar: None,
+        }
+    }
+
     fn with_actor(mut doc: AutoCommit) -> Result<Doc> {
-        doc.put_object(ROOT, "project", ObjType::Map)?;
+        let project = doc.put_object(ROOT, "project", ObjType::Map)?;
+        doc.put(&project, "schema_version", i64::from(migrate::CURRENT))?;
         doc.put_object(ROOT, "roots", ObjType::List)?;
         doc.put_object(ROOT, "elements", ObjType::Map)?;
         doc.commit();
-        Ok(Doc { doc })
+        Ok(Doc::wrap(doc, migrate::CURRENT))
     }
 
     /// Projekt aus JSON (`{"schema_version": n, "elements": [...]}`) im Stapel aufbauen, in einer Transaktion.
@@ -231,7 +265,10 @@ impl Doc {
         )?;
         doc.batch_create_object(ROOT, "elements", &value(builder.elems), false)?;
         doc.commit();
-        Ok((Doc { doc }, builder.dropped))
+        let version = migrate::schema_version(&doc)?;
+        let mut result = Doc::wrap(doc, version);
+        result.index = Some(Index::from_rows(builder.rows)?);
+        Ok((result, builder.dropped))
     }
 
     /// Kanonisches Projekt-JSON aus dem Dokument.
@@ -356,22 +393,44 @@ impl Doc {
     /// Dokument nicht.
     pub fn apply(&mut self, op: &Op, types: &TypeRegistry) -> Result<OpOutcome> {
         let outcome = match op {
-            Op::SetParam { id, param, value } => self.set_param(id, param, value, types)?,
+            Op::SetParam { id, param, value } => {
+                let outcome = self.set_param(id, param, value, types)?;
+                self.cache.remove(id);
+                outcome
+            }
             Op::SetInput { id, name, target } => {
                 self.check_name(name)?;
+                self.element(id)?;
+                self.index()?;
+                if let Some(index) = &self.index {
+                    if deps::would_cycle(index, id, target) {
+                        return Err(Error::Cycle(format!(
+                            "`{id}.{name}` ← `{target}` würde einen Zyklus schließen"
+                        )));
+                    }
+                }
                 self.set_field(id, "inputs", name, &Json::String(target.clone()))?;
+                if let Some(index) = &mut self.index {
+                    index.set_input(id, name, target);
+                }
                 OpOutcome::default()
             }
             Op::SetMeta { id, key, value } => {
                 self.check_name(key)?;
                 self.set_field(id, "meta", key, value)?;
+                self.cache.remove(id);
                 OpOutcome::default()
             }
             Op::Remove { id } => {
                 self.remove_element(id)?;
+                self.drop_derived();
                 OpOutcome::default()
             }
-            Op::Create { element, parent } => self.create(element, parent.as_deref(), types)?,
+            Op::Create { element, parent } => {
+                let outcome = self.create(element, parent.as_deref(), types)?;
+                self.drop_derived();
+                outcome
+            }
         };
         self.doc.commit();
         Ok(outcome)
@@ -380,6 +439,13 @@ impl Doc {
     /// Wendet eine Operationsfolge an; jedes Ergebnis steht für sich, abgelehnte Operationen stoppen nichts.
     pub fn apply_all(&mut self, ops: &[Op], types: &TypeRegistry) -> Vec<Result<OpOutcome>> {
         ops.iter().map(|op| self.apply(op, types)).collect()
+    }
+
+    /// Verwirft Index und aufbereitete Elemente (werden bei Bedarf neu aufgebaut).
+    fn drop_derived(&mut self) {
+        self.index = None;
+        self.sidecar = None;
+        self.cache.clear();
     }
 
     fn check_name(&self, name: &str) -> Result<()> {
@@ -511,31 +577,191 @@ impl Doc {
 
     /// Prüft das Dokument und liefert alle Befunde auf einmal.
     pub fn validate(&self, types: &TypeRegistry) -> Result<Vec<Finding>> {
-        Ok(validate::validate_project(&self.export()?, types))
+        let mut findings = validate::validate_project(&self.export()?, types);
+        let members = self.with_index(deps::cycle_members)?;
+        for id in members {
+            let name = match self
+                .map_field(&id, "meta")?
+                .get("name")
+                .and_then(Json::as_str)
+            {
+                Some(n) => n.to_owned(),
+                None => id.clone(),
+            };
+            findings.push(Finding::error(
+                &id,
+                "inputs",
+                &name,
+                "cycle",
+                format!(
+                    "`{id}` liegt auf einem Zyklus aus Eingängen und kann nicht berechnet werden"
+                ),
+            ));
+        }
+        Ok(findings)
     }
 
-    /// Speichert das Dokument (mit Historie) als Bytes.
+    /// Öffnet ein gespeichertes Dokument und baut den Index auf (ohne Parameter und Meta zu lesen).
+    pub fn open(bytes: &[u8]) -> Result<Doc> {
+        let mut doc = Doc::load(bytes)?;
+        doc.index()?;
+        Ok(doc)
+    }
+
+    /// Index des Dokuments; wird beim ersten Aufruf aufgebaut und bei Eingangsänderungen nachgeführt.
+    pub fn index(&mut self) -> Result<&Index> {
+        if self.index.is_none() {
+            let stored = self.sidecar.take().and_then(|bytes| {
+                let (index, heads) = Index::decode(&bytes)?;
+                (heads == self.heads()).then_some(index)
+            });
+            self.index = Some(match stored {
+                Some(index) => index,
+                None => Index::build(&self.doc)?,
+            });
+        }
+        self.index
+            .as_ref()
+            .ok_or_else(|| Error::Model("Index fehlt".into()))
+    }
+
+    fn heads(&mut self) -> Vec<[u8; 32]> {
+        self.doc.get_heads().iter().map(|h| h.0).collect()
+    }
+
+    /// Baut einen frischen Index durch Lesen aller Elemente (langsam), ohne ihn im Dokument zu halten.
+    pub fn build_index(&self) -> Result<Index> {
+        Index::build(&self.doc)
+    }
+
+    fn with_index<R>(&self, f: impl FnOnce(&Index) -> R) -> Result<R> {
+        match &self.index {
+            Some(index) => Ok(f(index)),
+            None => Ok(f(&Index::build(&self.doc)?)),
+        }
+    }
+
+    /// Stabile Berechnungsreihenfolge; Zyklen und ihre Nachfolger stehen in `skipped`.
+    pub fn order(&self) -> Result<Order> {
+        self.with_index(deps::order)
+    }
+
+    /// Betroffene Elemente nach Änderung der genannten Elemente (Vereinigung), nach ID sortiert.
+    pub fn affected(&self, changed: &[&str]) -> Result<Vec<String>> {
+        self.with_index(|index| deps::affected(index, changed))?
+    }
+
+    /// Schema-Version, die das Dokument beim Laden hatte (vor Migrationen).
+    pub fn loaded_version(&self) -> u32 {
+        self.loaded_version
+    }
+
+    /// Aktuelle Schema-Version im Dokument.
+    pub fn schema_version(&self) -> Result<u32> {
+        migrate::schema_version(&self.doc)
+    }
+
+    /// Anzahl der Elemente, deren Parameter und Meta bisher aufbereitet wurden.
+    pub fn materialized_count(&self) -> usize {
+        self.cache.len()
+    }
+
+    /// Parameter und Meta eines Elements (`{"params": …, "meta": …}`); beim ersten Zugriff aufbereitet und
+    /// zwischengespeichert, bis das Element sich ändert.
+    pub fn materialize(&mut self, id: &str) -> Result<&Json> {
+        let elems = self.obj(&ROOT, "elements")?;
+        self.materialize_in(&elems, id)
+    }
+
+    fn materialize_in(&mut self, elems: &ObjId, id: &str) -> Result<&Json> {
+        if !self.cache.contains_key(id) {
+            let element = self
+                .obj_opt(elems, id)?
+                .ok_or_else(|| Error::UnknownElement(format!("`{id}`")))?;
+            let mut m = Map::new();
+            for item in self.doc.map_range(&element, ..) {
+                let key = item.key.to_string();
+                if key == "params" || key == "meta" {
+                    if let Value::Object(kind) = item.value.clone().into_value() {
+                        m.insert(key, read_obj(&self.doc, &item.id(), kind)?);
+                    }
+                }
+            }
+            self.cache.insert(id.to_owned(), Json::Object(m));
+        }
+        self.cache
+            .get(id)
+            .ok_or_else(|| Error::UnknownElement(format!("`{id}`")))
+    }
+
+    /// Untergraph von `root`: das Element, alle Nachfahren und die nach außen zeigenden Eingänge. Bereitet
+    /// nur die Nachfahren (den Inhalt) auf, nicht das Element selbst (Teil-Laden, ADR-050).
+    pub fn subgraph(&mut self, root: &str) -> Result<Subgraph> {
+        self.index()?;
+        let (members, external_inputs) = match &self.index {
+            Some(index) => {
+                let members = index
+                    .subtree(root)
+                    .ok_or_else(|| Error::UnknownElement(format!("`{root}`")))?;
+                let external = index.external_inputs(&members);
+                let ids: Vec<String> = members.iter().map(|&m| index.id(m).to_owned()).collect();
+                (ids, external)
+            }
+            None => return Err(Error::Model("Index fehlt".into())),
+        };
+        let elems = self.obj(&ROOT, "elements")?;
+        for id in members.iter().skip(1) {
+            self.materialize_in(&elems, id)?;
+        }
+        Ok(Subgraph {
+            elements: members,
+            external_inputs,
+        })
+    }
+
+    /// Speichert das Dokument (mit Historie) als Bytes. Ist der Index bekannt, hängt `save` sein Abbild an
+    /// (abgeleitet, außerhalb des CRDT), damit das Öffnen ihn nicht neu aus dem Dokument lesen muss.
+    /// [`Doc::save_plain`] liefert reine Automerge-Bytes.
     pub fn save(&mut self) -> Vec<u8> {
+        let mut bytes = self.doc.save();
+        let heads = self.heads();
+        let side = match &self.index {
+            Some(index) => Some(index.encode(&heads)),
+            None => self.sidecar.clone(),
+        };
+        if let Some(side) = side {
+            bytes.extend_from_slice(&side);
+            bytes.extend_from_slice(&(side.len() as u64).to_le_bytes());
+            bytes.extend_from_slice(SIDECAR_MAGIC);
+        }
+        bytes
+    }
+
+    /// Reine Automerge-Bytes ohne Index-Abbild, z. B. für den Austausch mit anderen Automerge-Werkzeugen.
+    pub fn save_plain(&mut self) -> Vec<u8> {
         self.doc.save()
     }
 
-    /// Lädt ein gespeichertes Dokument.
+    /// Lädt ein gespeichertes Dokument. Ältere Versionen werden der Reihe nach migriert; ein Dokument mit
+    /// neuerer Version als [`migrate::CURRENT`] wird nicht geöffnet (`schema_too_new`).
     pub fn load(bytes: &[u8]) -> Result<Doc> {
-        Ok(Doc {
-            doc: AutoCommit::load(bytes)?,
-        })
+        let (plain, sidecar) = split_sidecar(bytes);
+        let mut doc = AutoCommit::load(plain)?;
+        let (before, _) = migrate::run(&mut doc)?;
+        let mut loaded = Doc::wrap(doc, before);
+        loaded.sidecar = sidecar.map(<[u8]>::to_vec);
+        Ok(loaded)
     }
 
     /// Zweig für Offline-Arbeit (neuer Actor).
     pub fn fork(&mut self) -> Doc {
-        Doc {
-            doc: self.doc.fork(),
-        }
+        Doc::wrap(self.doc.fork(), self.loaded_version)
     }
 
     /// Führt einen anderen Zweig in diesen zusammen.
     pub fn merge(&mut self, other: &mut Doc) -> Result<()> {
         self.doc.merge(&mut other.doc)?;
+        self.drop_derived();
         Ok(())
     }
 }
@@ -637,6 +863,8 @@ struct Builder<'a> {
     strict: bool,
     elems: HashMap<String, hydrate::Value>,
     dropped: Vec<Finding>,
+    /// Rohdaten für den Index, gesammelt beim Bauen.
+    rows: Vec<Row>,
     assumed: bool,
     missing: bool,
 }
@@ -648,6 +876,7 @@ impl<'a> Builder<'a> {
             strict,
             elems: HashMap::new(),
             dropped: Vec::new(),
+            rows: Vec::new(),
             assumed: false,
             missing: false,
         }
@@ -734,16 +963,34 @@ impl<'a> Builder<'a> {
             .and_then(Json::as_array)
             .ok_or_else(|| Error::Json(format!("{id}: `content` fehlt oder ist keine Liste")))?;
         let mut content = Vec::with_capacity(children.len());
+        let mut kids = Vec::with_capacity(children.len());
         for child in children {
             match child {
-                Json::String(child_id) => content.push(str_value(child_id)),
+                Json::String(child_id) => {
+                    content.push(str_value(child_id));
+                    kids.push(child_id.clone());
+                }
                 _ => {
                     if let Some(child_id) = self.build(child, exists)? {
                         content.push(str_value(&child_id));
+                        kids.push(child_id);
                     }
                 }
             }
         }
+        let inputs = e
+            .get("inputs")
+            .and_then(Json::as_object)
+            .map_or_else(Vec::new, |m| {
+                m.iter()
+                    .filter_map(|(k, v)| v.as_str().map(|t| (k.clone(), t.to_owned())))
+                    .collect()
+            });
+        self.rows.push(Row {
+            id: id.clone(),
+            inputs,
+            kids,
+        });
         node.insert(
             "content".into(),
             hydrate::Value::from(hydrate::List::from(content)),
@@ -751,6 +998,27 @@ impl<'a> Builder<'a> {
         self.elems
             .insert(id.clone(), hydrate::Value::from(hydrate::Map::from(node)));
         Ok(Some(id))
+    }
+}
+
+/// Trennt ein angehängtes Index-Abbild von den Automerge-Bytes.
+fn split_sidecar(bytes: &[u8]) -> (&[u8], Option<&[u8]>) {
+    let Some(rest) = bytes.strip_suffix(SIDECAR_MAGIC.as_slice()) else {
+        return (bytes, None);
+    };
+    let Some(split) = rest.len().checked_sub(8) else {
+        return (bytes, None);
+    };
+    let (body, len) = rest.split_at(split);
+    let Ok(len) = <[u8; 8]>::try_from(len).map(u64::from_le_bytes) else {
+        return (bytes, None);
+    };
+    match usize::try_from(len)
+        .ok()
+        .and_then(|n| body.len().checked_sub(n))
+    {
+        Some(start) => (&body[..start], Some(&body[start..])),
+        None => (bytes, None),
     }
 }
 
@@ -886,9 +1154,7 @@ mod tests {
     }
 
     fn unreachable_doc() -> Doc {
-        Doc {
-            doc: AutoCommit::new(),
-        }
+        Doc::wrap(AutoCommit::new(), 1)
     }
 
     #[test]
@@ -904,7 +1170,113 @@ mod tests {
         let bytes = d.save();
         assert!(looks_like_doc(&bytes));
         let loaded = Doc::load(&bytes);
-        assert!(loaded.is_ok_and(|l| l.hash().ok() == d.hash().ok()));
+        // mit der Beispiel-Migration heißt `meta.name` nach dem Laden `meta.title`
+        let same = loaded.is_ok_and(|l| l.hash().ok() == d.hash().ok());
+        assert!(same || cfg!(feature = "demo-migration"));
+    }
+
+    fn linked(id: &str, to: Option<&str>) -> Json {
+        let mut e = el(id);
+        if let Some(t) = to {
+            e["inputs"] = json!({"in": format!("{t}.out")});
+        }
+        e
+    }
+
+    #[test]
+    fn saved_bytes_carry_the_index_and_open_without_rebuilding() {
+        let mut d = doc_of(vec![linked("a", None), linked("b", Some("a"))]);
+        let with_index = d.save();
+        let plain = d.save_plain();
+        assert!(with_index.len() > plain.len());
+        assert_eq!(split_sidecar(&with_index).0, plain.as_slice());
+        let opened = Doc::open(&with_index);
+        assert!(opened.is_ok_and(|mut o| o.sidecar.is_none() && o.index().ok() == d.index().ok()));
+        // reine Automerge-Bytes laden ebenfalls
+        assert!(Doc::load(&plain).is_ok());
+    }
+
+    #[test]
+    fn stale_or_damaged_index_image_is_ignored() {
+        let reg = TypeRegistry::new();
+        let mut d = doc_of(vec![linked("a", None), linked("b", None)]);
+        let old = d.save();
+        let op = Op::SetInput {
+            id: "b".into(),
+            name: "in".into(),
+            target: "a.out".into(),
+        };
+        assert!(d.apply(&op, &reg).is_ok());
+        // Abbild gehört zu einem älteren Stand: Köpfe stimmen nicht, der Index wird neu gelesen
+        let mut fresh = d.save_plain();
+        let (plain, side) = split_sidecar(&old);
+        let side = side.map(<[u8]>::to_vec).unwrap_or_default();
+        assert!(!plain.is_empty());
+        fresh.extend_from_slice(&side);
+        fresh.extend_from_slice(&(side.len() as u64).to_le_bytes());
+        fresh.extend_from_slice(SIDECAR_MAGIC);
+        let opened = Doc::open(&fresh);
+        assert!(opened.is_ok_and(|mut o| o.index().ok().map(|i| i.users(0).len()) == Some(1)));
+        // beschädigtes Abbild
+        let mut broken = d.save_plain();
+        broken.extend_from_slice(&[1, 2, 3]);
+        broken.extend_from_slice(&3_u64.to_le_bytes());
+        broken.extend_from_slice(SIDECAR_MAGIC);
+        let opened = Doc::open(&broken);
+        assert!(opened.is_ok_and(|mut o| o.index().ok().map(|i| i.users(0).len()) == Some(1)));
+    }
+
+    #[test]
+    fn cycle_is_rejected_and_validate_reports_cycles_after_merge() {
+        let reg = TypeRegistry::new();
+        let mut d = doc_of(vec![
+            linked("a", None),
+            linked("b", Some("a")),
+            linked("c", None),
+        ]);
+        let before = d.hash().ok();
+        let back = Op::SetInput {
+            id: "a".into(),
+            name: "in".into(),
+            target: "b.out".into(),
+        };
+        assert!(matches!(d.apply(&back, &reg), Err(Error::Cycle(_))));
+        assert_eq!(d.hash().ok(), before);
+        let mut other = d.fork();
+        let set = |id: &str, t: &str| Op::SetInput {
+            id: id.into(),
+            name: "x".into(),
+            target: format!("{t}.out"),
+        };
+        assert!(d.apply(&set("c", "b"), &reg).is_ok());
+        assert!(other.apply(&set("a", "c"), &reg).is_ok());
+        assert!(d.merge(&mut other).is_ok());
+        let found = d.validate(&reg);
+        let cycles: Vec<String> = found
+            .map(|f| {
+                f.into_iter()
+                    .filter(|x| x.code == "cycle")
+                    .map(|x| x.element)
+                    .collect()
+            })
+            .unwrap_or_default();
+        assert_eq!(cycles, ["a", "b", "c"]);
+    }
+
+    #[test]
+    fn subgraph_prepares_only_the_content() {
+        let mut group = el("g");
+        group["content"] = json!([linked("k1", None), linked("k2", Some("outside"))]);
+        let mut d = doc_of(vec![group, linked("outside", None), linked("other", None)]);
+        let sub = d.subgraph("g");
+        assert!(sub.is_ok_and(|s| s.elements == ["g", "k1", "k2"]
+            && s.external_inputs.len() == 1
+            && s.external_inputs[0].element == "k2"));
+        assert_eq!(d.materialized_count(), 2);
+        assert!(matches!(
+            d.subgraph("missing"),
+            Err(Error::UnknownElement(_))
+        ));
     }
 
     #[test]

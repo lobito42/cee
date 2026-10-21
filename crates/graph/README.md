@@ -11,6 +11,10 @@ Prüfung. Server, Client und SDK binden diese Crate ein und bauen keine eigene L
 | `doc` | Dokument: Operationen, Laden, Speichern, Merge, Inhalts-Hash, Export, Stapel-Import |
 | `validate` | Prüfung mit Befunden (`element`, `field`, `name`, `code`, `severity`, `message`) |
 | `synth` | Deterministischer Generator für Projekte und Prüfkorpora |
+| `index` | Index (ID → Eltern, Kinder, Eingänge, Nutzer), Untergraph, Abbild zum Mitspeichern |
+| `deps` | Zyklen, stabile Reihenfolge, betroffene Elemente |
+| `state` | Berechnungszustände `current`, `stale`, `running`, `failed` – neben dem Dokument, nie darin |
+| `migrate` | Schema-Version im Dokument, Migrationen, Beispiel-Migration hinter Feature `demo-migration` |
 
 Alle öffentlichen Funktionen geben `Result<_, Error>` zurück; `Error::code()` liefert den stabilen
 Fehlercode für Bindungen. Kein `unsafe`, kein `unwrap`/`expect`/`panic!` außerhalb von Tests.
@@ -56,7 +60,29 @@ kosten etwa 15–20 µs je Operation und machten den Aufbau 20-mal langsamer.
 ## Kommandozeile `graphctl`
 
 `cargo run -q --release -p cee-graph --example graphctl -- <befehl>` (Ausgabe JSON): `units`, `parse`, `convert`,
-`import`, `validate`, `apply`, `export`, `hash`, `merge`, `synth`, `bench --json`.
+`import`, `validate`, `apply`, `export`, `hash`, `merge`, `synth`, `bench --json` sowie (ap-05b) `order`, `affected`,
+`states`, `migrate`, `subgraph`. Mit `--features demo-migration` übersetzt, kennt `graphctl` die Beispiel-Migration.
+
+## Abhängigkeiten, Zustände, Migrationen, Teil-Laden (ap-05b)
+
+- **Abhängigkeiten:** Hat `b` einen Eingang `a.out`, hängt `b` von `a` ab; `content` ist keine Abhängigkeit, macht
+  aber die Eltern eines betroffenen Elements mit betroffen. `set_input` lehnt einen Zyklus mit dem Fehler `cycle`
+  ab (Dokument unverändert). Entsteht ein Zyklus erst durch Zusammenführen, meldet `Doc::validate` den Befund `cycle`
+  an allen Elementen auf dem Zyklus; `deps::order` lässt sie und ihre Nachfolger aus (`skipped`), der Rest bleibt
+  berechenbar. Gleichstand in der Reihenfolge entscheidet die kleinste ID.
+- **Zustände:** `state::States` hält je Element `current`, `stale`, `running` oder `failed` (mit Befund) getrennt vom
+  Dokument. `ready()` liefert `stale`-Elemente, deren Eingänge alle `current` sind; ein Fehler blockiert nur seine
+  Nachfolger. Wird ein laufendes Element geändert, ist es nach `finish_ok` wieder `stale`.
+- **Migrationen:** `ROOT.project.schema_version`; `Doc::load` migriert der Reihe nach (ein Commit `migrate n->n+1`
+  je Schritt) und lehnt neuere Versionen mit `schema_too_new` ab. Die Beispiel-Migration 1 → 2 (`meta.name` →
+  `meta.title`) gibt es nur mit Feature `demo-migration`; die echte Version bleibt 1.
+- **Teil-Laden:** `Doc::open` lädt die Bytes und baut nur den Index auf; `Doc::subgraph(id)` bereitet Parameter und
+  Meta der Nachfahren erst bei Bedarf auf (`materialized_count`) und nennt die nach außen zeigenden Eingänge.
+- **Index-Abbild:** Der Index aus dem Dokument zu lesen kostet rund 1,6 s für 100.000 Elemente (je Element mehrere
+  Automerge-Zugriffe). `Doc::save` hängt deshalb ein Abbild des Index an die Automerge-Bytes
+  (`<automerge><abbild><länge u64>CEEIDX01`). Es ist abgeleitet, liegt außerhalb des CRDT und gilt nur, wenn die Köpfe
+  des Dokuments übereinstimmen; sonst oder bei beschädigtem Abbild wird der Index neu gelesen. `Doc::save_plain`
+  liefert reine Automerge-Bytes für den Austausch mit anderen Werkzeugen. Der Import baut den Index beim Aufbau mit.
 
 ## Messwerte
 
@@ -71,7 +97,16 @@ den Abnahmetests). Budgets laut `design.md`:
 | `parse_p95_us` (Eingabe lesen und umrechnen) | ≈ 0,2 | ≤ 50 |
 | `import_10k_ms` | ≈ 260 | ≤ 2.000 |
 | `import_100k_ms` | ≈ 2.700 | nur gemessen |
-| `size_100k_mb` | ≈ 7,1 | nur gemessen |
+| `size_100k_mb` (reine Automerge-Bytes) | ≈ 7,1 | nur gemessen |
+| `size_with_index_100k_mb` (mit Index-Abbild) | ≈ 11 | nur gemessen |
+| `load_index_100k_ms` (Laden samt Index, ap-05b) | ≈ 1.300 | ≤ 2.000 |
+| `index_100k_ms` (Index aus dem Abbild) | ≈ 90 | ≤ 300 |
+| `index_rebuild_100k_ms` (Index aus dem Dokument gelesen, nur zur Information) | ≈ 1.600 | – |
+| `order_100k_ms` | ≈ 75 | ≤ 300 |
+| `affected_p95_ms` (1.000 zufällige Elemente in 100k) | ≈ 3,5 | ≤ 5 |
+| `op_p95_ms` (Eingang setzen inkl. Zyklustest; ab ap-05b) | ≈ 0,1 | ≤ 5 |
+| `param_op_p95_ms` (Parameter setzen, früher `op_p95_ms`) | ≈ 0,2 | – |
+| `subgraph_1000_ms` (Gruppe mit 1.000 Elementen aus 100k) | ≈ 30 | ≤ 50 |
 | `export_100k_ms` (ganzes Dokument lesen, nur zur Information) | ≈ 1.700 | – |
 
 Hinweis zu `validate_100k_ms`: Das Lesen des ganzen Dokuments (`Doc::export`, ein sequentieller Durchgang über rund

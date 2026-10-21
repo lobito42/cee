@@ -8,6 +8,7 @@ use std::process::ExitCode;
 use std::time::Instant;
 
 use cee_graph::doc::{self, Doc, Op};
+use cee_graph::state::States;
 use cee_graph::synth::{self, CorpusKind, Rng};
 use cee_graph::types::TypeRegistry;
 use cee_graph::units::{self, AXES};
@@ -126,6 +127,11 @@ fn run(args: &[String]) -> Result<Outcome> {
             write_bytes(out, &a.save())?;
             Ok((json!({"hash": a.hash()?}), 0))
         }
+        "order" => cmd_order(args),
+        "affected" => cmd_affected(args),
+        "states" => cmd_states(args),
+        "migrate" => cmd_migrate(args),
+        "subgraph" => cmd_subgraph(args),
         "synth" => cmd_synth(args),
         "bench" => Ok((bench()?, 0)),
         other => Err(usage(&format!("unbekannter Befehl `{other}`"))),
@@ -185,6 +191,84 @@ fn cmd_apply(args: &[String]) -> Result<Outcome> {
     Ok((out_json, if rejected { 1 } else { code }))
 }
 
+fn cmd_order(args: &[String]) -> Result<Outcome> {
+    let doc = load_doc(required(args, 1, "order <doc>")?)?;
+    let o = doc.order()?;
+    let skipped: Vec<Json> = o
+        .skipped
+        .iter()
+        .map(|s| json!({"element": s.element, "reason": s.reason}))
+        .collect();
+    Ok((json!({"order": o.order, "skipped": skipped}), 0))
+}
+
+fn cmd_affected(args: &[String]) -> Result<Outcome> {
+    let doc = load_doc(required(args, 1, "affected <doc> <id>...")?)?;
+    let ids: Vec<&str> = args.iter().skip(2).map(String::as_str).collect();
+    Ok((json!({"affected": doc.affected(&ids)?}), 0))
+}
+
+/// Spielt Zustandsereignisse ab; unsinnige Ereignisse (unbekannte ID oder Art) werden ignoriert.
+fn cmd_states(args: &[String]) -> Result<Outcome> {
+    let mut doc = load_doc(required(args, 1, "states <doc> <script.json>")?)?;
+    let script = read_json(required(args, 2, "states <doc> <script.json>")?)?;
+    let index = doc.index()?.clone();
+    let mut states = States::new(&index);
+    for step in script.as_array().map_or(&[][..], Vec::as_slice) {
+        let id = step.get("id").and_then(Json::as_str).unwrap_or("");
+        let _ = match step.get("event").and_then(Json::as_str).unwrap_or("") {
+            "change" => states.change(&index, id),
+            "start" => states.start(id),
+            "ok" => states.finish_ok(id),
+            "err" => states.finish_err(
+                id,
+                Finding::error(id, "", id, "failed", "Berechnung fehlgeschlagen".into()),
+            ),
+            _ => Ok(()),
+        };
+    }
+    let mut map = serde_json::Map::new();
+    for node in index.nodes() {
+        if let Some(s) = states.get(&node.id) {
+            map.insert(node.id.clone(), json!(s.as_str()));
+        }
+    }
+    let mut findings = serde_json::Map::new();
+    for (id, f) in states.failed() {
+        findings.insert(id.to_owned(), json!([f.to_json()]));
+    }
+    Ok((
+        json!({"states": map, "ready": states.ready(&index), "findings": findings}),
+        0,
+    ))
+}
+
+fn cmd_migrate(args: &[String]) -> Result<Outcome> {
+    let mut doc = load_doc(required(args, 1, "migrate <doc> --out <doc>")?)?;
+    let out = option(args, "--out").ok_or_else(|| usage("--out <doc>"))?;
+    let (before, after) = (doc.loaded_version(), doc.schema_version()?);
+    write_bytes(out, &doc.save())?;
+    Ok((json!({"before": before, "after": after}), 0))
+}
+
+fn cmd_subgraph(args: &[String]) -> Result<Outcome> {
+    let mut doc = Doc::open(&read_bytes(required(args, 1, "subgraph <doc> <id>")?)?)?;
+    let id = required(args, 2, "subgraph <doc> <id>")?;
+    let t = Instant::now();
+    let sub = doc.subgraph(id)?;
+    let duration_ms = ms(t);
+    let external: Vec<Json> = sub
+        .external_inputs
+        .iter()
+        .map(|x| json!({"element": x.element, "input": x.input, "target": x.target}))
+        .collect();
+    Ok((
+        json!({"elements": sub.elements, "external_inputs": external,
+               "materialized_count": doc.materialized_count(), "duration_ms": duration_ms}),
+        0,
+    ))
+}
+
 fn cmd_synth(args: &[String]) -> Result<Outcome> {
     let n: usize = option(args, "--n")
         .ok_or_else(|| usage("synth --n <zahl> --seed <zahl>"))?
@@ -231,6 +315,43 @@ fn p95(samples: &mut [f64]) -> f64 {
         .unwrap_or(f64::NAN)
 }
 
+fn count_elements(list: &[Json]) -> usize {
+    list.iter()
+        .filter_map(Json::as_object)
+        .map(|e| {
+            1 + e
+                .get("content")
+                .and_then(Json::as_array)
+                .map_or(0, |c| count_elements(c))
+        })
+        .sum()
+}
+
+/// Hängt die ersten Elemente der obersten Ebene (mit Untergraph) unter eine neue Gruppe, bis sie etwa
+/// `size` Elemente enthält; die Gruppe steht danach an der Spitze. Gibt ihre ID zurück.
+fn nest_group(project: &mut Json, size: usize) -> String {
+    let id = "bench_group".to_owned();
+    let Some(list) = project.get_mut("elements").and_then(Json::as_array_mut) else {
+        return id;
+    };
+    let mut take = 0;
+    let mut total = 0;
+    for e in list.iter() {
+        if total >= size {
+            break;
+        }
+        total += count_elements(std::slice::from_ref(e));
+        take += 1;
+    }
+    let kids: Vec<Json> = list.drain(..take).collect();
+    list.insert(
+        0,
+        json!({"id": id, "type": "thing", "inputs": {}, "params": {}, "outputs": {"out": "thing"},
+               "content": kids, "meta": {"name": "Gruppe"}}),
+    );
+    id
+}
+
 /// Alle Kennzahlen aus design.md (Performance-Budgets).
 fn bench() -> Result<Json> {
     let types = TypeRegistry::new();
@@ -265,7 +386,8 @@ fn bench() -> Result<Json> {
     drop(small);
 
     // 100.000: Import, 10.000 Änderungen, Speichern, Laden, Prüfen.
-    let (big, ids) = synth::project_with_ids(100_000, 2);
+    let (mut big, ids) = synth::project_with_ids(100_000, 2);
+    let group_id = nest_group(&mut big, 1_000);
     let t = Instant::now();
     let (mut doc, _) = Doc::import(&big, &types, Some(b"bench"))?;
     let import_100k_ms = ms(t);
@@ -284,15 +406,70 @@ fn bench() -> Result<Json> {
         doc.apply(&op, &types)?;
         op_samples.push(ms(t));
     }
-    let op_p95_ms = p95(&mut op_samples);
+    let param_op_p95_ms = p95(&mut op_samples);
+
+    // Änderung inkl. Zyklustest: Eingänge setzen (abgelehnte Zyklen zählen mit).
+    doc.index()?;
+    let mut input_samples = Vec::with_capacity(2_000);
+    for _ in 0..2_000 {
+        let id = ids[rng.below(ids.len() as u64) as usize].clone();
+        let target = &ids[rng.below(ids.len() as u64) as usize];
+        let op = Op::SetInput {
+            id,
+            name: "extra".into(),
+            target: format!("{target}.out"),
+        };
+        let t = Instant::now();
+        let _ = doc.apply(&op, &types);
+        input_samples.push(ms(t));
+    }
+    let op_p95_ms = p95(&mut input_samples);
 
     let bytes = doc.save();
-    let size_100k_mb = bytes.len() as f64 / (1024.0 * 1024.0);
+    let size_100k_mb = doc.save_plain().len() as f64 / (1024.0 * 1024.0);
+    let size_with_index_100k_mb = bytes.len() as f64 / (1024.0 * 1024.0);
     drop(doc);
 
     let t = Instant::now();
-    let loaded = Doc::load(&bytes)?;
+    let mut loaded = Doc::load(&bytes)?;
     let load_100k_ms = ms(t);
+
+    // Laden samt Index, danach Index allein (aus dem mitgespeicherten Abbild), Reihenfolge, betroffene Elemente.
+    let t = Instant::now();
+    let mut opened = Doc::open(&bytes)?;
+    let load_index_100k_ms = ms(t);
+    let t = Instant::now();
+    let index = loaded.index()?.clone();
+    let index_100k_ms = ms(t);
+    let t = Instant::now();
+    let rebuilt = loaded.build_index()?;
+    let index_rebuild_100k_ms = ms(t);
+    if rebuilt != index {
+        return Err(Error::Model(
+            "Index aus Abbild und aus Dokument weichen ab".into(),
+        ));
+    }
+    drop(rebuilt);
+    let t = Instant::now();
+    let order = cee_graph::deps::order(&index);
+    let order_100k_ms = ms(t);
+    if !order.skipped.is_empty() || order.order.len() != index.len() {
+        return Err(Error::Model("Reihenfolge unvollständig".into()));
+    }
+    let mut affected_samples = Vec::with_capacity(1_000);
+    for _ in 0..1_000 {
+        let id = ids[rng.below(ids.len() as u64) as usize].as_str();
+        let t = Instant::now();
+        let _ = cee_graph::deps::affected(&index, &[id])?;
+        affected_samples.push(ms(t));
+    }
+    let affected_p95_ms = p95(&mut affected_samples);
+
+    // Untergraph mit etwa 1.000 Elementen aufbereiten.
+    let t = Instant::now();
+    let sub = opened.subgraph(&group_id)?;
+    let subgraph_1000_ms = ms(t);
+    let subgraph_size = sub.elements.len();
 
     let t = Instant::now();
     let exported = loaded.export()?;
@@ -315,9 +492,18 @@ fn bench() -> Result<Json> {
         "validate_100k_ms": validate_100k_ms,
         "export_100k_ms": export_100k_ms,
         "op_p95_ms": op_p95_ms,
+        "param_op_p95_ms": param_op_p95_ms,
+        "load_index_100k_ms": load_index_100k_ms,
+        "index_100k_ms": index_100k_ms,
+        "index_rebuild_100k_ms": index_rebuild_100k_ms,
+        "order_100k_ms": order_100k_ms,
+        "affected_p95_ms": affected_p95_ms,
+        "subgraph_1000_ms": subgraph_1000_ms,
+        "subgraph_size": subgraph_size,
         "parse_p95_us": parse_p95_us,
         "import_10k_ms": import_10k_ms,
         "import_100k_ms": import_100k_ms,
         "size_100k_mb": size_100k_mb,
+        "size_with_index_100k_mb": size_with_index_100k_mb,
     }))
 }
