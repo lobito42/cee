@@ -101,7 +101,9 @@ def test_abhaengigkeiten_und_lizenzen():
 
     def lauf(knoten: dict) -> None:
         for name, d in (knoten.get("dependencies") or {}).items():
-            pakete[f"{name}@{d.get('version', '?')}"] = _lizenz_von(d)
+            if not d.get("version"):
+                continue  # nicht installiert (optional für andere Plattformen, optionaler Peer)
+            pakete[f"{name}@{d['version']}"] = _lizenz_von(d)
             lauf(d)
 
     lauf(baum)
