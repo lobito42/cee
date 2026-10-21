@@ -7,11 +7,19 @@
 //! - [`doc`]: Dokument auf Automerge – Operationen, Laden, Speichern, Merge, Hash, Stapel-Import
 //! - [`validate`]: Prüfung mit Befunden
 //! - [`synth`]: deterministischer Generator für Projekte und Prüfkorpora
+//! - [`index`]: Index beim Öffnen, Teil-Laden von Untergraphen
+//! - [`deps`]: Abhängigkeiten, Zyklen, Reihenfolge, betroffene Elemente
+//! - [`state`]: Berechnungszustände je Element, getrennt vom Dokument
+//! - [`migrate`]: Schema-Version und Migrationen
 
 #![deny(missing_docs)]
 
+pub mod deps;
 pub mod doc;
+pub mod index;
+pub mod migrate;
 pub mod schema;
+pub mod state;
 pub mod synth;
 pub mod types;
 pub mod units;
@@ -51,6 +59,10 @@ pub enum Error {
     Automerge(String),
     /// Verstoß gegen das Datenmodell.
     Model(String),
+    /// Die Operation würde einen Zyklus in den Eingängen schließen.
+    Cycle(String),
+    /// Das Dokument hat eine neuere Schema-Version, als der Kern kennt.
+    SchemaTooNew(String),
 }
 
 impl Error {
@@ -70,6 +82,8 @@ impl Error {
             Error::Json(_) => "json_error",
             Error::Automerge(_) => "automerge_error",
             Error::Model(_) => "model_error",
+            Error::Cycle(_) => "cycle",
+            Error::SchemaTooNew(_) => "schema_too_new",
         }
     }
 
@@ -87,7 +101,9 @@ impl Error {
             | Error::InvalidOperation(m)
             | Error::Json(m)
             | Error::Automerge(m)
-            | Error::Model(m) => m,
+            | Error::Model(m)
+            | Error::Cycle(m)
+            | Error::SchemaTooNew(m) => m,
         }
     }
 }
@@ -122,6 +138,14 @@ mod tests {
     #[test]
     fn schema_version_is_defined() {
         assert_eq!(SCHEMA_VERSION, 1);
+        assert_eq!(
+            migrate::CURRENT,
+            if cfg!(feature = "demo-migration") {
+                2
+            } else {
+                1
+            }
+        );
     }
 
     #[test]

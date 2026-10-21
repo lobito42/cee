@@ -9,6 +9,10 @@ rust-version.workspace = true
 [lints]
 workspace = true
 
+[features]
+# Beispiel-Migration 1 -> 2 (benennt `meta.name` in `meta.title` um); nur für Tests des Mechanismus
+demo-migration = []
+
 [dependencies]
 # Lizenzen (ADR-034): automerge MIT, serde_json MIT/Apache-2.0, sha2 MIT/Apache-2.0
 automerge = "0.12"
