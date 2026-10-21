@@ -1,0 +1,54 @@
+{
+  "app": {
+    "titel": "CEE prototype",
+    "arbeitsbereich": "Model",
+    "stand": { "haupt": "Main version" }
+  },
+  "befehl": {
+    "werkzeug": {
+      "auswaehlen": "Select",
+      "messen": "Measure",
+      "schnitt": "Section",
+      "skizze": "Sketch",
+      "fragen": "Ask"
+    },
+    "suche": { "oeffnen": "Search" },
+    "bearbeiten": { "rueckgaengig": "Undo", "wiederholen": "Redo" },
+    "auswahl": { "setzen": "Select elements" },
+    "ansicht": {
+      "einpassen": "Fit view",
+      "ergebnis": "Result",
+      "alle-entwuerfe": "All drafts"
+    },
+    "thema": { "umschalten": "Switch light or dark" },
+    "skizze": {
+      "anlegen": "Create sketch",
+      "rechteck": "Draw rectangle",
+      "schliessen": "Close sketch"
+    },
+    "element": { "wert-setzen": "Set value" },
+    "feature": {
+      "extrudieren": "Extrude",
+      "verrunden": "Fillet",
+      "schale": "Shell"
+    },
+    "baugruppe": { "anlegen": "Create assembly" },
+    "verbindung": { "anlegen": "Connect" },
+    "entwurf": {
+      "anlegen": "Create draft",
+      "wechseln": "Switch to draft",
+      "vergleichen": "Compare draft",
+      "uebernehmen": "Apply draft",
+      "verwerfen": "Discard draft"
+    },
+    "ki": { "fragen": "Ask AI", "anhalten": "Stop" },
+    "vorschlag": { "uebernehmen": "Apply", "verwerfen": "Discard" }
+  },
+  "wert": {
+    "fehler": {
+      "nicht-lesbar": "This cannot be read.",
+      "dimension": "This unit does not fit here.",
+      "teilung": "Cannot divide by zero."
+    }
+  }
+}

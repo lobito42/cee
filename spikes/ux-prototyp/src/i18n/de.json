@@ -1,0 +1,54 @@
+{
+  "app": {
+    "titel": "CEE Prototyp",
+    "arbeitsbereich": "Modell",
+    "stand": { "haupt": "Hauptstand" }
+  },
+  "befehl": {
+    "werkzeug": {
+      "auswaehlen": "Auswählen",
+      "messen": "Messen",
+      "schnitt": "Schnitt",
+      "skizze": "Skizze",
+      "fragen": "Fragen"
+    },
+    "suche": { "oeffnen": "Suchen" },
+    "bearbeiten": { "rueckgaengig": "Rückgängig", "wiederholen": "Wiederholen" },
+    "auswahl": { "setzen": "Auswählen von Elementen" },
+    "ansicht": {
+      "einpassen": "Ansicht einpassen",
+      "ergebnis": "Ergebnis",
+      "alle-entwuerfe": "Alle Entwürfe"
+    },
+    "thema": { "umschalten": "Hell oder dunkel umschalten" },
+    "skizze": {
+      "anlegen": "Skizze anlegen",
+      "rechteck": "Rechteck aufziehen",
+      "schliessen": "Skizze schließen"
+    },
+    "element": { "wert-setzen": "Wert setzen" },
+    "feature": {
+      "extrudieren": "Extrudieren",
+      "verrunden": "Verrunden",
+      "schale": "Schale"
+    },
+    "baugruppe": { "anlegen": "Baugruppe anlegen" },
+    "verbindung": { "anlegen": "Verbinden" },
+    "entwurf": {
+      "anlegen": "Entwurf anlegen",
+      "wechseln": "Zu Entwurf wechseln",
+      "vergleichen": "Entwurf vergleichen",
+      "uebernehmen": "Entwurf übernehmen",
+      "verwerfen": "Entwurf verwerfen"
+    },
+    "ki": { "fragen": "KI fragen", "anhalten": "Anhalten" },
+    "vorschlag": { "uebernehmen": "Übernehmen", "verwerfen": "Verwerfen" }
+  },
+  "wert": {
+    "fehler": {
+      "nicht-lesbar": "Das kann nicht gelesen werden.",
+      "dimension": "Diese Einheit passt hier nicht.",
+      "teilung": "Durch null kann nicht geteilt werden."
+    }
+  }
+}

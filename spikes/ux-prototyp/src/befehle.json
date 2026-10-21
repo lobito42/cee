@@ -1,0 +1,109 @@
+{
+  "befehle": [
+    { "id": "werkzeug.auswaehlen", "titel": "befehl.werkzeug.auswaehlen", "kuerzel": "V" },
+    { "id": "werkzeug.messen", "titel": "befehl.werkzeug.messen", "kuerzel": "M" },
+    { "id": "werkzeug.schnitt", "titel": "befehl.werkzeug.schnitt", "kuerzel": "X" },
+    { "id": "werkzeug.skizze", "titel": "befehl.werkzeug.skizze", "kuerzel": "S" },
+    { "id": "werkzeug.fragen", "titel": "befehl.werkzeug.fragen", "kuerzel": "F" },
+    { "id": "suche.oeffnen", "titel": "befehl.suche.oeffnen", "kuerzel": "Mod+K" },
+    {
+      "id": "bearbeiten.rueckgaengig",
+      "titel": "befehl.bearbeiten.rueckgaengig",
+      "kuerzel": "Mod+Z"
+    },
+    {
+      "id": "bearbeiten.wiederholen",
+      "titel": "befehl.bearbeiten.wiederholen",
+      "kuerzel": "Mod+Shift+Z"
+    },
+    {
+      "id": "auswahl.setzen",
+      "titel": "befehl.auswahl.setzen",
+      "parameter": { "elemente": { "typ": "referenz" } }
+    },
+    { "id": "ansicht.einpassen", "titel": "befehl.ansicht.einpassen" },
+    { "id": "thema.umschalten", "titel": "befehl.thema.umschalten" },
+    {
+      "id": "skizze.anlegen",
+      "titel": "befehl.skizze.anlegen",
+      "parameter": { "ebene": { "typ": "wahl" } }
+    },
+    {
+      "id": "skizze.rechteck",
+      "titel": "befehl.skizze.rechteck",
+      "parameter": {
+        "laenge": { "dimension": "laenge", "einheit": "mm" },
+        "breite": { "dimension": "laenge", "einheit": "mm" }
+      }
+    },
+    { "id": "skizze.schliessen", "titel": "befehl.skizze.schliessen" },
+    {
+      "id": "element.wert-setzen",
+      "titel": "befehl.element.wert-setzen",
+      "parameter": {
+        "element": { "typ": "referenz" },
+        "name": { "typ": "text" },
+        "wert": { "dimension": "laenge", "einheit": "mm" }
+      }
+    },
+    {
+      "id": "feature.extrudieren",
+      "titel": "befehl.feature.extrudieren",
+      "parameter": { "tiefe": { "dimension": "laenge", "einheit": "mm" } }
+    },
+    {
+      "id": "feature.verrunden",
+      "titel": "befehl.feature.verrunden",
+      "parameter": {
+        "radius": { "dimension": "laenge", "einheit": "mm" },
+        "kanten": { "typ": "referenz" }
+      }
+    },
+    {
+      "id": "feature.schale",
+      "titel": "befehl.feature.schale",
+      "parameter": {
+        "wandstaerke": { "dimension": "laenge", "einheit": "mm" },
+        "flaeche": { "typ": "wahl" }
+      }
+    },
+    { "id": "baugruppe.anlegen", "titel": "befehl.baugruppe.anlegen" },
+    {
+      "id": "verbindung.anlegen",
+      "titel": "befehl.verbindung.anlegen",
+      "parameter": {
+        "von": { "typ": "referenz" },
+        "nach": { "typ": "referenz" },
+        "art": { "typ": "wahl" },
+        "versatz": { "dimension": "laenge", "einheit": "mm" }
+      }
+    },
+    {
+      "id": "entwurf.anlegen",
+      "titel": "befehl.entwurf.anlegen",
+      "parameter": { "name": { "typ": "text" } }
+    },
+    {
+      "id": "entwurf.wechseln",
+      "titel": "befehl.entwurf.wechseln",
+      "parameter": { "entwurf": { "typ": "referenz" } }
+    },
+    { "id": "entwurf.vergleichen", "titel": "befehl.entwurf.vergleichen" },
+    { "id": "entwurf.uebernehmen", "titel": "befehl.entwurf.uebernehmen" },
+    {
+      "id": "entwurf.verwerfen",
+      "titel": "befehl.entwurf.verwerfen",
+      "parameter": { "begruendung": { "typ": "text" } }
+    },
+    { "id": "ansicht.ergebnis", "titel": "befehl.ansicht.ergebnis" },
+    { "id": "ansicht.alle-entwuerfe", "titel": "befehl.ansicht.alle-entwuerfe" },
+    {
+      "id": "ki.fragen",
+      "titel": "befehl.ki.fragen",
+      "parameter": { "absicht": { "typ": "text" } }
+    },
+    { "id": "ki.anhalten", "titel": "befehl.ki.anhalten" },
+    { "id": "vorschlag.uebernehmen", "titel": "befehl.vorschlag.uebernehmen" },
+    { "id": "vorschlag.verwerfen", "titel": "befehl.vorschlag.verwerfen" }
+  ]
+}

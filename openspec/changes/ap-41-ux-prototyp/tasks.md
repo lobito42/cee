@@ -11,9 +11,9 @@ npm test)`; AK-1, AK-11 (Abhängigkeiten, Lizenzen)
       `docs/design/tokens.json` (hell und dunkel über `[data-thema]`); `npm run tokens:check`; Inter und JetBrains
       Mono über `@fontsource` mit den Schriftmerkmalen aus den Tokens – Prüfung: `cd P && npm run tokens:check`;
       AK-3 (statischer Teil)
-- [ ] 1.3 Übersetzungen `src/i18n/de.json` und `en.json` mit gleichen Schlüsseln, Sprache `schluessel`,
+- [x] 1.3 Übersetzungen `src/i18n/de.json` und `en.json` mit gleichen Schlüsseln, Sprache `schluessel`,
       Umschalten per Adresse – Prüfung: `cd P && npm test`; AK-4 (Schlüssel)
-- [ ] 1.4 Befehlsregister `src/befehle.json` mit allen Befehlen aus design.md, Ausführung mit Protokoll,
+- [x] 1.4 Befehlsregister `src/befehle.json` mit allen Befehlen aus design.md, Ausführung mit Protokoll,
       Rückgängig und Wiederholen, simuliertes Modell mit Testprojekt (Größen mit Einheit), `window.__cee` –
       Prüfung: `cd P && npm test` (Vitest: Register gültig, Rückgängig/Wiederholen, Modell-JSON)
 - [x] 1.5 Wertfeld-Logik (Einheiten mm, cm, m; Formeln; Befund bei Fehler; Anzeige) mit mindestens 10
