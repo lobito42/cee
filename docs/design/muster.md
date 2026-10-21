@@ -14,7 +14,6 @@ auf der Katalogseite mit Referenzbildern (hell und dunkel, Desktop und Tablet, L
 | --- | --- | --- |
 | **Entscheidungskarte** | Jede vorgeschlagene Änderung: KI-Änderungssatz (ADR-021), Konflikt beim Übernehmen (ADR-051), Bibliotheks-Update (ADR-043), Prüfbefund mit Korrektur, Studienergebnis (ADR-049), Freigabe-Prüfung (ADR-047) | Titel = was sich ändert; Vorschau im Modell (Geister-Darstellung); Begründung; Auswirkungen (Werte vorher/nachher); genau zwei Hauptaktionen **Übernehmen** und **Verwerfen**, bei Konflikten die Wahl zwischen den Ständen; nie modal; mehrere Karten stapeln sich in einer Liste |
 | **Verlauf und Rückgängig** | Jede Änderung, auch durch KI, Übernehmen, Import | Cmd/Strg+Z und Cmd/Strg+Umschalt+Z überall; keine Sicherheitsabfragen („Wirklich …?“) – stattdessen Rückgängig, Verwerfen statt Löschen (ADR-051) |
-| **Letzte Aktion nachjustieren** | Nach jeder Operation | Kleines Feld mit ihren Parametern unten links, bis die nächste Aktion beginnt |
 
 ## Eingeben
 
@@ -30,8 +29,7 @@ auf der Katalogseite mit Referenzbildern (hell und dunkel, Desktop und Tablet, L
 | Muster | Wofür | Regeln |
 | --- | --- | --- |
 | **Suche** (Cmd/Strg+K) | Befehle *und* Inhalte (ADR-045, ADR-052) | Ein Feld, Ergebnisse gruppiert: Befehle, Elemente, Projekte, Hilfe; Facetten als Chips; Tastenkürzel neben jedem Befehl |
-| **Kontextaktionen** | Aktionen am Ausgewählten | Rechtsklick = langes Drücken = Taste der 3D-Maus; derselbe Inhalt an jedem Ort: die Befehle, die zur Auswahl passen, die häufigsten oben |
-| **Werkzeugleiste** | Die fünf Werkzeuge (ADR-022) | Genau fünf; ein sechstes nur per ADR |
+| **Kontextaktionen** | Aktionen am Ausgewählten (ersetzt die Werkzeugleiste, ADR-063) | Über dem Gewählten, Rechtsklick = langes Drücken = Taste der 3D-Maus; derselbe Inhalt an jedem Ort: die Befehle, die zur Auswahl passen, die häufigsten oben |
 | **Arbeitsbereiche** | Aufgabenbezogene Panels (ADR-054) | Reiter in der Kopfzeile, höchstens fünf |
 
 ## Zeigen

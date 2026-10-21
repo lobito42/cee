@@ -18,7 +18,7 @@ Alles, was man in CEE sieht und tut, ist einer dieser fünf Begriffe. Wer sie ve
 | --- | --- | --- |
 | **Element** | Alles im Modell, vom Achsenursprung bis zur Baugruppe, alles in derselben Form (ADR-028) | 3D, Featurebaum, Knoten, Text |
 | **Auswahl** | Woran ich gerade arbeite; in allen Ansichten gleich und das, was die KI mit „das hier“ meint | Kontur in der Akzentfarbe |
-| **Befehl** | Alles, was man tun kann, aus einem Register (ADR-045): Werkzeug, Suche, Kürzel, Plugin, KI | Suche, Kontextaktionen, Werkzeugleiste |
+| **Befehl** | Alles, was man tun kann, aus einem Register (ADR-045): Werkzeug, Suche, Kürzel, Plugin, KI | Suche, Kontextaktionen |
 | **Vorschlag** | Jede Änderung, die nicht ich selbst direkt mache: KI, Konflikt, Update, Korrektur, Studie | Entscheidungskarte |
 | **Befund** | Alles, was nicht stimmt oder auffällt, am Element und mit Korrektur, wenn möglich | Markierung am Modell, Liste |
 
@@ -36,11 +36,10 @@ Feste Obergrenzen. Wer etwas hinzufügen will, muss zeigen, dass es hineinpasst,
 
 | Was | Grenze |
 | --- | --- |
-| Werkzeuge in der Werkzeugleiste | 5 (ADR-022) |
 | Arbeitsbereiche | ≤ 5 |
-| Panels neben dem Modell | 2 (Featurebaum links, Eigenschaften rechts) |
+| Panels neben dem Modell | 2 (Aufbau links, Inspektor rechts; ADR-063) |
 | Tastenkürzel | < 15, alle in der Suche sichtbar |
-| Muster im Katalog | ≤ 20 (heute 19); ein neues nur per ADR |
+| Muster im Katalog | ≤ 20 (heute 17); ein neues nur per ADR |
 | Modale Dialoge, Menüleisten, Ribbons | 0 |
 | Akzentfarben | 1, nur für Auswahl und KI |
 | Reaktion auf eine Eingabe | < 100 ms |
