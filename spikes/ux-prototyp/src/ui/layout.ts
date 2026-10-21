@@ -13,6 +13,7 @@ import {
   zielTeil,
 } from './verrundung';
 import { entwuerfeAufbauen } from './entwuerfe';
+import { kiAufbauen, wirkungenRegistrieren as kiWirkungen } from './ki';
 import { verbindenKarte, wirkungenRegistrieren as baugruppeWirkungen } from './baugruppe';
 import { wertfeldBauen } from './skizzenablauf';
 import type { Groesse } from '../wert/wertfeld';
@@ -99,6 +100,7 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
       const wert = el('span');
       wert.textContent = b.textContent ?? '';
       nachjustieren.replaceChildren(label, wert);
+      if (id === 'fragen') ki.eingabe();
     });
     leiste.append(b);
   }
@@ -115,6 +117,15 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
   const ausloesen = (id: string, parameter: Record<string, unknown> = {}): void => {
     if (id.startsWith('werkzeug.')) {
       leiste.querySelector<HTMLButtonElement>(`[data-befehl="${id}"]`)?.click();
+      return;
+    }
+    if (id === 'ki.fragen') {
+      if (typeof parameter.absicht === 'string' && parameter.absicht) {
+        ki.fragen(parameter.absicht);
+      } else {
+        sitzung.ausfuehren(id, parameter); // Start im Protokoll; die Absicht folgt in der Eingabezeile
+        ki.eingabe();
+      }
       return;
     }
     if (id === 'feature.extrudieren' && !parameter.tiefe) {
@@ -199,6 +210,16 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
     t,
     flaeche,
     ausloesen,
+    geist: (maße) => f3d.geist(maße),
+  });
+  kiWirkungen(sitzung);
+  const ki = kiAufbauen({
+    sitzung,
+    t,
+    flaeche,
+    auswahl: () => auswahl,
+    nachjustieren,
+    zeichnen: () => zeichnen(),
     geist: (maße) => f3d.geist(maße),
   });
   stand.replaceWith(entw.kopf);

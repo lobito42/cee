@@ -298,6 +298,64 @@ const BEFEHLE = {
       await tippen('[data-panel="eigenschaften"] label:has-text("Tiefe") input', tiefe);
       return { seite, klicks: () => eingaben, klick, tippen };
     };
+    /** Ablauf F: Seite mit Zähler; `waehlen` wählt die Platte, `langsam` lässt die 1.500 ms Fortschritt zu. */
+    const kiSeite = async ({ waehlen = true, langsam = false } = {}) => {
+      const url = langsam
+        ? `${basis}/?${new URLSearchParams({ zustand: '', thema: 'hell', sprache: 'de' })}`
+        : adresse(basis, '', 'hell');
+      const { seite } = await oeffnen(browser, url);
+      let eingaben = 0;
+      const klick = async (selektor) => {
+        await seite.click(selektor);
+        eingaben += 1;
+      };
+      const tippen = async (text) => {
+        await seite.keyboard.type(text);
+        await seite.keyboard.press('Enter');
+        eingaben += text.length + 1;
+      };
+      if (waehlen) await klick('[data-element="platte"]');
+      const modell = () => seite.evaluate(() => window.__cee.modell());
+      /** Absicht auf einem der drei Wege äußern. */
+      const frage = async (weg, satz) => {
+        if (weg === 'fragen') {
+          await klick('[data-muster="Werkzeugleiste"] [data-befehl="werkzeug.fragen"]');
+          await tippen(satz);
+        } else if (weg === 'ki-fragen') {
+          await klick('[data-panel="eigenschaften"] [data-befehl="ki.fragen"]');
+          await tippen(satz);
+        } else {
+          await seite.keyboard.press('Control+K');
+          await seite.keyboard.type(satz);
+          await seite.keyboard.press('Enter');
+          eingaben += satz.length + 2;
+        }
+      };
+      const karten = () =>
+        seite.evaluate(() =>
+          [...document.querySelectorAll('[data-muster="Entscheidungskarte"]')].map((k) => ({
+            befehl: k.dataset.vorschlag,
+            wert: k.dataset.wert,
+            vorher: k.querySelector('[data-feld="vorher"]')?.textContent ?? '',
+            nachher: k.querySelector('[data-feld="nachher"]')?.textContent ?? '',
+            hauptaktionen: [...k.querySelectorAll('[data-hauptaktion]')].map(
+              (b) => b.dataset.befehl,
+            ),
+            befehlszeilen: [...k.querySelectorAll('code')].map((c) => c.textContent),
+          })),
+        );
+      const erklaerung = () =>
+        seite.evaluate(() => ({
+          beispielsaetze: [...document.querySelectorAll('[data-beispiel]')].map((b) =>
+            b.textContent.trim(),
+          ),
+          modale_dialoge: [...document.querySelectorAll('[aria-modal="true"], dialog[open]')].map(
+            (d) => d.tagName.toLowerCase(),
+          ),
+        }));
+      return { seite, klick, tippen, frage, karten, erklaerung, modell, klicks: () => eingaben };
+    };
+    const KI_SATZ = 'Mach daraus ein Kästchen mit 2 mm Wand';
     const stand = (seite) =>
       seite.evaluate(() => ({
         modell: window.__cee.modell(),
@@ -514,6 +572,117 @@ const BEFEHLE = {
           ...(await stand(seite)),
         };
         await seite.close();
+        return ergebnis;
+      },
+      // Ablauf F: Absicht äußern, Karte übernehmen, Wandstärke nachjustieren, Rückgängig (Klicks und Tasten).
+      async 'f/'() {
+        const k = await kiSeite();
+        const modell_vorher = await k.modell();
+        await k.frage('fragen', KI_SATZ);
+        await k.klick('[data-muster="Entscheidungskarte"] [data-befehl="vorschlag.uebernehmen"]');
+        await k.klick('[data-muster="Letzte Aktion nachjustieren"] input');
+        await k.seite.keyboard.press('Control+A');
+        await k.seite.keyboard.type('3');
+        await k.seite.keyboard.press('Enter');
+        await k.seite.evaluate(() => document.activeElement?.blur());
+        const s = await stand(k.seite);
+        const undo_schritte = [];
+        for (let i = 0; i < 4; i++) {
+          await k.seite.keyboard.press('Control+Z');
+          undo_schritte.push(await k.modell());
+        }
+        const ergebnis = { eingaben: k.klicks() + 6, modell_vorher, undo_schritte, ...s };
+        await k.seite.close();
+        return ergebnis;
+      },
+      // Dieselbe Absicht auf allen drei Wegen: gleiche Karte, Modell bis zur Entscheidung unverändert.
+      async 'f/drei-wege'() {
+        const wege = [];
+        let eingaben = 0;
+        for (const weg of ['fragen', 'ki-fragen', 'suche']) {
+          const k = await kiSeite();
+          const modell_vorher = await k.modell();
+          await k.frage(weg, KI_SATZ);
+          const karten = await k.karten();
+          wege.push({
+            weg,
+            befehlszeilen: karten.flatMap((c) => c.befehlszeilen),
+            modell_vorher,
+            modell_bei_karte: await k.modell(),
+          });
+          eingaben += k.klicks();
+          await k.seite.close();
+        }
+        return { eingaben, wege, modell: wege[0].modell_bei_karte, protokoll: [] };
+      },
+      // Ohne Auswahl und bei unbekanntem Satz: Erklärung mit Beispielsätzen, kein Dialog.
+      async 'f/unbekannt'() {
+        const ohne = await kiSeite({ waehlen: false });
+        const ohne_vorher = await ohne.modell();
+        await ohne.frage('fragen', KI_SATZ);
+        const ohne_auswahl = {
+          ...(await ohne.erklaerung()),
+          modell_vorher: ohne_vorher,
+          modell_nachher: await ohne.modell(),
+        };
+        const unbekannt = await kiSeite();
+        const unbekannt_vorher = await unbekannt.modell();
+        await unbekannt.frage('fragen', 'Bitte male mir ein Bild von einem Hund');
+        const unbekannter_satz = {
+          ...(await unbekannt.erklaerung()),
+          modell_vorher: unbekannt_vorher,
+          modell_nachher: await unbekannt.modell(),
+        };
+        const ergebnis = {
+          eingaben: ohne.klicks() + unbekannt.klicks(),
+          ohne_auswahl,
+          unbekannter_satz,
+          ...(await stand(unbekannt.seite)),
+        };
+        await ohne.seite.close();
+        await unbekannt.seite.close();
+        return ergebnis;
+      },
+      // Die drei vorbereiteten Absichten; jede Karte wird verworfen, damit die nächste vom selben Stand ausgeht.
+      async 'f/absichten'() {
+        const k = await kiSeite();
+        const karten = [];
+        for (const satz of [
+          KI_SATZ,
+          'Runde alle Kanten mit 1 mm ab',
+          'Mach die Platte 20 mm länger',
+        ]) {
+          await k.frage('fragen', satz);
+          karten.push(...(await k.karten()));
+          await k.klick('[data-muster="Entscheidungskarte"] [data-befehl="vorschlag.verwerfen"]');
+        }
+        const ergebnis = { eingaben: k.klicks(), karten, ...(await stand(k.seite)) };
+        await k.seite.close();
+        return ergebnis;
+      },
+      // Verwerfen und Anhalten (mit echter Wartezeit) lassen das Modell unverändert.
+      async 'f/verwerfen'() {
+        const k = await kiSeite();
+        const modell_vorher = await k.modell();
+        await k.frage('fragen', KI_SATZ);
+        await k.klick('[data-muster="Entscheidungskarte"] [data-befehl="vorschlag.verwerfen"]');
+        const modell_nach_verwerfen = await k.modell();
+        const karten_nach_verwerfen = await k.karten();
+        const l = await kiSeite({ langsam: true });
+        await l.frage('fragen', KI_SATZ);
+        await l.klick('[data-befehl="ki.anhalten"]');
+        await l.seite.waitForTimeout(2000);
+        const ergebnis = {
+          eingaben: k.klicks() + l.klicks(),
+          modell_vorher,
+          modell_nach_verwerfen,
+          karten_nach_verwerfen,
+          modell_nach_anhalten: await l.modell(),
+          karten_nach_anhalten: await l.karten(),
+          ...(await stand(k.seite)),
+        };
+        await k.seite.close();
+        await l.seite.close();
         return ergebnis;
       },
       // Suche nach einem Elementnamen: Gruppe Elemente, danach genau dieses Element ausgewählt.

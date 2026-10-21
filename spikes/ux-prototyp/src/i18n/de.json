@@ -126,6 +126,33 @@
       "werte": "Wandstärke: 0 mm → 2 mm"
     }
   },
+  "ki": {
+    "eingabe": "Was soll sich ändern?",
+    "arbeitet": "Arbeitet",
+    "schritt": {
+      "lesen": "Auswahl lesen",
+      "verstehen": "Absicht verstehen",
+      "vorbereiten": "Vorschlag vorbereiten"
+    },
+    "titel": { "schale": "Schale", "verrunden": "Verrunden", "wert": "Maß ändern" },
+    "grund": {
+      "schale": "Spart Material, die Wand bleibt stabil.",
+      "verrunden": "Runde Kanten sind angenehmer anzufassen.",
+      "wert": "Das Maß passt sich deiner Absicht an."
+    },
+    "vorher": "Vorher → nachher",
+    "wandstaerke": "Wandstärke",
+    "erklaerung": {
+      "titel": "Das kenne ich noch nicht",
+      "ohne-auswahl": "Wähle zuerst ein Element im Baum oder im Modell. Der Prototyp kennt nur vorbereitete Beispiele.",
+      "unbekannt": "Der Prototyp kennt nur vorbereitete Beispiele. Probiere einen dieser Sätze:"
+    },
+    "beispiel": {
+      "1": "Mach daraus ein Kästchen mit 2 mm Wand",
+      "2": "Runde alle Kanten mit 1 mm ab",
+      "3": "Mach die Platte 20 mm länger"
+    }
+  },
   "art": {
     "fest": "Fest",
     "dreh": "Drehbar",

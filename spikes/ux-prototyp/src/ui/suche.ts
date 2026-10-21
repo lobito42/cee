@@ -23,7 +23,7 @@ interface Eintrag {
   element?: string;
 }
 
-const normal = (s: string): string =>
+export const normal = (s: string): string =>
   s.toLowerCase().replace(/ß/g, 'ss').normalize('NFD').replace(/[̀-ͯ]/g, '');
 
 /** Berechnungszustand eines Elements (ADR-050), im Prototyp aus dem Radius abgeleitet. */

@@ -122,6 +122,33 @@
       "werte": "Wall thickness: 0 mm → 2 mm"
     }
   },
+  "ki": {
+    "eingabe": "What should change?",
+    "arbeitet": "Working",
+    "schritt": {
+      "lesen": "Reading the selection",
+      "verstehen": "Understanding the intent",
+      "vorbereiten": "Preparing the proposal"
+    },
+    "titel": { "schale": "Shell", "verrunden": "Fillet", "wert": "Change dimension" },
+    "grund": {
+      "schale": "Saves material, the wall stays stable.",
+      "verrunden": "Rounded edges are nicer to handle.",
+      "wert": "The dimension follows your intent."
+    },
+    "vorher": "Before → after",
+    "wandstaerke": "Wall thickness",
+    "erklaerung": {
+      "titel": "I do not know that yet",
+      "ohne-auswahl": "Select an element in the tree or in the model first. The prototype only knows prepared examples.",
+      "unbekannt": "The prototype only knows prepared examples. Try one of these sentences:"
+    },
+    "beispiel": {
+      "1": "Make a box out of it with a 2 mm wall",
+      "2": "Round all edges with 1 mm",
+      "3": "Make the plate 20 mm longer"
+    }
+  },
   "art": {
     "fest": "Fixed",
     "dreh": "Rotating",

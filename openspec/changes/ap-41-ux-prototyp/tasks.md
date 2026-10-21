@@ -45,7 +45,7 @@ ablauf a --json`; AK-6
 - [x] 3.4 Entwürfe: Liste in der Kopfzeile, Entwurf anlegen, Vergleich, Übernehmen, Verwerfen mit Begründung,
       Ansichten „Ergebnis“ und „Alle Entwürfe“; Prüfbefehle `ablauf d` und `ablauf e` – Prüfung: `cd P && npm run
 --silent pruefen -- ablauf d --json && npm run --silent pruefen -- ablauf e --json`; AK-7
-- [ ] 3.5 Simulierter KI-Ablauf: drei Wege, drei Absichten, Fortschritt mit Anhalten, Entscheidungskarte mit
+- [x] 3.5 Simulierter KI-Ablauf: drei Wege, drei Absichten, Fortschritt mit Anhalten, Entscheidungskarte mit
       Geister-Vorschau und Befehlszeilen, Übernehmen mit `quelle: ki`, Nachjustieren, Erklärung bei unbekanntem
       Satz; Prüfbefehl `ablauf f` – Prüfung: `cd P && npm run --silent pruefen -- ablauf f --json`; AK-8
 
