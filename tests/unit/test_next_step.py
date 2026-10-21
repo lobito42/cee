@@ -121,6 +121,14 @@ def test_main_red_stops():
     assert ns.decide(entries(), {}, [], set(), "failure")["step"] == "stop"
 
 
+def test_main_only_cancelled_jobs_is_not_red():
+    assert ns.main_status("failure", ["success", "cancelled", "skipped"]) == "success"
+    assert ns.main_status("failure", ["failure", "cancelled"]) == "failure"
+    assert ns.main_status("failure", ["timed_out"]) == "failure"
+    assert ns.main_status("failure", []) == "failure"
+    assert ns.main_status("success", ["cancelled"]) == "success"
+
+
 def test_open_green_pr_waits_for_review():
     done = {"ap-b": "done", "ap-c": "done", "ap-d": "done"}
     out = ns.decide(entries(), done, [pr("change/ap-a")], set(), "success")
