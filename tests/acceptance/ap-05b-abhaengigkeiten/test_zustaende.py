@@ -45,7 +45,9 @@ def test_aenderung_waehrend_der_berechnung(tmp_path):
 
 def test_aenderung_macht_nachfolger_veraltet(tmp_path):
     """Requirement Berechnungszustände: Änderung an x → x und betroffene Elemente werden `stale`."""
-    ev = [(e, f"a{i}") for i in range(1, 6) for e in ("start", "ok")] + [("change", "a2")]
+    # Beide Ketten durchrechnen: sonst ist die unberechnete Wurzel b1 zu Recht `stale` und bereit.
+    ev = [(e, f"{k}{i}") for k in "ab" for i in range(1, 6) for e in ("start", "ok")]
+    ev += [("change", "a2")]
     _, res = _run(tmp_path, ev)
     s = res["states"]
     assert s["a1"] == "current"
