@@ -160,3 +160,38 @@ button:focus-visible {
   gap: var(--abstand-2);
   margin: var(--abstand-2) 0;
 }
+.entwurfswahl {
+  position: relative;
+  display: flex;
+  gap: var(--abstand-2);
+}
+.entwurfswahl [hidden] {
+  display: none;
+}
+.entwurfsliste {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  min-width: 240px;
+  padding: var(--abstand-2);
+  background: var(--farbe-flaeche);
+  border: var(--linie-breite) solid var(--farbe-linie);
+  border-radius: var(--radius-mittel);
+}
+.entwurfsansicht {
+  display: flex;
+  gap: var(--abstand-2);
+  margin-top: var(--abstand-3);
+}
+.baum [data-muster='Tabelle'] li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--abstand-2);
+}
+[data-entwurfskarte] [data-vorher] {
+  margin: 0 var(--abstand-2);
+  color: var(--farbe-text-2);
+}

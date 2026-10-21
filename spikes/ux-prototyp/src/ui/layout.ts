@@ -12,6 +12,7 @@ import {
   wirkungenRegistrieren as verrundungWirkungen,
   zielTeil,
 } from './verrundung';
+import { entwuerfeAufbauen } from './entwuerfe';
 import { verbindenKarte, wirkungenRegistrieren as baugruppeWirkungen } from './baugruppe';
 import { wertfeldBauen } from './skizzenablauf';
 import type { Groesse } from '../wert/wertfeld';
@@ -68,8 +69,7 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
   reiter.setAttribute('aria-current', 'page');
   reiter.textContent = t('app.arbeitsbereich');
   bereiche.append(reiter);
-  const stand = el('span', 'Statusanzeige');
-  stand.textContent = t('app.stand.haupt');
+  const stand = el('span'); // Platzhalter; der Entwurfs-Stand ersetzt ihn (siehe unten)
   const suche = el('input', 'Suche', 'suche');
   suche.type = 'search';
   suche.dataset.befehl = 'suche.oeffnen';
@@ -128,6 +128,24 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
       if (teil) verrundenKarte({ sitzung, t, flaeche, teil: teil.id, fertig: zeichnen });
       return;
     }
+    if (id === 'ansicht.ergebnis' || id === 'ansicht.alle-entwuerfe') {
+      entw.ansicht(id === 'ansicht.ergebnis' ? 'ergebnis' : 'alle');
+    } else if (id === 'entwurf.anlegen' && !parameter.name) {
+      sitzung.ausfuehren(id, parameter); // Start im Protokoll; der Name folgt im Textfeld
+      entw.anlegenOeffnen();
+      return;
+    } else if (id === 'entwurf.wechseln' && parameter.entwurf === undefined) {
+      sitzung.ausfuehren(id, parameter);
+      entw.listeOeffnen();
+      return;
+    } else if (
+      id === 'entwurf.vergleichen' ||
+      (id === 'entwurf.verwerfen' && !parameter.begruendung)
+    ) {
+      sitzung.ausfuehren(id, parameter);
+      entw.vergleichen();
+      return;
+    }
     if (id === 'baugruppe.anlegen' && !parameter.teile) parameter = { teile: [...auswahl] };
     if (id === 'verbindung.anlegen' && !parameter.von) {
       verbindenKarte({
@@ -175,6 +193,14 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
   });
 
   const f3d = new Flaeche3d(canvas);
+  const entw = entwuerfeAufbauen({
+    sitzung,
+    t,
+    flaeche,
+    ausloesen,
+    geist: (maße) => f3d.geist(maße),
+  });
+  stand.replaceWith(entw.kopf);
   skizzenWirkungenRegistrieren(sitzung);
   verrundungWirkungen(sitzung);
   baugruppeWirkungen(sitzung);
@@ -243,12 +269,13 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
   }
 
   function zeichnen(): void {
-    const projekt = sitzung.modell();
+    const projekt = sitzung.angezeigt();
     const kopfzeile = el('h2');
     kopfzeile.textContent = t('app.baum');
     const ul = el('ul');
     ul.append(...projekt.content.map(zeile));
-    baum.replaceChildren(kopfzeile, ul);
+    baum.replaceChildren(kopfzeile, ul, entw.baumAbschnitt());
+    entw.aktualisieren();
 
     const titel = el('h2');
     titel.textContent = t('app.eigenschaften');
@@ -333,7 +360,7 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
     waehlen,
     flaeche,
     suche,
-    stand,
+    stand: entw.kopf,
     nachjustieren,
     rueckmeldung,
   };

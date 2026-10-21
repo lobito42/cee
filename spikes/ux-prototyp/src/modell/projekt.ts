@@ -39,7 +39,16 @@ export function testprojekt(): Projekt {
   return {
     id: 'projekt-1',
     type: 'project',
-    params: {},
+    params: {
+      // Vorbereiteter, verworfener Entwurf (design.md, Entwürfe).
+      entwuerfe: [
+        element('entwurf-0', 'draft', 'Platte 6 mm', {
+          zustand: 'verworfen',
+          begruendung: 'zu biegsam',
+          aenderungen: { 'extrusion-1': { tiefe: mm(6) } },
+        }),
+      ],
+    },
     meta: { name: 'Sensorgehäuse' },
     content: [
       element('teil-1', 'part', 'Teil 1', {}, ebenen),

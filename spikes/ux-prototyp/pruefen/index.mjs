@@ -270,6 +270,30 @@ const BEFEHLE = {
       await tippen('.zustand label:has-text("Radius") input', `${radius} mm`);
       return { seite, klicks: () => eingaben, klick, tippen };
     };
+    /** Ablauf D bis zur geänderten Tiefe: Entwurf anlegen (Liste in der Kopfzeile), Tiefe im Panel setzen. */
+    const entwurfAnlegen = async (name, tiefe) => {
+      const { seite } = await oeffnen(browser, adresse(basis, '', 'hell'));
+      let eingaben = 0;
+      const klick = async (selektor) => {
+        await seite.click(selektor);
+        eingaben += 1;
+      };
+      const tippen = async (selektor, text) => {
+        await seite.click(selektor);
+        await seite.keyboard.press('Control+A');
+        await seite.keyboard.type(text);
+        await seite.keyboard.press('Enter');
+        eingaben += text.length + 3;
+      };
+      await klick('.entwurfswahl .stand');
+      await klick('.entwurfsliste [data-befehl="entwurf.anlegen"]');
+      await seite.keyboard.type(name);
+      await seite.keyboard.press('Enter');
+      eingaben += name.length + 1;
+      await klick('[data-element="extrusion-1"]');
+      await tippen('[data-panel="eigenschaften"] label:has-text("Tiefe") input', tiefe);
+      return { seite, klicks: () => eingaben, klick, tippen };
+    };
     const stand = (seite) =>
       seite.evaluate(() => ({
         modell: window.__cee.modell(),
@@ -362,6 +386,81 @@ const BEFEHLE = {
           befunde_nach_korrektur: nach.befunde,
           modell_mit_befund,
           auswahl_nach_klick_auf_extrusion,
+          ...(await stand(seite)),
+        };
+        await seite.close();
+        return ergebnis;
+      },
+      // Ablauf D: Entwurf anlegen, Tiefe 10 mm im Entwurf, vergleichen, übernehmen (Klicks und Tasten).
+      async 'd/'() {
+        const { seite, klicks, klick } = await entwurfAnlegen('Dickere Platte', '10');
+        await klick('[data-befehl="entwurf.vergleichen"]');
+        const vergleich = await seite.evaluate(() => ({
+          vorher: document.querySelector('[data-entwurfskarte] [data-vorher]')?.textContent ?? '',
+          nachher: document.querySelector('[data-entwurfskarte] [data-nachher]')?.textContent ?? '',
+        }));
+        const entwurf_modell = await seite.evaluate(() => window.__cee.angezeigt());
+        const haupt_modell_vor_uebernehmen = await seite.evaluate(() => window.__cee.modell());
+        await klick('[data-entwurfskarte] [data-befehl="entwurf.uebernehmen"]');
+        const haupt_modell_nach_uebernehmen = await seite.evaluate(() => window.__cee.modell());
+        await klick('[data-befehl="ansicht.alle-entwuerfe"]');
+        const entwurf_zustand = await seite
+          .locator('[data-entwurf-eintrag]:has-text("Dickere Platte") [data-feld="zustand"]')
+          .innerText();
+        const ergebnis = {
+          eingaben: klicks(),
+          vergleich,
+          entwurf_modell,
+          haupt_modell_vor_uebernehmen,
+          haupt_modell_nach_uebernehmen,
+          entwurf_zustand,
+          ...(await stand(seite)),
+        };
+        await seite.close();
+        return ergebnis;
+      },
+      // Verwerfen: ohne Begründung nicht auslösbar, danach nur in „Alle Entwürfe“ mit Begründung.
+      async 'd/verwerfen'() {
+        const { seite, klicks, klick, tippen } = await entwurfAnlegen('Dickere Platte', '10');
+        const modell_vorher = await seite.evaluate(() => window.__cee.modell());
+        await klick('[data-befehl="entwurf.vergleichen"]');
+        const knopf = '[data-entwurfskarte] button[data-befehl="entwurf.verwerfen"]';
+        const verwerfen_ausloesbar_ohne_begruendung = await seite.evaluate(
+          (s) => ({ disabled: document.querySelector(s).disabled }),
+          knopf,
+        );
+        await seite.click(knopf, { force: true });
+        await seite.keyboard.press('Enter');
+        const modell_nach_versuch_ohne_begruendung = await seite.evaluate(() =>
+          window.__cee.modell(),
+        );
+        await tippen('[data-entwurfskarte] input', 'zu schwer');
+        const namen = (selektor) =>
+          seite.evaluate(
+            (s) =>
+              [...document.querySelectorAll(s)].map(
+                (e) => e.querySelector('[data-feld="name"]').textContent,
+              ),
+            selektor,
+          );
+        const ansicht_ergebnis = await namen('[data-entwurf-eintrag]');
+        await klick('[data-befehl="ansicht.alle-entwuerfe"]');
+        const ansicht_alle_entwuerfe = await seite.evaluate(() =>
+          [...document.querySelectorAll('[data-entwurf-eintrag]')].map((e) => ({
+            name: e.querySelector('[data-feld="name"]').textContent,
+            begruendung: e.querySelector('[data-feld="begruendung"]')?.textContent ?? '',
+          })),
+        );
+        const modell_nachher = await seite.evaluate(() => window.__cee.modell());
+        const ergebnis = {
+          eingaben: klicks(),
+          modell_vorher,
+          modell_nach_versuch_ohne_begruendung,
+          modell_nachher,
+          ansicht_ergebnis,
+          ansicht_alle_entwuerfe,
+          verworfen_name: 'Dickere Platte',
+          verwerfen_ausloesbar_ohne_begruendung,
           ...(await stand(seite)),
         };
         await seite.close();

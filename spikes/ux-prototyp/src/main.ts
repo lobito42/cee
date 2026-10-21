@@ -22,6 +22,7 @@ Object.defineProperty(window, '__cee', {
     bereit: true,
     zustand,
     modell: () => sitzung.modell(),
+    angezeigt: () => sitzung.angezeigt(),
     auswahl: () => ui?.auswahl() ?? [],
     protokoll: () => sitzung.protokoll.map((p) => ({ ...p })),
     befehle: () => befehle.map((b) => ({ ...b })),

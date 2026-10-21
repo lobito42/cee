@@ -50,6 +50,12 @@
     "ki": { "fragen": "Ask AI", "anhalten": "Stop" },
     "vorschlag": { "uebernehmen": "Apply", "verwerfen": "Discard" }
   },
+  "entwurf": {
+    "platzhalter": "Thicker plate",
+    "begruendung": "Reason",
+    "begruendungBeispiel": "Too heavy",
+    "zustand": { "offen": "In progress", "uebernommen": "Applied", "verworfen": "Discarded" }
+  },
   "taste": { "mod": "Ctrl", "shift": "Shift" },
   "suche": {
     "gruppe": { "befehle": "Commands", "elemente": "Elements" },

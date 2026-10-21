@@ -51,6 +51,12 @@
     "vorschlag": { "uebernehmen": "Übernehmen", "verwerfen": "Verwerfen" }
   },
   "taste": { "mod": "Strg", "shift": "Umschalt" },
+  "entwurf": {
+    "platzhalter": "Dickere Platte",
+    "begruendung": "Begründung",
+    "begruendungBeispiel": "Zu schwer",
+    "zustand": { "offen": "In Arbeit", "uebernommen": "Übernommen", "verworfen": "Verworfen" }
+  },
   "suche": {
     "gruppe": { "befehle": "Befehle", "elemente": "Elemente" },
     "kein-treffer": "Nichts gefunden.",

@@ -1,5 +1,6 @@
 // Befehlsregister (Daten) und Ausführung mit Protokoll, Rückgängig und Wiederholen.
 import befehleDaten from '../befehle.json';
+import { aktiverEntwurf, anwenden, eintragen, unterschiede } from './entwurf';
 import { testprojekt, type Projekt } from './projekt';
 
 export interface Befehl {
@@ -39,6 +40,12 @@ export class Sitzung {
     return kopie(this.stand);
   }
 
+  /** Der gezeigte Stand: der aktive Entwurf oder der Hauptstand. */
+  angezeigt(): Projekt {
+    const entwurf = aktiverEntwurf(this.stand);
+    return entwurf ? anwenden(this.stand, entwurf) : this.modell();
+  }
+
   setzen(projekt: Projekt): void {
     this.stand = projekt;
     this.zurueck = [];
@@ -58,7 +65,16 @@ export class Sitzung {
     this.protokoll.push({ befehl: id, parameter, quelle });
     if (!wirkung) return;
     const neu = kopie(this.stand);
-    wirkung(neu, parameter);
+    const entwurf = id === 'element.wert-setzen' ? aktiverEntwurf(neu) : undefined;
+    if (entwurf) {
+      // Im Entwurf ändern Werte nur den Entwurf, nie den Hauptstand.
+      const basis = anwenden(neu, entwurf);
+      const geaendert = kopie(basis);
+      wirkung(geaendert, parameter);
+      eintragen(entwurf, unterschiede(basis, geaendert));
+    } else {
+      wirkung(neu, parameter);
+    }
     if (JSON.stringify(neu) !== JSON.stringify(this.stand)) {
       this.zurueck.push(this.stand);
       this.vor = [];
