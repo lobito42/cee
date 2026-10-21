@@ -125,7 +125,12 @@
     "tiefe": "Depth",
     "extrusion": "Extrusion",
     "vorschau": "Drag the handle or enter the depth.",
-    "griff": "Drag depth"
+    "griff": "Drag depth",
+    "radius": "Radius",
+    "kanten": "Choose edges",
+    "kante": "Edge",
+    "befund": "The radius is larger than the plate allows.",
+    "symbol": "⚠"
   },
   "wert": {
     "fehler": {

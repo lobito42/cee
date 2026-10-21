@@ -1,11 +1,19 @@
 // Arbeitsfläche: Kopfzeile, Featurebaum, 3D-Fläche, Eigenschaften, Werkzeugleiste, Nachjustieren, Rückmeldung.
 // Jedes Bedienelement ruft genau einen Befehl auf (data-befehl); Bausteine tragen data-muster.
 import { befehle, type Sitzung } from '../modell/register';
-import { alle, finde, type Element } from '../modell/projekt';
+import { alle, finde, mm, type Element } from '../modell/projekt';
 import { anzeigen } from '../wert/wertfeld';
 import { Flaeche3d } from './viewport';
 import { skizzenablaufAufbauen, skizzenWirkungenRegistrieren } from './skizzenablauf';
-import { sucheAufbauen } from './suche';
+import { berechnung, sucheAufbauen } from './suche';
+import {
+  GRENZE_MM,
+  verrundenKarte,
+  wirkungenRegistrieren as verrundungWirkungen,
+  zielTeil,
+} from './verrundung';
+import { wertfeldBauen } from './skizzenablauf';
+import type { Groesse } from '../wert/wertfeld';
 import './ui.css';
 
 type T = (schluessel: string) => string;
@@ -113,6 +121,12 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
       ablauf.extrusionVorschau();
       return;
     }
+    if (id === 'feature.verrunden' && !parameter.radius) {
+      sitzung.ausfuehren(id, parameter); // Start im Protokoll; die Wirkung folgt mit Kanten und Radius
+      const teil = zielTeil(sitzung.modell(), auswahl);
+      if (teil) verrundenKarte({ sitzung, t, flaeche, teil: teil.id, fertig: zeichnen });
+      return;
+    }
     sitzung.ausfuehren(id, parameter);
     if (id === 'suche.oeffnen') suche.focus();
     if (id === 'thema.umschalten') {
@@ -142,6 +156,7 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
 
   const f3d = new Flaeche3d(canvas);
   skizzenWirkungenRegistrieren(sitzung);
+  verrundungWirkungen(sitzung);
   const ablauf = skizzenablaufAufbauen({
     sitzung,
     t,
@@ -169,6 +184,16 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
     b.textContent = k.meta.name;
     b.addEventListener('click', (ev) => waehlen(ev.shiftKey ? [...auswahl, k.id] : [k.id]));
     li.append(b);
+    if (berechnung(k) === 'fehlerhaft') {
+      const status = el('span', 'Statusanzeige', 'status status-fehler');
+      status.append(
+        Object.assign(el('span', undefined, 'symbol'), { textContent: t('ablauf.symbol') }),
+        Object.assign(el('span', undefined, 'wort'), {
+          textContent: t('suche.berechnung.fehlerhaft'),
+        }),
+      );
+      li.append(status);
+    }
     if (k.content.length) {
       const ul = el('ul');
       ul.append(...k.content.map(zeile));
@@ -216,11 +241,52 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
       eigenschaften.append(name, kontextaktionen(gewaehlt));
       for (const [schluessel, wert] of Object.entries(gewaehlt.params)) {
         if (wert && typeof wert === 'object' && 'unit' in wert) {
+          if (schluessel === 'tiefe' || schluessel === 'radius') {
+            eigenschaften.append(
+              wertfeldBauen(
+                t,
+                t(`ablauf.${schluessel}`),
+                wert as Groesse,
+                (g) => {
+                  sitzung.ausfuehren('element.wert-setzen', {
+                    element: gewaehlt.id,
+                    name: schluessel,
+                    wert: g,
+                  });
+                  zeichnen();
+                },
+                'element.wert-setzen',
+              ),
+            );
+            continue;
+          }
           const p = el('p');
           p.textContent = `${schluessel}: ${anzeigen(wert as Parameters<typeof anzeigen>[0])}`;
           eigenschaften.append(p);
         }
       }
+    }
+    // Befund statt Abbruch: der Rest des Modells bleibt bedienbar; Korrektur ist ein Befehl.
+    const fehlerhaft = alle(projekt).find((k) => berechnung(k) === 'fehlerhaft');
+    if (fehlerhaft) {
+      const b = el('div', 'Befund');
+      b.setAttribute('role', 'alert');
+      const korrektur = knopf(t, 'element.wert-setzen');
+      korrektur.textContent = t('zustand.befund.korrektur');
+      korrektur.addEventListener('click', () => {
+        sitzung.ausfuehren('element.wert-setzen', {
+          element: fehlerhaft.id,
+          name: 'radius',
+          wert: mm(GRENZE_MM),
+        });
+        zeichnen();
+      });
+      const text = el('span');
+      text.textContent = t('ablauf.befund');
+      b.append(text, korrektur);
+      rueckmeldung.replaceChildren(b);
+    } else if (rueckmeldung.querySelector('[data-muster="Befund"]')) {
+      rueckmeldung.textContent = t('app.bereit');
     }
     f3d.aktualisieren(
       projekt,

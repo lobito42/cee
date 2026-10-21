@@ -129,7 +129,12 @@
     "tiefe": "Tiefe",
     "extrusion": "Extrusion",
     "vorschau": "Ziehe am Griff oder gib die Tiefe ein.",
-    "griff": "Tiefe ziehen"
+    "griff": "Tiefe ziehen",
+    "radius": "Radius",
+    "kanten": "Kanten wählen",
+    "kante": "Kante",
+    "befund": "Der Radius ist größer, als die Platte erlaubt.",
+    "symbol": "⚠"
   },
   "wert": {
     "fehler": {

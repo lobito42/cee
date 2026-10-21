@@ -38,7 +38,7 @@ pruefen -- befehle --json`; AK-5
 - [x] 3.1 Ablauf A: Werkzeug Skizze, Ebenen, Rechteck mit Wertfeldern, Skizze schließen, Extrudieren mit
       Geister-Vorschau, Ziehgriff und Tiefe; Prüfbefehl `ablauf a` – Prüfung: `cd P && npm run --silent pruefen --
 ablauf a --json`; AK-6
-- [ ] 3.2 Ablauf B: Tiefe im Eigenschaften-Panel, Kanten auswählen, Verrunden, Befund bei Radius über 24 mm mit
+- [x] 3.2 Ablauf B: Tiefe im Eigenschaften-Panel, Kanten auswählen, Verrunden, Befund bei Radius über 24 mm mit
       Korrektur; Prüfbefehl `ablauf b` – Prüfung: `cd P && npm run --silent pruefen -- ablauf b --json`; AK-6
 - [ ] 3.3 Ablauf C: Baugruppe anlegen, Verbinden über Verbindungspunkte, Auswahlfeld „Art“, Einrasten;
       Prüfbefehl `ablauf c` – Prüfung: `cd P && npm run --silent pruefen -- ablauf c --json`; AK-6

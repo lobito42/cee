@@ -245,6 +245,31 @@ const BEFEHLE = {
       await tippen('label:has-text("Tiefe") input', '5');
       return { seite, klicks: () => eingaben };
     };
+    /** Ablauf B: mit `tiefe8` zuerst die Tiefe 8 mm setzen, dann Kanten wählen und mit `radius` verrunden. */
+    const dickerUndGerundet = async (radius, tiefe8 = true) => {
+      const { seite } = await oeffnen(browser, adresse(basis, '', 'hell'));
+      let eingaben = 0;
+      const klick = async (selektor) => {
+        await seite.click(selektor);
+        eingaben += 1;
+      };
+      const tippen = async (selektor, text) => {
+        await seite.click(selektor);
+        await seite.keyboard.press('Control+A');
+        await seite.keyboard.type(text);
+        await seite.keyboard.press('Enter');
+        eingaben += text.length + 3;
+      };
+      if (tiefe8) {
+        await klick('[data-element="extrusion-1"]');
+        await tippen('[data-panel="eigenschaften"] label:has-text("Tiefe") input', '8');
+      }
+      await klick('[data-element="platte"]');
+      await klick('[data-panel="eigenschaften"] [data-befehl="feature.verrunden"]');
+      for (const k of [1, 2, 3, 4]) await klick(`[data-kante="kante-${k}"]`);
+      await tippen('.zustand label:has-text("Radius") input', `${radius} mm`);
+      return { seite, klicks: () => eingaben, klick, tippen };
+    };
     const stand = (seite) =>
       seite.evaluate(() => ({
         modell: window.__cee.modell(),
@@ -268,6 +293,58 @@ const BEFEHLE = {
         await seite.keyboard.press('Control+Shift+Z');
         const modell_wiederholt = await seite.evaluate(() => window.__cee.modell());
         const ergebnis = { eingaben: klicks() + 2, ...s, modell_zurueck, modell_wiederholt };
+        await seite.close();
+        return ergebnis;
+      },
+      // Ablauf B: Tiefe im Panel, Kanten wählen, Verrunden (nur Klicks und Tasten).
+      async 'b/'() {
+        const { seite, klicks } = await dickerUndGerundet(3);
+        const ergebnis = { eingaben: klicks(), ...(await stand(seite)) };
+        await seite.close();
+        return ergebnis;
+      },
+      async 'b/befund'() {
+        const { seite, klicks, klick, tippen } = await dickerUndGerundet(30, false);
+        const lies = () =>
+          seite.evaluate(() => {
+            const hex = (c) =>
+              `#${c
+                .match(/\d+/g)
+                .slice(0, 3)
+                .map((n) => Number(n).toString(16).padStart(2, '0'))
+                .join('')
+                .toUpperCase()}`;
+            const status = document.querySelector('.status-fehler');
+            return {
+              status: status && {
+                wort: status.querySelector('.wort')?.textContent ?? '',
+                symbol: status.querySelector('.symbol')?.textContent ?? '',
+                farbe: hex(getComputedStyle(status).color),
+              },
+              korrektur: document.querySelector('[data-muster="Befund"] button')?.textContent ?? '',
+              befunde: [...document.querySelectorAll('[data-muster="Befund"]')]
+                .map((e) => e.textContent.trim())
+                .filter(Boolean),
+            };
+          });
+        const vor = await lies();
+        await klick('[data-element="extrusion-1"]');
+        await tippen('[data-panel="eigenschaften"] label:has-text("Tiefe") input', '9');
+        const modell_mit_befund = await seite.evaluate(() => window.__cee.modell());
+        await klick('[data-element="extrusion-1"]');
+        const auswahl_nach_klick_auf_extrusion = await seite.evaluate(() => window.__cee.auswahl());
+        await klick('[data-muster="Befund"] button');
+        const nach = await lies();
+        const ergebnis = {
+          eingaben: klicks(),
+          status_verrundung: vor.status,
+          korrektur_text: vor.korrektur,
+          befunde_vor_korrektur: vor.befunde,
+          befunde_nach_korrektur: nach.befunde,
+          modell_mit_befund,
+          auswahl_nach_klick_auf_extrusion,
+          ...(await stand(seite)),
+        };
         await seite.close();
         return ergebnis;
       },

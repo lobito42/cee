@@ -146,6 +146,14 @@ button:focus-visible {
   border-color: var(--farbe-linie);
   background: var(--farbe-flaeche);
 }
+.status {
+  display: inline-flex;
+  gap: var(--abstand-1);
+  margin-left: var(--abstand-3);
+}
+.status-fehler {
+  color: var(--farbe-fehler);
+}
 [data-muster='Kontextaktionen'] {
   display: flex;
   flex-wrap: wrap;

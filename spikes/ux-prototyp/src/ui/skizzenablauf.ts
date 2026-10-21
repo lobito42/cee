@@ -68,6 +68,39 @@ export function skizzenWirkungenRegistrieren(sitzung: Sitzung): void {
   });
 }
 
+/** Wertfeld: Enter liest den Text; bei Fehler erscheint ein Befund, der Wert bleibt. */
+export function wertfeldBauen(
+  t: T,
+  beschriftung: string,
+  start: Groesse,
+  bei: (g: Groesse) => void,
+  befehl = 'element.wert-setzen',
+): HTMLLabelElement {
+  const l = el('label', 'Wertfeld', `${beschriftung} `);
+  const i = el('input');
+  i.dataset.befehl = befehl;
+  i.setAttribute('aria-label', beschriftung);
+  i.value = anzeigen(start);
+  const befund = el('span', 'Befund');
+  befund.setAttribute('role', 'alert');
+  let gueltig = start;
+  i.addEventListener('keydown', (ev) => {
+    if (ev.key !== 'Enter') return;
+    const r = lesen(i.value);
+    if (!r.ok) {
+      befund.textContent = t(r.fehler);
+      i.value = anzeigen(gueltig);
+      return;
+    }
+    befund.textContent = '';
+    gueltig = r.groesse;
+    i.value = anzeigen(gueltig);
+    bei(gueltig);
+  });
+  l.append(i, befund);
+  return l;
+}
+
 export interface AblaufSchnittstelle {
   ebenenWahl: () => void;
   extrusionVorschau: () => void;
@@ -110,37 +143,12 @@ export function skizzenablaufAufbauen(e: AblaufEingang): AblaufSchnittstelle {
     return b;
   };
 
-  /** Wertfeld: Enter liest den Text; bei Fehler erscheint ein Befund, der Wert bleibt. */
   const wertfeld = (
     beschriftung: string,
     start: Groesse,
     bei: (g: Groesse) => void,
     befehl = 'element.wert-setzen',
-  ): HTMLLabelElement => {
-    const l = el('label', 'Wertfeld', `${beschriftung} `);
-    const i = el('input');
-    i.dataset.befehl = befehl;
-    i.setAttribute('aria-label', beschriftung);
-    i.value = anzeigen(start);
-    const befund = el('span', 'Befund');
-    befund.setAttribute('role', 'alert');
-    let gueltig = start;
-    i.addEventListener('keydown', (ev) => {
-      if (ev.key !== 'Enter') return;
-      const r = lesen(i.value);
-      if (!r.ok) {
-        befund.textContent = t(r.fehler);
-        i.value = anzeigen(gueltig);
-        return;
-      }
-      befund.textContent = '';
-      gueltig = r.groesse;
-      i.value = anzeigen(gueltig);
-      bei(gueltig);
-    });
-    l.append(i, befund);
-    return l;
-  };
+  ): HTMLLabelElement => wertfeldBauen(t, beschriftung, start, bei, befehl);
 
   const groesseAus = (s: Element | undefined, n: string): Groesse =>
     (s?.params[n] as Groesse | undefined) ?? mm(0);
