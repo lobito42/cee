@@ -261,6 +261,34 @@ def groessen(element: dict) -> list[float]:
     return werte
 
 
+def bezogene(modell, element: dict) -> list[dict]:
+    """Das Element und alles, was es enthält oder per ID-String referenziert (transitiv, ohne Doppelte)."""
+    nach_id = {k["id"]: k for k in elemente(modell)}
+    gesehen: set[int] = set()
+    ergebnis: list[dict] = []
+
+    def lauf(k: dict) -> None:
+        if id(k) in gesehen:
+            return
+        gesehen.add(id(k))
+        ergebnis.append(k)
+        for sub in knoten(k):
+            if sub is not k and "type" in sub and isinstance(sub.get("id"), str):
+                lauf(sub)
+            for v in sub.values():
+                for s in v if isinstance(v, list) else [v]:
+                    if isinstance(s, str) and s in nach_id and nach_id[s] is not k:
+                        lauf(nach_id[s])
+
+    lauf(element)
+    return ergebnis
+
+
+def bezogene_laengen(modell, name: str) -> list[float]:
+    """Alle Längen (mm, sortiert) des benannten Schritts und seiner Unterelemente (z. B. Skizze)."""
+    return sorted(round(v, 6) for k in bezogene(modell, nach_name(modell, name)) for v in groessen(k))
+
+
 def zahl(text: str) -> float:
     """Erste Zahl in einem Anzeigetext, deutsch oder englisch formatiert („49,49“, „1.234,5“, „49.49“)."""
     m = re.search(r"-?\d[\d.   ]*(?:,\d+)?|-?\d+(?:\.\d+)?", text)
@@ -382,6 +410,7 @@ class Bild:
                 yield self.rgb(x + dx, y + dy)
 
 
+@cache
 def oklab(rgb: tuple[int, int, int]) -> tuple[float, float, float]:
     def lin(c: int) -> float:
         c = c / 255
@@ -485,3 +514,22 @@ def titel_de(befehl_id: str) -> str:
 def muster_katalog() -> set[str]:
     text = (ROOT / "docs" / "design" / "muster.md").read_text("utf-8")
     return {m.group(1) for m in re.finditer(r"^\| \*\*([^*]+)\*\*[^|]*\|", text, re.M)}
+
+
+def kontur_treffer(bild: Bild, punkte: list[dict], ziel: tuple[int, int, int], radius: int = 3) -> int:
+    """Zahl der Punkte, bei denen innerhalb `radius` px ein Pixel mit Abstand ≤ 0,03 zur Zielfarbe liegt."""
+    return sum(any(abstand(c, ziel) <= 0.03 for c in bild.umgebung(p["x"], p["y"], radius)) for p in punkte)
+
+
+def farbpixel_ausserhalb(bild: Bild, box: dict, ziel: tuple[int, int, int], rand: float = 4) -> int:
+    """Zahl der Pixel mit Abstand ≤ 0,03 zur Zielfarbe außerhalb der Box (plus `rand` px)."""
+    x0, y0 = box["x"] - rand, box["y"] - rand
+    x1, y1 = box["x"] + box["breite"] + rand, box["y"] + box["hoehe"] + rand
+    n = 0
+    for y in range(bild.hoehe):
+        for x in range(bild.breite):
+            if x0 <= x <= x1 and y0 <= y <= y1:
+                continue
+            if abstand(bild.rgb(x, y), ziel) <= 0.03:
+                n += 1
+    return n

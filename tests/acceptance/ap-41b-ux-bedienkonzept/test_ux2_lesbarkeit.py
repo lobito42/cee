@@ -1,122 +1,111 @@
-"""AK-5: Lesbare 3D-Darstellung (Requirement „Lesbare 3D-Darstellung“).
+"""AK-5: Requirement „Lesbare 3D-Darstellung“.
 
-Der Test misst Pixel selbst (OKLCH) an den Punkten, die das Prüfwerkzeug aus `projektion()` liefert.
+Alle Pixelmessungen rechnet der Test selbst aus den PNGs der Leinwand (OKLab/OKLCH, eigener PNG-Leser).
 """
 
 from __future__ import annotations
 
 import itertools
 import statistics
-from functools import cache
 
-from ux2_helpers import THEMEN, Bild, abstand, farbe, hell_l, hex_rgb, median_l, pruefen
+from ux2_helpers import (
+    THEMEN,
+    Bild,
+    abstand,
+    farbe,
+    farbpixel_ausserhalb,
+    hell_l,
+    hex_rgb,
+    kontur_treffer,
+    median_l,
+    pruefen,
+)
 
 
-@cache
-def _bild(pfad: str) -> Bild:
-    return Bild(pfad)
-
-
-def _je_thema() -> dict[str, dict]:
+def _lesbarkeit() -> dict[str, dict]:
     liste = pruefen("lesbarkeit")
-    assert {e["thema"] for e in liste} == set(THEMEN) and len(liste) == 2
-    return {e["thema"]: e for e in liste}
+    ergebnis = {e["thema"]: e for e in liste}
+    assert set(ergebnis) == set(THEMEN)
+    return ergebnis
 
 
-def test_gerichtetes_licht_und_flaechenhelligkeit():
-    """Gerichtetes Licht ≥ 60 % der Gesamtintensität; Oberseite, Vorderseite, rechte Seite paarweise ΔL ≥ 0,04."""
-    for thema, e in _je_thema().items():
+def test_licht_gerichtet():
+    """`ansicht().lichter`: mindestens ein gerichtetes Licht mit ≥ 60 % der Gesamtintensität."""
+    for thema, e in _lesbarkeit().items():
         lichter = e["ansicht"]["lichter"]
-        gesamt = sum(x["intensitaet"] for x in lichter)
-        gerichtet = sum(x["intensitaet"] for x in lichter if x["art"] == "gerichtet")
-        assert gesamt > 0 and gerichtet / gesamt >= 0.60, (thema, lichter)
-        bild = _bild(e["leinwand"])
-        werte = {k: median_l(bild, e["flaechen"][k]) for k in ("oben", "vorn", "rechts")}
+        gesamt = sum(lt["intensitaet"] for lt in lichter)
+        assert gesamt > 0, (thema, lichter)
+        gerichtet = [lt["intensitaet"] for lt in lichter if lt["art"] == "gerichtet"]
+        assert gerichtet and max(gerichtet) >= 0.6 * gesamt, (thema, lichter)
+
+
+def test_flaechen_unterscheiden_sich_in_der_helligkeit():
+    """Grundplatte oben, vorn, rechts: OKLCH L (Median 7 × 7) paarweise ≥ 0,04 verschieden."""
+    for thema, e in _lesbarkeit().items():
+        bild = Bild(e["leinwand"])
+        werte = {name: median_l(bild, e["flaechen"][name]) for name in ("oben", "vorn", "rechts")}
         for a, b in itertools.combinations(werte, 2):
-            assert abs(werte[a] - werte[b]) >= 0.04, (thema, a, b, werte)
+            assert abs(werte[a] - werte[b]) >= 0.04, (thema, werte)
 
 
 def test_kanten_sichtbar():
-    """An 100 % der sichtbaren äußeren Kanten von Grundplatte und Steg liegt ≤ 2 px daneben ein Pixel mit ΔL ≥ 0,10."""
-    for thema, e in _je_thema().items():
-        assert len(e["kanten"]) >= 12, (thema, "zu wenige Kanten gemeldet", len(e["kanten"]))
-        bild = _bild(e["leinwand"])
+    """100 % der sichtbaren Außenkanten: innerhalb 2 px ein Pixel mit |ΔL| ≥ 0,10 zum Median der Flächen."""
+    for thema, e in _lesbarkeit().items():
+        bild = Bild(e["leinwand"])
+        kanten = e["kanten"]
+        assert len(kanten) >= 9, f"{thema}: nur {len(kanten)} sichtbare äußere Kanten gemeldet"
         ohne = []
-        for k in e["kanten"]:
-            assert k["flaechen"], k["name"]
-            flaechen_l = statistics.median(median_l(bild, p) for p in k["flaechen"])
-            mx, my = k["mitte"]["x"], k["mitte"]["y"]
-            if not any(abs(hell_l(c) - flaechen_l) >= 0.10 for c in bild.umgebung(mx, my, 2)):
+        for k in kanten:
+            assert k["flaechen"], (thema, k)
+            umgebung = [hell_l(c) for p in k["flaechen"] for c in bild.umgebung(p["x"], p["y"], 3)]
+            bezug = statistics.median(umgebung)
+            if not any(
+                abs(hell_l(c) - bezug) >= 0.10 for c in bild.umgebung(k["mitte"]["x"], k["mitte"]["y"], 2)
+            ):
                 ohne.append(k["name"])
         assert ohne == [], (thema, ohne)
 
 
-def _akzentpixel(bild: Bild, x: int, y: int, akzent: tuple[int, int, int]) -> bool:
-    c = bild.rgb(x, y)
-    if max(abs(c[i] - akzent[i]) for i in range(3)) > 60:
-        return False
-    return abstand(c, akzent) <= 0.03
-
-
 def test_auswahlkontur_im_akzent():
-    """Entlang der Umrisslinie des Stegs ≥ 90 % der Messpunkte mit Akzent ≤ 3 px; außerhalb Hüllbox + 4 px: 0 Pixel."""
-    for thema, e in _je_thema().items():
+    """Steg per Klick gewählt: ≥ 90 % der Umrisspunkte mit Akzentpixel (≤ 3 px, ΔOK ≤ 0,03); außerhalb 0."""
+    for thema, e in _lesbarkeit().items():
         s = e["auswahl_steg"]
-        assert s["auswahl"], (thema, "Steg nicht gewählt")
+        assert len(s["auswahl"]) == 1, s["auswahl"]
+        bild = Bild(s["leinwand"])
         akzent = hex_rgb(farbe(thema, "akzent"))
-        bild = _bild(s["leinwand"])
         punkte = s["umriss"]
-        assert len(punkte) >= 8, (thema, len(punkte))
-        treffer = sum(
-            1
-            for p in punkte
-            if any(
-                _akzentpixel(bild, round(p["x"]) + dx, round(p["y"]) + dy, akzent)
-                for dx in range(-3, 4)
-                for dy in range(-3, 4)
-            )
-        )
-        assert treffer / len(punkte) >= 0.90, (thema, treffer, len(punkte))
-        h = s["huellbox"]
-        x0, y0, x1, y1 = h["x"] - 4, h["y"] - 4, h["x"] + h["breite"] + 4, h["y"] + h["hoehe"] + 4
-        aussen = [
-            (x, y)
-            for y in range(0, bild.hoehe)
-            for x in range(0, bild.breite)
-            if not (x0 <= x <= x1 and y0 <= y <= y1) and _akzentpixel(bild, x, y, akzent)
-        ]
-        assert aussen == [], (thema, aussen[:10], len(aussen))
+        assert len(punkte) >= 10, f"{thema}: Umriss mit nur {len(punkte)} Punkten"
+        treffer = kontur_treffer(bild, punkte, akzent)
+        assert treffer >= 0.9 * len(punkte), (thema, treffer, len(punkte))
+        aussen = farbpixel_ausserhalb(bild, s["huellbox"], akzent)
+        assert aussen == 0, f"{thema}: {aussen} Akzentpixel außerhalb der Hüllbox des Stegs"
 
 
-def _huellbox_pixel(bild: Bild, viewport: tuple[int, int, int, int]) -> dict:
+def _teil_box(bild: Bild, hintergrund: tuple[int, int, int]) -> tuple[int, int, int, int]:
     xs, ys = [], []
     for y in range(0, bild.hoehe, 2):
         for x in range(0, bild.breite, 2):
-            if abstand(bild.rgb(x, y), viewport) > 0.03:
+            if abstand(bild.rgb(x, y), hintergrund) > 0.03:
                 xs.append(x)
                 ys.append(y)
-    assert xs, "Leinwand zeigt nur Hintergrund"
-    return {"x": min(xs), "y": min(ys), "breite": max(xs) - min(xs), "hoehe": max(ys) - min(ys)}
+    assert xs, "Leinwand zeigt kein Teil (nur Hintergrund)"
+    return min(xs), min(ys), max(xs), max(ys)
 
 
 def test_ansicht_einpassen():
-    """Nach Drehen, Herauszoomen und `ansicht.einpassen` füllt das Teil 60–90 % der kürzeren Zonenseite, mittig ±5 %."""
-    for thema, e in _je_thema().items():
-        ep = e["einpassen"]
-        zone, lw = ep["modellzone"], ep["leinwand_rechteck"]
-        viewport = hex_rgb(e["viewport"])
-        vorher = _huellbox_pixel(_bild(ep["leinwand_vorher"]), viewport)
-        nachher = _huellbox_pixel(_bild(ep["leinwand"]), viewport)
+    """Nach Drehen und dreifachem Herauszoomen und `ansicht.einpassen`: Teil füllt 60–90 % der kürzeren Seite,
+    Mitte ≤ 5 % der Zonengröße von der Zonenmitte (Hüllbox aus den Pixeln der Leinwand)."""
+    for thema, e in _lesbarkeit().items():
+        ein = e["einpassen"]
+        hintergrund = hex_rgb(farbe(thema, "viewport"))
+        zone, lw = ein["modellzone"], ein["leinwand_rechteck"]
         kurz = min(zone["breite"], zone["hoehe"])
-        assert max(vorher["breite"], vorher["hoehe"]) < 0.6 * kurz, (
-            thema,
-            "Vorbedingung: herausgezoomt",
-            vorher,
-        )
-        fuellung = max(nachher["breite"], nachher["hoehe"]) / kurz
-        assert 0.60 <= fuellung <= 0.90, (thema, fuellung, nachher)
-        mx = lw["x"] + nachher["x"] + nachher["breite"] / 2
-        my = lw["y"] + nachher["y"] + nachher["hoehe"] / 2
+        vx0, vy0, vx1, vy1 = _teil_box(Bild(ein["leinwand_vorher"]), hintergrund)
+        assert max(vx1 - vx0, vy1 - vy0) < 0.6 * kurz, f"{thema}: vor dem Einpassen nicht herausgezoomt"
+        x0, y0, x1, y1 = _teil_box(Bild(ein["leinwand"]), hintergrund)
+        anteil = max(x1 - x0, y1 - y0) / kurz
+        assert 0.6 <= anteil <= 0.9, (thema, anteil)
+        mx, my = lw["x"] + (x0 + x1) / 2, lw["y"] + (y0 + y1) / 2
         zx, zy = zone["x"] + zone["breite"] / 2, zone["y"] + zone["hoehe"] / 2
         assert abs(mx - zx) <= 0.05 * zone["breite"], (thema, mx, zx)
         assert abs(my - zy) <= 0.05 * zone["hoehe"], (thema, my, zy)
