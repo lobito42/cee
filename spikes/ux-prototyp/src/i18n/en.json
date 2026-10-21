@@ -117,6 +117,16 @@
     }
   },
   "art": { "fest": "Fixed", "dreh": "Rotating", "gleit": "Sliding" },
+  "ablauf": {
+    "ebene": "Choose a plane",
+    "skizze": "Sketch",
+    "laenge": "Length",
+    "breite": "Width",
+    "tiefe": "Depth",
+    "extrusion": "Extrusion",
+    "vorschau": "Drag the handle or enter the depth.",
+    "griff": "Drag depth"
+  },
   "wert": {
     "fehler": {
       "nicht-lesbar": "This cannot be read.",

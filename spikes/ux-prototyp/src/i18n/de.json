@@ -121,6 +121,16 @@
     }
   },
   "art": { "fest": "Fest", "dreh": "Drehbar", "gleit": "Gleitend" },
+  "ablauf": {
+    "ebene": "Ebene wählen",
+    "skizze": "Skizze",
+    "laenge": "Länge",
+    "breite": "Breite",
+    "tiefe": "Tiefe",
+    "extrusion": "Extrusion",
+    "vorschau": "Ziehe am Griff oder gib die Tiefe ein.",
+    "griff": "Tiefe ziehen"
+  },
   "wert": {
     "fehler": {
       "nicht-lesbar": "Das kann nicht gelesen werden.",

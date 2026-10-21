@@ -29,6 +29,12 @@
 .zustand[data-quelle='ki'] {
   border-color: var(--farbe-akzent);
 }
+.skizzenflaeche {
+  width: 280px;
+  height: 160px;
+  margin-bottom: var(--abstand-2);
+  border: var(--linie-breite) dashed var(--farbe-linie);
+}
 [data-hauptaktion] {
   background: var(--farbe-akzent);
   color: var(--farbe-auf-akzent);

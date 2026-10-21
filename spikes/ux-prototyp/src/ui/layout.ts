@@ -4,6 +4,7 @@ import { befehle, type Sitzung } from '../modell/register';
 import { alle, finde, type Element } from '../modell/projekt';
 import { anzeigen } from '../wert/wertfeld';
 import { Flaeche3d } from './viewport';
+import { skizzenablaufAufbauen, skizzenWirkungenRegistrieren } from './skizzenablauf';
 import { sucheAufbauen } from './suche';
 import './ui.css';
 
@@ -107,6 +108,11 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
       leiste.querySelector<HTMLButtonElement>(`[data-befehl="${id}"]`)?.click();
       return;
     }
+    if (id === 'feature.extrudieren' && !parameter.tiefe) {
+      sitzung.ausfuehren(id, parameter); // Start im Protokoll; die Wirkung folgt mit der Tiefe
+      ablauf.extrusionVorschau();
+      return;
+    }
     sitzung.ausfuehren(id, parameter);
     if (id === 'suche.oeffnen') suche.focus();
     if (id === 'thema.umschalten') {
@@ -135,6 +141,23 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
   });
 
   const f3d = new Flaeche3d(canvas);
+  skizzenWirkungenRegistrieren(sitzung);
+  const ablauf = skizzenablaufAufbauen({
+    sitzung,
+    t,
+    flaeche,
+    f3d,
+    nachjustieren,
+    waehlen,
+    zeichnen: () => zeichnen(),
+  });
+  // Skizze anlegen aus Werkzeugleiste, Kürzel oder Karte ohne Ebene: Ebenenwahl öffnen.
+  document.addEventListener('click', (ev) => {
+    const ziel = ev.target instanceof HTMLElement ? ev.target.closest('[data-befehl]') : null;
+    if (!(ziel instanceof HTMLElement)) return;
+    if (ziel.dataset.befehl === 'werkzeug.skizze') ablauf.ebenenWahl();
+    else if (ziel.dataset.befehl === 'skizze.anlegen' && !ziel.dataset.ebene) ablauf.ebenenWahl();
+  });
 
   function zeile(k: Element): HTMLLIElement {
     const li = el('li');
@@ -156,9 +179,12 @@ export function aufbauen(wurzel: HTMLElement, sitzung: Sitzung, t: T): Oberflaec
 
   /** Befehle, die zur Auswahl passen; dieselben wie in der Suche. */
   function kontextaktionen(k: Element): HTMLElement {
-    const ids = ['part', 'extrusion', 'sketch'].includes(k.type)
-      ? ['feature.verrunden', 'feature.schale', 'ki.fragen']
-      : ['ki.fragen'];
+    const ids =
+      k.type === 'sketch'
+        ? ['feature.extrudieren', 'ki.fragen']
+        : ['part', 'extrusion'].includes(k.type)
+          ? ['feature.verrunden', 'feature.schale', 'ki.fragen']
+          : ['ki.fragen'];
     const box = el('div', 'Kontextaktionen');
     for (const id of ids) {
       const b = knopf(t, id);

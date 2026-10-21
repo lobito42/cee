@@ -215,7 +215,62 @@ const BEFEHLE = {
   async ablauf({ browser, basis, optionen, positionen }) {
     const [name] = positionen;
     const variante = optionen.variante ?? '';
+    /** Ablauf A mit echten Klicks und Tasten; liefert Seite und Zahl der Eingaben. */
+    const grundplatte = async () => {
+      const { seite } = await oeffnen(browser, adresse(basis, 'leer', 'hell'));
+      let eingaben = 0;
+      const klick = async (selektor) => {
+        await seite.click(selektor);
+        eingaben += 1;
+      };
+      const tippen = async (selektor, text) => {
+        await seite.click(selektor);
+        await seite.keyboard.press('Control+A');
+        await seite.keyboard.type(text);
+        await seite.keyboard.press('Enter');
+        eingaben += text.length + 3;
+      };
+      await klick('[data-befehl="werkzeug.skizze"]');
+      await klick('[data-ebene="XY"]');
+      const feld = await seite.locator('.skizzenflaeche').boundingBox();
+      await seite.mouse.move(feld.x + 10, feld.y + 10);
+      await seite.mouse.down();
+      await seite.mouse.move(feld.x + 90, feld.y + 60);
+      await seite.mouse.up();
+      eingaben += 3;
+      await tippen('label:has-text("Länge") input', '80');
+      await tippen('label:has-text("Breite") input', '50');
+      await klick('[data-befehl="skizze.schliessen"]');
+      await klick('[data-muster="Eigenschaften-Panel"] [data-befehl="feature.extrudieren"]');
+      await tippen('label:has-text("Tiefe") input', '5');
+      return { seite, klicks: () => eingaben };
+    };
+    const stand = (seite) =>
+      seite.evaluate(() => ({
+        modell: window.__cee.modell(),
+        protokoll: window.__cee.protokoll(),
+      }));
     const ablaeufe = {
+      async 'a/'() {
+        const { seite, klicks } = await grundplatte();
+        const letzte_aktion = await seite
+          .locator('[data-muster="Letzte Aktion nachjustieren"]')
+          .innerText();
+        const ergebnis = { eingaben: klicks(), letzte_aktion, ...(await stand(seite)) };
+        await seite.close();
+        return ergebnis;
+      },
+      async 'a/rueckgaengig'() {
+        const { seite, klicks } = await grundplatte();
+        const s = await stand(seite);
+        await seite.keyboard.press('Control+Z');
+        const modell_zurueck = await seite.evaluate(() => window.__cee.modell());
+        await seite.keyboard.press('Control+Shift+Z');
+        const modell_wiederholt = await seite.evaluate(() => window.__cee.modell());
+        const ergebnis = { eingaben: klicks() + 2, ...s, modell_zurueck, modell_wiederholt };
+        await seite.close();
+        return ergebnis;
+      },
       // Suche nach einem Elementnamen: Gruppe Elemente, danach genau dieses Element ausgewählt.
       async 'e/elemente'() {
         const { seite } = await oeffnen(browser, adresse(basis, 'teile', 'hell'));

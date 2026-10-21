@@ -14,6 +14,7 @@ export class Flaeche3d {
   private readonly kamera = new THREE.PerspectiveCamera(40, 1, 1, 2000);
   private readonly renderer: THREE.WebGLRenderer | undefined;
   private readonly koerper = new Map<string, THREE.Mesh>();
+  private geistKoerper: THREE.Mesh | undefined;
 
   constructor(readonly canvas: HTMLCanvasElement) {
     try {
@@ -51,6 +52,25 @@ export class Flaeche3d {
       hoehe += h;
       this.szene.add(mesh);
       this.koerper.set(teil.id, mesh);
+    }
+    this.zeichnen();
+  }
+
+  /** Geister-Vorschau (halbtransparenter Quader über dem Körper); `undefined` blendet sie aus. */
+  geist(maße: { l: number; b: number; h: number } | undefined): void {
+    if (this.geistKoerper) this.szene.remove(this.geistKoerper);
+    this.geistKoerper = undefined;
+    if (maße) {
+      this.geistKoerper = new THREE.Mesh(
+        new THREE.BoxGeometry(maße.l, maße.h, maße.b),
+        new THREE.MeshLambertMaterial({
+          color: token('--farbe-akzent'),
+          transparent: true,
+          opacity: 0.4,
+        }),
+      );
+      this.geistKoerper.position.set(0, maße.h / 2, 0);
+      this.szene.add(this.geistKoerper);
     }
     this.zeichnen();
   }
