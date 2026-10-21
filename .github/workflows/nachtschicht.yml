@@ -7,12 +7,12 @@ name: Nachtschicht
 # Voraussetzungen: Secret CLAUDE_CODE_OAUTH_TOKEN (Abo, `claude setup-token`) und die Claude-GitHub-App für
 # dieses Repository – nur mit ihr lösen Pushes und PRs des Agenten die CI aus.
 # Kontingent: Ist nichts zu tun, startet Claude gar nicht (tools/next_step.py entscheidet ohne KI).
-# Bis zu drei Runden je Nacht nacheinander, je Runde ein Schritt; wartet ein PR auf Review, nimmt die nächste
-# Runde einen anderen Change. Zeitbudget der Nacht: neue Runden starten nur in den ersten 4 Stunden.
+# Bis zu acht Runden je Nacht nacheinander, je Runde ein Schritt (ein Agent arbeitet oft nur 5–10 Minuten);
+# wartet ein PR auf Review, nimmt die nächste Runde einen anderen Change. Zeitbudget der Nacht: neue Runden starten nur in den ersten 4 Stunden.
 
 on:
   schedule:
-    - cron: "7 23 * * 0-4"   # So–Do 23:07 UTC = werktags 01:07 Sommerzeit bzw. 00:07 Winterzeit
+    - cron: "7 20 * * 0-4"   # So–Do 20:07 UTC; GitHub startet geplante Läufe oft 1–3 Stunden später
   workflow_dispatch:
 
 concurrency:
@@ -34,7 +34,7 @@ jobs:
     timeout-minutes: 150
     strategy:
       matrix:
-        runde: [1, 2, 3]
+        runde: [1, 2, 3, 4, 5, 6, 7, 8]
       max-parallel: 1   # nacheinander: jede Runde sieht die PRs der vorigen
       fail-fast: false
     env:
@@ -94,7 +94,7 @@ jobs:
           reason=$(jq -r .reason <<<"$NEXT")
           label=$(jq -r '.label // empty' <<<"$NEXT"); pr=$(jq -r '.pr // empty' <<<"$NEXT")
           if [ -n "$label" ] && [ -n "$pr" ]; then gh pr edit "$pr" --add-label "$label"; fi
-          # Ab Runde 2 nur protokollieren, wenn sich etwas ändert (Label), sonst stünde jeder Halt dreimal da.
+          # Ab Runde 2 nur protokollieren, wenn sich etwas ändert (Label), sonst stünde jeder Halt mehrfach da.
           if [ "${{ matrix.runde }}" != "1" ] && [ -z "$label" ]; then exit 0; fi
           gh issue comment ${{ steps.issue.outputs.nr }} --body "$(date -u +%F) · gestoppt: ${reason} · [Lauf]($RUN)"
 
@@ -144,7 +144,7 @@ jobs:
           prompt: |
             Führe den Skill /nachtschicht aus. Der Schrittplaner hat bereits entschieden:
             ${{ steps.next.outputs.json }}
-            Protokoll-Issue: #${{ steps.issue.outputs.nr }}. Runde ${{ matrix.runde }} von 3.
+            Protokoll-Issue: #${{ steps.issue.outputs.nr }}. Runde ${{ matrix.runde }} von 8.
             Halte dich strikt an die Grenzen des Skills.
           claude_args: |
             --model ${{ steps.next.outputs.model }}

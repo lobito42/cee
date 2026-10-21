@@ -4,7 +4,7 @@ description: Unbeaufsichtigter Lauf – bestimmt mit tools/next_step.py genau ei
 ---
 
 Du arbeitest unbeaufsichtigt. Niemand beantwortet Fragen. Erledige **genau einen** Schritt, sparsam. Die
-GitHub-Action startet bis zu drei Runden je Nacht; jede Runde ist ein eigener Lauf mit einem Schritt.
+GitHub-Action startet bis zu acht Runden je Nacht; jede Runde ist ein eigener Lauf mit einem Schritt.
 
 ## 1. Vorbereitung
 
@@ -38,6 +38,10 @@ weiterarbeiten (nie neu von main anlegen); steht `pr` dabei, ist das der offene 
   Dateien mit Write/Edit schreiben, Umgebungsvariablen nur als `CEE_STRICT=1 uv run …`, temporäre Ordner
   fest benennen (z. B. `mkdir -p /tmp/cee-pruefen`).
 - PR-Text als Datei schreiben und mit `gh pr create --body-file` bzw. `gh pr edit --body-file` übergeben.
+- Formatieren und Prüfen nur über die Skripte des Projekts (`npm --prefix spikes/x run format`), nie
+  `npx prettier --write .`, `npx eslint --fix .` o. Ä. im Wurzelverzeichnis: Das ändert Dateien im ganzen
+  Repository, und Zurücksetzen ist nachts nicht möglich. Vor jedem Commit `git status --short` prüfen und nur
+  eigene Dateien mit Pfad hinzufügen (`git add spikes/x openspec/changes/<id>/tasks.md`), nie `git add -A`.
 
 - **tests** → Abnahmetests nach dem Vorgehen des Agenten `test-author`. Prüfen, dass sie rot sind.
 - **build** → umsetzen nach dem Vorgehen des Agenten `implementer` (Tasks in Reihenfolge,
