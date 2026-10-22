@@ -303,7 +303,7 @@ export const kiBefehle = {
       await seite.keyboard.press('Escape');
       await seite.keyboard.press('Control+K');
       const t0 = Date.now();
-      await seite.keyboard.type('Ver');
+      await seite.keyboard.press('v');
       await seite.waitForSelector('[data-suche] [role="option"]');
       await zeichnen(seite);
       suche.push(Date.now() - t0);
