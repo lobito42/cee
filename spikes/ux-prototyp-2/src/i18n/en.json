@@ -1,0 +1,328 @@
+{
+  "app": {
+    "arbeitsbereich": "Model",
+    "aufbau": "Build",
+    "suche": "Search or ask",
+    "bereit": "Ready"
+  },
+  "stand": {
+    "haupt": "Main version"
+  },
+  "pfad": {
+    "skizze": "Sketch"
+  },
+  "aufbau": {
+    "simulation": "Simulation"
+  },
+  "modell": {
+    "einpassen": "Fit",
+    "darstellung": {
+      "koerper": "Solid",
+      "kanten": "Edges",
+      "durchsicht": "See-through"
+    }
+  },
+  "leer": {
+    "text": "Nothing built yet. The next step:"
+  },
+  "ebene": {
+    "waehlen": "Choose a plane"
+  },
+  "zustand": {
+    "unbekannt": "Unknown state"
+  },
+  "befehl": {
+    "suche": {
+      "oeffnen": "Search"
+    },
+    "bearbeiten": {
+      "rueckgaengig": "Undo",
+      "wiederholen": "Redo"
+    },
+    "auswahl": {
+      "setzen": "Select",
+      "aufheben": "Clear selection"
+    },
+    "ansicht": {
+      "einpassen": "Fit view",
+      "ergebnis": "Result",
+      "alle-entwuerfe": "All drafts"
+    },
+    "thema": {
+      "umschalten": "Switch light or dark"
+    },
+    "arbeitsbereich": {
+      "wechseln": "Switch workspace"
+    },
+    "darstellung": {
+      "wechseln": "Switch display",
+      "koerper": "Solid",
+      "kanten": "Edges only",
+      "durchsicht": "See-through"
+    },
+    "ort": {
+      "skizze-bearbeiten": "Edit sketch",
+      "fertig": "Done"
+    },
+    "skizze": {
+      "anlegen": "Create sketch",
+      "rechteck": "Draw rectangle"
+    },
+    "element": {
+      "wert-setzen": "Set value"
+    },
+    "feature": {
+      "extrudieren": "Extrude",
+      "verrunden": "Round"
+    },
+    "schritt": {
+      "ausblenden": "Hide step",
+      "einblenden": "Show step",
+      "verwerfen": "Discard step"
+    },
+    "baugruppe": {
+      "anlegen": "Create assembly"
+    },
+    "verbindung": {
+      "anlegen": "Connect"
+    },
+    "entwurf": {
+      "anlegen": "Create draft",
+      "wechseln": "Switch to draft",
+      "vergleichen": "Compare draft",
+      "uebernehmen": "Adopt draft",
+      "verwerfen": "Discard draft"
+    },
+    "ki": {
+      "fragen": "Ask AI",
+      "anhalten": "Stop"
+    },
+    "vorschlag": {
+      "uebernehmen": "Accept",
+      "verwerfen": "Discard"
+    },
+    "gespraech": {
+      "schliessen": "Close"
+    },
+    "simulation": {
+      "lager": "Support",
+      "kraft": "Force",
+      "ergebnis": "Show result"
+    }
+  },
+  "synonym": {
+    "bearbeiten": {
+      "rueckgaengig": "back, undo, take back",
+      "wiederholen": "redo, forward"
+    },
+    "ansicht": {
+      "einpassen": "zoom, show all, fit",
+      "ergebnis": "drafts, version"
+    },
+    "thema": {
+      "umschalten": "dark, light, theme"
+    },
+    "darstellung": {
+      "koerper": "solid, faces",
+      "kanten": "wireframe, lines",
+      "durchsicht": "transparent, x-ray"
+    },
+    "ort": {
+      "skizze-bearbeiten": "open sketch, drawing",
+      "fertig": "back to part, leave, finish"
+    },
+    "skizze": {
+      "anlegen": "draw, new sketch, plane",
+      "rechteck": "box"
+    },
+    "element": {
+      "wert-setzen": "change dimension, number, change"
+    },
+    "feature": {
+      "extrudieren": "pull, thickness",
+      "verrunden": "fillet, round off, edges, radius"
+    },
+    "schritt": {
+      "ausblenden": "hide",
+      "einblenden": "show",
+      "verwerfen": "throw away, remove"
+    },
+    "baugruppe": {
+      "anlegen": "assembly, join parts"
+    },
+    "verbindung": {
+      "anlegen": "fixed, attach, join"
+    },
+    "entwurf": {
+      "anlegen": "try out, variant, copy",
+      "vergleichen": "differences",
+      "uebernehmen": "apply, accept",
+      "verwerfen": "reject"
+    },
+    "simulation": {
+      "kraft": "load, newton",
+      "lager": "clamp, fixed",
+      "ergebnis": "deformation, evaluation"
+    },
+    "ki": {
+      "fragen": "help, assistant, question"
+    }
+  },
+  "suche": {
+    "ki-fragen": "Ask AI:",
+    "keine-treffer": "No results",
+    "gruppe": {
+      "befehle": "Commands",
+      "elemente": "Elements"
+    },
+    "facette": {
+      "alle": "All",
+      "befehle": "Commands",
+      "elemente": "Elements"
+    }
+  },
+  "gruppe": {
+    "teil": "Part",
+    "teile": "Parts",
+    "masse": "Dimensions",
+    "skizze": "From the sketch",
+    "position": "Position",
+    "verbindung": "Connection",
+    "baugruppe": "Assembly",
+    "lager": "Support",
+    "kraft": "Force",
+    "ergebnis": "Result",
+    "kante": "Edge"
+  },
+  "feld": {
+    "laenge": "Length",
+    "breite": "Width",
+    "dicke": "Thickness",
+    "hoehe": "Height",
+    "eckradius": "Corner radius",
+    "radius": "Radius",
+    "durchmesser": "Diameter",
+    "kraft": "Force",
+    "material": "Material",
+    "abmessungen": "Dimensions",
+    "volumen": "Volume",
+    "masse": "Mass",
+    "anzahl": "Count",
+    "kanten": "Edges",
+    "art": "Type",
+    "von": "From",
+    "nach": "To",
+    "schritt": "Step",
+    "richtung": "Direction",
+    "instanzen": "Instances",
+    "hoechstwert": "Maximum",
+    "berechnet": "calculated"
+  },
+  "inspektor": {
+    "kante": "Edge",
+    "kanten": "{n} edges",
+    "mehrere": "{n} elements",
+    "mehrere-hinweis": "Select a single element to change values.",
+    "skizze-zeichnen": "Drag a rectangle in the model."
+  },
+  "wert": {
+    "fehler": {
+      "nicht-lesbar": "I cannot read that. Example: 8 mm",
+      "dimension": "A different kind of quantity belongs here.",
+      "teilung": "Division by zero is not possible."
+    }
+  },
+  "status": {
+    "fehlerhaft": "Faulty"
+  },
+  "symbol": {
+    "fehler": "✕",
+    "arbeitet": "…"
+  },
+  "befund": {
+    "radius": "The radius is larger than half the width ({grenze}).",
+    "radius-korrektur": "Set radius to {wert}"
+  },
+  "verbindung": {
+    "art": {
+      "fest": "Fixed",
+      "gleitend": "Sliding",
+      "drehbar": "Rotating"
+    }
+  },
+  "richtung": {
+    "plus-x": "+X",
+    "minus-x": "−X",
+    "plus-y": "+Y",
+    "minus-y": "−Y",
+    "plus-z": "+Z",
+    "minus-z": "−Z"
+  },
+  "entwurf": {
+    "titel": "Drafts",
+    "name": "Name",
+    "platzhalter": "Thicker plate",
+    "begruendung": "Reason",
+    "begruendung-beispiel": "Too heavy",
+    "zum-hauptstand": "Back to main version",
+    "zustand": {
+      "offen": "In progress",
+      "uebernommen": "Adopted",
+      "verworfen": "Discarded"
+    }
+  },
+  "ki": {
+    "ueberschrift": "Question for the AI",
+    "simuliert": "AI simulated",
+    "arbeitet": "Working",
+    "angehalten": "Stopped",
+    "plan": {
+      "1": "Check the selection",
+      "2": "Calculate a suggestion",
+      "3": "Create the preview"
+    },
+    "satz": {
+      "verrunden": "Round the top edges with 2 mm"
+    },
+    "unbekannt": "I did not understand that. Try for example:",
+    "beispiel": {
+      "1": "Make the plate 20 mm longer",
+      "2": "Round the top edges with 2 mm"
+    },
+    "titel": {
+      "verrundung": "Rounding {radius}",
+      "mass": "{schritt}: {feld} to {nachher}"
+    },
+    "begruendung": {
+      "verrundung": "Rounded edges are stronger and feel better in the hand.",
+      "mass": "The dimension changes as requested."
+    },
+    "zeile": {
+      "verrunden": "feature.verrunden radius={radius} ziel={ziel} kanten={anzahl}",
+      "wert": "element.wert-setzen element={element} name={name} wert={wert}"
+    }
+  },
+  "karte": {
+    "neu": "new"
+  },
+  "paket": {
+    "simulation": {
+      "reiter": "Simulation",
+      "lager-fest": "Fixed",
+      "legende": "Deformation",
+      "simuliert": "Simulated – not a calculated result"
+    }
+  },
+  "meldung": {
+    "erst-schritt-waehlen": "Select a step with a sketch first.",
+    "skizze-gezeichnet": "Rectangle drawn",
+    "erst-skizze-waehlen": "Select a finished sketch first.",
+    "erst-kanten-waehlen": "Select edges first.",
+    "wert-gesetzt": "Value set",
+    "verworfen": "Step discarded, nothing is deleted",
+    "erst-zwei-teile": "Select two parts first.",
+    "erst-instanz-waehlen": "Select the part that should move first.",
+    "vorschlag-uebernommen": "Suggestion accepted",
+    "skizze-offen": "Sketch opened"
+  }
+}

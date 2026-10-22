@@ -1,0 +1,130 @@
+{
+  "befehle": [
+    { "id": "suche.oeffnen", "titel": "befehl.suche.oeffnen", "kuerzel": "Mod+K" },
+    {
+      "id": "bearbeiten.rueckgaengig",
+      "titel": "befehl.bearbeiten.rueckgaengig",
+      "kuerzel": "Mod+Z"
+    },
+    {
+      "id": "bearbeiten.wiederholen",
+      "titel": "befehl.bearbeiten.wiederholen",
+      "kuerzel": "Mod+Shift+Z"
+    },
+    {
+      "id": "auswahl.setzen",
+      "titel": "befehl.auswahl.setzen",
+      "parameter": { "elemente": { "typ": "referenz" } }
+    },
+    { "id": "auswahl.aufheben", "titel": "befehl.auswahl.aufheben" },
+    { "id": "ansicht.einpassen", "titel": "befehl.ansicht.einpassen" },
+    { "id": "thema.umschalten", "titel": "befehl.thema.umschalten" },
+    {
+      "id": "arbeitsbereich.wechseln",
+      "titel": "befehl.arbeitsbereich.wechseln",
+      "parameter": { "bereich": { "typ": "wahl" } }
+    },
+    { "id": "darstellung.wechseln", "titel": "befehl.darstellung.wechseln", "kuerzel": "W" },
+    { "id": "darstellung.koerper", "titel": "befehl.darstellung.koerper" },
+    { "id": "darstellung.kanten", "titel": "befehl.darstellung.kanten" },
+    { "id": "darstellung.durchsicht", "titel": "befehl.darstellung.durchsicht" },
+    { "id": "ort.skizze-bearbeiten", "titel": "befehl.ort.skizze-bearbeiten" },
+    { "id": "ort.fertig", "titel": "befehl.ort.fertig", "kuerzel": "Esc" },
+    {
+      "id": "skizze.anlegen",
+      "titel": "befehl.skizze.anlegen",
+      "parameter": { "ebene": { "typ": "wahl" } }
+    },
+    {
+      "id": "skizze.rechteck",
+      "titel": "befehl.skizze.rechteck",
+      "parameter": {
+        "laenge": { "dimension": "laenge", "einheit": "mm" },
+        "breite": { "dimension": "laenge", "einheit": "mm" }
+      }
+    },
+    {
+      "id": "element.wert-setzen",
+      "titel": "befehl.element.wert-setzen",
+      "parameter": {
+        "element": { "typ": "referenz" },
+        "name": { "typ": "text" },
+        "wert": { "dimension": "laenge", "einheit": "mm" }
+      }
+    },
+    {
+      "id": "feature.extrudieren",
+      "titel": "befehl.feature.extrudieren",
+      "parameter": { "dicke": { "dimension": "laenge", "einheit": "mm" } }
+    },
+    {
+      "id": "feature.verrunden",
+      "titel": "befehl.feature.verrunden",
+      "parameter": {
+        "radius": { "dimension": "laenge", "einheit": "mm" },
+        "kanten": { "typ": "referenz" }
+      }
+    },
+    {
+      "id": "schritt.ausblenden",
+      "titel": "befehl.schritt.ausblenden",
+      "parameter": { "schritt": { "typ": "referenz" } }
+    },
+    {
+      "id": "schritt.einblenden",
+      "titel": "befehl.schritt.einblenden",
+      "parameter": { "schritt": { "typ": "referenz" } }
+    },
+    {
+      "id": "schritt.verwerfen",
+      "titel": "befehl.schritt.verwerfen",
+      "parameter": { "schritt": { "typ": "referenz" } }
+    },
+    { "id": "baugruppe.anlegen", "titel": "befehl.baugruppe.anlegen" },
+    {
+      "id": "verbindung.anlegen",
+      "titel": "befehl.verbindung.anlegen",
+      "parameter": {
+        "von": { "typ": "referenz" },
+        "nach": { "typ": "referenz" },
+        "art": { "typ": "wahl" },
+        "versatz": { "dimension": "laenge", "einheit": "mm" }
+      }
+    },
+    {
+      "id": "entwurf.anlegen",
+      "titel": "befehl.entwurf.anlegen",
+      "parameter": { "name": { "typ": "text" } }
+    },
+    {
+      "id": "entwurf.wechseln",
+      "titel": "befehl.entwurf.wechseln",
+      "parameter": { "entwurf": { "typ": "referenz" } }
+    },
+    { "id": "entwurf.vergleichen", "titel": "befehl.entwurf.vergleichen" },
+    { "id": "entwurf.uebernehmen", "titel": "befehl.entwurf.uebernehmen" },
+    {
+      "id": "entwurf.verwerfen",
+      "titel": "befehl.entwurf.verwerfen",
+      "parameter": { "begruendung": { "typ": "text" } }
+    },
+    { "id": "ansicht.ergebnis", "titel": "befehl.ansicht.ergebnis" },
+    { "id": "ansicht.alle-entwuerfe", "titel": "befehl.ansicht.alle-entwuerfe" },
+    {
+      "id": "ki.fragen",
+      "titel": "befehl.ki.fragen",
+      "parameter": { "absicht": { "typ": "text" } }
+    },
+    { "id": "ki.anhalten", "titel": "befehl.ki.anhalten" },
+    { "id": "vorschlag.uebernehmen", "titel": "befehl.vorschlag.uebernehmen" },
+    { "id": "vorschlag.verwerfen", "titel": "befehl.vorschlag.verwerfen" },
+    { "id": "gespraech.schliessen", "titel": "befehl.gespraech.schliessen" },
+    { "id": "simulation.lager", "titel": "befehl.simulation.lager" },
+    {
+      "id": "simulation.kraft",
+      "titel": "befehl.simulation.kraft",
+      "parameter": { "kraft": { "dimension": "kraft", "einheit": "N" } }
+    },
+    { "id": "simulation.ergebnis", "titel": "befehl.simulation.ergebnis" }
+  ]
+}

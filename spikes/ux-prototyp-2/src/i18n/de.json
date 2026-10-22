@@ -1,0 +1,328 @@
+{
+  "app": {
+    "arbeitsbereich": "Modell",
+    "aufbau": "Aufbau",
+    "suche": "Suchen oder fragen",
+    "bereit": "Bereit"
+  },
+  "stand": {
+    "haupt": "Hauptstand"
+  },
+  "pfad": {
+    "skizze": "Skizze"
+  },
+  "aufbau": {
+    "simulation": "Simulation"
+  },
+  "modell": {
+    "einpassen": "Einpassen",
+    "darstellung": {
+      "koerper": "Körper",
+      "kanten": "Kanten",
+      "durchsicht": "Durchsicht"
+    }
+  },
+  "leer": {
+    "text": "Noch nichts gebaut. Der nächste Schritt:"
+  },
+  "ebene": {
+    "waehlen": "Ebene wählen"
+  },
+  "zustand": {
+    "unbekannt": "Zustand unbekannt"
+  },
+  "befehl": {
+    "suche": {
+      "oeffnen": "Suchen"
+    },
+    "bearbeiten": {
+      "rueckgaengig": "Rückgängig",
+      "wiederholen": "Wiederholen"
+    },
+    "auswahl": {
+      "setzen": "Auswählen",
+      "aufheben": "Auswahl aufheben"
+    },
+    "ansicht": {
+      "einpassen": "Ansicht einpassen",
+      "ergebnis": "Ergebnis",
+      "alle-entwuerfe": "Alle Entwürfe"
+    },
+    "thema": {
+      "umschalten": "Hell oder dunkel umschalten"
+    },
+    "arbeitsbereich": {
+      "wechseln": "Arbeitsbereich wechseln"
+    },
+    "darstellung": {
+      "wechseln": "Darstellung wechseln",
+      "koerper": "Körper",
+      "kanten": "Nur Kanten",
+      "durchsicht": "Durchsicht"
+    },
+    "ort": {
+      "skizze-bearbeiten": "Skizze bearbeiten",
+      "fertig": "Fertig"
+    },
+    "skizze": {
+      "anlegen": "Skizze anlegen",
+      "rechteck": "Rechteck aufziehen"
+    },
+    "element": {
+      "wert-setzen": "Wert setzen"
+    },
+    "feature": {
+      "extrudieren": "Extrudieren",
+      "verrunden": "Verrunden"
+    },
+    "schritt": {
+      "ausblenden": "Schritt ausblenden",
+      "einblenden": "Schritt einblenden",
+      "verwerfen": "Schritt verwerfen"
+    },
+    "baugruppe": {
+      "anlegen": "Baugruppe anlegen"
+    },
+    "verbindung": {
+      "anlegen": "Verbinden"
+    },
+    "entwurf": {
+      "anlegen": "Entwurf anlegen",
+      "wechseln": "Zu Entwurf wechseln",
+      "vergleichen": "Entwurf vergleichen",
+      "uebernehmen": "Entwurf übernehmen",
+      "verwerfen": "Entwurf verwerfen"
+    },
+    "ki": {
+      "fragen": "KI fragen",
+      "anhalten": "Anhalten"
+    },
+    "vorschlag": {
+      "uebernehmen": "Übernehmen",
+      "verwerfen": "Verwerfen"
+    },
+    "gespraech": {
+      "schliessen": "Schließen"
+    },
+    "simulation": {
+      "lager": "Lager",
+      "kraft": "Kraft",
+      "ergebnis": "Ergebnis anzeigen"
+    }
+  },
+  "synonym": {
+    "bearbeiten": {
+      "rueckgaengig": "zurück, zurücknehmen, undo, letzten schritt",
+      "wiederholen": "vor, redo, wiederherstellen"
+    },
+    "ansicht": {
+      "einpassen": "zoom, alles zeigen, einpassen, fit",
+      "ergebnis": "entwürfe, stand"
+    },
+    "thema": {
+      "umschalten": "dunkel, hell, dark, light, farbschema"
+    },
+    "darstellung": {
+      "koerper": "solid, flächen",
+      "kanten": "drahtmodell, linien, wireframe",
+      "durchsicht": "transparent, röntgen"
+    },
+    "ort": {
+      "skizze-bearbeiten": "skizze öffnen, zeichnung",
+      "fertig": "zurück zum teil, verlassen, beenden"
+    },
+    "skizze": {
+      "anlegen": "zeichnen, neue skizze, ebene",
+      "rechteck": "box, viereck"
+    },
+    "element": {
+      "wert-setzen": "maß ändern, zahl, ändern"
+    },
+    "feature": {
+      "extrudieren": "aufdicken, ziehen, dicke",
+      "verrunden": "abrunden, runden, kanten, fillet, radius"
+    },
+    "schritt": {
+      "ausblenden": "verstecken, hide",
+      "einblenden": "zeigen, show",
+      "verwerfen": "wegwerfen, entfernen"
+    },
+    "baugruppe": {
+      "anlegen": "zusammenbau, assembly, teile verbinden"
+    },
+    "verbindung": {
+      "anlegen": "fest, zusammenfügen, befestigen, aufsetzen"
+    },
+    "entwurf": {
+      "anlegen": "ausprobieren, variante, kopie",
+      "vergleichen": "unterschiede",
+      "uebernehmen": "gilt, annehmen",
+      "verwerfen": "ablehnen"
+    },
+    "simulation": {
+      "kraft": "last, belastung, newton",
+      "lager": "festhalten, einspannen",
+      "ergebnis": "verformung, auswertung"
+    },
+    "ki": {
+      "fragen": "hilfe, assistent, frage"
+    }
+  },
+  "suche": {
+    "ki-fragen": "KI fragen:",
+    "keine-treffer": "Keine Treffer",
+    "gruppe": {
+      "befehle": "Befehle",
+      "elemente": "Elemente"
+    },
+    "facette": {
+      "alle": "Alle",
+      "befehle": "Befehle",
+      "elemente": "Elemente"
+    }
+  },
+  "gruppe": {
+    "teil": "Teil",
+    "teile": "Teile",
+    "masse": "Maße",
+    "skizze": "Aus der Skizze",
+    "position": "Position",
+    "verbindung": "Verbindung",
+    "baugruppe": "Baugruppe",
+    "lager": "Lager",
+    "kraft": "Kraft",
+    "ergebnis": "Ergebnis",
+    "kante": "Kante"
+  },
+  "feld": {
+    "laenge": "Länge",
+    "breite": "Breite",
+    "dicke": "Dicke",
+    "hoehe": "Höhe",
+    "eckradius": "Eckradius",
+    "radius": "Radius",
+    "durchmesser": "Durchmesser",
+    "kraft": "Kraft",
+    "material": "Material",
+    "abmessungen": "Abmessungen",
+    "volumen": "Volumen",
+    "masse": "Masse",
+    "anzahl": "Anzahl",
+    "kanten": "Kanten",
+    "art": "Art",
+    "von": "Von",
+    "nach": "Nach",
+    "schritt": "Schritt",
+    "richtung": "Richtung",
+    "instanzen": "Instanzen",
+    "hoechstwert": "Höchstwert",
+    "berechnet": "berechnet"
+  },
+  "inspektor": {
+    "kante": "Kante",
+    "kanten": "{n} Kanten",
+    "mehrere": "{n} Elemente",
+    "mehrere-hinweis": "Wähle ein einzelnes Element, um Werte zu ändern.",
+    "skizze-zeichnen": "Ziehe im Modell ein Rechteck auf."
+  },
+  "wert": {
+    "fehler": {
+      "nicht-lesbar": "Das kann ich nicht lesen. Beispiel: 8 mm",
+      "dimension": "Hier gehört eine andere Größe hin.",
+      "teilung": "Teilung durch null geht nicht."
+    }
+  },
+  "status": {
+    "fehlerhaft": "Fehlerhaft"
+  },
+  "symbol": {
+    "fehler": "✕",
+    "arbeitet": "…"
+  },
+  "befund": {
+    "radius": "Der Radius ist größer als die halbe Breite ({grenze}).",
+    "radius-korrektur": "Radius auf {wert} setzen"
+  },
+  "verbindung": {
+    "art": {
+      "fest": "Fest",
+      "gleitend": "Gleitend",
+      "drehbar": "Drehbar"
+    }
+  },
+  "richtung": {
+    "plus-x": "+X",
+    "minus-x": "−X",
+    "plus-y": "+Y",
+    "minus-y": "−Y",
+    "plus-z": "+Z",
+    "minus-z": "−Z"
+  },
+  "entwurf": {
+    "titel": "Entwürfe",
+    "name": "Name",
+    "platzhalter": "Dickere Platte",
+    "begruendung": "Begründung",
+    "begruendung-beispiel": "Zu schwer",
+    "zum-hauptstand": "Zum Hauptstand",
+    "zustand": {
+      "offen": "In Arbeit",
+      "uebernommen": "Übernommen",
+      "verworfen": "Verworfen"
+    }
+  },
+  "ki": {
+    "ueberschrift": "Frage an die KI",
+    "simuliert": "KI simuliert",
+    "arbeitet": "Arbeitet",
+    "angehalten": "Angehalten",
+    "plan": {
+      "1": "Auswahl prüfen",
+      "2": "Vorschlag berechnen",
+      "3": "Vorschau erzeugen"
+    },
+    "satz": {
+      "verrunden": "Runde die oberen Kanten mit 2 mm ab"
+    },
+    "unbekannt": "Das habe ich nicht verstanden. Probiere zum Beispiel:",
+    "beispiel": {
+      "1": "Mach die Platte 20 mm länger",
+      "2": "Runde die oberen Kanten mit 2 mm ab"
+    },
+    "titel": {
+      "verrundung": "Verrundung {radius}",
+      "mass": "{schritt}: {feld} auf {nachher}"
+    },
+    "begruendung": {
+      "verrundung": "Gerundete Kanten sind stabiler und liegen besser in der Hand.",
+      "mass": "Das Maß wird wie gewünscht geändert."
+    },
+    "zeile": {
+      "verrunden": "feature.verrunden radius={radius} ziel={ziel} kanten={anzahl}",
+      "wert": "element.wert-setzen element={element} name={name} wert={wert}"
+    }
+  },
+  "karte": {
+    "neu": "neu"
+  },
+  "paket": {
+    "simulation": {
+      "reiter": "Simulation",
+      "lager-fest": "Fest",
+      "legende": "Verformung",
+      "simuliert": "Simuliert – kein berechnetes Ergebnis"
+    }
+  },
+  "meldung": {
+    "erst-schritt-waehlen": "Wähle zuerst einen Schritt mit Skizze.",
+    "skizze-gezeichnet": "Rechteck gezeichnet",
+    "erst-skizze-waehlen": "Wähle zuerst eine fertige Skizze.",
+    "erst-kanten-waehlen": "Wähle zuerst Kanten.",
+    "wert-gesetzt": "Wert gesetzt",
+    "verworfen": "Schritt verworfen, nichts ist gelöscht",
+    "erst-zwei-teile": "Wähle zuerst zwei Teile.",
+    "erst-instanz-waehlen": "Wähle zuerst das Teil, das sich bewegen soll.",
+    "vorschlag-uebernommen": "Vorschlag übernommen",
+    "skizze-offen": "Skizze geöffnet"
+  }
+}

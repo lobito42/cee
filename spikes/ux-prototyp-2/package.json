@@ -1,0 +1,35 @@
+{
+  "name": "@cee/ux-prototyp-2",
+  "description": "Wegwerf-Prototyp des Bedienkonzepts (ap-41b, Gate G1) – kein Produktcode",
+  "version": "0.0.1",
+  "license": "MPL-2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "tokens": "node scripts/tokens.mjs",
+    "tokens:check": "node scripts/tokens.mjs --check",
+    "lint": "eslint . && prettier --check .",
+    "test": "vitest run",
+    "pruefen": "node pruefen/index.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.0.0",
+    "@fontsource/jetbrains-mono": "^5.0.0",
+    "lucide": "^1.60.0",
+    "three": "^0.186.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@types/three": "^0.186.0",
+    "eslint": "^9.0.0",
+    "playwright": "^1.64.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.5.0",
+    "typescript-eslint": "^8.0.0",
+    "vite": "^6.0.0",
+    "vitest": "^4.1.11"
+  }
+}
