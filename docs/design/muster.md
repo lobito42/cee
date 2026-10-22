@@ -12,7 +12,7 @@ auf der Katalogseite mit Referenzbildern (hell und dunkel, Desktop und Tablet, L
 
 | Muster | Wofür | Regeln |
 | --- | --- | --- |
-| **Entscheidungskarte** | Jede vorgeschlagene Änderung: KI-Änderungssatz (ADR-021), Konflikt beim Übernehmen (ADR-051), Bibliotheks-Update (ADR-043), Prüfbefund mit Korrektur, Studienergebnis (ADR-049), Freigabe-Prüfung (ADR-047) | Titel = was sich ändert; Vorschau im Modell (Geister-Darstellung); Begründung; Auswirkungen (Werte vorher/nachher); genau zwei Hauptaktionen **Übernehmen** und **Verwerfen**, bei Konflikten die Wahl zwischen den Ständen; nie modal; mehrere Karten stapeln sich in einer Liste |
+| **Entscheidungskarte** | Jede vorgeschlagene Änderung: KI-Änderungssatz (ADR-021), Konflikt beim Übernehmen (ADR-051), Bibliotheks-Update (ADR-043), Prüfbefund mit Korrektur, Studienergebnis (ADR-049), Freigabe-Prüfung (ADR-047) | Titel = was sich ändert; Vorschau im Modell (Geister-Darstellung); Begründung; Auswirkungen (Werte vorher/nachher); genau eine Hauptaktion **Übernehmen** (hervorgehoben) und die ruhige Aktion **Verwerfen**, bei Konflikten die Wahl zwischen den Ständen; nie modal; mehrere Karten stapeln sich in einer Liste |
 | **Verlauf und Rückgängig** | Jede Änderung, auch durch KI, Übernehmen, Import | Cmd/Strg+Z und Cmd/Strg+Umschalt+Z überall; keine Sicherheitsabfragen („Wirklich …?“) – stattdessen Rückgängig, Verwerfen statt Löschen (ADR-051) |
 
 ## Eingeben
