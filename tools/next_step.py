@@ -9,21 +9,23 @@ Der Zustand eines Changes wird aus dem Repository abgeleitet, nicht von Hand gep
 ``openspec/queue.yaml`` bleibt die Freigabe (welche Changes, in welcher Reihenfolge, ``night``, ``model``);
 ``phase`` dort ist nur noch eine Untergrenze, die das Kernteam setzen kann.
 
-Reihenfolge der Regeln:
+Reihenfolge der Regeln (ADR-064: Hausmeister zuerst, der Mensch entscheidet nur über Inhalte):
 
-1. main ist rot → anhalten (nicht an fremden Fehlern arbeiten).
-2. Offene Agenten-PRs (Branch ``tests/…`` oder ``change/…``), älteste zuerst: Entwurf → dort
-   weiterarbeiten (``resume``); CI rot und weniger als zwei Reparaturversuche (Labels ``fix-1``, ``fix-2``)
-   → Schritt ``fix``, danach ``label: blocked``. Alle anderen warten (``blocked``, Abnahmetest-PR absichtlich
-   rot, CI läuft, wartet auf Review); ihr Change wird übersprungen, die Nacht arbeitet an anderen weiter.
-3. Warten schon ``MAX_WAITING`` PRs auf einen Menschen oder ein Review → anhalten, damit sich nichts staut.
-4. Erster freigegebener Change (``night: true``) ohne offenen PR, der nicht fertig ist und dessen
-   Abhängigkeiten fertig sind: Schritt ``tests`` oder ``build``. Gibt es den Branch schon auf GitHub (und ist
-   er nicht in main gemergt), wird dort weitergearbeitet (``resume: true``). Ein gemergter
-   ``change/<id>``-PR gilt als fertig.
-5. Sonst: anhalten mit dem Grund des ältesten wartenden PRs bzw. „Nichts zu tun“.
+1. Entwurfs-PRs (Branch ``tests/…``, ``change/…``, ``fix/…``, ``archiv/…``): dort weiterarbeiten (``resume``).
+2. ``repair-main``: main ist rot → Branch ``fix/main-rot`` (gibt es schon einen offenen ``fix/…``-PR, wird
+   der bearbeitet bzw. abgewartet; an fremden Fehlern wird nicht gearbeitet).
+3. ``merge-main``: ein offener Agenten-PR hat einen Konflikt mit main → main in den Branch holen und lösen.
+4. ``fix``: ein offener Agenten-PR hat rote CI (Abnahmetest-PRs sind absichtlich rot) → bis zu zwei
+   Reparaturversuche (Labels ``fix-1``, ``fix-2``), danach ``label: blocked``.
+5. ``archive``: ein ``change/<id>``-PR ist gemergt, alle Tasks sind abgehakt, der Change liegt noch unter
+   ``openspec/changes/`` → Branch ``archiv/<id>``.
+6. Erster freigegebener Change (``night: true``) ohne offenen PR, der nicht fertig ist und dessen
+   Abhängigkeiten fertig sind: ``tests`` oder ``build``. Mehrere voneinander unabhängige Changes dürfen
+   gleichzeitig offen sein; ein PR, der auf Review oder CI wartet, hält nur seinen eigenen Change auf.
+7. Sonst: anhalten mit dem Grund (blockierte PRs warten auf den Menschen; ab ``MAX_BLOCKED`` ist Schluss).
 
-Die Nachtschicht ruft den Planer bis zu achtmal je Nacht auf (eine Runde je Schritt, siehe Workflow).
+Gemergt wird nicht hier, sondern im Workflow ``.github/workflows/auto-merge.yml`` nach dem Review.
+Der Planer wird mehrmals täglich aufgerufen (eine Runde = ein Schritt, siehe Workflow).
 
 Aufruf: ``python3 tools/next_step.py`` (fragt GitHub über ``gh`` ab) oder mit ``--offline`` und Dateien
 für Tests. Ausgabe: eine JSON-Zeile, z. B.
@@ -41,8 +43,10 @@ from pathlib import Path
 
 ROOT = Path(os.environ.get("CEE_ROOT") or Path(__file__).resolve().parents[1])
 ORDER = {"tests": 0, "build": 1, "review": 1, "done": 2}
-AGENT_BRANCH = re.compile(r"^(tests|change)/([a-z0-9][a-z0-9-]*)$")
-MAX_WAITING = 3  # offene Agenten-PRs, die auf Menschen oder Review warten
+AGENT_BRANCH = re.compile(r"^(tests|change|fix|archiv)/([a-z0-9][a-z0-9-]*)$")
+STEP_OF = {"tests": "tests", "change": "build", "fix": "repair-main", "archiv": "archive"}
+MAIN_FIX_BRANCH = "fix/main-rot"
+MAX_BLOCKED = 3  # blockierte Agenten-PRs, die auf den Menschen warten; ab hier arbeitet niemand weiter
 FAILED = {"FAILURE", "CANCELLED", "TIMED_OUT", "ACTION_REQUIRED", "ERROR", "STARTUP_FAILURE"}
 
 
@@ -109,53 +113,111 @@ def decide(
     remote: set[str],
     main: str,
     merged: set[str] = frozenset(),
+    unarchived: set[str] = frozenset(),
 ) -> dict:
     """Die eigentliche Entscheidung – reine Funktion, damit sie testbar ist.
 
     `remote`: Branches auf GitHub, die noch nicht in main enthalten sind.
     `merged`: Head-Branches gemergter PRs; ein gemergter
     `change/<id>` gilt als fertig, auch wenn Tasks offen sind (z. B. [mensch]-Kriterien).
+    `unarchived`: Changes, die fertig sind (Tasks abgehakt), aber noch unter openspec/changes/ liegen.
     """
-    if main == "failure":
-        return {"step": "stop", "reason": "main ist rot – erst reparieren (Kernteam)"}
     by_id = {e["id"]: e for e in entries}
-    agent_prs = [p for p in prs if AGENT_BRANCH.match(p.get("headRefName", ""))]
+    agent_prs = sorted(
+        (p for p in prs if AGENT_BRANCH.match(p.get("headRefName", ""))), key=lambda p: p.get("number", 0)
+    )
+    main_red = main == "failure"
+    blocked: list[dict] = []
     waiting: list[dict] = []
-    for pr in sorted(agent_prs, key=lambda p: p.get("number", 0)):
+    drafts: list[dict] = []
+    conflicts: list[dict] = []
+    reds: list[dict] = []
+    to_block: list[dict] = []  # Label setzen; die nächste Runde arbeitet dann an anderen Changes weiter
+    for pr in agent_prs:
         branch = pr["headRefName"]
-        change_id = AGENT_BRANCH.match(branch).group(2)
+        kind, change_id = AGENT_BRANCH.match(branch).groups()
         labels = {lbl.get("name") for lbl in pr.get("labels", [])}
         base = {"pr": pr.get("number"), "branch": branch, "id": change_id}
         model = by_id.get(change_id, {}).get("model", "sonnet")
-        step = "tests" if branch.startswith("tests/") else "build"
+        step = STEP_OF[kind]
         if "blocked" in labels:
             reason = "PR ist blockiert und wartet auf einen Menschen"
-            waiting.append({"step": "stop", "reason": reason, **base})
-            continue
-        if pr.get("isDraft"):
+            blocked.append({"step": "stop", "reason": reason, **base})
+        elif pr.get("isDraft"):
             # Entwurf = Arbeit unfertig (z. B. abgebrochene Nacht): weitermachen, nicht „reparieren“.
-            return {"step": step, "resume": True, "model": model, **base}
-        if step == "tests":
-            # Abnahmetest-PRs sind absichtlich rot (Tests vor der Umsetzung) – sie warten auf Review.
-            waiting.append({"step": "stop", "reason": "Abnahmetests warten auf Review", **base})
-            continue
-        status = checks(pr)
-        if status == "failure":
+            drafts.append({"step": step, "resume": True, "model": model, **base})
+        elif pr.get("conflict"):
+            conflicts.append({"step": "merge-main", "resume": True, "model": model, **base})
+        elif "review-abgelehnt" in labels:
+            # Der unabhängige Review hat den PR abgelehnt (Kommentar im PR): wie ein roter PR nachbessern.
             if "fix-2" in labels:
-                return {
-                    "step": "stop",
-                    "reason": "zwei Reparaturversuche erfolglos – PR wird blockiert",
-                    "label": "blocked",
-                    **base,
-                }
-            attempt = 2 if "fix-1" in labels else 1
-            return {"step": "fix", "attempt": attempt, "model": model, "resume": True, **base}
-        reason = "CI des offenen PRs läuft noch" if status == "pending" else "offener PR wartet auf Review"
-        waiting.append({"step": "stop", "reason": reason, **base})
-    if len(waiting) >= MAX_WAITING:
-        return {**waiting[0], "reason": f"{len(waiting)} PRs warten auf Review – erst prüfen"}
-    busy = {w["id"] for w in waiting}
+                to_block.append(
+                    {
+                        "step": "stop",
+                        "reason": "Review zweimal abgelehnt – PR wird blockiert",
+                        "label": "blocked",
+                        **base,
+                    }
+                )
+            else:
+                attempt = 2 if "fix-1" in labels else 1
+                reds.append({"step": "fix", "attempt": attempt, "model": model, "resume": True, **base})
+        elif kind == "tests":
+            # Abnahmetest-PRs sind absichtlich rot (Tests vor der Umsetzung); der Auto-Merge nimmt sie nach
+            # dem Review.
+            waiting.append({"step": "stop", "reason": "Abnahmetests warten auf Review", **base})
+        else:
+            status = checks(pr)
+            if status == "failure":
+                if "fix-2" in labels:
+                    to_block.append(
+                        {
+                            "step": "stop",
+                            "reason": "zwei Reparaturversuche erfolglos – PR wird blockiert",
+                            "label": "blocked",
+                            **base,
+                        }
+                    )
+                else:
+                    attempt = 2 if "fix-1" in labels else 1
+                    reds.append({"step": "fix", "attempt": attempt, "model": model, "resume": True, **base})
+            else:
+                pending = status == "pending"
+                reason = "CI des offenen PRs läuft noch" if pending else "offener PR wartet auf Review"
+                waiting.append({"step": "stop", "reason": reason, **base})
+
+    fix_prs = [x for x in drafts + conflicts + reds + waiting + blocked if x["branch"].startswith("fix/")]
+    if main_red:
+        # Nur main reparieren; an fremden Fehlern arbeitet niemand.
+        for group in (drafts, conflicts, reds):
+            for x in group:
+                if x["branch"].startswith("fix/"):
+                    return x
+        if fix_prs:
+            return {"step": "stop", "reason": f"main ist rot – Reparatur läuft (PR #{fix_prs[0]['pr']})"}
+        return {
+            "step": "repair-main",
+            "id": "main-rot",
+            "branch": MAIN_FIX_BRANCH,
+            "resume": MAIN_FIX_BRANCH in remote,
+            "model": "sonnet",
+            "reason": "main ist rot",
+        }
+    # Hausmeister zuerst: unfertige Arbeit, Konflikte, rote PRs.
+    for group in (drafts, conflicts, reds, to_block):
+        if group:
+            return group[0]
+    if len(blocked) >= MAX_BLOCKED:
+        return {**blocked[0], "reason": f"{len(blocked)} PRs blockiert – erst klären"}
+
+    busy = {x["id"] for x in waiting + blocked}
     states = {**states, **{m.split("/", 1)[1]: "done" for m in merged if m.startswith("change/")}}
+    # Archivieren: fertiger, gemergter Change, in der Reihenfolge der Warteschlange.
+    for cid in [e["id"] for e in entries] + sorted(unarchived):
+        if cid in unarchived and cid not in busy and f"change/{cid}" in merged:
+            branch = f"archiv/{cid}"
+            resume = branch in remote
+            return {"step": "archive", "id": cid, "branch": branch, "resume": resume, "model": "sonnet"}
     for entry in entries:
         cid = entry["id"]
         if not entry["night"] or cid in busy or states.get(cid) == "done":
@@ -171,7 +233,8 @@ def decide(
             "resume": branch in remote,
             "model": entry["model"],
         }
-    return waiting[0] if waiting else {"step": "stop", "reason": "Nichts zu tun"}
+    rest = blocked + waiting
+    return rest[0] if rest else {"step": "stop", "reason": "Nichts zu tun"}
 
 
 def _gh(args: list[str]) -> str:
@@ -207,6 +270,26 @@ def _rollup(sha: str) -> list[dict]:
     return [{"status": r["status"].upper(), "conclusion": (r["conclusion"] or "").upper()} for r in runs]
 
 
+def _conflict(number: int) -> bool:
+    """Hat der PR einen Konflikt mit main? GitHub rechnet asynchron; unbekannt (null) gilt als keiner."""
+    return _api(f"repos/{{owner}}/{{repo}}/pulls/{number}").get("mergeable_state") == "dirty"
+
+
+def unarchived_changes(root: Path) -> set[str]:
+    """Changes, deren Tasks alle abgehakt sind und die noch unter openspec/changes/ liegen."""
+    changes = root / "openspec" / "changes"
+    archive = changes / "archive"
+    archived = {p.name for p in archive.iterdir()} if archive.exists() else set()
+    out = set()
+    for d in sorted(changes.iterdir()) if changes.exists() else []:
+        tasks = d / "tasks.md"
+        if d.name == "archive" or not tasks.exists() or not tasks_done(tasks.read_text(encoding="utf-8")):
+            continue
+        if not any(a.endswith(f"-{d.name}") for a in archived):
+            out.add(d.name)
+    return out
+
+
 def gather_online() -> tuple[list[dict], set[str], str, set[str]]:
     # PRs aus Forks nie als Agenten-PRs werten: ein Fremder könnte einen Branch change/<id> anlegen.
     own = "{owner}/{repo}"
@@ -217,6 +300,7 @@ def gather_online() -> tuple[list[dict], set[str], str, set[str]]:
             "labels": [{"name": lbl["name"]} for lbl in p["labels"]],
             "isDraft": p["draft"],
             "statusCheckRollup": _rollup(p["head"]["sha"]) if AGENT_BRANCH.match(p["head"]["ref"]) else [],
+            "conflict": AGENT_BRANCH.match(p["head"]["ref"]) is not None and _conflict(p["number"]),
         }
         for p in _api(f"repos/{own}/pulls?state=open&per_page=100")
         if (p["head"].get("repo") or {}).get("full_name") == p["base"]["repo"]["full_name"]
@@ -267,7 +351,9 @@ def main() -> None:
         merged = {b for b in args.merged.split(",") if b}
     else:
         prs, remote, main_status, merged = gather_online()
-    print(json.dumps(decide(entries, states, prs, remote, main_status, merged), ensure_ascii=False))
+    unarchived = unarchived_changes(ROOT)
+    step = decide(entries, states, prs, remote, main_status, merged, unarchived)
+    print(json.dumps(step, ensure_ascii=False))
 
 
 if __name__ == "__main__":

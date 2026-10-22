@@ -25,6 +25,16 @@ ALLOWED = [
     ("crates/graph/src/lib.rs", "change/ap-01-spike-datenmodell"),
     ("server/lib/cee_server.ex", "change/ap-01-spike-datenmodell"),
     ("format/schema/element.json", "change/ap-01-spike-datenmodell"),
+    # ADR-064: Hausmeister und Kernteam-Änderungen mit Ja des Menschen
+    ("openspec/changes/archive/2026-10-21-ap-05b/design.md", "archiv/ap-05b"),
+    ("openspec/specs/graph-kern/spec.md", "archiv/ap-05b"),
+    ("openspec/changes/ap-05b/tasks.md", "archiv/ap-05b"),  # Verschieben entfernt die Quelle
+    ("crates/graph/src/doc.rs", "fix/main-rot"),
+    ("tests/unit/test_next_step.py", "fix/main-rot"),
+    ("docs/adr/ADR-064-x.md", "adr/mensch-entscheidet"),
+    ("tools/guard.py", "adr/mensch-entscheidet"),
+    (".github/workflows/ci.yml", "adr/mensch-entscheidet"),
+    ("AGENTS.md", "claude/adr/mensch-entscheidet"),
 ]
 
 BLOCKED = [
@@ -64,6 +74,17 @@ BLOCKED = [
     ("opencode.json", "main"),
     ("LICENSE", "change/ap-17-identitaet"),
     ("sdk/LICENSE", "main"),
+    # ADR-064: die neuen Branch-Arten sind eng begrenzt
+    ("openspec/changes/ap-06/tasks.md", "archiv/ap-05b"),  # nur der eigene Change
+    ("docs/adr/ADR-001.md", "archiv/ap-05b"),
+    ("crates/graph/src/doc.rs", "archiv/ap-05b"),
+    ("tools/guard.py", "fix/main-rot"),
+    ("docs/adr/ADR-001.md", "fix/main-rot"),
+    ("openspec/specs/graph-kern/spec.md", "fix/main-rot"),
+    ("openspec/changes/ap-17-identitaet/proposal.md", "fix/main-rot"),
+    ("tests/acceptance/ap-17-identitaet/test_x.py", "fix/main-rot"),
+    ("openspec/specs/graph-kern/spec.md", "adr-fake/x"),  # unbekannte Präfixe bleiben gesperrt
+    ("tools/guard.py", "main"),
 ]
 
 
@@ -96,6 +117,7 @@ def test_stop_hook_sees_unstaged_change_in_first_status_line(tmp_path, monkeypat
     adr.write_text("b\n")  # unstaged → Statuszeile " M docs/adr/ADR-001.md"
 
     monkeypatch.delenv("CEE_ROLE", raising=False)
+    monkeypatch.delenv("GITHUB_HEAD_REF", raising=False)  # in der CI der echte Branch des PRs
     monkeypatch.setattr("sys.argv", ["guard.py", "claude-stop"])
     monkeypatch.setattr("sys.stdin", __import__("io").StringIO(json.dumps({"cwd": str(tmp_path)})))
     assert guard.main() == 0

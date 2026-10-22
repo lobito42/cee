@@ -1,10 +1,12 @@
 ---
 name: nachtschicht
-description: Unbeaufsichtigter Lauf – bestimmt mit tools/next_step.py genau einen Schritt (Abnahmetests schreiben, Change umsetzen oder roten Agenten-PR reparieren), arbeitet ihn ab, öffnet bzw. aktualisiert den Pull Request und schreibt ins Nachtschicht-Protokoll. Für geplante Läufe als GitHub-Action, in der Cloud oder lokal.
+description: Unbeaufsichtigter Lauf – bestimmt mit tools/next_step.py genau einen Schritt (Hausmeister: main reparieren, Konflikt lösen, roten PR reparieren, Change archivieren; sonst Abnahmetests schreiben oder Change umsetzen), arbeitet ihn ab, öffnet bzw. aktualisiert den Pull Request und schreibt ins Nachtschicht-Protokoll. Für geplante Läufe als GitHub-Action, in der Cloud oder lokal.
 ---
 
-Du arbeitest unbeaufsichtigt. Niemand beantwortet Fragen. Erledige **genau einen** Schritt, sparsam. Die
-GitHub-Action startet bis zu acht Runden je Nacht; jede Runde ist ein eigener Lauf mit einem Schritt.
+Du arbeitest unbeaufsichtigt. Niemand beantwortet Fragen sofort. Erledige **genau einen** Schritt, sparsam. Die
+GitHub-Action startet mehrmals täglich Läufe mit je bis zu drei Runden; jede Runde erledigt einen Schritt.
+Git, Review, Konflikte, CI und Archivieren sind deine Aufgabe, nicht die des Menschen (ADR-064). Gemergt wird
+nicht von dir, sondern vom Auto-Merge-Workflow nach dem unabhängigen Review.
 
 ## 1. Vorbereitung
 
@@ -20,6 +22,7 @@ GitHub-Action startet bis zu acht Runden je Nacht; jede Runde ist ein eigener La
 
 `python3 tools/next_step.py` ausgeben lassen und **genau** dem Ergebnis folgen. Nicht selbst auswählen,
 nicht erkunden. Felder: `step`, `id`, `branch`, `resume`, `model`, ggf. `pr`, `attempt`, `reason`.
+Schritte: `repair-main`, `merge-main`, `fix`, `archive` (Hausmeister) sowie `tests`, `build`.
 
 - `step: stop` → nur das Protokoll schreiben (`reason`) und beenden.
 - Bei `model: opus` die Arbeit an den passenden Spezialisten delegieren (`kern-specialist` für crates/ und
@@ -43,16 +46,32 @@ weiterarbeiten (nie neu von main anlegen); steht `pr` dabei, ist das der offene 
   Repository, und Zurücksetzen ist nachts nicht möglich. Vor jedem Commit `git status --short` prüfen und nur
   eigene Dateien mit Pfad hinzufügen (`git add spikes/x openspec/changes/<id>/tasks.md`), nie `git add -A`.
 
+- **repair-main** → `main` ist rot. Auf `fix/main-rot` (von `main`): Ursache im Log des letzten CI-Laufs auf
+  `main` finden (`gh run list --branch main --limit 3`, `gh run view <id> --log-failed`), nur diese beheben,
+  lokal prüfen, committen, pushen, PR öffnen (`gh pr create`, nicht als Entwurf, wenn grün). Tests nie
+  abschwächen oder überspringen. Branch-Name `fix/<grund>` ist erlaubt; er darf Produktcode und `tests/unit/`
+  schreiben, aber keine Verträge.
+- **merge-main** → Der PR `pr` hat einen Konflikt. `git fetch origin && git switch <branch> && git merge origin/main`,
+  Konflikte lösen (bei Verträgen, die auf `main` neuer sind, gewinnt `main`), Tests des Changes laufen lassen,
+  `git push -u origin <branch>`. Löst sich ein Konflikt nur durch eine inhaltliche Entscheidung (zwei
+  widersprüchliche Anforderungen), ist das eine Frage an den Menschen (siehe „Fragen“).
+- **archive** → Auf `archiv/<id>`: `openspec archive <id> -y`, danach `git status --short` prüfen (nur
+  `openspec/changes/<id>/`, `openspec/changes/archive/` und `openspec/specs/` dürfen sich ändern), committen
+  (`git commit -s`, „<id> archivieren“), pushen, PR öffnen. Der Auto-Merge nimmt ihn nach dem Review.
 - **tests** → Abnahmetests nach dem Vorgehen des Agenten `test-author`. Prüfen, dass sie rot sind.
+  Hält ein Umsetzer später einen Test für falsch, geht das nur als Einspruch-PR auf `tests/<id>` (nie auf
+  `change/<id>`).
 - **build** → umsetzen nach dem Vorgehen des Agenten `implementer` (Tasks in Reihenfolge,
   `uv run pytest -q -x tests/acceptance/<id>`).
-- **fix** → `gh pr checks <pr>` und `gh run view <run-id> --log-failed` lesen, nur die Ursache beheben.
+- **fix** → `gh pr checks <pr>` und `gh run view <run-id> --log-failed` lesen, bei abgelehntem Review (Label
+  `review-abgelehnt`) den Review-Kommentar im PR (`gh pr view <pr> --comments`); nur die Ursache bzw. die genannten
+  Punkte beheben. Dann das Label `review-abgelehnt` **nicht** selbst entfernen: der nächste Push startet den Review neu.
   Danach Label setzen: `gh pr edit <pr> --add-label fix-<attempt>`. Ist es der zweite Versuch und noch
   rot, zusätzlich Label `blocked`.
 
 **Sicher speichern:** Nach jeder abgehakten Task bzw. jedem fertigen Testmodul committen (`git commit -s`)
 und pushen, immer mit Ziel: `git push -u origin <branch>` (nie ein blankes `git push` – das ist nicht
-freigegeben). Gibt es noch keinen PR, nach dem ersten Push sofort einen
+freigegeben; ebenso `fix/…` und `archiv/…`). Gibt es noch keinen PR, nach dem ersten Push sofort einen
 **Entwurfs-PR** öffnen (`gh pr create --draft`, Vorlage `.github/pull_request_template.md`). Bricht der Lauf
 ab, macht die nächste Runde dort weiter.
 
@@ -68,12 +87,29 @@ Runde 1 · seit 05:27 UTC · Tests 5 von 12 grün · Tasks 3 von 9 · gerade: Of
 
 **Fertig** ist ein Schritt erst, wenn die Abnahmetests des Changes im strengen Modus grün sind und
 **nichts übersprungen** wurde (`pytest -q -rs` zeigt keine `SKIPPED`). Dann den PR mit
-`gh pr ready <pr>` aus dem Entwurf holen. Bei `tests` ist der Schritt fertig, wenn alle Scenarios abgedeckt
+`gh pr ready <pr>` aus dem Entwurf holen; das startet den Review und den Auto-Merge. Bei `tests` ist der Schritt fertig, wenn alle Scenarios abgedeckt
 sind und die Tests im strengen Modus ohne Sammelfehler und ohne `SKIPPED` laufen, aber rot sind – dann ebenso
 `gh pr ready <pr>`. **Ein Entwurf heißt für die nächste Runde „unfertig, weitermachen“**: Wer fertig ist und den
 PR als Entwurf lässt, blockiert die übrigen Runden der Nacht.
 
-## 4. Protokoll (immer, auch bei „Nichts zu tun“ und Abbruch)
+## 4. Fragen (nur wenn es wirklich blockiert)
+
+Der Mensch wird nur bei Inhalten gefragt: unklare oder widersprüchliche Anforderungen, Ausprobieren eines
+Spikes oder Prototyps, Änderungen an Kernteam-Dateien, Kriterien mit `[mensch]`. Frage nie zu Git, CI, Tests,
+Konflikten oder Archivieren – löse sie. Blockiert eine Frage die Arbeit am PR: Label `blocked` setzen, die Frage
+im PR unter „Offene Fragen“ stellen und **einen Kommentar im Issue „Fragen an das Kernteam“** schreiben
+(`gh issue list --label fragen`), mit Erwähnung `@lobito42`; das löst die Push-Benachrichtigung aus. Form:
+
+```
+@lobito42 <id>: <die Entscheidung in einem Satz>? A) <Antwort> (empfohlen) B) <Antwort> – danach: <was passiert>
+```
+
+Alles, was nicht blockiert (z. B. ein Prototyp zum Ausprobieren), kommt nur in den PR bzw. ins `/stand`. Prototypen
+immer als Link zur Browser-Vorschau (Workflow `vorschau.yml`, `spikes/<name>/vorschau.sh`), Desktop-Build nur bei
+Tauri, Eingabegeräten oder Geräteleistung (Label `desktop-build`), jeweils mit Klick-Anleitung und der eigentlichen
+Frage. Die Antwort des Menschen hältst du im PR oder in der Spec fest.
+
+## 5. Protokoll (immer, auch bei „Nichts zu tun“ und Abbruch)
 
 Kommentar im Issue „Nachtschicht-Protokoll“ (Nummer 2), als eigener Befehl ohne `$(…)` (Befehle mit
 `$(…)` werden in der Nacht verweigert):
@@ -86,7 +122,8 @@ Ergebnis ist eines von: `fertig`, `teilweise (Task x.y offen)`, `rot nach 3 Anl�
 
 ## Grenzen
 
-- Pushe nur auf den Branch aus `next_step.py`, nie auf `main`. Ändere `openspec/queue.yaml` nicht.
+- Pushe nur auf den Branch aus `next_step.py`, nie auf `main`. Ändere `openspec/queue.yaml` nicht. Du mergst
+  nichts selbst und schaltest den Auto-Merge nicht von Hand ein.
 - Abnahmetests auf `change/`-Branches nie ändern, abschwächen oder überspringen.
 - Höchstens drei Anläufe pro Problem, dann Stand committen und pushen, PR als Entwurf lassen, Label `blocked`,
   Problem im PR unter „Offene Fragen“ beschreiben.

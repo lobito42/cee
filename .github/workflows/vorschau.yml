@@ -1,0 +1,138 @@
+name: Vorschau für Spikes und Prototypen
+
+# ADR-064: Spikes und Prototypen unter spikes/ kommen als Link zur Browser-Vorschau je PR; ein Desktop-Build
+# entsteht nur, wenn es um Tauri, Eingabegeräte oder Geräteleistung geht (Label `desktop-build`).
+#
+# Vereinbarung: Ein Spike mit Browser-Vorschau bringt `spikes/<name>/vorschau.sh` mit. Das Skript baut die
+# statische Seite in das Verzeichnis, das als erstes Argument übergeben wird (index.html im Wurzelverzeichnis).
+# Ein Spike mit Desktop-App hat `spikes/<name>/src-tauri/` und ein npm-Skript `tauri` in `spikes/<name>/package.json`.
+#
+# Einmalig (Kernteam): Settings → Pages → Source „Deploy from a branch“ → Branch `gh-pages`, Ordner `/ (root)`.
+# Das Repository ist öffentlich; Vorschauen sind es damit auch.
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, labeled, closed]
+    paths:
+      - "spikes/**"
+      - ".github/workflows/vorschau.yml"
+
+concurrency:
+  group: vorschau-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  GH_TOKEN: ${{ github.token }}
+  PR: ${{ github.event.pull_request.number }}
+
+jobs:
+  browser:
+    if: github.event.action != 'closed' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .tool-versions
+      - run: rustup toolchain install   # rust-toolchain.toml (für WASM-Spikes)
+      - name: Vorschauen bauen
+        id: bau
+        shell: bash
+        run: |
+          mkdir -p site
+          found=""
+          for s in spikes/*/vorschau.sh; do
+            [ -f "$s" ] || continue
+            name=$(basename "$(dirname "$s")")
+            mkdir -p "site/$name"
+            bash "$s" "$PWD/site/$name"
+            found="$found $name"
+          done
+          echo "spikes=${found# }" >> "$GITHUB_OUTPUT"
+      - name: Auf gh-pages veröffentlichen
+        if: steps.bau.outputs.spikes != ''
+        shell: bash
+        run: |
+          remote="https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+          git clone --depth 1 --branch gh-pages "$remote" pages 2>/dev/null || {
+            git init -q pages && git -C pages checkout -q -b gh-pages && git -C pages remote add origin "$remote"
+          }
+          rm -rf "pages/pr-$PR"; mkdir -p "pages/pr-$PR"
+          cp -r site/. "pages/pr-$PR/"
+          touch pages/.nojekyll
+          git -C pages add -A
+          git -C pages -c user.name="cee-vorschau" -c user.email="noreply@github.com" commit -q -m "Vorschau für PR #$PR" || exit 0
+          git -C pages push -q origin gh-pages
+      - name: Link in den PR schreiben
+        if: steps.bau.outputs.spikes != ''
+        shell: bash
+        run: |
+          base="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/pr-$PR"
+          body="**Vorschau im Browser** (Stand $(git rev-parse --short HEAD)):"
+          for n in ${{ steps.bau.outputs.spikes }}; do body="$body"$'\n'"- $n: $base/$n/"; done
+          marker='<!-- cee-vorschau -->'
+          id=$(gh api "repos/${{ github.repository }}/issues/$PR/comments" --jq ".[] | select(.body | contains(\"$marker\")) | .id" | head -1)
+          if [ -n "$id" ]; then gh api -X PATCH "repos/${{ github.repository }}/issues/comments/$id" -f body="$marker"$'\n'"$body" >/dev/null
+          else gh pr comment "$PR" --body "$marker"$'\n'"$body"; fi
+
+  aufraeumen:
+    if: github.event.action == 'closed' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Vorschau des PRs entfernen
+        shell: bash
+        run: |
+          remote="https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+          git clone --depth 1 --branch gh-pages "$remote" pages 2>/dev/null || exit 0
+          [ -d "pages/pr-$PR" ] || exit 0
+          git -C pages rm -rq "pr-$PR"
+          git -C pages -c user.name="cee-vorschau" -c user.email="noreply@github.com" commit -q -m "Vorschau von PR #$PR entfernt"
+          git -C pages push -q origin gh-pages
+
+  desktop:
+    # Nur auf Anforderung (Label `desktop-build`): Tauri, Eingabegeräte oder Leistung auf dem Gerät.
+    if: >-
+      github.event.action != 'closed' && github.event.pull_request.head.repo.full_name == github.repository &&
+      contains(github.event.pull_request.labels.*.name, 'desktop-build')
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .tool-versions
+      - run: rustup toolchain install
+      - name: Linux-Abhängigkeiten für Tauri
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev patchelf
+      - name: Desktop-Apps bauen
+        shell: bash
+        run: |
+          built=0
+          for d in spikes/*/src-tauri; do
+            [ -d "$d" ] || continue
+            dir=$(dirname "$d")
+            npm --prefix "$dir" ci
+            npm --prefix "$dir" run tauri -- build
+            built=1
+          done
+          [ "$built" = 1 ] || echo "::notice::Kein Spike mit src-tauri/ gefunden"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: desktop-${{ matrix.os }}
+          path: |
+            spikes/*/src-tauri/target/release/bundle/**
+          if-no-files-found: ignore
+          retention-days: 14

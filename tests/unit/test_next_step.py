@@ -117,8 +117,24 @@ def test_resume_existing_branch():
     assert out["resume"] is True
 
 
-def test_main_red_stops():
-    assert ns.decide(entries(), {}, [], set(), "failure")["step"] == "stop"
+def test_main_red_starts_repair_branch():
+    out = ns.decide(entries(), {}, [], set(), "failure")
+    assert out["step"] == "repair-main" and out["branch"] == "fix/main-rot" and out["resume"] is False
+    assert ns.decide(entries(), {}, [], {"fix/main-rot"}, "failure")["resume"] is True
+
+
+def test_main_red_waits_for_open_repair_pr():
+    out = ns.decide(entries(), {}, [pr("fix/main-rot", number=9)], set(), "failure")
+    assert out["step"] == "stop" and "Reparatur" in out["reason"]
+    draft = pr("fix/main-rot", number=9)
+    draft["isDraft"] = True
+    out = ns.decide(entries(), {}, [draft], set(), "failure")
+    assert out["step"] == "repair-main" and out["resume"] is True and out["pr"] == 9
+
+
+def test_main_red_ignores_other_prs():
+    red = pr("change/ap-a", checks=("FAILURE",))
+    assert ns.decide(entries(), {}, [red], set(), "failure")["step"] == "repair-main"
 
 
 def test_main_only_cancelled_jobs_is_not_red():
@@ -141,10 +157,84 @@ def test_waiting_pr_does_not_block_other_changes():
     assert out["step"] == "tests" and out["id"] == "ap-d"
 
 
-def test_too_many_waiting_prs_stop():
+def test_waiting_prs_never_stop_the_night():
     prs = [pr(f"tests/ap-{c}", number=n) for n, c in enumerate("xyz", 1)]
+    out = ns.decide(entries(), {"ap-a": "build"}, prs, set(), "success")
+    assert out["step"] == "build" and out["id"] == "ap-a"
+
+
+def test_too_many_blocked_prs_stop():
+    prs = [pr(f"tests/ap-{c}", ["blocked"], number=n) for n, c in enumerate("xyz", 1)]
     out = ns.decide(entries(), {}, prs, set(), "success")
     assert out["step"] == "stop" and "3 PRs" in out["reason"] and out["pr"] == 1
+
+
+def test_conflict_is_resolved_by_merging_main():
+    conflicted = pr("change/ap-a")
+    conflicted["conflict"] = True
+    out = ns.decide(entries(), {}, [conflicted], set(), "success")
+    assert out["step"] == "merge-main" and out["pr"] == 7 and out["branch"] == "change/ap-a"
+    # auch rote Abnahmetest-PRs: Konflikt zuerst
+    tests = pr("tests/ap-b", checks=("FAILURE",))
+    tests["conflict"] = True
+    assert ns.decide(entries(), {}, [tests], set(), "success")["step"] == "merge-main"
+
+
+def test_housekeeping_comes_before_new_work():
+    red = pr("change/ap-a", checks=("FAILURE",))
+    done = {"unarchived": {"ap-z"}, "merged": {"change/ap-z"}}
+    out = ns.decide(entries(), {"ap-d": "tests"}, [red], set(), "success", **done)
+    assert out["step"] == "fix"
+
+
+def test_archive_merged_finished_change():
+    out = ns.decide(entries(), {}, [], set(), "success", merged={"change/ap-z"}, unarchived={"ap-z"})
+    assert out == {
+        "step": "archive",
+        "id": "ap-z",
+        "branch": "archiv/ap-z",
+        "resume": False,
+        "model": "sonnet",
+    }
+    done = {"merged": {"change/ap-z"}, "unarchived": {"ap-z"}}
+    out = ns.decide(entries(), {}, [], {"archiv/ap-z"}, "success", **done)
+    assert out["resume"] is True
+
+
+def test_unmerged_change_is_not_archived():
+    out = ns.decide(entries(), {"ap-a": "build"}, [], set(), "success", merged=set(), unarchived={"ap-z"})
+    assert out["step"] == "build"
+
+
+def test_open_archive_pr_is_not_started_twice():
+    arch = pr("archiv/ap-z")
+    done = {"merged": {"change/ap-z"}, "unarchived": {"ap-z"}}
+    out = ns.decide(entries(), {"ap-a": "build"}, [arch], set(), "success", **done)
+    assert out["step"] == "build"  # der Archiv-PR wartet auf den Auto-Merge, die Nacht baut weiter
+
+
+def test_fix_branch_pr_is_repaired_like_others():
+    red = ("SUCCESS", "FAILURE")
+    out = ns.decide(entries(), {}, [pr("fix/tippfehler", checks=red)], set(), "success")
+    assert out["step"] == "fix" and out["attempt"] == 1
+
+
+def test_independent_changes_run_in_parallel():
+    # ap-a hat einen offenen PR, ap-d ist unabhängig und kommt trotzdem dran
+    out = ns.decide(entries(), {"ap-a": "build"}, [pr("change/ap-a")], set(), "success")
+    assert out["id"] == "ap-d"
+
+
+def test_unarchived_changes(tmp_path):
+    ch = tmp_path / "openspec" / "changes"
+    (ch / "ap-1").mkdir(parents=True)
+    (ch / "ap-1" / "tasks.md").write_text("- [x] 1\n", encoding="utf-8")
+    (ch / "ap-2").mkdir()
+    (ch / "ap-2" / "tasks.md").write_text("- [x] 1\n- [ ] 2\n", encoding="utf-8")
+    (ch / "ap-3").mkdir()
+    (ch / "ap-3" / "tasks.md").write_text("- [x] 1\n", encoding="utf-8")
+    (ch / "archive" / "2026-10-01-ap-3").mkdir(parents=True)
+    assert ns.unarchived_changes(tmp_path) == {"ap-1"}
 
 
 def test_human_pr_does_not_block():
@@ -196,3 +286,14 @@ def test_blocked_and_pending():
 def test_nothing_to_do():
     states = {e["id"]: "done" for e in entries()}
     assert ns.decide(entries(), states, [], set(), "success") == {"step": "stop", "reason": "Nichts zu tun"}
+
+
+def test_rejected_review_is_reworked_like_a_red_pr():
+    rejected = pr("tests/ap-b", ["review-abgelehnt"])
+    out = ns.decide(entries(), {"ap-a": "done"}, [rejected], set(), "success")
+    assert out["step"] == "fix" and out["attempt"] == 1 and out["branch"] == "tests/ap-b"
+    again = pr("change/ap-a", ["review-abgelehnt", "fix-1"])
+    assert ns.decide(entries(), {}, [again], set(), "success")["attempt"] == 2
+    last = pr("change/ap-a", ["review-abgelehnt", "fix-1", "fix-2"])
+    out = ns.decide(entries(), {}, [last], set(), "success")
+    assert out["step"] == "stop" and out["label"] == "blocked"

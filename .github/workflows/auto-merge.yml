@@ -1,0 +1,110 @@
+name: Review und Auto-Merge
+
+# ADR-064: Agenten-PRs auf tests/, change/, fix/ und archiv/ werden unabhängig geprüft (/review-change mit
+# frischem Kontext, nicht der Autor) und nach Zustimmung zum Auto-Merge freigegeben. GitHub merged erst, wenn
+# alle Pflicht-Prüfungen des Branch-Schutzes grün sind. adr/-Branches und PRs mit offener menschlicher Abnahme
+# werden nie automatisch gemergt.
+#
+# Voraussetzungen (einmalig, Kernteam): Auto-Merge im Repository erlaubt, Branch-Schutz für main mit
+# Pflicht-Prüfungen, Secret CLAUDE_CODE_OAUTH_TOKEN. Siehe docs/betrieb/routine-nachtschicht.md.
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review, synchronize]
+    branches: [main]
+
+concurrency:
+  group: auto-merge-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  OPENSPEC_TELEMETRY: "0"   # keine Telemetrie ohne Zustimmung (ADR-037)
+  GH_TOKEN: ${{ github.token }}
+  PR: ${{ github.event.pull_request.number }}
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  checks: read
+  id-token: write
+
+jobs:
+  review:
+    # Nur eigene Agenten-Branches, keine Entwürfe, keine Forks.
+    if: >-
+      github.event.pull_request.draft == false &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      (startsWith(github.event.pull_request.head.ref, 'tests/') ||
+       startsWith(github.event.pull_request.head.ref, 'change/') ||
+       startsWith(github.event.pull_request.head.ref, 'fix/') ||
+       startsWith(github.event.pull_request.head.ref, 'archiv/'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      gate: ${{ steps.gate.outputs.gate }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Alten Stand zurücksetzen
+        shell: bash
+        run: |
+          for l in review-ok review-abgelehnt wartet-auf-mensch; do gh label create "$l" --color 0e8a16 2>/dev/null || true; done
+          gh pr merge "$PR" --disable-auto 2>/dev/null || true
+          gh pr edit "$PR" --remove-label review-ok --remove-label review-abgelehnt --remove-label wartet-auf-mensch || true
+
+      - name: Vorprüfung (ohne KI)
+        id: gate
+        shell: bash
+        env:
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+          BODY: ${{ github.event.pull_request.body }}
+        run: |
+          gate=ok
+          # 1. Vertragsschutz: jede Meldung ist ein harter Befund
+          if ! python3 tools/guard.py range origin/main; then gate=guard; fi
+          # 2. Offene menschliche Abnahme hält den PR an
+          id="${BRANCH#*/}"
+          if [ -f "openspec/changes/$id/tasks.md" ] && grep -Eq '^\s*- \[ \].*\[mensch\]' "openspec/changes/$id/tasks.md"; then gate=mensch; fi
+          if printf '%s\n' "$BODY" | awk '/^## /{f=($0 ~ /Menschliche Abnahme/)} f && /^- \[ \]/{found=1} END{exit !found}'; then gate=mensch; fi
+          echo "gate=$gate" >> "$GITHUB_OUTPUT"
+          case "$gate" in
+            guard) gh pr edit "$PR" --add-label review-abgelehnt
+                   gh pr comment "$PR" --body "Vertragsschutz meldet Verstöße (\`python3 tools/guard.py range origin/main\`). Nicht automatisch mergen." ;;
+            mensch) gh pr edit "$PR" --add-label wartet-auf-mensch
+                   gh pr comment "$PR" --body "Offene menschliche Abnahme (\`[mensch]\`): wird nicht automatisch gemergt. Der Review läuft trotzdem." ;;
+          esac
+
+      - uses: anthropics/claude-code-action@v1
+        if: steps.gate.outputs.gate != 'guard'
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: "/review-change ${{ github.event.pull_request.number }} auto"
+          claude_args: |
+            --model sonnet
+            --max-turns 40
+            --allowedTools "Read,Grep,Glob,Agent,Bash(gh pr view *),Bash(gh pr diff *),Bash(gh pr comment *),Bash(gh pr edit *),Bash(python3 tools/guard.py *),Bash(openspec *),Bash(git diff *),Bash(git log *),Bash(git show *)"
+
+  merge:
+    needs: review
+    if: needs.review.outputs.gate == 'ok'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Auto-Merge freigeben, wenn der Review zugestimmt hat
+        shell: bash
+        env:
+          SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          labels=$(gh pr view "$PR" --repo "$GITHUB_REPOSITORY" --json labels --jq '[.labels[].name] | join(",")')
+          case ",$labels," in
+            *,review-ok,*) ;;
+            *) echo "Keine Zustimmung des Reviews ($labels) – kein Auto-Merge."; exit 0 ;;
+          esac
+          case ",$labels," in
+            *,review-abgelehnt,*|*,wartet-auf-mensch,*|*,blocked,*) echo "Gesperrt durch Label ($labels)."; exit 0 ;;
+          esac
+          # --match-head-commit: nur genau den geprüften Stand mergen; ein späterer Push hebt die Freigabe auf.
+          gh pr merge "$PR" --repo "$GITHUB_REPOSITORY" --auto --merge --match-head-commit "$SHA"

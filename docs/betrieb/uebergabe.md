@@ -38,6 +38,7 @@ Prüfen, was die Nachtschicht als Nächstes täte: `python3 tools/next_step.py` 
 | Meilensteine | 059, 062 | M0 Klären, M1 Modellieren, M2 Zusammen, M3 Beta; Raum und Akustik als F1 nach der Beta (CAD zuerst); Nachtrag Machbarkeit |
 | Geräte, Layouts, Eingabe, XR | 060 | Linux und Mac zuerst, Windows mit, iPad, kein Handy; Layouts Desktop und Tablet; Befehle als Daten; 3D-Maus über HID; XR erst WebXR, Endziel native App auf der Vision Pro |
 | Designsystem | 061 | ein Muster je Aufgabe (`docs/design/muster.md`), Tokens (`docs/design/tokens.json`), Inter, Graphit mit Akzent Stahlblau |
+| Arbeitsteilung | 064 | Der Mensch entscheidet (Inhalte, Prototypen ausprobieren), Agenten integrieren: Hausmeister vor neuer Arbeit, Auto-Merge nach unabhängigem Review, Läufe rund um die Uhr, Fragen als Push; `/stand` zeigt nur Entscheidungen |
 
 Begriffe stehen in `docs/glossar.md` (u. a. nicht „Werkbank“, „Kompakt“, „Werkstatt“, „Änderungskarte“).
 
@@ -47,14 +48,15 @@ Begriffe stehen in `docs/glossar.md` (u. a. nicht „Werkbank“, „Kompakt“,
   Repository-Variable `NACHTSCHICHT=an`. Betrieb und Morgenroutine: `docs/betrieb/routine-nachtschicht.md`.
 - `tools/next_step.py` entscheidet ohne KI, Zustand aus dem Repo (Tests auf main → Umsetzung; Tasks abgehakt oder
   `change/<id>` gemergt → fertig); Entwurfs-PRs werden fortgesetzt, rote PRs bis zu zweimal repariert, dann `blocked`.
-- Bis zu acht Runden je Nacht ab 20:07 UTC (eine Runde = ein Schritt, je höchstens 150 min); nach 240 min startet keine neue
-  Runde. Ein wartender PR (Review, CI, `blocked`) hält nur seinen eigenen Change auf; ab drei wartenden PRs ist
-  Schluss. Jeder Agenten-PR trägt oben einen Abschnitt „Stand“ (Runde, Tests, Tasks, gerade, Lage); verweigerte
+- Läufe alle 3 Stunden rund um die Uhr, je Lauf bis zu drei Runden (eine Runde = ein Schritt, je höchstens 150 min); nach
+  150 min startet keine neue Runde. Ein wartender PR (Review, CI, `blocked`) hält nur seinen eigenen Change auf; ab
+  drei blockierten PRs ist Schluss. Jeder Agenten-PR trägt oben einen Abschnitt „Stand“ (Runde, Tests, Tasks, gerade, Lage); verweigerte
   Befehle stehen in der Lauf-Übersicht der Action.
-- Arbeitsteilung: Der Mensch macht kein Code-Review. Claude reviewt fertige Agenten-PRs von sich aus
-  (`/review-change`), behebt Kleinigkeiten und legt eine Merge-Empfehlung in einem Satz vor; der Mensch sagt
-  ja/nein und macht die „Menschliche Abnahme“ an laufender Software nach Klick-Anleitung. Nie parallel zu einem
-  laufenden Nachtschicht-Lauf arbeiten; danach ohne Wartezeit weiter (`/stand`).
+- Arbeitsteilung (ADR-064, löst die frühere Regelung ab): Der Mensch macht kein Code-Review und keine Git-Handgriffe.
+  Agenten-PRs auf `tests/`, `change/`, `fix/` und `archiv/` prüft `.github/workflows/auto-merge.yml` unabhängig
+  (`/review-change … auto`) und merged sie nach grüner CI automatisch; `adr/`-PRs und `[mensch]`-Abnahmen nie. Der
+  Mensch beantwortet Fragen (Push bei Blockade, sonst `/stand`), probiert Spikes und Prototypen aus (Browser-Vorschau
+  je PR) und sagt Ja zu Kernteam-Dateien.
 - Strenger Testmodus (`CI` bzw. `CEE_STRICT=1`): fehlende Werkzeuge sind Fehler.
 - Feste Versionen: `.tool-versions`, `rust-toolchain.toml`.
 - Abnahmetest-PRs (`tests/<id>`): die neuen Tests sind absichtlich rot; die CI prüft dort nur, dass sie sich sammeln
