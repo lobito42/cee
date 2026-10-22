@@ -11,7 +11,7 @@ from ux2_helpers import ZUSTAENDE, ablauf, groessen, nach_name, nahe, pruefen, z
 
 # design.md, „Komplexitätsbudget“: Overlays außerhalb der fünf Zonen (Wert von `data-overlay`)
 ERLAUBTE_OVERLAYS = {"suchliste", "kontextaktionen", "zahl-am-zeiger", "legende"}
-HAUPTAKTIONEN = ["vorschlag.uebernehmen", "vorschlag.verwerfen"]
+HAUPTAKTIONEN = ["vorschlag.uebernehmen"]  # Verwerfen ist ruhig, ohne data-hauptaktion (PR #47)
 
 
 def _gleich(a: dict, b: dict, tol: float = 2.0) -> bool:
