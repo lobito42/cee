@@ -24,7 +24,7 @@ Reihenfolge der Regeln (ADR-064: Hausmeister zuerst, der Mensch entscheidet nur 
    gleichzeitig offen sein; ein PR, der auf Review oder CI wartet, hält nur seinen eigenen Change auf.
 7. Sonst: anhalten mit dem Grund (blockierte PRs warten auf den Menschen; ab ``MAX_BLOCKED`` ist Schluss).
 
-Gemergt wird nicht hier, sondern vom Auto-Merge-Workflow nach dem Review (``.github/workflows/auto-merge.yml``).
+Gemergt wird nicht hier, sondern im Workflow ``.github/workflows/auto-merge.yml`` nach dem Review.
 Der Planer wird mehrmals täglich aufgerufen (eine Runde = ein Schritt, siehe Workflow).
 
 Aufruf: ``python3 tools/next_step.py`` (fragt GitHub über ``gh`` ab) oder mit ``--offline`` und Dateien
@@ -141,7 +141,8 @@ def decide(
         model = by_id.get(change_id, {}).get("model", "sonnet")
         step = STEP_OF[kind]
         if "blocked" in labels:
-            blocked.append({"step": "stop", "reason": "PR ist blockiert und wartet auf einen Menschen", **base})
+            reason = "PR ist blockiert und wartet auf einen Menschen"
+            blocked.append({"step": "stop", "reason": reason, **base})
         elif pr.get("isDraft"):
             # Entwurf = Arbeit unfertig (z. B. abgebrochene Nacht): weitermachen, nicht „reparieren“.
             drafts.append({"step": step, "resume": True, "model": model, **base})
@@ -162,7 +163,8 @@ def decide(
                 attempt = 2 if "fix-1" in labels else 1
                 reds.append({"step": "fix", "attempt": attempt, "model": model, "resume": True, **base})
         elif kind == "tests":
-            # Abnahmetest-PRs sind absichtlich rot (Tests vor der Umsetzung); der Auto-Merge nimmt sie nach dem Review.
+            # Abnahmetest-PRs sind absichtlich rot (Tests vor der Umsetzung); der Auto-Merge nimmt sie nach
+            # dem Review.
             waiting.append({"step": "stop", "reason": "Abnahmetests warten auf Review", **base})
         else:
             status = checks(pr)
@@ -180,7 +182,8 @@ def decide(
                     attempt = 2 if "fix-1" in labels else 1
                     reds.append({"step": "fix", "attempt": attempt, "model": model, "resume": True, **base})
             else:
-                reason = "CI des offenen PRs läuft noch" if status == "pending" else "offener PR wartet auf Review"
+                pending = status == "pending"
+                reason = "CI des offenen PRs läuft noch" if pending else "offener PR wartet auf Review"
                 waiting.append({"step": "stop", "reason": reason, **base})
 
     fix_prs = [x for x in drafts + conflicts + reds + waiting + blocked if x["branch"].startswith("fix/")]
@@ -213,7 +216,8 @@ def decide(
     for cid in [e["id"] for e in entries] + sorted(unarchived):
         if cid in unarchived and cid not in busy and f"change/{cid}" in merged:
             branch = f"archiv/{cid}"
-            return {"step": "archive", "id": cid, "branch": branch, "resume": branch in remote, "model": "sonnet"}
+            resume = branch in remote
+            return {"step": "archive", "id": cid, "branch": branch, "resume": resume, "model": "sonnet"}
     for entry in entries:
         cid = entry["id"]
         if not entry["night"] or cid in busy or states.get(cid) == "done":
@@ -267,7 +271,7 @@ def _rollup(sha: str) -> list[dict]:
 
 
 def _conflict(number: int) -> bool:
-    """Hat der PR einen Konflikt mit main? GitHub rechnet das asynchron; unbekannt (null) gilt als kein Konflikt."""
+    """Hat der PR einen Konflikt mit main? GitHub rechnet asynchron; unbekannt (null) gilt als keiner."""
     return _api(f"repos/{{owner}}/{{repo}}/pulls/{number}").get("mergeable_state") == "dirty"
 
 
@@ -348,7 +352,8 @@ def main() -> None:
     else:
         prs, remote, main_status, merged = gather_online()
     unarchived = unarchived_changes(ROOT)
-    print(json.dumps(decide(entries, states, prs, remote, main_status, merged, unarchived), ensure_ascii=False))
+    step = decide(entries, states, prs, remote, main_status, merged, unarchived)
+    print(json.dumps(step, ensure_ascii=False))
 
 
 if __name__ == "__main__":

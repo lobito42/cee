@@ -6,7 +6,7 @@ Was ein Agent schreiben darf, ergibt sich aus dem Branch:
   spec/<id>    nur openspec/changes/<id>/            (Proposal, Design, Spec-Deltas, Tasks)
   tests/<id>   nur tests/acceptance/<id>/, tests/golden/, tests/ui-reference/
   change/<id>  Produktcode und openspec/changes/<id>/tasks.md – aber keinen Vertrag
-  archiv/<id>  nur Archivieren: openspec/changes/<id>/ (Verschieben), openspec/changes/archive/, openspec/specs/
+  archiv/<id>  nur Archivieren: openspec/changes/<id>/ (Verschieben), changes/archive/, openspec/specs/
   fix/<grund>  Produktcode und tests/unit/ – aber keinen Vertrag (main reparieren, rote PRs, Hausmeister)
   adr/<thema>  Kernteam-Dateien (ADRs, Regeln, Werkzeug); gemergt wird erst nach dem Ja des Menschen (ADR-064)
   sonst        Produktcode, aber keinen Vertrag
@@ -98,7 +98,7 @@ def reason(rel: str, branch: str, role: str = "") -> str | None:
     if kind == "archiv":
         if rel.startswith(("openspec/changes/archive/", "openspec/specs/", f"openspec/changes/{cid}/")):
             return None
-        return f"{rel}: auf archiv/{cid} nur openspec/changes/{cid}/, openspec/changes/archive/ und openspec/specs/"
+        return f"{rel}: auf archiv/{cid} nur openspec/changes/{cid}/, changes/archive/ und openspec/specs/"
     if kind == "fix" and rel.startswith("tests/unit/"):
         return None
 

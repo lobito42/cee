@@ -182,7 +182,8 @@ def test_conflict_is_resolved_by_merging_main():
 
 def test_housekeeping_comes_before_new_work():
     red = pr("change/ap-a", checks=("FAILURE",))
-    out = ns.decide(entries(), {"ap-d": "tests"}, [red], set(), "success", unarchived={"ap-z"}, merged={"change/ap-z"})
+    done = {"unarchived": {"ap-z"}, "merged": {"change/ap-z"}}
+    out = ns.decide(entries(), {"ap-d": "tests"}, [red], set(), "success", **done)
     assert out["step"] == "fix"
 
 
@@ -195,7 +196,8 @@ def test_archive_merged_finished_change():
         "resume": False,
         "model": "sonnet",
     }
-    out = ns.decide(entries(), {}, [], {"archiv/ap-z"}, "success", merged={"change/ap-z"}, unarchived={"ap-z"})
+    done = {"merged": {"change/ap-z"}, "unarchived": {"ap-z"}}
+    out = ns.decide(entries(), {}, [], {"archiv/ap-z"}, "success", **done)
     assert out["resume"] is True
 
 
@@ -206,7 +208,8 @@ def test_unmerged_change_is_not_archived():
 
 def test_open_archive_pr_is_not_started_twice():
     arch = pr("archiv/ap-z")
-    out = ns.decide(entries(), {"ap-a": "build"}, [arch], set(), "success", merged={"change/ap-z"}, unarchived={"ap-z"})
+    done = {"merged": {"change/ap-z"}, "unarchived": {"ap-z"}}
+    out = ns.decide(entries(), {"ap-a": "build"}, [arch], set(), "success", **done)
     assert out["step"] == "build"  # der Archiv-PR wartet auf den Auto-Merge, die Nacht baut weiter
 
 
