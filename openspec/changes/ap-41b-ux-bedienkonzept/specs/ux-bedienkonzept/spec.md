@@ -366,8 +366,8 @@ Schritt im Aufbau sein. Gespräch und Karte MUST als simuliert gekennzeichnet se
 #### Scenario: [auto] Kennzeichnung
 - **WHEN** die Zustände `ki-gespraech` und `ki-vorschlag` geladen werden
 - **THEN** tragen Gespräch und Karte `data-quelle="ki"`, zeigen den übersetzten Text für „KI simuliert“, und die
-  Karte trägt `data-muster="Entscheidungskarte"` mit genau zwei Hauptaktionen (`vorschlag.uebernehmen`,
-  `vorschlag.verwerfen`)
+  Karte trägt `data-muster="Entscheidungskarte"` mit genau einer Hauptaktion (`vorschlag.uebernehmen`) und
+  der ruhigen Aktion `vorschlag.verwerfen` (ohne Akzent, ohne `data-hauptaktion`)
 
 #### Scenario: [mensch] Aufgabe F
 - **WHEN** eine Testperson Aufgabe F ohne Einweisung bearbeitet
