@@ -117,6 +117,7 @@ def test_stop_hook_sees_unstaged_change_in_first_status_line(tmp_path, monkeypat
     adr.write_text("b\n")  # unstaged → Statuszeile " M docs/adr/ADR-001.md"
 
     monkeypatch.delenv("CEE_ROLE", raising=False)
+    monkeypatch.delenv("GITHUB_HEAD_REF", raising=False)  # in der CI der echte Branch des PRs
     monkeypatch.setattr("sys.argv", ["guard.py", "claude-stop"])
     monkeypatch.setattr("sys.stdin", __import__("io").StringIO(json.dumps({"cwd": str(tmp_path)})))
     assert guard.main() == 0
