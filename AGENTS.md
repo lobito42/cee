@@ -14,7 +14,8 @@ spielen keine Rolle.
 
 1. `git pull` auf `main` (bzw. auf dem eigenen Branch); `docs/betrieb/uebergabe.md` zeigt den letzten Stand.
 2. `openspec/queue.yaml` lesen: freigegebene Changes, ihre Phase und Reihenfolge.
-3. `gh pr list` (REST) – offene PRs; ein offener Agenten-PR heißt: erst Review, dann Neues.
+3. `gh pr list` (REST) – offene PRs. Agenten-PRs prüft der Auto-Merge-Workflow unabhängig und merged sie; ein PR ohne
+   Review-Label oder mit `review-abgelehnt` ist zuerst dran, dann Neues (ADR-064).
 4. Den nächsten Schritt nennen und mit dem Menschen abstimmen (interaktiv) bzw. `/nachtschicht` folgen (unbeaufsichtigt).
 
 Hintergrund: `docs/konzept.md` (Export des Konzepts, nur gezielt lesen), Entscheidungen in `docs/adr/`.
@@ -28,6 +29,9 @@ Hintergrund: `docs/konzept.md` (Export des Konzepts, nur gezielt lesen), Entsche
    - `spec/<id>` – Change entwerfen: nur `openspec/changes/<id>/`
    - `tests/<id>` – Abnahmetests schreiben: nur `tests/acceptance/<id>/`, `tests/golden/`, `tests/ui-reference/`
    - `change/<id>` – umsetzen: Produktcode + Häkchen in `openspec/changes/<id>/tasks.md`
+   - `fix/<grund>` – Hausmeister (`main` reparieren, rote PRs): Produktcode und `tests/unit/`, keine Verträge
+   - `archiv/<id>` – gemergten Change archivieren: `openspec/changes/<id>/`, `openspec/changes/archive/`, `openspec/specs/`
+   - `adr/<thema>` – Kernteam-Dateien ändern (ADRs, Regeln, Werkzeug): erst nach dem Ja des Menschen mergen
 3. **Abnahmetests sind der Vertrag.** Sie sind pytest-Tests und dürfen `cargo`, `mix` oder `npm` aufrufen.
    Fertig heißt: `uv run pytest -q tests/acceptance/<id>` grün und alle Tasks abgehakt. Tests nie
    abschwächen, überspringen oder löschen.
@@ -35,9 +39,18 @@ Hintergrund: `docs/konzept.md` (Export des Konzepts, nur gezielt lesen), Entsche
 5. **Ein Change pro Branch und Pull Request.** Nach drei erfolglosen Anläufen am selben Problem:
    anhalten, committen, im PR unter „Offene Fragen“ beschreiben.
 
-Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `openspec/config.yaml`,
-`openspec/queue.yaml`, `AGENTS.md`, `CLAUDE.md`, `REVIEW.md`, Lizenzdateien, Werkzeug-Konfiguration
-(`.claude/`, `.opencode/`, `opencode.json`, `.pi/`, `.githooks/`, `.github/`).
+Nur mit dem Ja des Kernteams ändern (Branch `adr/<thema>`, der Mensch sagt Ja im Gespräch, dann mergt der Agent;
+nie automatisch): `docs/adr/`, `docs/rules/`, `openspec/config.yaml`, `openspec/queue.yaml`, `AGENTS.md`,
+`CLAUDE.md`, `REVIEW.md`, Lizenzdateien, Werkzeug-Konfiguration (`.claude/`, `.opencode/`, `opencode.json`, `.pi/`,
+`.githooks/`, `.github/`, `tools/`, `tests/unit/`). `openspec/specs/` und `openspec/changes/archive/` ändern
+Agenten nur beim Archivieren (`archiv/<id>`).
+
+**Wer macht was (ADR-064):** Der Mensch entscheidet über Inhalte (unklare Anforderungen, Spikes und Prototypen
+ausprobieren, Kernteam-Dateien, `[mensch]`-Kriterien). Git, Review, Merge, Konflikte, CI und Archivieren sind
+Agentenarbeit: Agenten-PRs auf `tests/`, `change/`, `fix/` und `archiv/` mergt der Auto-Merge nach unabhängigem
+Review. Hältst du einen Abnahmetest für falsch, öffne einen Einspruch-PR auf `tests/<id>` mit Begründung aus der
+Spec; auf `change/<id>` bleiben Tests unveränderlich. Blockierende Fragen kommen als Kommentar mit `@lobito42`
+im Issue „Fragen an das Kernteam“.
 
 ## Token sparen (Pro-Abo)
 
@@ -88,6 +101,8 @@ Nie ändern ohne Kernteam: `docs/adr/`, `docs/rules/`, `openspec/specs/`, `opens
 - Einfach und fehlerarm (ADR-051/052): Oberfläche ohne Git-Begriffe (Entwurf, Meilenstein, Übernehmen),
   Verwerfen statt Löschen, Ordnung aus dem Graphen (Facetten, Suche, Rückverweise) statt Ordnerpflege.
 - Lernschleife für lokale Modelle nur mit Prüfern als Bewertung, nie Selbstbewertung (ADR-053).
+- Der Mensch entscheidet, Agenten integrieren (ADR-064): Hausmeister vor neuer Arbeit, Auto-Merge nach unabhängigem
+  Review, Fragen nur zu Inhalten.
 - Reihenfolge nach Meilensteinen M0 bis M3 (ADR-059, neu geschnitten durch ADR-062); nichts aus einem späteren
   Meilenstein vorziehen.
 - Rechte prüft der Server; Agenten laufen als Dienstkonto ohne Freigaberecht (ADR-055). Datensparsam: keine

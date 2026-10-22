@@ -67,3 +67,4 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-061](ADR-061-designsystem-ein-muster-je-aufgabe.md) | Designsystem – ein Muster je Aufgabe | akzeptiert |
 | [ADR-062](ADR-062-cad-zuerst.md) | CAD zuerst – Meilensteine neu geschnitten | akzeptiert |
 | [ADR-063](ADR-063-bedienkonzept-fuenf-zonen.md) | Bedienkonzept – fünf Zonen, erst wählen, dann tun | akzeptiert |
+| [ADR-064](ADR-064-mensch-entscheidet-agenten-integrieren.md) | Mensch entscheidet, Agenten integrieren | akzeptiert |
