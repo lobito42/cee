@@ -124,6 +124,8 @@ jobs:
           --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Abnahmetests vergleichen mit der Basis (git merge-base)
       - uses: astral-sh/setup-uv@v6
       - run: rustup toolchain install  # rust-toolchain.toml
       - uses: erlef/setup-beam@v1
@@ -148,7 +150,7 @@ jobs:
         run: |
           sel=tools/acceptance_targets.py
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            git fetch -q --depth=1 origin ${{ github.base_ref }}
+            git fetch -q origin ${{ github.base_ref }}
             git show origin/${{ github.base_ref }}:tools/acceptance_targets.py > "$RUNNER_TEMP/targets.py"
             sel="$RUNNER_TEMP/targets.py"
           fi
