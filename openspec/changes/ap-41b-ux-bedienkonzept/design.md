@@ -267,7 +267,7 @@ Befehle):
   die Entscheidungskarte. Kein Verlauf früherer Gespräche, kein zweites Fenster. „Schließen“ oder Esc bringt den
   Inspektor zurück.
 - **Entscheidungskarte:** Titel, Geister-Vorschau im Modell, Begründung, Werte vorher/nachher, genutzte Befehle
-  als Textzeilen (JetBrains Mono), genau zwei Hauptaktionen Übernehmen und Verwerfen. Übernehmen erzeugt einen
+  als Textzeilen (JetBrains Mono), genau eine Hauptaktion Übernehmen (hervorgehoben) und die ruhige Aktion Verwerfen. Übernehmen erzeugt einen
   normalen Schritt im Aufbau (bzw. ändert den Parameter), der danach gewählt ist; der Inspektor zeigt ihn.
 - Kennzeichnung: Gespräch und Karte tragen sichtbar „KI simuliert“ und `data-quelle="ki"`.
 - **Vorbereitete Absichten** (Schlüsselwörter, Zahl mit Einheit, Deutsch und Englisch):
