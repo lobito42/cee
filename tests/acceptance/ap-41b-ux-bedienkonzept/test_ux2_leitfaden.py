@@ -75,7 +75,7 @@ def test_leitfaden_vollstaendig():
             f"Aufgabe {name} läuft in den nächsten Abschnitt"
         )
         assert re.search(r"zustand=(" + "|".join(ZUSTAENDE) + r")\b", a), f"Startadresse {name}"
-        assert re.search(r"Soll", a), f"Sollzustand {name}"
+        assert re.search(r"Sollzustand", a), f"Sollzustand {name}"
         assert re.search(r"\b\d+\s*min", a), f"Zeitlimit {name}"
     bogen = [(k, r) for k, r in _tabellen(text) if any(z and z[0].startswith("TP") for z in r)]
     assert bogen, "keine Ergebnistabelle mit TP1 … TP5"
@@ -95,6 +95,13 @@ def test_fragen_zur_leitidee():
     assert re.search(r"Was tut man zuerst, bevor man etwas ändert\?", nach), "Frage 2 zur Leitidee fehlt"
 
 
+def _aufgabentext(abschnitt: str) -> str:
+    """Nur der Text, den die Testperson liest (erstes „…“ im Abschnitt), ohne Sollzustand und Hinweise."""
+    m = re.search(r"„([^“]+)“", abschnitt)
+    assert m, f"kein Aufgabentext in „…“: {abschnitt[:200]}"
+    return m.group(1)
+
+
 def test_aufgaben_ohne_befehlsnamen():
     """Kein Aufgabentext A–F und H nennt einen Befehlstitel, den der Ablauf im Protokoll nutzt (G ausgenommen)."""
     aufgaben = _aufgaben(_text())
@@ -105,4 +112,4 @@ def test_aufgaben_ohne_befehlsnamen():
         for bid in genutzt:
             t = titel_de(bid).lower()
             assert t, (name, bid, "Titel nicht auflösbar")
-            assert t not in aufgaben[name.upper()].lower(), (name, bid, t)
+            assert t not in _aufgabentext(aufgaben[name.upper()]).lower(), (name, bid, t)

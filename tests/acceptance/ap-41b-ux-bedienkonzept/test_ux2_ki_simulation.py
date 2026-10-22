@@ -4,6 +4,8 @@
 
 from __future__ import annotations
 
+import re
+
 import pytest
 from ux2_helpers import ZUSTAENDE, ablauf, groessen, nach_name, nahe, pruefen, zahl, zeile
 
@@ -26,8 +28,8 @@ def test_befehl_oder_wunsch():
     assert w["eintraege"][0].startswith("KI fragen:"), w["eintraege"]
     assert _gleich(w["gespraech"], w["inspektor_vorher"]), (w["gespraech"], w["inspektor_vorher"])
     assert len(w["panels"]) == 2, w["panels"]
-    zeilen = " ".join(w["karte"]["befehlszeilen"])
-    assert "feature.verrunden" in zeilen and "2" in zeilen and "mm" in zeilen, w["karte"]["befehlszeilen"]
+    zeilen = w["karte"]["befehlszeilen"]
+    assert any("feature.verrunden" in z and re.search(r"(?<![\d.,])2\s*mm\b", z) for z in zeilen), zeilen
     assert w["modell_bei_karte"] == w["modell_vorher"], "vor dem Übernehmen darf sich das Modell nicht ändern"
 
 
@@ -59,7 +61,11 @@ def test_verwerfen_anhalten_unbekannter_satz():
     assert ki["verwerfen"]["karten"] == [] and ki["anhalten"]["karten"] == []
     u = ki["unbekannt"]
     assert u["modale_dialoge"] == []
-    assert len(u["texte"]) >= 2, u["texte"]  # Erklärung und mindestens ein Beispielsatz
+    # Erklärung mit Beispielsätzen: mindestens zwei Sätze mit einer vorbereiteten Absicht (Maß ändern, Abrunden)
+    beispiele = [
+        t for t in u["texte"] if re.search(r"länger|breiter|dicker|höher|kürzer|schmaler|rund", t, re.I)
+    ]
+    assert len(beispiele) >= 2, u["texte"]
 
 
 def test_kennzeichnung_ki_simuliert():

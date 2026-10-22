@@ -11,6 +11,7 @@ from ux2_helpers import (
     finde,
     groessen,
     knoten,
+    mm,
     nach_name,
     nahe,
     volumen,
@@ -102,7 +103,9 @@ def test_aufgabe_c_baugruppe():
     assert any("unterseite" in t for t in texte) and any("oberkante" in t for t in texte), texte
     deckel = [i for i in instanzen if any("deckel" in t.lower() for t in _texte(i))]
     assert len(deckel) == 1
-    assert any(abs(w - 30.0) <= 0.01 for w in _alle_zahlen(deckel[0])), _alle_zahlen(deckel[0])
+    position = (deckel[0].get("params") or {}).get("position")
+    assert isinstance(position, dict) and "z" in position, deckel[0]
+    assert abs(mm(position["z"]) - 30.0) <= 0.01, position
 
 
 def test_aufgabe_d_entwurf_uebernehmen():

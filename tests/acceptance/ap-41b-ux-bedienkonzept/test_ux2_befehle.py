@@ -73,6 +73,23 @@ def test_register_gueltig():
     assert zahlen > 0, "kein Zahlenparameter im Register (Verrunden, Extrudieren, Kraft …)"
 
 
+def _kuerzel_passt(register_kuerzel: str, angezeigt: str) -> bool:
+    """Angezeigtes Kürzel enthält Taste und alle Umschalttasten des Registers (Mod = Strg/⌘, Shift = Umschalt/⇧)."""
+    teile = [t for t in re.split(r"[+\s]+", register_kuerzel.strip()) if t]
+    if not teile:
+        return False
+    text = angezeigt.upper()
+    zeichen = {
+        "MOD": ("STRG", "CTRL", "⌘", "CMD"), "CTRL": ("STRG", "CTRL", "⌃"), "STRG": ("STRG", "CTRL"),
+        "CMD": ("⌘", "CMD"), "SHIFT": ("UMSCHALT", "SHIFT", "⇧"), "UMSCHALT": ("UMSCHALT", "SHIFT", "⇧"),
+        "ALT": ("ALT", "⌥"), "OPTION": ("ALT", "⌥"),
+    }  # fmt: skip
+    *mods, taste = teile
+    if taste.upper() not in re.split(r"[+\s]+", text) and not text.endswith(taste.upper()):
+        return False
+    return all(any(z in text for z in zeichen.get(m.upper(), (m.upper(),))) for m in mods)
+
+
 def test_hoechstens_zehn_kuerzel():
     """≤ 10 Kürzel; Suche, Rückgängig, Wiederholen, Darstellung mit den Tasten aus design.md."""
     mit = {b["id"]: str(b["kuerzel"]) for b in register() if b.get("kuerzel")}
@@ -110,8 +127,7 @@ def test_jeder_befehl_ueber_die_suche():
         assert any(p["befehl"] == bid for p in e["protokoll_neu"]), bid
         if reg[bid].get("kuerzel"):
             treffer = e["treffer"][reihenfolge.index(bid)]
-            taste = re.split(r"[+\s-]+", str(reg[bid]["kuerzel"]).strip())[-1].upper()
-            assert taste and taste in treffer["kuerzel_text"].upper(), (bid, treffer)
+            assert _kuerzel_passt(str(reg[bid]["kuerzel"]), treffer["kuerzel_text"]), (bid, treffer)
 
 
 def test_elemente_in_der_suche():

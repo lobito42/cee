@@ -75,7 +75,7 @@ Befehle und Felder (Thema `hell`, Sprache `de`, sofern nicht anders genannt):
   - `b`: (Steg 40 mm, zwei Längskanten oben R 3). `b --variante befund`: `aufbau` (im Zustand `befund`),
     `modell_status: [{schritt, wort, symbol, farbe}]` (Statusanzeige im Modell), `teil_nach_9mm`,
     `modell_nach_9mm`, `korrektur_text`, `befunde_nach_korrektur: [Texte]`, `modell` (nach Korrektur).
-  - `c`: `modell`.
+  - `c`: `modell`; die Deckel-Instanz trägt `params.position` mit `x`, `y`, `z` als Größen (z = Unterseite).
   - `d`: `vergleich: [{feld, vorher, nachher}]` (Anzeigetexte), `haupt_modell_vor_uebernehmen`,
     `haupt_modell_nach_uebernehmen`, `entwurf_zustand` (Text). `d --variante verwerfen`: `modell_vorher`,
     `modell_nach_versuch_ohne_begruendung`, `verwerfen_knopf_ohne_begruendung: {disabled, aria_disabled}`,
