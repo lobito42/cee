@@ -14,7 +14,7 @@ verweisen (ADR-058) und MUST NOT Topologie-Indizes oder die getroffene Geometrie
 
 ### Requirement: Gleiche Ziele nach Neuberechnung
 Eine gespeicherte Regel SHALL nach einer Neuberechnung mit geänderten Parametern dieselben Kanten und Flächen
-treffen wie die Sollziele aus `tests/golden/ap-42-spike-auswahl/faelle.json`, ohne dass die Regel geändert wird.
+treffen wie die Sollziele aus `tests/golden/ap-49-spike-auswahl/faelle.json`, ohne dass die Regel geändert wird.
 Das Ergebnis MUST unabhängig von der Reihenfolge sein, in der der Kernel Flächen und Kanten liefert.
 
 #### Scenario: [auto] Parameteränderungen P1 bis P3

@@ -1,7 +1,7 @@
 ## Context
 
 Siehe proposal.md – Why. ADR-065 Punkt 13: „Regeln sind Daten im Graphen und gelten über stabile Adressen
-(ADR-016, ADR-058). Der Spike ap-42-spike-auswahl klärt, wie das im Kern trägt.“ build123d bietet Auswahl nach Art
+(ADR-016, ADR-058). Der Spike ap-49-spike-auswahl klärt, wie das im Kern trägt.“ build123d bietet Auswahl nach Art
 (`vertices()`, `edges()`, `faces()`, `solids()`), nach Richtung, Typ und Eigenschaft (`filter_by`), nach Lage
 (`filter_by_position`), nach Wert (`filter_by_value`), Sortieren (`sort_by`, `sort_by_distance`), Gruppieren
 (`group_by`) und „neu entstanden“ (`Select.NEW`, `Select.LAST`). Diese Selektoren sind Code; der Spike prüft, ob
@@ -64,7 +64,7 @@ Den konkreten Parametersatz für K2 legt das Kernteam im Testkorpus fest (Open Q
 
 ### Referenzdaten (vom Kernteam)
 
-`tests/golden/ap-42-spike-auswahl/faelle.json` enthält je Regel R1 bis R5 und Parametersatz P0 bis P3 die
+`tests/golden/ap-49-spike-auswahl/faelle.json` enthält je Regel R1 bis R5 und Parametersatz P0 bis P3 die
 Sollziele sowie die Fälle K1 bis K3:
 
 ```json
@@ -155,7 +155,7 @@ ap-45 und ap-08b.
 
 1. **Nummer ap-42:** In `docs/konzept.md` heißt das Arbeitspaket ap-42 bereits `ap-42-spike-xr-eingabe` (Spike
    WebXR und 3D-Maus, ADR-060). ADR-065 Punkt 13 (Branch `adr/bohrung-auswahl-platzierung`) nennt
-   `ap-42-spike-auswahl`. Soll der Auswahl-Spike eine andere Nummer bekommen, oder wird der XR-Spike umbenannt?
+   `ap-49-spike-auswahl`. Soll der Auswahl-Spike eine andere Nummer bekommen, oder wird der XR-Spike umbenannt?
    Eine Zeile für den Auswahl-Spike fehlt in der Arbeitspaket-Tabelle.
 2. **Reihenfolge zu ap-39:** Darf der Spike vor ap-39 laufen (Vorschlag: ja, mit den Mitteln von build123d), oder
    soll er auf dessen Ergebnis warten?

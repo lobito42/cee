@@ -47,9 +47,9 @@ Keine.
   Elemente). ap-39-spike-identitaet (in `docs/konzept.md`, M0) behandelt die persistente Identität von Flächen
   und Kanten über die Topologie-Historie; die Regel „neu entstanden“ berührt dasselbe Thema. Ob ap-42 auf ap-39
   warten muss, ist offen (design.md, Open Questions).
-- Abnahmetests: `tests/acceptance/ap-42-spike-auswahl/` (AK-1 bis AK-9, Zuordnung in design.md)
+- Abnahmetests: `tests/acceptance/ap-49-spike-auswahl/` (AK-1 bis AK-9, Zuordnung in design.md)
 - Gate G1 (M0 Klären, ADR-059)
-- Referenzdaten: Das Kernteam liefert unter `tests/golden/ap-42-spike-auswahl/` die Sollziele je Regel und
+- Referenzdaten: Das Kernteam liefert unter `tests/golden/ap-49-spike-auswahl/` die Sollziele je Regel und
   Parametersatz sowie die Fälle „kein Ziel“ und „mehrdeutig“, bevor Abnahmetests geschrieben werden (Format in
   design.md).
 - Neue Abhängigkeiten: keine; build123d und OCP sind über `uv sync --extra cad` vorhanden (ADR-034).

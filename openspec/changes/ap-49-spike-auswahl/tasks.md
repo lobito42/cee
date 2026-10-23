@@ -17,7 +17,7 @@
 - [ ] 3.1 `bench.sh --json`: Graph-Regel über `synth::project(10_000)` und Zeiten am Halter – Prüfung: AK-7
 - [ ] 3.2 Einordnung der 21 Auswahlbefehle (A, B, C mit Begründung), `docs/spikes/auswahl.json` und Bericht
   `docs/spikes/auswahl.md` mit Empfehlung; Zeile in `docs/spikes/README.md` – Prüfung: AK-8, AK-9; gesamt
-  `uv run pytest -q tests/acceptance/ap-42-spike-auswahl`
+  `uv run pytest -q tests/acceptance/ap-49-spike-auswahl`
 
 ## Workflow follow-up
 
