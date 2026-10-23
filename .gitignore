@@ -29,3 +29,10 @@ server/_build/
 server/deps/
 client/src-tauri/target/
 *.ez
+
+# Gebaute Bindungen (ap-40): NIF, WASM-Pakete, PyO3-Erweiterung
+server/priv/native/
+client/src/kern/pkg-node/
+client/src/kern/pkg-web/
+sdk/python/cee_sdk/*.so
+sdk/python/cee_sdk/*.pyd

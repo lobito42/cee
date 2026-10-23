@@ -9,11 +9,11 @@
 
 ## 2. Rustler-NIF
 
-- [ ] 2.1 `crates/graph-nif` mit Ressourcen für Dokument und Zustände, Dirty-CPU-Liste aus design.md; Rustler in
+- [x] 2.1 `crates/graph-nif` mit Ressourcen für Dokument und Zustände, Dirty-CPU-Liste aus design.md; Rustler in
   `server/mix.exs`, `mode: :release` – Prüfung: `cd server && mix compile --warnings-as-errors`; AK-5
-- [ ] 2.2 `CeeServer.Graph` mit Typespecs und `{:ok, _}`/`{:error, map}`; ExUnit-Tests für jede Funktion –
+- [x] 2.2 `CeeServer.Graph` mit Typespecs und `{:ok, _}`/`{:error, map}`; ExUnit-Tests für jede Funktion –
   Prüfung: `cd server && mix test test/cee_server/graph_test.exs && mix credo --strict && mix dialyzer`
-- [ ] 2.3 `server/priv/bindctl.exs` mit allen `bindctl`-Befehlen – Prüfung: AK-1, AK-4 und AK-6 für Elixir
+- [x] 2.3 `server/priv/bindctl.exs` mit allen `bindctl`-Befehlen – Prüfung: AK-1, AK-4 und AK-6 für Elixir
 
 ## 3. WASM
 

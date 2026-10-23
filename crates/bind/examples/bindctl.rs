@@ -48,7 +48,7 @@ fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().skip(1).collect();
     match run(&args) {
         Ok(out) => {
-            println!("{out}");
+            println!("{}", with_raw(out.to_string()));
             ExitCode::SUCCESS
         }
         Err(e) => {
@@ -90,6 +90,30 @@ fn write(path: &str, bytes: &[u8]) -> BindResult<()> {
 
 fn parsed(text: &str) -> Json {
     serde_json::from_str(text).unwrap_or(Json::Null)
+}
+
+thread_local! {
+    /// JSON-Texte der Fassade, die unverändert in die Ausgabe gehen.
+    static RAW: std::cell::RefCell<Vec<String>> = const { std::cell::RefCell::new(Vec::new()) };
+}
+
+/// Platzhalter für einen JSON-Text der Fassade: Er wird beim Ausgeben wörtlich eingesetzt, statt ihn erneut
+/// zu parsen (der Standard-Parser von serde_json rundet lange Dezimalzahlen nicht immer exakt).
+fn raw(text: String) -> Json {
+    RAW.with(|r| {
+        let mut r = r.borrow_mut();
+        r.push(text);
+        Json::String(format!("\u{1}raw{}\u{1}", r.len() - 1))
+    })
+}
+
+fn with_raw(mut out: String) -> String {
+    RAW.with(|r| {
+        for (i, text) in r.borrow().iter().enumerate() {
+            out = out.replacen(&format!("\"\\u0001raw{i}\\u0001\""), text, 1);
+        }
+    });
+    out
 }
 
 fn sha256(text: &str) -> String {
@@ -197,7 +221,7 @@ fn query(doc: &mut Document, q: &str) -> BindResult<Json> {
         }
         other => return Err(usage(&format!("unbekannte Abfrage `{other}`"))),
     };
-    Ok(parsed(&text))
+    Ok(raw(text))
 }
 
 fn list<'a>(scen: &'a Json, key: &str) -> &'a [Json] {
