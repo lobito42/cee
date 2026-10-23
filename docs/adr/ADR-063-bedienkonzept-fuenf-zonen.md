@@ -4,6 +4,7 @@
 - Datum: 2026-10-21
 - Entscheider: Kernteam
 - Ändert: ADR-022 (Werkzeugleiste), ADR-061 (Musterkatalog)
+- Geändert durch: ADR-065 (Fensteraufbau, Menüleiste, Taskleiste, Chat fest rechts)
 
 ## Kontext
 
