@@ -1,7 +1,9 @@
 # spike-sync Specification
 
 ## Purpose
-TBD - created by archiving change ap-03-spike-sync. Update Purpose after archive.
+Spike-Nachweis, dass der Rust-Kern über das Netz trägt: Phoenix Channels mit dem Kern als NIF im Server
+(ADR-030) und als WASM im Client (ADR-031), zwei Clients live, einer zwischendurch offline. Eine Änderung kommt
+bei beiden Clients in < 200 ms an, und das Zusammenführen nach Offline-Arbeit verliert nichts (ADR-033).
 
 ## Requirements
 
