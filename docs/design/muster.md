@@ -16,7 +16,7 @@ iPad und später Vision Pro gleich aufgebaut sind (ADR-060). Entwurf: gilt erst 
 
 | Apple | CEE | Regeln |
 | --- | --- | --- |
-| Seitenleiste mit den Bereichen der App | **Modulleiste** ganz links (Symbole), darin der Shop für Erweiterungen | Wechselt das Modul, ändern sich Menüs und Befehle; der Baum bleibt |
+| Seitenleiste mit den Bereichen der App | **Taskleiste** ganz links (Symbole), unten der Shop | Wechselt der Eintrag, ändern sich Menüs und Befehle; der Baum bleibt |
 | Zweite Spalte (Inhaltsliste) | **Baum** links, ein Klick blendet ihn aus | Wurzel frei wählbar (Projekt, Teil, Ordner, Datei); Pfad unten, Klick auf ein Glied setzt die Wurzel höher |
 | Inhaltsbereich | **Modell** | Auswahl ist überall synchron |
 | Informationsleiste rechts (`inspector`) | **Eigenschaften** oben, **Chat** (KI) darunter | Keine Reiter in Reitern; beide immer sichtbar; Chat zeigt die Auswahl als Kontext |
