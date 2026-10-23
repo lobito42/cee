@@ -55,7 +55,7 @@ und später Vision Pro (ADR-060) spricht für das Apple-Gerüst.
     Sichtbarkeit, nicht die Familie.
 13. **Auswahl ist eine Befehlsfamilie:** Auswählen geschieht zuerst durch Klicken und Ziehen im Modell; dazu kommen
     Alles, Umkehren, Ähnliche, Kantenschleife, Auswahlfilter und die Auswahl nach Regel („alle Kanten oben“). Regeln
-    sind Daten im Graphen und gelten über stabile Adressen (ADR-016, ADR-058). Der Spike ap-42-spike-auswahl klärt, wie
+    sind Daten im Graphen und gelten über stabile Adressen (ADR-016, ADR-058). Der Spike ap-49-spike-auswahl klärt, wie
     das im Kern trägt.
 14. **Prüfung:** Das Befehlsinventar ist die Referenz. Jeder Befehl der Beta hat einen Ort (Menü, Kontextaktion, Suche).
     Menü- und Kontextgrenzen aus den Punkten 2 und 3 gelten als Abnahmekriterium von ap-41b.
