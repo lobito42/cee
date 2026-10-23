@@ -83,7 +83,7 @@ Keine.
   `[mensch]` und Punkt der PR-Checkliste „Menschliche Abnahme“.
 - **Referenzdaten:** Das Kernteam legt das Befehlsinventar (Beta-Befehle mit Familie) unter
   `tests/golden/ap-41b-ux-bedienkonzept/befehlsinventar.json` ab, bevor Abnahmetests geschrieben werden (Format
-  in design.md). Es liegt derzeit nicht im Repository. Keine Referenzbilder unter `tests/ui-reference/` (die
+  in design.md; entschieden 2026-10-23, Ablage über den Branch `tests/ap-41b-ux-bedienkonzept`). Keine Referenzbilder unter `tests/ui-reference/` (die
   ersten entstehen mit ap-08b).
 - **Neue Abhängigkeiten nur im Prototyp:** wie bisher `three` (MIT), `lucide` (ISC),
   `@fontsource-variable/inter` und `@fontsource/jetbrains-mono` (SIL OFL 1.1), `playwright` (Apache-2.0, nur

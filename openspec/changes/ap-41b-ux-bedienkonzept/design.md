@@ -28,7 +28,7 @@ der Rest ist `[mensch]`.
 
 ## Decisions
 
-### Ablage: `spikes/ux-prototyp-2/` neu aufbauen (Standardvorschlag, Open Questions 9)
+### Ablage: `spikes/ux-prototyp-2/` neu aufbauen (entschieden, Open Questions 9)
 
 - Der Ordner existiert nur auf dem Branch von PR #51, nicht auf `main`. Der neue Stand entsteht auf einem frisch
   von `main` abgezweigten `change/ap-41b-ux-bedienkonzept` im selben Ordner; so bleibt der Testleitfaden
@@ -90,7 +90,7 @@ die Kanäle so:
 | Pausiert (`pausiert`) | Status | Geometrie des letzten Stands, Deckkraft 0,6 | Statusanzeige neutral `text-2` + `circle-pause` + „pausiert“ | dieselbe | `text-2` |
 | Rechnet (`rechnet`) | Status | unverändert | Statusanzeige `text-2` + `loader` + „rechnet“ | dieselbe | `text-2` |
 
-**Vorrangregel** (Standardvorschlag, Open Questions 3): Die Kanäle Status, Sichtbarkeit und Umfeld werden immer
+**Vorrangregel** (entschieden, Open Questions 3): Die Kanäle Status, Sichtbarkeit und Umfeld werden immer
 zusätzlich gezeigt. Im Kanal Kontur gewinnt genau einer: **ausgewählt > von anderen bearbeitet > überfahren**.
 Ein fehlerhaftes, gewähltes Element trägt also die Akzent-Kontur *und* die Statusanzeige „fehlerhaft“; ein
 ausgeblendetes, gewähltes Element erscheint in der Struktur gewählt mit `eye-off`, im Modell nicht. Akzent nur für
@@ -104,7 +104,7 @@ Auswahl, Überfahren, Fokus, die eine Hauptaktion und KI (ADR-061).
 - Klick wählt (ersetzt), **Umschalt+Klick** fügt hinzu, **Mod+Klick** schaltet ein Element um, **Klick ins
   Leere** (Modell oder leere Fläche der Struktur) und **Esc** heben auf, **Mod+A** wählt alle sichtbaren Elemente
   der aktiven Ebene.
-- **Ebene der Auswahl** (Standardvorschlag, Open Questions 4): Klick wählt das Element der nächsten Ebene unter dem
+- **Ebene der Auswahl** (entschieden, Open Questions 4): Klick wählt das Element der nächsten Ebene unter dem
   aktiven Element. In der Baugruppe wählt ein Klick auf eine Fläche das Teil; Doppelklick (bzw. Enter in der
   Struktur) macht das Teil **aktiv**; dann wählt ein Klick auf eine Fläche das Element (Schritt), das sie erzeugt
   hat, ein Klick auf eine Kante die Kante (Trefferzone ≥ 8 px). „Fertig“, Esc ohne Auswahl oder Klick im Pfad
@@ -120,7 +120,7 @@ Auswahl, Überfahren, Fokus, die eine Hauptaktion und KI (ADR-061).
 
 ### Anlegen, ändern, verwerfen (Requirement „Elemente anlegen, ändern und verwerfen“)
 
-| Operation | Befehl | Wege (alle rufen denselben Befehl) | Kürzel (Standardvorschlag) |
+| Operation | Befehl | Wege (alle rufen denselben Befehl) | Kürzel (entschieden) |
 | --- | --- | --- | --- |
 | Anlegen | `element.anlegen` (Parameter `typ`: Teil, Baugruppe) | Start-Menü „Neu“, Dropdown, Suche, Kontextmenü auf leerer Struktur, Chat | – |
 | Umbenennen | `element.umbenennen` | Kontextmenü, Suche, F2, Doppelklick auf den Namen in den Eigenschaften | F2 |
@@ -162,20 +162,21 @@ Auswahl, Überfahren, Fokus, die eine Hauptaktion und KI (ADR-061).
   Einträge je Gruppe, nicht wesentliche Befehle hinter „Mehr …“. In Struktur und Modell dieselbe Liste für
   dieselbe Auswahl.
 - **Kontextaktionen** (Leiste über dem Gewählten im Modell, ADR-065 Punkt 3): die ersten höchstens fünf Einträge
-  desselben Kontextmenüs nach `rang` (Standardvorschlag, Open Questions 2). Keine eigene Liste.
-- **Befehlsinventar:** Prüfreferenz nach ADR-065 Punkt 14, liegt nicht im Repository. Format für
+  desselben Kontextmenüs nach `rang` (entschieden, Open Questions 2). Keine eigene Liste.
+- **Befehlsinventar:** Prüfreferenz nach ADR-065 Punkt 14, Format für
   `tests/golden/ap-41b-ux-bedienkonzept/befehlsinventar.json` (Kernteam):
   `[{"id": "…", "titel": "…", "familie": "…", "beta": true, "wesentlich": true}]`. Geprüft wird nur: Jede Familie
   des Inventars hat genau einen Ort nach der Tabelle oben, und kein Dropdown überschreitet mit den Beta-Befehlen
-  seiner Familie 12 Einträge je Untergruppe. Der Prototyp muss die Befehle nicht ausführen können. Fehlt die
-  Datei, entfällt dieses Scenario; Anschlussaufgabe: Inventar ablegen und mit ap-08a abgleichen.
+  seiner Familie 12 Einträge je Untergruppe. Der Prototyp muss die Befehle nicht ausführen können, aber jeder
+  Beta-Befehl muss als Eintrag (Menü, Kontextmenü oder Suche) vorhanden sein. Das Kernteam liefert die Datei über
+  den Branch `tests/ap-41b-ux-bedienkonzept` (entschieden, Open Questions 15).
 
 ### Navigation (ADR-060 Punkt 3)
 
 - `src/eingabe/` trennt Quellen (Maus, Trackpad, Touch, Tastatur, Ansichtseingabe mit sechs Achsen für eine
   spätere 3D-Maus) und erzeugt nur Befehle oder Kameraänderungen.
 - **Navigationsprofile sind Daten** (`src/eingabe/profile.json`), Einstellung `einstellung.navigationsprofil`.
-  Profil „Standard“ (Standardvorschlag, Open Questions 8):
+  Profil „Standard“ (entschieden, Open Questions 8):
 
 | Gerät | Drehen | Verschieben | Zoomen |
 | --- | --- | --- | --- |
@@ -183,8 +184,8 @@ Auswahl, Überfahren, Fokus, die eine Hauptaktion und KI (ADR-061).
 | Trackpad | zwei Finger wischen | Umschalt + zwei Finger wischen | Zwei-Finger-Spreizen (Browser: `wheel` mit `ctrlKey`) |
 | Touch | ein Finger ziehen (im Leeren) | zwei Finger ziehen | zwei Finger spreizen |
 
-  Rechtsklick ohne Bewegung (< 4 px) öffnet das Kontextmenü; Tippen wählt. Ein zweites Profil „Alternative“
-  (Belegung Open Questions 8) belegt die Austauschbarkeit; Umschalten ändert keine Codezeile außerhalb der Daten.
+  Rechtsklick ohne Bewegung (< 4 px) öffnet das Kontextmenü; Tippen wählt. Ein zweites Profil „wie Onshape/SolidWorks“
+  (Open Questions 8) belegt die Austauschbarkeit; Umschalten ändert keine Codezeile außerhalb der Daten.
 - `ansicht.einpassen` (alles) und `ansicht.auf-auswahl` (Taste F): die projizierte Hüllbox füllt danach 60–90 %
   der kürzeren Seite der Modellzone, Mitte auf ± 5 %. `ansicht.projektion` schaltet Perspektive/Orthogonal,
   Standard orthogonal (Open Questions 7). Kameraübergänge dauern `bewegung.mittel`.
@@ -198,7 +199,7 @@ Auswahl, Überfahren, Fokus, die eine Hauptaktion und KI (ADR-061).
 - **Ziehen & Ablegen in der Struktur:** Zeilen lassen sich auf eine andere Zeile ziehen, um sie umzuhängen
   (`element.umhaengen`). Erlaubt im Prototyp: Teil in eine Baugruppe, Teil aus einer Baugruppe auf oberste Ebene.
   Nicht erlaubt: Element in sich selbst oder in eigene Nachfahren, Schritt aus seinem Teil heraus, Umordnen von
-  Schritten innerhalb eines Teils (Standardvorschlag, Open Questions 12). Ab 4 px Bewegung folgt eine
+  Schritten innerhalb eines Teils (entschieden, Open Questions 12). Ab 4 px Bewegung folgt eine
   Zieh-Vorschau (Name) dem Zeiger; ein erlaubtes Ziel trägt `data-ziel="erlaubt"` (Zeilenfläche
   `akzent-flaeche`), ein nicht erlaubtes `data-ziel="verboten"` (Zeiger `not-allowed`, Grund in der
   Rückmeldezeile). Ablegen auf erlaubtem Ziel: ein Verlaufseintrag; auf verbotenem Ziel oder Esc: keine Änderung.
@@ -207,7 +208,7 @@ Auswahl, Überfahren, Fokus, die eine Hauptaktion und KI (ADR-061).
 ### Sichtbarkeit (ADR-065 Punkt 9, ADR-015)
 
 - Auge in jeder Strukturzeile (immer sichtbar, nicht nur beim Überfahren); `element.ausblenden`/`einblenden`,
-  dazu H und Alt+H („Alles einblenden“) als Standardvorschlag.
+  dazu H und Alt+H („Alles einblenden“).
 - Sichtbarkeit ist **Ansichtszustand der Person** (vom Kernteam im Sinn bestätigt, Open Question 1): Sie steht
   in `window.__cee.ansicht().ausgeblendet`, nie in `modell()`; der Hash von `modell()` ist vor und nach dem
   Ausblenden gleich. Damit kann sie den Export nicht beeinflussen (ADR-015). Ausblenden eines Elements blendet
@@ -229,7 +230,7 @@ Auswahl, Überfahren, Fokus, die eine Hauptaktion und KI (ADR-061).
   ein Verlaufseintrag und lässt sich wie jedes Element umbenennen, duplizieren und verwerfen. `ansicht.anwenden`
   (Doppelklick oder Enter auf das Element) setzt die Ansicht; das ändert den Graphen nicht.
 - Eine gespeicherte Ansicht wirkt nie auf den Export (ADR-015): Auch ihr Ausgeblendetes blendet nur die Ansicht aus.
-- Elementtyp im Prototyp `view`; ob das ein Grundtyp wird, entscheidet das Kernteam (Open Questions 17).
+- Elementtyp `view`; er wird Grundtyp im Kern (entschieden, Open Questions 17).
 - Testzustände per Adresse setzen Schicht 1 und 3 für den Test; ohne `zustand=` lädt die Seite den gehaltenen
   Graphen und die Ansicht-Vorgaben.
 
@@ -247,7 +248,7 @@ Auswahl, Überfahren, Fokus, die eine Hauptaktion und KI (ADR-061).
 ### Tastatur und Fokus
 
 - **Tab-Reihenfolge** der Zonen: Menüleiste → Taskleiste → Struktur → Modell → Eigenschaften → Chat → Panel →
-  Rückmeldezeile; F6 springt zur nächsten Zone (Standardvorschlag). Innerhalb von Struktur und Menüs Pfeiltasten
+  Rückmeldezeile; F6 springt zur nächsten Zone. Innerhalb von Struktur und Menüs Pfeiltasten
   (WAI-ARIA Tree bzw. Menu). Fokus sichtbar als Ring in `akzent`.
 - **Esc** schließt bzw. bricht genau eine Ebene ab, in dieser Reihenfolge: offenes Menü/Kontextmenü/Suche →
   laufendes Ziehen → Eingabe im Wertfeld (alter Wert) → aktive Auswahl → aktives Element verlassen.
@@ -369,7 +370,8 @@ Simulation) trägt sichtbar „simuliert“.
 Gliederung wie bisher (Ziel, Rahmen, Ablauf, Aufgaben, Erfolgskriterium, Ergebnisbogen, Nachbefragung,
 Auswertung, Datenschutz). Aus dem alten Pilotlauf A–H bleiben nur E, F, G und H (angepasst); A (Grundplatte
 skizzieren und extrudieren), B (Verrunden), C (Verbindung) und D (Entwürfe) entfallen, weil sie Funktionen
-statt Grundlagen prüfen. Texte und Zeiten sind Vorschläge (Open Questions 10).
+statt Grundlagen prüfen. Aufgaben, Zeiten und Gate entschieden (Open Questions 10); Texte passt das Kernteam nach dem eigenen
+Pilotlauf einmal an.
 
 | Aufgabe | Text | Start | Sollzustand | Zeit |
 | --- | --- | --- | --- | --- |
@@ -382,7 +384,7 @@ statt Grundlagen prüfen. Texte und Zeiten sind Vorschläge (Open Questions 10).
 | K | „Der Deckel soll mit zur Baugruppe gehören.“ | Sensorgehäuse | Deckel in Baugruppe 1 | 2 min |
 | L | „Etwas am Halter ist fehlerhaft. Finde es und behebe es.“ | `befund` | Bohrungen aktuell, Befund weg | 3 min |
 
-Erfolgskriterium je Aufgabe: Sollzustand, innerhalb der Zeit, ohne Hilfe. Gate-Vorschlag: 4 von 5 Testpersonen
+Erfolgskriterium je Aufgabe: Sollzustand, innerhalb der Zeit, ohne Hilfe. Gate: 4 von 5 Testpersonen
 lösen G, I, J und K (Open Questions 10). Nachbefragung: „Woran erkennst du, was gewählt ist?“, „Wo findest du,
 was du mit dem Gewählten tun kannst?“, „Was passiert, wenn etwas schiefgeht?“.
 
@@ -403,7 +405,7 @@ nennt nur, was schon funktioniert.
 | AK-4 | `elementzustaende`: Kanäle, Tokens, gleiche Zustände in allen Darstellungen, Vorrang | Elementzustände |
 | AK-5 | `auswahl`: ein Zustand, Klickfolgen, Teil/Baugruppe, Anzeige in allen Zonen | Eine Auswahl für alles |
 | AK-6 | `crud`: ein Befehl je Operation über alle Wege, Verwerfen statt Löschen, Rückgängig überall | Anlegen, ändern, verwerfen |
-| AK-7 | `kontextmenue` und Befehlsinventar | Kontextmenü aus dem Register |
+| AK-7 | `kontextmenue` und Abgleich mit dem Befehlsinventar (Referenzdaten) | Kontextmenü aus dem Register |
 | AK-8 | `navigation` | Navigation im Modell |
 | AK-9 | `ziehen` | Ziehen |
 | AK-10 | `sichtbarkeit` | Ausblenden und Einblenden |
@@ -443,50 +445,47 @@ Ebenso veraltet: der Code auf `change/ap-41b-ux-bedienkonzept` (PR #51) und dess
 
 ## Open Questions
 
-Nur das Kernteam entscheidet; jede Frage hat einen **Standardvorschlag**, nach dem gebaut wird, wenn bis zum
-Schreiben der Abnahmetests nichts anderes entschieden ist.
+Stand 2026-10-23: Das Kernteam hat die Fragen 1–5, 7–10, 12, 15 und 17 im Gespräch entschieden (im Bericht an
+das Kernteam als Punkte 1–10 nummeriert, dazu Befehlsinventar und Elementtyp). Für 6, 11, 13, 14 und 16 gilt der
+Standardvorschlag, bis das Kernteam anders entscheidet.
 
-1. **Ausblenden nur für mich?** Entschieden im Sinn des Kernteams: Ja. Ansicht (auch Ausblenden und Auswahl) ist
-   flüchtig und je Person; geteilt wird nur über „Ansicht speichern“ (Abschnitt „Ansicht ist flüchtig“).
-2. **Kontextaktionen und Kontextmenü:** ADR-065 Punkt 3 sagt „höchstens fünf je Objektart“, der Auftrag „höchstens
-   12 je Gruppe“. *Standardvorschlag:* Das Kontextmenü (Rechtsklick) hat Gruppen mit höchstens 12 Einträgen; die
-   Leiste über dem Gewählten zeigt dessen ersten fünf. Alternative: nur eines von beiden.
-3. **Aussehen „von anderen bearbeitet“** (kein Token; Akzent und Statusfarben sind belegt). *Option 1
-   (Standard):* gestrichelte neutrale Kontur und Namensschild. *Option 2:* eigene Personenfarben (neue Tokens per
-   ADR). *Option 3:* nur Name in der Struktur, nichts im Modell. Dazu die Vorrangregel (ausgewählt > andere >
-   überfahren, Status immer zusätzlich): Ja/Nein.
-4. **Was wählt ein Klick?** *Standardvorschlag:* die nächste Ebene unter dem aktiven Element (in der Baugruppe das
-   Teil, im aktiven Teil der Schritt bzw. die Kante); Doppelklick geht hinein. Alternative: immer das kleinste
-   Element (Fläche/Kante), Auswahlfilter entscheidet (hängt an ap-49).
-5. **Kürzel:** F2 Umbenennen, Mod+D Duplizieren, Entf Verwerfen, Mod+A Alles, F Auf Auswahl zoomen, H/Alt+H
-   Ausblenden/Alles einblenden, W Darstellung, F6 nächste Zone. *Standardvorschlag: Ja* (zusammen 14, unter der
-   Grenze 15 des Leitbilds).
-6. **Ist Ausblenden, Auswahl oder Kamera ein Rückgängig-Schritt?** *Standardvorschlag: Nein*, nur Änderungen am
-   Modell.
-7. **Projektion beim Start:** *Standardvorschlag: orthogonal*; Alternative perspektivisch.
-8. **Navigationsprofil:** Belegung „Standard“ nach der Tabelle oben; zweites Profil zum Beleg der Austauschbarkeit:
-   *Option 1 (Standard):* „wie Onshape/SolidWorks“ (rechte Taste drehen, mittlere schieben – nahe am Standard).
-   *Option 2:* „wie Blender“ (mittlere Taste drehen, Umschalt+mittlere schieben). *Option 3:* „wie Fusion“
-   (Umschalt+mittlere drehen, mittlere schieben).
-9. **Alter Stand:** PR #51 ohne Merge schließen, `change/ap-41b-ux-bedienkonzept` nach dem Merge dieser Spec neu
-   von `main` aufsetzen, Code daraus nur gezielt übernehmen. *Standardvorschlag: Ja.*
-10. **Pilotaufgaben und Gate:** Aufgaben E–L und Zeiten nach der Tabelle; Gate über G, I, J, K (4 von 5
-    Testpersonen). *Standardvorschlag: Ja*; das Kernteam passt Texte nach dem eigenen Pilotlauf einmal an.
-11. **Neue Muster (ADR-061):** Elementzustände, Kontextmenü, Dropdown, Ziehen & Ablegen, Auge, Pfad,
-    Dokument-Reiter, Ansichtsleiste stehen als Kandidaten im Bausteinkatalog. *Standardvorschlag:* nach dem
-    Pilotlauf per ADR in `muster.md` aufnehmen; Muster „Arbeitsbereiche“ und „Kontextaktionen“ dabei nach ADR-065
+1. **Ausblenden nur für mich?** **Entschieden (Kernteam, 2026-10-23):** Ja. Ansicht (auch Ausblenden und Auswahl)
+   ist flüchtig und je Person; geteilt wird nur über „Ansicht speichern“ (Abschnitt „Ansicht ist flüchtig“).
+2. **Kontextaktionen und Kontextmenü:** **Entschieden (Kernteam, 2026-10-23):** Das Kontextmenü (Rechtsklick) hat
+   Gruppen mit höchstens 12 Einträgen; die Leiste über dem Gewählten zeigt dessen ersten fünf.
+3. **Aussehen „von anderen bearbeitet“:** **Entschieden (Kernteam, 2026-10-23):** Option 1, gestrichelte neutrale
+   Kontur (`linie-stark`) und Namensschild; Vorrangregel ausgewählt > andere > überfahren, Status immer zusätzlich:
+   Ja.
+4. **Was wählt ein Klick?** **Entschieden (Kernteam, 2026-10-23):** die nächste Ebene unter dem aktiven Element (in
+   der Baugruppe das Teil, im aktiven Teil der Schritt bzw. die Kante); Doppelklick geht hinein.
+5. **Kürzel:** **Entschieden (Kernteam, 2026-10-23):** Ja – F2 Umbenennen, Mod+D Duplizieren, Entf Verwerfen, Mod+A
+   Alles, F Auf Auswahl zoomen, H/Alt+H Ausblenden/Alles einblenden, W Darstellung, F6 nächste Zone (zusammen 14,
+   unter 15).
+6. **Ist Ausblenden, Auswahl oder Kamera ein Rückgängig-Schritt?** **Standardvorschlag gilt** (nicht vom Kernteam
+   einzeln entschieden): Nein, nur Änderungen am Modell (passt zu „Ansicht ist flüchtig“).
+7. **Projektion beim Start:** **Entschieden (Kernteam, 2026-10-23):** orthogonal.
+8. **Zweites Navigationsprofil:** **Entschieden (Kernteam, 2026-10-23):** Option 1, „wie Onshape/SolidWorks“;
+   Standardprofil nach der Tabelle oben.
+9. **Alter Stand:** **Entschieden (Kernteam, 2026-10-23):** Ja – PR #51 ohne Merge schließen,
+   `change/ap-41b-ux-bedienkonzept` nach dem Merge dieser Spec neu von `main` aufsetzen, Code daraus nur gezielt
+   übernehmen.
+10. **Pilotaufgaben und Gate:** **Entschieden (Kernteam, 2026-10-23):** Ja – Aufgaben E–L und Zeiten nach der
+    Tabelle; Gate über G, I, J, K (4 von 5 Testpersonen); das Kernteam passt Texte nach dem eigenen Pilotlauf einmal
+    an.
+11. **Neue Muster (ADR-061):** **Standardvorschlag gilt** (nicht vom Kernteam einzeln entschieden): Elementzustände,
+    Kontextmenü, Dropdown, Ziehen & Ablegen, Auge, Pfad, Dokument-Reiter, Ansichtsleiste sind Kandidaten im
+    Bausteinkatalog; nach dem Pilotlauf per ADR in `muster.md` aufnehmen, „Arbeitsbereiche“ und „Kontextaktionen“
+    nach ADR-065 anpassen.
+12. **Schritte per Ziehen umordnen?** **Entschieden (Kernteam, 2026-10-23):** Nein in diesem Change.
+13. **Rückmeldezeile:** **Standardvorschlag gilt** (nicht vom Kernteam einzeln entschieden): Ja, schmale Zeile am
+    unteren Fensterrand (ADR-065 nennt keine, das Muster „Rückmeldung“ verlangt sie).
+14. **Kernteam-Dateien nachziehen:** **Standardvorschlag gilt** (nicht vom Kernteam einzeln entschieden):
+    `docs/rules/client.md` und `docs/design/leitbild.md` nach der Abnahme auf einem Branch `adr/…` an ADR-065
     anpassen.
-12. **Schritte per Ziehen umordnen?** *Standardvorschlag: Nein* in diesem Change (ändert die Berechnung; eigenes
-    Thema).
-13. **Rückmeldezeile:** ADR-065 nennt keine; das Muster „Rückmeldung“ verlangt eine leise Zeile unten.
-    *Standardvorschlag: Ja*, schmale Zeile am unteren Fensterrand.
-14. **Kernteam-Dateien nachziehen:** `docs/rules/client.md` (keine Menüleisten, fünf Zonen, Inspektor,
-    Arbeitsbereiche) und `docs/design/leitbild.md` (Panels 2, Menüleisten 0, Aufbau, Inspektor) widersprechen
-    ADR-065. *Standardvorschlag:* nach der Abnahme auf einem Branch `adr/…` anpassen.
-15. **Befehlsinventar:** liegt nicht im Repository. *Standardvorschlag:* Kernteam legt die Beta-Befehle mit Familie
-    als `tests/golden/ap-41b-ux-bedienkonzept/befehlsinventar.json` ab; ohne Datei entfällt das Scenario
-    „Befehlsinventar hat einen Ort“ und wird Anschlussaufgabe für ap-08a.
-16. **Taskleiste „Simulation“:** nur Platzhalter, der Menüs und Struktur umschaltet (Leerer Zustand, gekennzeichnet
-    „simuliert“)? *Standardvorschlag: Ja.*
-17. **Gespeicherte Ansicht als Elementtyp:** Im Prototyp Typ `view`. Wird das ein Grundtyp im Kern (Liste in
-    `format/`, Glossar)? *Standardvorschlag: Ja*, nach der Abnahme per Glossar und Format.
+15. **Befehlsinventar:** **Entschieden (Kernteam, 2026-10-23):** Ja – das Kernteam legt die Beta-Befehle mit Familie
+    als `tests/golden/ap-41b-ux-bedienkonzept/befehlsinventar.json` ab (über den Branch `tests/…`, nicht in dieser
+    Spec); der Abgleich ist ein `[auto]`-Kriterium.
+16. **Taskleiste „Simulation“:** **Standardvorschlag gilt** (nicht vom Kernteam einzeln entschieden): Ja, nur
+    Platzhalter, der Menüs und Struktur umschaltet (Leerer Zustand, gekennzeichnet „simuliert“).
+17. **Gespeicherte Ansicht als Elementtyp:** **Entschieden (Kernteam, 2026-10-23):** Ja – `view` wird Grundtyp im
+    Kern (Liste in `format/`, Glossar; Nachtrag durch das Kernteam).

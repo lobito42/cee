@@ -192,11 +192,11 @@ Die Kontextaktionen über dem Gewählten MUST aus derselben Liste stammen (höch
 - **THEN** sind es höchstens 5 Einträge, und sie sind gleich den ersten Einträgen des Kontextmenüs nach `rang`
 
 #### Scenario: [auto] Jeder Beta-Befehl hat einen Ort
-- **WHEN** `tests/golden/ap-41b-ux-bedienkonzept/befehlsinventar.json` vorhanden ist und der Test jede Familie
-  daraus mit der Platzierungstabelle in design.md abgleicht
-- **THEN** hat jede Familie genau einen Ort, und kein Dropdown hätte mit den Beta-Befehlen seiner Familie mehr als
-  12 Einträge in einer Untergruppe (fehlt die Datei, wird das Scenario als Anschlussaufgabe vermerkt, nicht
-  übersprungen gemeldet)
+- **WHEN** der Test jeden Befehl mit `beta: true` aus `tests/golden/ap-41b-ux-bedienkonzept/befehlsinventar.json`
+  (Referenzdaten des Kernteams) über seine Familie mit der Platzierungstabelle in design.md abgleicht
+- **THEN** hat jede Familie des Inventars genau einen Ort (0 Familien ohne Ort, 0 mit zwei Orten), jeder
+  Beta-Befehl ist über diesen Ort oder die Suche erreichbar, und kein Dropdown hätte mit den Beta-Befehlen
+  seiner Familie mehr als 12 Einträge in einer Untergruppe
 
 ### Requirement: Navigation im Modell
 Drehen, Zoomen und Verschieben SHALL über austauschbare Navigationsprofile (Daten, ADR-060) laufen, mit dem
@@ -249,8 +249,7 @@ nicht erlaubt unterscheiden und mit Esc ohne Änderung abbrechen.
 ### Requirement: Ausblenden und Einblenden
 Das Auge an jeder Strukturzeile SHALL ein Element und seine Nachfahren aus der Ansicht nehmen und wieder zeigen.
 Sichtbarkeit MUST nur die Ansicht der Person betreffen und MUST NOT das Modell und damit den Export ändern
-(ADR-015). Ob Sichtbarkeit nur für die Person gilt, ist Standardvorschlag des Changes (design.md, Open
-Questions 1).
+(ADR-015). Sichtbarkeit gilt nur für die Person (entschieden, design.md, Open Questions 1).
 
 #### Scenario: [auto] Ausblenden ändert das Modell nicht
 - **WHEN** im Zustand `halter` das Auge des Stegs geklickt wird
@@ -414,5 +413,5 @@ Datenschutz und Start mit `npm run preview` enthalten.
 
 #### Scenario: [mensch] Pilotlauf des Kernteams vor dem Merge
 - **WHEN** das Kernteam als TP1 die Aufgaben E bis L löst
-- **THEN** entscheidet es Go oder No-Go für den Pilot mit Testpersonen; für G1 gilt der Gate-Vorschlag aus
+- **THEN** entscheidet es Go oder No-Go für den Pilot mit Testpersonen; für G1 gilt das Gate aus
   design.md (4 von 5 Testpersonen lösen G, I, J und K)

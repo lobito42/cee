@@ -3,7 +3,7 @@ Gesamtprüfung: `uv run pytest -q tests/acceptance/ap-41b-ux-bedienkonzept`. Pr�
 `npm --prefix P run --silent pruefen -- <befehl> --json`. Dateien aus dem vorigen Stand holen mit
 `git show origin/change/ap-41b-ux-bedienkonzept:spikes/ux-prototyp-2/<pfad>` (Liste in design.md, „Ablage“).
 
-Voraussetzung: Branch `change/ap-41b-ux-bedienkonzept` neu von `main` (Open Questions 9). Jede Gruppe endet mit
+Voraussetzung: Branch `change/ap-41b-ux-bedienkonzept` neu von `main` (entschieden, Open Questions 9). Jede Gruppe endet mit
 einem klickbaren Stand und 3–6 Schritten unter „Klick-Anleitung“ im PR (design.md). Umfang: etwa drei Nächte.
 
 ## 1. Gerüst und Fensteraufbau
@@ -39,7 +39,8 @@ einem klickbaren Stand und 3–6 Schritten unter „Klick-Anleitung“ im PR (de
 - [ ] 3.1 Befehle `element.anlegen`, `umbenennen`, `duplizieren`, `verwerfen`, `zurueckholen`,
   `ansicht.verworfenes`; Protokoll mit `weg`; ein Verlauf je Dokument – Prüfung: `pruefen crud`; AK-6
 - [ ] 3.2 Kontextmenü aus dem Register (Rechtsklick, Shift+F10) gleich in Struktur und Modell, Gruppen ≤ 12,
-  „Mehr …“; Kontextaktionen als erste ≤ 5; Abgleich mit dem Befehlsinventar, falls vorhanden – Prüfung:
+  „Mehr …“; Kontextaktionen als erste ≤ 5; jeder Beta-Befehl aus
+  `tests/golden/ap-41b-ux-bedienkonzept/befehlsinventar.json` als Eintrag im Register mit Familie – Prüfung:
   `pruefen kontextmenue`; AK-7
 - [ ] 3.3 Tastatur und Fokus: Tab/F6-Reihenfolge, Fokusring, Esc-Kette, Enter-Regeln, Kürzel nur aus dem Register
   – Prüfung: `pruefen tastatur`; AK-12
@@ -98,9 +99,10 @@ Keine Agenten-Tasks; stehen als Checkliste „Menschliche Abnahme“ im PR.
 
 ## Workflow follow-up
 
-- Open Questions in design.md vor dem Schreiben der Abnahmetests entscheiden oder Standardvorschläge bestätigen –
-  Kernteam
-- Befehlsinventar unter `tests/golden/ap-41b-ux-bedienkonzept/befehlsinventar.json` ablegen – Kernteam
+- Open Questions: entschieden bzw. Standardvorschlag gilt (design.md, Stand 2026-10-23); `view` als Grundtyp in
+  `format/` und Glossar nachtragen – Kernteam
+- Befehlsinventar unter `tests/golden/ap-41b-ux-bedienkonzept/befehlsinventar.json` ablegen (Branch
+  `tests/ap-41b-ux-bedienkonzept`, vor den Abnahmetests) – Kernteam
 - Abnahmetests unter `tests/acceptance/ap-41b-ux-bedienkonzept/` neu schreiben (alte veraltet, design.md) –
   test-author auf `tests/ap-41b-ux-bedienkonzept`
 - PR #51 schließen, `change/ap-41b-ux-bedienkonzept` neu von `main` – Agent nach Ja des Kernteams
