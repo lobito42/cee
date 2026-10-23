@@ -27,25 +27,32 @@ from cee_sdk import CeeError, Document, Quantity, States
 project = {
     "schema_version": 1,
     "elements": [
-        {"id": "a", "type": "thing", "inputs": {}, "params": {"h": {"value": 12, "unit": "mm"}},
-         "outputs": {"out": "thing"}, "content": [], "meta": {"name": "a"}},
+        {
+            "id": "a",
+            "type": "thing",
+            "inputs": {},
+            "params": {"h": {"value": 12, "unit": "mm"}},
+            "outputs": {"out": "thing"},
+            "content": [],
+            "meta": {"name": "a"},
+        },
     ],
 }
 doc = Document.import_project(project)
 doc.apply_op({"op": "set_param", "id": "a", "param": "h", "value": {"value": 1.2, "unit": "m"}})
 
-el = doc.element("a")              # Lesezugriff wie für ein Script-Element
-el.params["h"]                     # Quantity(value=1200.0, unit='mm')
+el = doc.element("a")  # Lesezugriff wie für ein Script-Element
+el.params["h"]  # Quantity(value=1200.0, unit='mm')
 Quantity.parse("1,2 m", default="mm").to("[in_i]")
 
 try:
     doc.apply_op({"op": "set_param", "id": "a", "param": "h", "value": {"value": 1, "unit": "furlongx"}})
 except CeeError as e:
-    print(e.code)                  # unknown_unit
+    print(e.code)  # unknown_unit
 
 states = States(doc)
-states.ready()                     # ["a"]
-data = doc.save()                  # bytes; Document.load(data) öffnet sie wieder
+states.ready()  # ["a"]
+data = doc.save()  # bytes; Document.load(data) öffnet sie wieder
 ```
 
 ## Öffentliche API
