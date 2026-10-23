@@ -10,7 +10,7 @@ sie verwendet werden. In Klammern: der englische Bezeichner im Code.
 | Element (`element`) | Kleinster Baustein des Graphen; jedes Element hat dieselbe Form (ADR-028) |
 | Grundtyp | Elementtyp, den der Kern kennt (z. B. `component`, `instance`, `frame`, `variables`, `item`, `study`, `material`, `analysis`); Liste in `format/` |
 | Fachtyp | Elementtyp aus einem Fachpaket (z. B. `wall`, `absorber`) |
-| Fachpaket (`package`) | Sammlung von Fachtypen, Befehlen, Panels, Regeln und Arbeitsbereichen für eine Branche; nutzt die Fachpaket-API (ADR-054) |
+| Fachpaket (`package`) | Sammlung von Fachtypen, Befehlen, Panels, Regeln und Einträgen der Taskleiste für eine Branche; nutzt die Fachpaket-API (ADR-054) |
 | Plugin | Fachpaket oder Erweiterung von Dritten, isoliert ausgeführt (ADR-045); technisch dasselbe wie ein Fachpaket |
 | Untergraph (`content`) | Inhalt eines Elements; Bauteil und Baugruppe sind Elemente mit Untergraph |
 | Komponente (`component`) | Wiederverwendbare Vorlage mit exponierten Parametern, Varianten und Referenz-Eingängen (ADR-043, ADR-050) |
@@ -67,7 +67,19 @@ sie verwendet werden. In Klammern: der englische Bezeichner im Code.
 
 | Begriff | Bedeutung |
 | --- | --- |
-| Arbeitsbereich | Zusammenstellung von Panels und Werkzeugen für eine Aufgabe; Beitrag eines Fachpakets (ADR-054) |
+| Taskleiste (`taskbar`) | Schmale Leiste ganz links mit Symbolen, die den Inhalt der Menüs, Befehle und der Struktur wechseln (Modellieren, Simulation, später z. B. Akustik); unten der Shop. Die Einträge haben bewusst keinen Sammelnamen; nicht „Modul“, „Arbeitsbereich“, „Aufgabe“ oder „Werkbank“ (Entwurf, `docs/design/muster.md`) |
+| Start-Menü (`start`) | Menü ganz links in der Menüzeile: Öffnen und Wurzel wählen, Neu, Teilen, Exportieren, Einstellungen |
+| Menüleiste (`menubar`) | Schmale Zeile oben: Start-Menü, Dropdowns des gewählten Eintrags der Taskleiste, Suche, Rückgängig und die Schalter für die Bereiche; auf dem Mac in der Desktop-App die System-Menüleiste |
+| Struktur (`structure`) | Der Baum links: Schritte, Teile und Dateien mit der gewählten Wurzel; Auswahl ist mit dem Modell synchron; nicht „Aufbau“, „Featurebaum“ oder „Baum“ |
+| Wurzel (`root`) | Das oberste Element der Struktur; frei wählbar (Projekt, Teil, Ordner oder Datei); der Pfad zeigt die Position |
+| Eigenschaften (`properties`) | Rechts oben: alle Werte und Gruppen des gewählten Elements, Grammatik Gruppe › Feld; nicht „Inspektor“ |
+| Chat (`chat`) | Rechts unten: Wünsche an die KI und ihre Vorschläge als Entscheidungskarten; zeigt die Auswahl als Kontext; nicht „Gespräch“ |
+| Seitenleiste links, rechts | Links die Struktur, rechts Eigenschaften und Chat; je ein Schalter blendet sie ein und aus |
+| Panel (`panel`) | Optionale Fläche unten unter dem Modell mit einer Auswahl: Befunde, Verlauf, Studien, Entwürfe und Meilensteine, Freigabe |
+| Dokument-Reiter (`editor tab`) | Reiter über dem Modell, je einer pro geöffnetem Teil oder geöffneter Datei; keine Befehlsreiter |
+| Teilen, Vergleichen | Das Modell zweimal nebeneinander: zwei Teile bzw. das Teil mit einem früheren Stand (Entwurf, Meilenstein); Unterschiede als Tabelle im Akzent (Muster Vergleich) |
+| Shop (`shop`) | Der eine Ort zum Hinzufügen von Fachpaketen, Erweiterungen und Apps; Filter trennen die drei |
+| Erweiterung (`extension`) | Code von Dritten, der Befehle, Panels oder Werkzeuge liefert, isoliert ausgeführt, mit Vertrauensstufe (ADR-045) |
 | Befehl, Befehlsregister | Jede Funktion mit stabiler ID; Grundlage für Befehlssuche, Tastenkürzel, Plugins, MCP (ADR-045) |
 | Layout: Desktop, Tablet | Anordnung der Oberfläche für Maus und Trackpad bzw. Touch und Stift (iPad); dieselben Befehle (ADR-060); nicht „Werkbank“ oder „Kompakt“ |
 | Musterkatalog | Verbindliche Liste der Bedienmuster, je Aufgabe genau eines (`docs/design/muster.md`, ADR-061) |
