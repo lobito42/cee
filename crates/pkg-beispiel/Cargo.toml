@@ -1,0 +1,16 @@
+[package]
+name = "cee-pkg-beispiel"
+version = "0.0.1"
+description = "Fachneutrales Beispiel-Fachpaket: zeigt, wie ein Fachpaket-Crate lesende Funktionen über cee-bind anbietet (ADR-054)"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+publish = false
+
+[lints]
+workspace = true
+
+[dependencies]
+# Lizenzen (ADR-034): cee-graph MPL-2.0, serde_json MIT/Apache-2.0
+cee-graph = { path = "../graph" }
+serde_json = "1"

@@ -1,10 +1,10 @@
 ## 1. Fassade und Fachpaket-Register
 
-- [ ] 1.1 `crates/bind` (cee-bind): Fassade nach der Tabelle in design.md, Fehlerformat, `catch_unwind`, Feature
+- [x] 1.1 `crates/bind` (cee-bind): Fassade nach der Tabelle in design.md, Fehlerformat, `catch_unwind`, Feature
   `test-hooks` mit `debug_panic` – Prüfung: `cargo test -q -p cee-bind`
-- [ ] 1.2 `examples/bindctl.rs` mit `run`, `load`, `merge`, `api`, `bench` (Rust-Sollwerte) – Prüfung:
+- [x] 1.2 `examples/bindctl.rs` mit `run`, `load`, `merge`, `api`, `bench` (Rust-Sollwerte) – Prüfung:
   `cargo run -q --release -p cee-bind --features pkg-beispiel,test-hooks --example bindctl -- api`; AK-3 (Rust)
-- [ ] 1.3 Fachpaket-Register, `packages()`, `call()`; `crates/pkg-beispiel` mit `beispiel.summe` hinter Feature
+- [x] 1.3 Fachpaket-Register, `packages()`, `call()`; `crates/pkg-beispiel` mit `beispiel.summe` hinter Feature
   `pkg-beispiel` – Prüfung: `cargo test -q -p cee-pkg-beispiel`; AK-7 (Rust-Teil)
 
 ## 2. Rustler-NIF
