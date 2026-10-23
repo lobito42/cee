@@ -45,7 +45,7 @@ Keine.
   `adr/bohrung-auswahl-platzierung` und ist noch nicht auf `main`.
 - Abhängigkeiten: ap-01-spike-datenmodell (fertig; Elementform und Generator `synth::project(n)` für 10.000
   Elemente). ap-39-spike-identitaet (in `docs/konzept.md`, M0) behandelt die persistente Identität von Flächen
-  und Kanten über die Topologie-Historie; die Regel „neu entstanden“ berührt dasselbe Thema. Ob ap-42 auf ap-39
+  und Kanten über die Topologie-Historie; die Regel „neu entstanden“ berührt dasselbe Thema. Ob ap-49 auf ap-39
   warten muss, ist offen (design.md, Open Questions).
 - Abnahmetests: `tests/acceptance/ap-49-spike-auswahl/` (AK-1 bis AK-9, Zuordnung in design.md)
 - Gate G1 (M0 Klären, ADR-059)

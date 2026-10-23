@@ -153,10 +153,9 @@ ap-45 und ap-08b.
 
 ## Open Questions
 
-1. **Nummer ap-42:** In `docs/konzept.md` heißt das Arbeitspaket ap-42 bereits `ap-42-spike-xr-eingabe` (Spike
-   WebXR und 3D-Maus, ADR-060). ADR-065 Punkt 13 (Branch `adr/bohrung-auswahl-platzierung`) nennt
-   `ap-49-spike-auswahl`. Soll der Auswahl-Spike eine andere Nummer bekommen, oder wird der XR-Spike umbenannt?
-   Eine Zeile für den Auswahl-Spike fehlt in der Arbeitspaket-Tabelle.
+Stand 2026-10-23: Die Vorschläge zu den Fragen 2 bis 7 gelten, bis das Kernteam anders entscheidet.
+
+1. **Nummer:** ap-42 ist belegt (`ap-42-spike-xr-eingabe`). Der Auswahl-Spike heißt `ap-49-spike-auswahl` (ADR-065 Punkt 13). Eine Zeile in der Arbeitspaket-Tabelle von `docs/konzept.md` fehlt noch.
 2. **Reihenfolge zu ap-39:** Darf der Spike vor ap-39 laufen (Vorschlag: ja, mit den Mitteln von build123d), oder
    soll er auf dessen Ergebnis warten?
 3. **„10.000 Elemente“:** Gemeint sind hier Elemente des Graphen (Auswahl von Teilen und Elementen). Braucht es
