@@ -18,7 +18,10 @@ einem klickbaren Stand und 3–6 Schritten unter „Klick-Anleitung“ im PR (de
   (≤ 12 je Untergruppe), `?register=` – Prüfung: Vitest (Erzeugung der Menüs) und `pruefen fenster`; AK-3, AK-7
 - [ ] 1.4 Testzustände (alle 22, zunächst ohne die Wirkung späterer Gruppen) und unbekannter Zustand; Prüfbefehle
   `zustaende`, `anfragen` – Prüfung: `pruefen zustaende` und `pruefen anfragen`; AK-1, AK-2
-- [ ] 1.5 Vorschau bauen, Klick-Anleitung im PR (Fenster ansehen, Reiter wechseln, Bereiche ein- und ausblenden,
+- [ ] 1.5 Taskleiste wechselt Menüs: Wechsel „Modellieren“ ↔ „Simulation“ tauscht Dropdowns und Struktur
+  (Leerer Zustand „simuliert“), Rückweg stellt Menüs, Struktur und Auswahl wieder her – Prüfung: `pruefen
+  fenster` (Scenario „Taskleiste wechselt Menüs“); AK-3
+- [ ] 1.6 Vorschau bauen, Klick-Anleitung im PR (Fenster ansehen, Taskleiste wechseln, Reiter wechseln, Bereiche ein- und ausblenden,
   Menüs öffnen) – Prüfung: `bash P/build.sh` und `npm --prefix P run preview` startet
 
 ## 2. Elementzustände und Auswahl

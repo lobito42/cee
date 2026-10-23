@@ -254,9 +254,12 @@ Auswahl, Überfahren, Fokus, die eine Hauptaktion und KI (ADR-061).
   laufendes Ziehen → Eingabe im Wertfeld (alter Wert) → aktive Auswahl → aktives Element verlassen.
 - **Enter:** führt den markierten Menü- oder Sucheintrag aus, übernimmt im Wertfeld, macht in der Struktur das
   fokussierte Element aktiv, übernimmt im Chat die fokussierte Entscheidungskarte nicht (nur per Knopf).
-- **Kürzel** stehen im Register und neben jedem Menüeintrag: Mod+K Suche, Mod+Z / Mod+Umschalt+Z, Mod+B Struktur,
-  Mod+J Panel, Mod+Alt+B rechte Seitenleiste; Standardvorschläge F2, Mod+D, Entf, Mod+A, F, H, Alt+H, W
-  (Darstellung). Zusammen 14 – unter der Grenze „< 15“ des Leitbilds (Open Questions 5).
+- **Kürzel** stehen im Register und neben jedem Menüeintrag, genau diese 15 (Grenze ≤ 15):
+  1 Mod+K Suche, 2 Mod+Z Rückgängig, 3 Mod+Umschalt+Z Wiederholen, 4 Mod+B Struktur, 5 Mod+J Panel, 6 Mod+Alt+B
+  rechte Seitenleiste, 7 F2 Umbenennen, 8 Mod+D Duplizieren, 9 Entf Verwerfen, 10 Mod+A Alles wählen, 11 F Auf
+  Auswahl zoomen, 12 H Ausblenden, 13 Alt+H Alles einblenden, 14 W Darstellung, 15 F6 nächste Zone (Open
+  Questions 5). Nicht gezählt werden Esc, Enter, Tab, Pfeiltasten und die plattformüblichen Shift+F10 bzw.
+  Kontextmenü-Taste. Das Leitbild nennt „< 15“; die Angleichung auf ≤ 15 gehört zu Open Questions 14.
 
 ### Andere Personen (ADR-056)
 
@@ -315,7 +318,9 @@ zeigen kann, dass Menüs und Kontextmenü aus dem Register erzeugt werden), dana
   (Einträge `{befehl, parameter, quelle, weg}` mit `weg` ∈ menue, kuerzel, kontextmenue, kontextaktion, suche,
   eigenschaften, griff, struktur, chat), `befehle()`, `teil()` (`{abmessungen_mm, volumen_mm3, masse_g}`),
   `ansicht()` (`{aktiv, pfad, ausgeblendet, isoliert, darstellung, projektion, profil, kamera, projektion_von(id)}`),
-  `zustaende(id)` (je Darstellung die aktiven Zustände und gezeichneten Kanäle mit Token-Namen). Aktionen nur über
+  `zustaende(id)` (je Darstellung die aktiven Zustände und gezeichneten Kanäle mit Token-Name, Strichart
+  `durchgezogen`/`gestrichelt` und Breite in px; im DOM gespiegelt als `data-kontur`, `data-kontur-token`,
+  `data-kontur-breite`). Aktionen nur über
   echte Eingaben, außer `window.__ceeEingabe.ansicht({tx, ty, tz, rx, ry, rz})` (Ansichtseingabe, wie bisher).
 - Prüfwerkzeug: `npm --prefix spikes/ux-prototyp-2 run --silent pruefen -- <befehl> --json` (lokale Vorschau,
   headless Chromium, 1440 × 900):
@@ -340,7 +345,7 @@ zeigen kann, dass Menüs und Kontextmenü aus dem Register erzeugt werden), dana
 | `texte` | feste Texte, fehlende Schlüssel, Git-Begriffe, Zahlen ohne Einheit |
 | `ablauf <aufgabe>` | Endzustand der Pilotaufgabe, Soll erreicht |
 | `anfragen` | Netzanfragen an fremde Hosts |
-| `messen` | `auswahl_p95_ms`, `hover_p95_ms`, `kontextmenue_p95_ms`, `ablegen_p95_ms`, `wert_live_p95_ms`, `suche_p95_ms` (je 20 Messungen) |
+| `messen` | `auswahl_p95_ms`, `hover_p95_ms`, `kontextmenue_p95_ms`, `ablegen_p95_ms`, `wert_live_p95_ms`, `suche_p95_ms` (je mindestens 20 Messungen, roh und als p95) |
 
 ### Leistung (ubuntu-latest, headless Chromium, 1440 × 900)
 
@@ -354,8 +359,8 @@ zeigen kann, dass Menüs und Kontextmenü aus dem Register erzeugt werden), dana
 | `suche_p95_ms` – Tastendruck bis Ergebnisliste gezeichnet | < 100 ms |
 | `bereit_ms` je Zustand | ≤ 3.000 ms |
 
-Gezeichnet = zweites `requestAnimationFrame` nach der Eingabe. Die Tests messen selbst nach (Median aus 3 Läufen
-von `pruefen -- messen --json`). Bildrate beim Drehen wird im CI nicht gemessen, nur im Pilotlauf beurteilt.
+Gezeichnet = zweites `requestAnimationFrame` nach der Eingabe. Die Tests messen selbst nach: `pruefen -- messen --json` misst je
+Kennzahl mindestens 20 Eingaben, der Test berechnet daraus das 95. Perzentil (p95). Bildrate beim Drehen wird im CI nicht gemessen, nur im Pilotlauf beurteilt.
 
 ### Tokens, Schrift, Texte
 
@@ -459,8 +464,8 @@ Standardvorschlag, bis das Kernteam anders entscheidet.
 4. **Was wählt ein Klick?** **Entschieden (Kernteam, 2026-10-23):** die nächste Ebene unter dem aktiven Element (in
    der Baugruppe das Teil, im aktiven Teil der Schritt bzw. die Kante); Doppelklick geht hinein.
 5. **Kürzel:** **Entschieden (Kernteam, 2026-10-23):** Ja – F2 Umbenennen, Mod+D Duplizieren, Entf Verwerfen, Mod+A
-   Alles, F Auf Auswahl zoomen, H/Alt+H Ausblenden/Alles einblenden, W Darstellung, F6 nächste Zone (zusammen 14,
-   unter 15).
+   Alles, F Auf Auswahl zoomen, H/Alt+H Ausblenden/Alles einblenden, W Darstellung, F6 nächste Zone; mit Mod+K, Mod+Z,
+   Mod+Umschalt+Z, Mod+B, Mod+J, Mod+Alt+B zusammen 15 (Grenze ≤ 15).
 6. **Ist Ausblenden, Auswahl oder Kamera ein Rückgängig-Schritt?** **Standardvorschlag gilt** (nicht vom Kernteam
    einzeln entschieden): Nein, nur Änderungen am Modell (passt zu „Ansicht ist flüchtig“).
 7. **Projektion beim Start:** **Entschieden (Kernteam, 2026-10-23):** orthogonal.

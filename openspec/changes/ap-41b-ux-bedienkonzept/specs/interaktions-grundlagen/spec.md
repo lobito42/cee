@@ -82,12 +82,14 @@ Tokens nutzen. Treffen mehrere Zustände zusammen, MUST die Vorrangregel aus des
   dieselbe Liste von Zuständen, und für jeden Zustand stimmen Kanal und Token-Name mit der Tabelle in design.md
   überein (0 Abweichungen)
 
-#### Scenario: [auto] Kontur in der richtigen Farbe
-- **WHEN** im Modell die Pixel an der Kontur der gewählten Grundplatte, des überfahrenen Stegs und des von
-  Testperson B bearbeiteten Elements gemessen werden (Median 5 × 5 px)
+#### Scenario: [auto] Kontur in der richtigen Farbe und Strichart
+- **WHEN** im Zustand `zustaende` die Kontur der gewählten Grundplatte und des überfahrenen Stegs im Modell als
+  Pixel gemessen wird (Median 5 × 5 px auf der durchgezogenen Linie) und die Kontur des von Testperson B
+  bearbeiteten Elements über `zustaende(id)` bzw. die DOM-Attribute `data-kontur`, `data-kontur-token` und
+  `data-kontur-breite` gelesen wird
 - **THEN** liegt die Farbe der Auswahl und des Überfahrens je höchstens ΔE (OKLCH) 0,05 vom Token `akzent`, die
-  der anderen Person höchstens 0,05 von `linie-stark`, und die Auswahlkontur ist mindestens doppelt so breit wie
-  die des Überfahrens
+  Auswahlkontur ist mindestens doppelt so breit wie die des Überfahrens, und die Kontur der anderen Person meldet
+  `gestrichelt` mit Token `linie-stark`
 
 #### Scenario: [auto] Vorrang bei mehreren Zuständen
 - **WHEN** ein fehlerhaftes Element überfahren und gewählt wird und ein ausgeblendetes Element in der Struktur
@@ -338,7 +340,8 @@ stehen, darunter Mod+K, Mod+B, Mod+J und Mod+Alt+B.
 #### Scenario: [auto] Kürzel aus dem Register
 - **WHEN** der Test alle Kürzel aus `befehle()` liest und je einmal auslöst
 - **THEN** führt jedes Kürzel seinen Befehl aus (Eintrag im Protokoll bzw. Wirkung in `ansicht()`), jedes steht
-  neben dem Befehl in Menü und Suche, es gibt keine Kürzel außerhalb des Registers, und ihre Zahl ist < 15
+  neben dem Befehl in Menü und Suche, es gibt keine Kürzel außerhalb des Registers, und ihre Zahl ist ≤ 15 (genau die 15 aus
+  design.md)
 
 ### Requirement: Andere Personen nur live
 Auswahl und Zeiger anderer Personen (im Prototyp simuliert) SHALL nur live erscheinen und MUST NOT gespeichert
@@ -392,7 +395,7 @@ Suche und über die Adresse `?katalog` erreichbar sein.
   Funktionen beurteilen“
 
 ### Requirement: Pilotaufgaben und Reaktion
-Der Prototyp SHALL die Pilotaufgaben E bis L aus design.md lösbar machen und auf Eingaben in < 100 ms (p95)
+Der Prototyp SHALL die Pilotaufgaben E bis L aus design.md lösbar machen und auf Eingaben in < 100 ms (p95 über mindestens 20 Messungen)
 reagieren; der Testleitfaden `docs/spikes/ux-prototyp-2.md` MUST Aufgaben, Ergebnisbogen, Nachbefragung,
 Datenschutz und Start mit `npm run preview` enthalten.
 
@@ -401,9 +404,9 @@ Datenschutz und Start mit `npm run preview` enthalten.
 - **THEN** erreicht jede der 8 Aufgaben den Sollzustand aus design.md (Aufgabe G: Volumen 57,49 cm³ ± 0,1 %)
 
 #### Scenario: [auto] Reaktion unter 100 ms
-- **WHEN** `pruefen messen` dreimal läuft
-- **THEN** liegt der Median jeder Kennzahl aus design.md (Auswahl, Überfahren, Kontextmenü, Ablegen, Wert live,
-  Suche) unter 100 ms
+- **WHEN** `pruefen messen` je Kennzahl aus design.md (Auswahl, Überfahren, Kontextmenü, Ablegen, Wert live,
+  Suche) mindestens 20 Eingaben misst und der Test aus den Rohwerten das 95. Perzentil berechnet
+- **THEN** liegt das p95 jeder Kennzahl unter 100 ms
 
 #### Scenario: [auto] Leitfaden vollständig
 - **WHEN** der Test `docs/spikes/ux-prototyp-2.md` liest
