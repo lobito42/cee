@@ -52,6 +52,21 @@ Review. Hältst du einen Abnahmetest für falsch, öffne einen Einspruch-PR auf 
 Spec; auf `change/<id>` bleiben Tests unveränderlich. Blockierende Fragen kommen als Kommentar mit `@lobito42`
 im Issue „Fragen an das Kernteam“.
 
+## Fragen an den Menschen und Referenzdaten
+
+Der Mensch entscheidet über Inhalte und kennt weder Git noch Abkürzungen noch Nummern. Deshalb:
+
+- Fragen und Berichte in Alltagssprache: kein ADR-, PR-, Branch- oder AP-Kürzel, kein Git-Begriff. Jede Frage
+  nennt, worum es geht, was du empfiehlst und was bei Ja oder Nein passiert; höchstens zwei Optionen.
+- Was du nach bestem Wissen selbst entscheiden kannst (Reihenfolge, Technik, Git, Merge, Konflikte, Aufteilung),
+  entscheidest du und sagst es hinterher in einem Satz. Keine Rückfrage zu Formalien.
+- **Referenzdaten** (Inventare, Goldene Dateien, Listen „vom Kernteam“) leitest du aus echten Quellen im
+  Repository ab. Fehlt eine Quelle, wird die Datei kleiner. Nie Zahlen oder Einträge erfinden oder auf eine
+  Zielzahl auffüllen. Eine Lücke, die nur der Mensch inhaltlich füllen kann, wird als inhaltliche Frage gestellt.
+- **Neuzuschnitt eines Changes:** Eine Aufgabe, drei Schritte hintereinander ohne Rückfrage: (1) `tests/<id>`:
+  Abnahmetests des alten Zuschnitts entfernen, (2) `spec/<id>`: neue Spec, (3) `tests/<id>`: neue Tests. Der
+  Mensch bestätigt nur den neuen Zuschnitt inhaltlich.
+
 ## Token sparen (Pro-Abo)
 
 - Lies gezielt: `openspec show <id>`, `rg`, Dateiausschnitte. Nie `docs/konzept.md` komplett lesen –
