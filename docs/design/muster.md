@@ -8,6 +8,25 @@ Muster oder eine Abweichung gibt es nur per ADR. Farben, Schrift, Abstände komm
 Jedes Muster ist ein Baustein in `client/src/ui/` (später auch in der Apple-App, ADR-060) und hat einen Eintrag
 auf der Katalogseite mit Referenzbildern (hell und dunkel, Desktop und Tablet, Linux und Mac).
 
+## Fensteraufbau (Entwurf)
+
+Führendes Vorbild für den Rahmen ist das Apple-Gerüst (Human Interface Guidelines, SwiftUI), damit Web, Desktop,
+iPad und später Vision Pro gleich aufgebaut sind (ADR-060). Entwurf: gilt erst nach der Abnahme des Prototyps
+`ap-41b-ux-bedienkonzept`; Details und Abweichungen entscheidet der Mensch.
+
+| Apple | CEE | Regeln |
+| --- | --- | --- |
+| Seitenleiste mit den Bereichen der App | **Taskleiste** ganz links (Symbole), unten der Shop | Wechselt der Eintrag, ändern sich Menüs und Befehle; der Baum bleibt |
+| Zweite Spalte (Inhaltsliste) | **Baum** links, ein Klick blendet ihn aus | Wurzel frei wählbar (Projekt, Teil, Ordner, Datei); Pfad unten, Klick auf ein Glied setzt die Wurzel höher |
+| Inhaltsbereich | **Modell** | Auswahl ist überall synchron |
+| Informationsleiste rechts (`inspector`) | **Eigenschaften** oben, **Chat** (KI) darunter | Keine Reiter in Reitern; beide immer sichtbar; Chat zeigt die Auswahl als Kontext |
+| Menüleiste (Datei, Bearbeiten …) | **Start-Menü** und **Dropdown-Menüs** (Skizze, Körper, Ändern, Prüfen) in einer schmalen Zeile | Start = Öffnen/Wurzel wählen, Neu, Teilen, Exportieren, Einstellungen; Dropdowns zeigen alle Befehle des Bereichs mit Kürzel; auf dem Mac in der Desktop-App als System-Menüleiste |
+| Symbolleiste mit Suchfeld | **Suche** (Strg/Cmd+K) rechts in der Menüzeile, daneben Rückgängig | Befehle kommen immer aus dem einen Befehlsregister |
+
+Offen: Ob und wie eine schwebende Werkzeugleiste im Modell die Kontextaktionen ergänzt (Lowfi-Entwurf G1);
+Detailtiefe je Feature („Mehr zu …“, merkt sich pro Person und Feature). Die Zeilen „Kontextaktionen“ und
+„Arbeitsbereiche“ unten bleiben bis dahin unverändert.
+
 ## Entscheiden und ändern
 
 | Muster | Wofür | Regeln |
