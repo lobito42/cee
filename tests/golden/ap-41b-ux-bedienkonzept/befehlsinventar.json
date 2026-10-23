@@ -1,0 +1,674 @@
+[
+ {
+  "id": "dokument.oeffnen",
+  "titel": "Öffnen",
+  "familie": "Datei",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "element.anlegen",
+  "titel": "Neu anlegen",
+  "familie": "Datei",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "wurzel.setzen",
+  "titel": "Wurzel der Struktur wählen",
+  "familie": "Datei",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "einstellungen.oeffnen",
+  "titel": "Einstellungen öffnen",
+  "familie": "Datei",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "dokument.schliessen",
+  "titel": "Dokument schließen",
+  "familie": "Datei",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "dokument.zuletzt",
+  "titel": "Zuletzt geöffnet",
+  "familie": "Datei",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "projekt.teilen",
+  "titel": "Projekt teilen",
+  "familie": "Datei",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "projekt.einladen",
+  "titel": "Person einladen",
+  "familie": "Datei",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "projekt.anlegen",
+  "titel": "Projekt anlegen",
+  "familie": "Datei",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "projekt.umbenennen",
+  "titel": "Projekt umbenennen",
+  "familie": "Datei",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "projekt.archivieren",
+  "titel": "Projekt archivieren",
+  "familie": "Datei",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "bearbeiten.rueckgaengig",
+  "titel": "Rückgängig",
+  "familie": "Bearbeiten",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "bearbeiten.wiederholen",
+  "titel": "Wiederholen",
+  "familie": "Bearbeiten",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "element.umbenennen",
+  "titel": "Umbenennen",
+  "familie": "Bearbeiten",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "element.duplizieren",
+  "titel": "Duplizieren",
+  "familie": "Bearbeiten",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "element.verwerfen",
+  "titel": "Verwerfen",
+  "familie": "Bearbeiten",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "element.zurueckholen",
+  "titel": "Zurückholen",
+  "familie": "Bearbeiten",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "element.wert-setzen",
+  "titel": "Wert setzen",
+  "familie": "Bearbeiten",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "bearbeiten.kopieren",
+  "titel": "Kopieren",
+  "familie": "Bearbeiten",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "bearbeiten.einfuegen",
+  "titel": "Einfügen",
+  "familie": "Bearbeiten",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "element.parameter-anlegen",
+  "titel": "Parameter anlegen",
+  "familie": "Bearbeiten",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "element.ersetzen",
+  "titel": "Referenz ersetzen und umhängen",
+  "familie": "Bearbeiten",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "auswahl.setzen",
+  "titel": "Auswählen",
+  "familie": "Auswahl",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "auswahl.hinzufuegen",
+  "titel": "Zur Auswahl hinzufügen",
+  "familie": "Auswahl",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "auswahl.umschalten",
+  "titel": "Auswahl umschalten",
+  "familie": "Auswahl",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "auswahl.aufheben",
+  "titel": "Auswahl aufheben",
+  "familie": "Auswahl",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "auswahl.alles",
+  "titel": "Alles auswählen",
+  "familie": "Auswahl",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "auswahl.umkehren",
+  "titel": "Auswahl umkehren",
+  "familie": "Auswahl",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "auswahl.aehnliche",
+  "titel": "Ähnliche auswählen",
+  "familie": "Auswahl",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "auswahl.kantenschleife",
+  "titel": "Kantenschleife auswählen",
+  "familie": "Auswahl",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "auswahl.verbundene",
+  "titel": "Verbundene Flächen auswählen",
+  "familie": "Auswahl",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "auswahl.tangentiale",
+  "titel": "Tangentiale Kanten auswählen",
+  "familie": "Auswahl",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "auswahl.rahmen",
+  "titel": "Rahmenauswahl",
+  "familie": "Auswahl",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "ansicht.einpassen",
+  "titel": "Alles einpassen",
+  "familie": "Ansicht",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "ansicht.auf-auswahl",
+  "titel": "Auf Auswahl zoomen",
+  "familie": "Ansicht",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "ansicht.isolieren",
+  "titel": "Isolieren",
+  "familie": "Ansicht",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "ansicht.alles-einblenden",
+  "titel": "Alles einblenden",
+  "familie": "Ansicht",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "ansicht.projektion",
+  "titel": "Perspektive oder Orthogonal",
+  "familie": "Ansicht",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "darstellung.wechseln",
+  "titel": "Darstellung wechseln",
+  "familie": "Ansicht",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "ansicht.vorne",
+  "titel": "Ansicht von vorne",
+  "familie": "Ansicht",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "ansicht.oben",
+  "titel": "Ansicht von oben",
+  "familie": "Ansicht",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "ansicht.rechts",
+  "titel": "Ansicht von rechts",
+  "familie": "Ansicht",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "ansicht.isometrisch",
+  "titel": "Isometrische Ansicht",
+  "familie": "Ansicht",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "ansicht.auf-flaeche",
+  "titel": "Senkrecht auf Fläche",
+  "familie": "Ansicht",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "ansicht.schnitt",
+  "titel": "Schnittansicht",
+  "familie": "Ansicht",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "ansicht.verworfenes",
+  "titel": "Verworfenes zeigen",
+  "familie": "Ansicht",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "ansicht.ergebnis",
+  "titel": "Ansicht Ergebnis",
+  "familie": "Ansicht",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "ansicht.alle-entwuerfe",
+  "titel": "Ansicht Alle Entwürfe",
+  "familie": "Ansicht",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "ansicht.koordinatensystem",
+  "titel": "Achsen und Ebenen zeigen",
+  "familie": "Ansicht",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "ansicht.beleuchtung",
+  "titel": "Beleuchtung wählen",
+  "familie": "Ansicht",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "ansicht.hintergrund",
+  "titel": "Hintergrund wählen",
+  "familie": "Ansicht",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "ansicht.explosion",
+  "titel": "Explosionsansicht",
+  "familie": "Ansicht",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "ansicht.kamera-folgen",
+  "titel": "Kamera einer Person folgen",
+  "familie": "Ansicht",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "ansicht.vollbild",
+  "titel": "Vollbild",
+  "familie": "Ansicht",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "element.ausblenden",
+  "titel": "Ausblenden",
+  "familie": "Sichtbarkeit",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "element.einblenden",
+  "titel": "Einblenden",
+  "familie": "Sichtbarkeit",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "sichtbarkeit.nur-dieses",
+  "titel": "Nur dieses zeigen",
+  "familie": "Sichtbarkeit",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "sichtbarkeit.farbe-setzen",
+  "titel": "Anzeigefarbe setzen",
+  "familie": "Sichtbarkeit",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "sichtbarkeit.transparenz",
+  "titel": "Transparenz setzen",
+  "familie": "Sichtbarkeit",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "sichtbarkeit.ebene-wechseln",
+  "titel": "Sichtbarkeit nach Typ umschalten",
+  "familie": "Sichtbarkeit",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "sichtbarkeit.schnittebene-zeigen",
+  "titel": "Schnittebene zeigen",
+  "familie": "Sichtbarkeit",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "ansicht.speichern",
+  "titel": "Ansicht speichern",
+  "familie": "Ansicht speichern",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "ansicht.anwenden",
+  "titel": "Gespeicherte Ansicht anwenden",
+  "familie": "Ansicht speichern",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "ansicht.umbenennen",
+  "titel": "Gespeicherte Ansicht umbenennen",
+  "familie": "Ansicht speichern",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "ansicht.verwerfen",
+  "titel": "Gespeicherte Ansicht verwerfen",
+  "familie": "Ansicht speichern",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "fenster.struktur",
+  "titel": "Struktur ein- oder ausblenden",
+  "familie": "Fenster",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "fenster.panel",
+  "titel": "Panel ein- oder ausblenden",
+  "familie": "Fenster",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "fenster.rechts",
+  "titel": "Rechte Seitenleiste ein- oder ausblenden",
+  "familie": "Fenster",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "suche.oeffnen",
+  "titel": "Befehlssuche öffnen",
+  "familie": "Fenster",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "fenster.teilen",
+  "titel": "Fenster teilen (zwei Teile nebeneinander)",
+  "familie": "Fenster",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "fenster.vergleichen",
+  "titel": "Teil mit früherem Stand vergleichen",
+  "familie": "Fenster",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "thema.umschalten",
+  "titel": "Hell oder Dunkel",
+  "familie": "Fenster",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "einstellung.navigationsprofil",
+  "titel": "Navigationsprofil wählen",
+  "familie": "Fenster",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "einstellung.sprache",
+  "titel": "Sprache wählen",
+  "familie": "Fenster",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "einstellung.einheiten",
+  "titel": "Einheiten wählen",
+  "familie": "Fenster",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "fenster.tastenkuerzel",
+  "titel": "Tastenkürzel anpassen",
+  "familie": "Fenster",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "katalog.oeffnen",
+  "titel": "Katalog öffnen",
+  "familie": "Hilfe",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "hilfe.befehle-zeigen",
+  "titel": "Alle Befehle zeigen",
+  "familie": "Hilfe",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "hilfe.einfuehrung",
+  "titel": "Einführung starten",
+  "familie": "Hilfe",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "hilfe.tastenkuerzel",
+  "titel": "Tastenkürzel anzeigen",
+  "familie": "Hilfe",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "hilfe.rueckmeldung",
+  "titel": "Rückmeldung geben",
+  "familie": "Hilfe",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "hilfe.ueber",
+  "titel": "Über CEE",
+  "familie": "Hilfe",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "element.umhaengen",
+  "titel": "Umhängen (Ziel wählen)",
+  "familie": "Baugruppe",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "element.aktivieren",
+  "titel": "Aktivieren",
+  "familie": "Baugruppe",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "element.verlassen",
+  "titel": "Aktives Element verlassen",
+  "familie": "Baugruppe",
+  "beta": true,
+  "wesentlich": true
+ },
+ {
+  "id": "baugruppe.anlegen",
+  "titel": "Baugruppe anlegen",
+  "familie": "Baugruppe",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "baugruppe.instanz-anlegen",
+  "titel": "Instanz einer Komponente anlegen",
+  "familie": "Baugruppe",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "baugruppe.variante-waehlen",
+  "titel": "Variante wählen",
+  "familie": "Baugruppe",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "verbindung.anlegen",
+  "titel": "Verbindung anlegen",
+  "familie": "Baugruppe",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "verbindung.verbindungspunkt-setzen",
+  "titel": "Verbindungspunkt setzen",
+  "familie": "Baugruppe",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "verbindung.bewegen",
+  "titel": "Innerhalb der Freiheitsgrade bewegen",
+  "familie": "Baugruppe",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "baugruppe.kollision-pruefen",
+  "titel": "Kollision prüfen",
+  "familie": "Baugruppe",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "baugruppe.fixieren",
+  "titel": "Teil fixieren",
+  "familie": "Baugruppe",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "baugruppe.komponente-anlegen",
+  "titel": "Komponente aus Teil anlegen",
+  "familie": "Baugruppe",
+  "beta": true,
+  "wesentlich": false
+ },
+ {
+  "id": "baugruppe.beziehung-ersetzen",
+  "titel": "Teil in Baugruppe ersetzen",
+  "familie": "Baugruppe",
+  "beta": false,
+  "wesentlich": false
+ },
+ {
+  "id": "baugruppe.gelenkgrenzen-setzen",
+  "titel": "Gelenkgrenzen setzen",
+  "familie": "Baugruppe",
+  "beta": false,
+  "wesentlich": false
+ }
+]
