@@ -1,0 +1,17 @@
+# Bauangaben für `maturin develop -m crates/graph-py/Cargo.toml` (maturin liest das pyproject neben
+# Cargo.toml). Paketangaben wie sdk/python/pyproject.toml; der Python-Teil liegt unter sdk/python.
+[project]
+name = "cee-sdk"
+version = "0.0.1"
+description = "Python-SDK für CEE: Dokument, Größen und Lesezugriff auf Elemente über den Rust-Kern (PyO3)"
+requires-python = ">=3.11"
+license = "Apache-2.0 AND MPL-2.0"
+
+[build-system]
+requires = ["maturin>=1.9,<2"]
+build-backend = "maturin"
+
+[tool.maturin]
+module-name = "cee_sdk._graph"
+python-source = "../../sdk/python"
+python-packages = ["cee_sdk"]

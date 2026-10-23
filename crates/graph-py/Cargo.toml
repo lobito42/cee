@@ -1,0 +1,28 @@
+[package]
+name = "cee-graph-py"
+version = "0.0.1"
+description = "PyO3-Erweiterung cee_sdk._graph für das Python-SDK (sdk/python): ruft nur die Fassade cee-bind auf (ADR-029)"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+publish = false
+
+[lib]
+name = "_graph"
+crate-type = ["cdylib"]
+# Die Erweiterung braucht beim Linken eines Test-Binaries libpython; geprüft wird sie über
+# sdk/python/tests und die Abnahmetests (maturin develop).
+test = false
+doctest = false
+
+[lints]
+workspace = true
+
+[features]
+pkg-beispiel = ["cee-bind/pkg-beispiel"]
+test-hooks = ["cee-bind/test-hooks"]
+
+[dependencies]
+# Lizenzen (ADR-034): cee-bind MPL-2.0, pyo3 MIT/Apache-2.0
+cee-bind = { path = "../bind" }
+pyo3 = { version = "0.30", features = ["abi3-py311", "extension-module"] }

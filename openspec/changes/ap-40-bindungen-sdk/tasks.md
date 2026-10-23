@@ -25,12 +25,12 @@
 
 ## 4. PyO3 und Python-SDK
 
-- [ ] 4.1 `crates/graph-py` (abi3-py311), `sdk/python/pyproject.toml` (cee-sdk, Apache-2.0, maturin), uv-Workspace
+- [x] 4.1 `crates/graph-py` (abi3-py311), `sdk/python/pyproject.toml` (cee-sdk, Apache-2.0, maturin), uv-Workspace
   ergänzen – Prüfung: `uv run --package cee-sdk python -c "import cee_sdk"`
-- [ ] 4.2 Python-API `Document`, `States`, `Quantity`, `Element`, `CeeError`, `packages`, `call`, `py.typed`;
+- [x] 4.2 Python-API `Document`, `States`, `Quantity`, `Element`, `CeeError`, `packages`, `call`, `py.typed`;
   Unit-Tests unter `sdk/python/tests` – Prüfung: `uv run pytest -q sdk/python/tests && uv run ruff check sdk/python`;
   AK-8
-- [ ] 4.3 `sdk/python/tools/bindctl.py` – Prüfung: AK-1, AK-4 und AK-6 für Python
+- [x] 4.3 `sdk/python/tools/bindctl.py` – Prüfung: AK-1, AK-4 und AK-6 für Python
 
 ## 5. Gleichheit, Messung, Abschluss
 
