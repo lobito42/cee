@@ -1,134 +1,115 @@
 Alle Befehle aus dem Wurzelverzeichnis, sofern nicht anders angegeben; `P` steht für `spikes/ux-prototyp-2`.
-Gesamtprüfung: `uv run pytest -q tests/acceptance/ap-41b-ux-bedienkonzept`. Prüfbefehle des Prüfwerkzeugs:
-`npm --prefix P run --silent pruefen -- <befehl> --json`. Dateien aus ap-41 holen mit
-`git show origin/change/ap-41-ux-prototyp:spikes/ux-prototyp/<pfad>`.
+Gesamtprüfung: `uv run pytest -q tests/acceptance/ap-41b-ux-bedienkonzept`. Prüfbefehle:
+`npm --prefix P run --silent pruefen -- <befehl> --json`. Dateien aus dem vorigen Stand holen mit
+`git show origin/change/ap-41b-ux-bedienkonzept:spikes/ux-prototyp-2/<pfad>` (Liste in design.md, „Ablage“).
 
-Jede Gruppe endet mit einem klickbaren Stand. Die letzte Task jeder Gruppe baut die Vorschau und ergänzt im PR
-unter „Klick-Anleitung“ 3–6 Schritte in Alltagssprache mit Startadresse und dem, was zu sehen sein muss
-(design.md, „Klickbarer Stand nach jeder Gruppe“).
+Voraussetzung: Branch `change/ap-41b-ux-bedienkonzept` neu von `main` (entschieden, Open Questions 9). Jede Gruppe endet mit
+einem klickbaren Stand und 3–6 Schritten unter „Klick-Anleitung“ im PR (design.md). Umfang: etwa drei Nächte.
 
-## 1. Gerüst und lesbarer Halter
+## 1. Gerüst und Fensteraufbau
 
-- [ ] 1.1 `P/` aus ap-41 übernehmen: `package.json` (Name `@cee/ux-prototyp-2`), `tsconfig.json`,
-  `vite.config.ts`, `eslint.config.js`, `.prettierrc.json`, `build.sh`, `scripts/tokens.mjs`, `src/erzeugt/`,
-  `src/i18n/`, `src/wert/` (Wertfeld um `N`, `kN` erweitern), `src/modell/register.ts`; Werkzeug-Befehle und
-  -Texte entfernen – Prüfung: `bash P/build.sh && npm --prefix P run lint && npm --prefix P test && npm --prefix P run tokens:check`;
-  AK-1, AK-3 (statisch)
-- [ ] 1.2 `P/src/geometrie/`: Halter aus Schritten (Grundplatte, Steg, Bohrungen mit Skizzen als Unterelemente),
-  Abmessungen, Volumen, Masse nach design.md; Testprojekt Sensorgehäuse aus ap-41 – Prüfung: `npm --prefix P test`
-  (Vitest: drei Volumen-Stände ± 0,1 %); AK-1
-- [ ] 1.3 Layout mit fünf Zonen (`data-zone`, Maße nach design.md), Kopfzeile mit Pfad, Reiter „Modell“, Feld
-  „Suchen oder fragen“ (noch ohne Funktion außer Fokus mit Strg/Cmd+K), Rückgängig mit Kürzel; Aufbau als Liste
-  der Schritte mit Unterzeilen; Rückmeldezeile – Prüfung: `npm --prefix P run lint && npm --prefix P test`
-- [ ] 1.4 Modell: three.js-Szene mit gerichtetem Licht (≥ 60 % Anteil), flach schattierten Flächen, Kanten
-  (`EdgesGeometry`, `linie-stark`), Startansicht isometrisch, `ansicht.einpassen`; `window.__cee` mit
-  `modell()`, `teil()`, `ansicht()` inklusive `projektion(id)` – Prüfung: `npm --prefix P run lint && npm --prefix P test`
-- [ ] 1.5 Prüfwerkzeug `P/pruefen/` aus ap-41 übernehmen und anpassen; Testzustände `halter`, `leer`, `teile`
-  und unbekannter Zustand; Prüfbefehle `zustaende`, `zonen`, `lesbarkeit` (ohne Auswahlkontur), `anfragen` –
-  Prüfung: `pruefen zonen` und `pruefen lesbarkeit`; AK-2 (Teil), AK-4, AK-5 (Licht, Kanten, Einpassen)
-- [ ] 1.6 Vorschau bauen und Klick-Anleitung im PR aktualisieren (Halter öffnen, Flächen unterscheiden sich in
-  der Helligkeit, Kanten sichtbar, Einpassen) – Prüfung: `bash P/build.sh` und `npm --prefix P run preview` startet
+- [ ] 1.1 `P/` aus dem vorigen Stand übernehmen (Werkzeugkette, Tokens, i18n, Wertfeld, Register, Protokoll,
+  Rückgängig, Halter-Geometrie, 3D-Lesbarkeit, `pruefen/basis.mjs`); alte Zonen, Paket Simulation und
+  Gespräch entfernen – Prüfung: `bash P/build.sh && npm --prefix P run lint && npm --prefix P test && npm --prefix P run tokens:check`; AK-1
+- [ ] 1.2 Fensteraufbau mit allen Zonen (`data-zone`, Maße nach design.md), Dokument-Reiter Halter und
+  Sensorgehäuse, Pfad, Ansichtsleiste, Schalter Mod+B/Mod+J/Mod+Alt+B, Taskleiste mit Platzhalter „Simulation“,
+  Rückmeldezeile – Prüfung: `pruefen fenster`; AK-3
+- [ ] 1.3 Register mit `familie`, `bezug`, `rang`, `wesentlich`; Start-Menü und Dropdowns aus dem Register
+  (≤ 12 je Untergruppe), `?register=` – Prüfung: Vitest (Erzeugung der Menüs) und `pruefen fenster`; AK-3, AK-7
+- [ ] 1.4 Testzustände (alle 22, zunächst ohne die Wirkung späterer Gruppen) und unbekannter Zustand; Prüfbefehle
+  `zustaende`, `anfragen` – Prüfung: `pruefen zustaende` und `pruefen anfragen`; AK-1, AK-2
+- [ ] 1.5 Taskleiste wechselt Menüs: Wechsel „Modellieren“ ↔ „Simulation“ tauscht Dropdowns und Struktur
+  (Leerer Zustand „simuliert“), Rückweg stellt Menüs, Struktur und Auswahl wieder her – Prüfung: `pruefen
+  fenster` (Scenario „Taskleiste wechselt Menüs“); AK-3
+- [ ] 1.6 Vorschau bauen, Klick-Anleitung im PR (Fenster ansehen, Taskleiste wechseln, Reiter wechseln, Bereiche ein- und ausblenden,
+  Menüs öffnen) – Prüfung: `bash P/build.sh` und `npm --prefix P run preview` startet
 
-## 2. Auswahl und Inspektor
+## 2. Elementzustände und Auswahl
 
-- [ ] 2.1 Synchrone Auswahl: Klick auf Fläche wählt erzeugenden Schritt, Klick auf Aufbauzeile wählt im Modell,
-  Kante wählt Kante (Trefferzone ≥ 8 px, Schritt `data-zugehoerig`), Umschalt+Klick, Klick ins Leere; Kontur in
-  `akzent` – Prüfung: `pruefen auswahl`; AK-7 (Klick), AK-5 (Kontur)
-- [ ] 2.2 Überfahren in beide Richtungen (`data-hervorgehoben`, dünne Kontur); keine Bedienung nur beim
-  Überfahren – Prüfung: `pruefen auswahl`; AK-7 (Überfahren, Hover-Regeln)
-- [ ] 2.3 Inspektor: Teil ohne Auswahl (Material, Abmessungen, Volumen, Masse, berechnet), Schritt mit Gruppen
-  „Maße“ und „Aus der Skizze“, Knopf „Skizze bearbeiten“ (Befehl, Wirkung folgt in 4.1), Kante mit Länge –
-  Prüfung: `npm --prefix P test`, Zustand `schritt` in `pruefen zustaende`; AK-8 (Teil, Gruppen)
-- [ ] 2.4 Wertfelder im Inspektor live beim Tippen mit Neuberechnung von Modell, Volumen und Masse, Enter
-  übernimmt (ein Protokolleintrag), Esc bricht ab; Rückgängig/Wiederholen über Kopfzeile und Kürzel – Prüfung:
-  `npm --prefix P test` (Vitest: live, Enter, Esc, Rückgängig); AK-8 (Live, Enter, Esc)
-- [ ] 2.5 Vorschau bauen und Klick-Anleitung im PR aktualisieren (Fläche anklicken → Zeile links markiert;
-  Zeile überfahren → Geometrie leuchtet; Dicke rechts tippen → Modell wächst beim Tippen; Esc) – Prüfung:
-  `bash P/build.sh`
+- [ ] 2.1 Elementzustände als Kanäle nach design.md in Modell, Struktur, Chat-Kontext und Pfad;
+  `window.__cee.zustaende(id)`; Vorrangregel; Zustand `zustaende` – Prüfung: `pruefen elementzustaende`; AK-4
+- [ ] 2.2 Ein Auswahlzustand als Adressliste; Klick, Umschalt, Mod, Leere, Esc, Mod+A in Struktur und Modell;
+  Überfahren beidseitig ohne Hover-only-Bedienung – Prüfung: `pruefen auswahl`; AK-5
+- [ ] 2.3 Aktiv und Isolieren: Doppelklick/Enter, Ebenen in Teil und Baugruppe, Dimmen, Pfad, „Fertig“/Esc/Pfad;
+  Zustände `aktiv`, `isoliert` – Prüfung: `pruefen auswahl`; AK-5
+- [ ] 2.4 Eigenschaften der Auswahl (eins, mehrere mit „gemischt“, keins = aktives Element), Wertfelder live,
+  Enter, Esc; Chat-Kontext „zu: …“ – Prüfung: Vitest und `pruefen auswahl`; AK-5
+- [ ] 2.5 Vorschau bauen, Klick-Anleitung (Grundplatte im Modell und in der Struktur wählen, Umschalt-Klick, ins
+  Leere klicken, Gehäuse doppelklicken) – Prüfung: `bash P/build.sh`
 
-## 3. Am Modell arbeiten: Navigation, Griffe, Kontextaktionen, Darstellung
+## 3. Anlegen, Verwerfen, Kontextmenü, Tastatur
 
-- [ ] 3.1 Eingabeschicht `P/src/eingabe/`: Navigationsprofil „Standard“ als Einstellung (rechts drehen, Mitte
-  schieben, Rad zoomen zum Zeiger, Rechtsklick < 4 px = Kontextaktionen), Ansichtseingabe mit sechs Achsen und
-  `window.__ceeEingabe.ansicht` – Prüfung: `pruefen navigation` (ohne Ziehen); AK-6
-- [ ] 3.2 Griffe am gewählten Schritt, Ziehen in 1-mm-Schritten mit Zahl am Zeiger, Tippen beim Ziehen, Esc;
-  Ansichtseingabe wirkt während des Ziehens nur auf die Kamera; Zustand `ziehen` – Prüfung: `pruefen navigation`
-  und Vitest; AK-9, AK-6 (Ziehen)
-- [ ] 3.3 Kontextaktionen über dem Gewählten (Lage nach design.md, ≤ 5 Einträge) und per Rechtsklick in Modell
-  und Aufbau mit gleichem Inhalt; `schritt.ausblenden`, `schritt.einblenden`, `schritt.verwerfen` (nichts
-  löschen) – Prüfung: Vitest und `pruefen zustaende`; AK-11 (Kontextaktionen)
-- [ ] 3.4 Darstellungen Körper, Kanten, Durchsicht mit Umschalter unten rechts (Muster Auswahlfeld) und Taste W;
-  Zustände `kanten`, `durchsicht`; Prüfbefehl `ablauf h` – Prüfung: `pruefen ablauf h`; AK-11 (Darstellung)
-- [ ] 3.5 Vorschau bauen und Klick-Anleitung im PR aktualisieren (drehen, schieben, zoomen; Pfeil an der
-  Grundplatte ziehen und 15 tippen; Rechtsklick; W drücken) – Prüfung: `bash P/build.sh`
+- [ ] 3.1 Befehle `element.anlegen`, `umbenennen`, `duplizieren`, `verwerfen`, `zurueckholen`,
+  `ansicht.verworfenes`; Protokoll mit `weg`; ein Verlauf je Dokument – Prüfung: `pruefen crud`; AK-6
+- [ ] 3.2 Kontextmenü aus dem Register (Rechtsklick, Shift+F10) gleich in Struktur und Modell, Gruppen ≤ 12,
+  „Mehr …“; Kontextaktionen als erste ≤ 5; jeder Beta-Befehl aus
+  `tests/golden/ap-41b-ux-bedienkonzept/befehlsinventar.json` als Eintrag im Register mit Familie – Prüfung:
+  `pruefen kontextmenue`; AK-7
+- [ ] 3.3 Tastatur und Fokus: Tab/F6-Reihenfolge, Fokusring, Esc-Kette, Enter-Regeln, Kürzel nur aus dem Register
+  – Prüfung: `pruefen tastatur`; AK-12
+- [ ] 3.4 Vorschau bauen, Klick-Anleitung (Steg kopieren, umbenennen, verwerfen, zurückholen; Rechtsklick in
+  Struktur und Modell vergleichen; Mod+Z) – Prüfung: `bash P/build.sh`
 
-## 4. Skizze: Orte Teil und Skizze, Aufgaben G und A
+## 4. Modell: Navigation, Ziehen, Sichtbarkeit
 
-- [ ] 4.1 Ort Skizze: hinein per Doppelklick (Fläche, Aufbauzeile), Knopf und Kontextaktion; Ansicht senkrecht
-  (`bewegung.mittel`); Pfad mit Stand-Glied; hinaus per „Fertig“, Esc, Pfad – Prüfung: Vitest und `pruefen
-  zustaende` (Zustand `skizze`); AK-10 (hinein, hinaus)
-- [ ] 4.2 In der Skizze: spätere Schritte ausgegraut, ihre Geometrie gestrichelt ohne Flächen; Maße als
-  Maßlinien in der Zeichnung, Klick fokussiert das Wertfeld im Inspektor; Prüfbefehl `ablauf g` – Prüfung:
-  `pruefen ablauf g`; AK-10
-- [ ] 4.3 Neue Skizze (Aufgabe A): Leerer Zustand mit „Skizze anlegen“, Ebenen wählen, Rechteck aufziehen
-  (Raster 1 mm), Maße im Inspektor, „Fertig“, Kontextleiste „Extrudieren“ mit Geister-Vorschau, Griff und Dicke;
-  Zustand `extrusion`; Prüfbefehl `ablauf a` – Prüfung: `pruefen ablauf a`; AK-15 (A)
-- [ ] 4.4 Vorschau bauen und Klick-Anleitung im PR aktualisieren (Doppelklick auf die Grundplatte, Maß 80
-  anklicken, 100 tippen, Fertig; neues Teil von `leer` aus) – Prüfung: `bash P/build.sh`
+- [ ] 4.1 Navigationsprofile als Daten (`P/src/eingabe/profile.json`), Standard für Maus, Trackpad, Touch, zweites
+  Profil; Ansichtseingabe beibehalten – Prüfung: `pruefen navigation`; AK-8
+- [ ] 4.2 Ansichtsleiste: Einpassen, Auf Auswahl (F), Projektion, Darstellung (W), Isolieren, Alles einblenden;
+  Zustände `perspektive`, `kanten` – Prüfung: `pruefen navigation`; AK-8
+- [ ] 4.3 Griff im Modell mit Zahl am Zeiger, Tippen, Enter, Esc; Zustand `ziehen` – Prüfung: `pruefen ziehen`;
+  AK-9
+- [ ] 4.4 Ziehen & Ablegen in der Struktur mit Zielregeln, `data-ziel`, Grund in der Rückmeldezeile, Esc;
+  Zustände `ablegen`, `ablegen-verboten` – Prüfung: `pruefen ziehen`; AK-9
+- [ ] 4.5 Auge, Ausblenden/Einblenden, Nachfahren, Alles einblenden, `ansicht().ausgeblendet`; Zustände
+  `ausgeblendet`, `verworfen` – Prüfung: `pruefen sichtbarkeit`; AK-10
+- [ ] 4.6 Drei Schichten: Graph in `localStorage` (`cee-prototyp-graph`), Ansicht nur im Speicher der Seite;
+  `ansicht.speichern`/`ansicht.anwenden` mit Element `view` in der Struktur – Prüfung: `pruefen neuladen`; AK-17
+- [ ] 4.7 Vorschau bauen, Klick-Anleitung (drehen, verschieben, zoomen mit Maus und Trackpad; Dicke ziehen und 12
+  tippen; Deckel in die Baugruppe ziehen; Steg ausblenden; Seite neu laden; Ansicht speichern und neu laden) – Prüfung: `bash P/build.sh`
 
-## 5. Suche und KI im selben Feld
+## 5. Rückmeldung, Chat, andere Personen
 
-- [ ] 5.1 Feld „Suchen oder fragen“: Befehle und Elemente gruppiert, Facetten, Kürzel, Synonyme, Enter führt
-  aus; Zustand `suche`; Prüfbefehle `befehle`, `ablauf e` – Prüfung: `pruefen befehle` und `pruefen ablauf e`;
-  AK-12, AK-15 (E)
-- [ ] 5.2 Simulierte KI: Eintrag „KI fragen: …“, Gespräch an der Stelle des Inspektors (Plan, „Arbeitet“,
-  Anhalten, `tempo=0`), Erklärung bei unbekanntem Satz; Kennzeichnung „KI simuliert“; Zustand `ki-gespraech` –
-  Prüfung: Vitest (Absichtserkennung Deutsch und Englisch) und `pruefen zustaende`; AK-13 (Teil)
-- [ ] 5.3 Entscheidungskarte im Gespräch mit Geister-Vorschau, Werten vorher/nachher, Befehlszeilen;
-  Übernehmen erzeugt einen normalen Schritt im Aufbau und bringt den Inspektor zurück, Verwerfen ändert nichts;
-  Zustand `ki-vorschlag`; Prüfbefehl `ablauf f` – Prüfung: `pruefen ablauf f`; AK-13
-- [ ] 5.4 Vorschau bauen und Klick-Anleitung im PR aktualisieren (Strg K, „Kanten“; Steg wählen, „Runde die
-  oberen Kanten mit 2 mm ab“, Übernehmen, Radius 3 mm) – Prüfung: `bash P/build.sh`
+- [ ] 5.1 Statusanzeige rechnet/fehlerhaft/pausiert, Befund mit Korrektur im Panel „Befunde“, Rückmeldezeile,
+  `&rechenzeit=`; Zustände `rechnet`, `befund` – Prüfung: `pruefen rueckmeldung`; AK-11
+- [ ] 5.2 Chat (simuliert) mit Kontext und Entscheidungskarte, ruft dieselben Befehle auf (`quelle: "ki"`);
+  Absichten aus dem vorigen Stand übernehmen; Zustand `chat` – Prüfung: Vitest und `pruefen crud`; AK-6
+- [ ] 5.3 Testperson B simuliert (Auswahl, Zeiger, Name, „simuliert“), nichts gespeichert; Zustand `andere` –
+  Prüfung: `pruefen anwesenheit`; AK-13
+- [ ] 5.4 Vorschau bauen, Klick-Anleitung (Befund finden und beheben; im Chat „Steg 40 mm hoch“; Zustand `andere`
+  ansehen) – Prüfung: `bash P/build.sh`
 
-## 6. Erweiterung, Befund, Baugruppe und Entwürfe
+## 6. Bausteinkatalog, Budget, Leitfaden
 
-- [ ] 6.1 Andockstellen (Arbeitsbereich, Schritttypen, Inspektor-Gruppen, Darstellung, Befehle) als
-  Registrierungsfunktionen; Beispielpaket `P/src/pakete/simulation/` mit Reiter, Lager, Kraft, Ergebnis,
-  Legende, Kennzeichnung „simuliert“; Zustand `simulation` – Prüfung: Vitest und `pruefen zustaende`; AK-14
-- [ ] 6.2 Verrunden von Kanten, Befund bei Radius > 5 mm mit Korrektur, andere Schritte bleiben bedienbar;
-  Zustand `befund`; Prüfbefehl `ablauf b` – Prüfung: `pruefen ablauf b`; AK-15 (B)
-- [ ] 6.3 Baugruppe aus Gehäuse und Deckel mit Verbindungspunkten und Art im Inspektor; Zustände `teile`,
-  `verbindung`; Prüfbefehl `ablauf c` – Prüfung: `pruefen ablauf c`; AK-15 (C)
-- [ ] 6.4 Entwürfe (Stand als erstes Glied des Pfads, Liste, anlegen, vergleichen, übernehmen, verwerfen mit
-  Begründung, „Ergebnis“/„Alle Entwürfe“); Zustände `entwuerfe`, `vergleich`; Prüfbefehl `ablauf d` – Prüfung:
-  `pruefen ablauf d`; AK-15 (D)
-- [ ] 6.5 Vorschau bauen und Klick-Anleitung im PR aktualisieren (Reiter Simulation, Kraft 200 N; Befund
-  beheben; Deckel aufsetzen; Entwurf ausprobieren und übernehmen) – Prüfung: `bash P/build.sh`
-
-## 7. Budget, Messung, Leitfaden
-
-- [ ] 7.1 Prüfbefehle `budget` und `texte` für alle 17 Zustände; Nacharbeit, bis Budget, Farben und Texte halten
-  – Prüfung: `pruefen budget` und `pruefen texte`; AK-2, AK-3, AK-16 (Budget)
-- [ ] 7.2 Prüfbefehl `messen` (fünf Kennzahlen, je 20 Messungen, p95) und Nacharbeit, bis alle Schwellen halten
-  – Prüfung: `pruefen messen`; AK-16
-- [ ] 7.3 Testleitfaden `docs/spikes/ux-prototyp-2.md` nach design.md (Aufgaben A–H, Ergebnisbogen TP1–TP5,
-  Fragen zur Leitidee, Datenschutz, Auswertung, Start mit `npm run preview`) – Prüfung: AK-17
-- [ ] 7.4 Vorschau bauen und Klick-Anleitung im PR zur vollständigen Pilot-Anleitung (Aufgaben A–H mit
-  Startadressen) zusammenfassen – Prüfung: `uv run pytest -q tests/acceptance/ap-41b-ux-bedienkonzept`
+- [ ] 6.1 Bausteinkatalog (`?katalog`, `katalog.oeffnen`), mindestens 19 Seiten mit Bild hell/dunkel, Regel,
+  Bezug, Befehlen, Tokens; Prüfbefehl `katalog` – Prüfung: `pruefen katalog`; AK-15
+- [ ] 6.2 Prüfbefehle `budget`, `texte` für alle Zustände; Nacharbeit, bis Tokens, Akzent, Texte und Einheiten
+  halten – Prüfung: `pruefen budget` und `pruefen texte`; AK-14
+- [ ] 6.3 Prüfbefehle `ablauf e…l` und `messen`; Nacharbeit, bis alle Sollzustände und Schwellen halten –
+  Prüfung: `pruefen ablauf` und `pruefen messen`; AK-16
+- [ ] 6.4 Testleitfaden `docs/spikes/ux-prototyp-2.md` nach design.md (Aufgaben E–L, Ergebnisbogen TP1–TP5,
+  Nachbefragung, Datenschutz, Start mit `npm run preview`) – Prüfung: AK-16
+- [ ] 6.5 Vorschau bauen, Klick-Anleitung zur vollständigen Pilot-Anleitung (Aufgaben E–L mit Startadressen,
+  Katalog) zusammenfassen – Prüfung: `uv run pytest -q tests/acceptance/ap-41b-ux-bedienkonzept`
 
 ## Menschliche Abnahme (eigener Schritt des Kernteams, nicht nachts)
 
 Keine Agenten-Tasks; stehen als Checkliste „Menschliche Abnahme“ im PR.
 
 - Nach jeder Gruppe: Klick-Anleitung durchspielen, Auffälligkeiten als PR-Kommentar
-- Pilotlauf vor dem Merge: Kernteam als TP1, Aufgaben A–H und Fragen zur Leitidee (Scenario „Pilotlauf des
-  Kernteams vor dem Merge“), Augenschein der 34 Screenshots („Aus einem Guss“, „Auf einen Blick lesbar“,
-  „Baum und Modell gehören zusammen“)
-- Testpersonen TP2–TP5, Ergebnisse in `docs/spikes/ux-prototyp-2.md`, Go oder No-Go für G1
+- Pilotlauf vor dem Merge: Kernteam als TP1, Aufgaben E–L, Bausteinkatalog durchblättern, Augenschein der 44
+  Screenshots
+- Testpersonen TP2–TP5, Ergebnisse in `docs/spikes/ux-prototyp-2.md`, Go oder No-Go für G1; mit Go gilt ADR-065
 
 ## Workflow follow-up
 
-- Open Questions in design.md vor dem Schreiben der Abnahmetests entscheiden, besonders 1 (Werkzeugleiste),
-  2 (Muster-Kandidaten), 7 (Annahmen zu Lage, Material, Kraft) und 8 (Kennung, Konzepttabelle) – Kernteam
-- Eintrag in `openspec/queue.yaml` – Kernteam
-- Archivieren mit `--skip-specs` nach dem Go für G1 – Kernteam
+- Open Questions: entschieden bzw. Standardvorschlag gilt (design.md, Stand 2026-10-23); `view` als Grundtyp in
+  `format/` und Glossar nachtragen – Kernteam
+- Befehlsinventar unter `tests/golden/ap-41b-ux-bedienkonzept/befehlsinventar.json` ablegen (Branch
+  `tests/ap-41b-ux-bedienkonzept`, vor den Abnahmetests) – Kernteam
+- Abnahmetests unter `tests/acceptance/ap-41b-ux-bedienkonzept/` neu schreiben (alte veraltet, design.md) –
+  test-author auf `tests/ap-41b-ux-bedienkonzept`
+- PR #51 schließen, `change/ap-41b-ux-bedienkonzept` neu von `main` – Agent nach Ja des Kernteams
+- Eintrag bzw. Phase in `openspec/queue.yaml` – Kernteam
+- Nach der Abnahme: `docs/rules/client.md`, `docs/design/leitbild.md`, `docs/design/muster.md` nach ADR-065
+  angleichen (Branch `adr/…`) – Kernteam
+- Archivieren mit `--skip-specs` nach dem Go für G1

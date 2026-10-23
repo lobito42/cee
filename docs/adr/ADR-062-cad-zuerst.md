@@ -3,6 +3,7 @@
 - Status: akzeptiert
 - Datum: 2026-10-19
 - Entscheider: Kernteam
+- Geändert durch: ADR-065 (Bohrung als Kernbefehl, Operationen aus dem Abgleich)
 - Ändert: ADR-059 (Meilensteine, kritischer Pfad), ADR-038 (Rolle des ersten Anwendungsfalls), ADR-046
   (Verbindungen in Baugruppen gehören zum Kern statt zum Fachpaket Mechanik)
 
@@ -22,7 +23,8 @@ Die Spikes ap-00 und ap-01 sind abgeschlossen, ap-02 (Akustik) ist seit 2026-10-
    Baugruppen mit Verbindungen, Eigenschaften und die Ansichten auf den Graphen –, kommt so früh wie möglich.
    Fachpakete, Rendering für Präsentation, Angebote und Export folgen danach.
    Begonnen wird mit regulärer 3D-Modellierung, wie man sie für den 3D-Druck braucht: Volumenkörper aus Skizzen,
-   Schalen, Verrundungen, Muster. Fertigungsoperationen (Bohrung mit Gewinde, Fräs- und Blech-Features,
+   Schalen, Verrundungen, Muster. Die einfache Bohrung (Durchgang, Senkung, Kegelsenkung) ist ein Kernbefehl
+   (ADR-065, Abgleich mit build123d, Onshape, FreeCAD). Fertigungsoperationen (Gewinde, Fräs- und Blech-Features,
    Fertigungsregeln) kommen später als Fachpakete.
 2. **M0 Klären (Gate G1):** Gerüst (ap-00, fertig), Datenmodell (ap-01, fertig), Sync (ap-03), persistente
    Identität (ap-39), UX-Prototyp (ap-41) mit Modellier-Abläufen (Skizze, Formelement, Baugruppe) statt
@@ -34,7 +36,8 @@ Die Spikes ap-00 und ap-01 sind abgeschlossen, ap-02 (Akustik) ist seit 2026-10-
      ap-16 Selbstbetrieb
    - ap-12 Skizzen mit Maßen und Zwangsbedingungen, Extrusion; für beliebige Teile, nicht nur Absorberformen
    - neu **ap-45 Volumenmodellierung:** Drehen, Ausformen (Loft), Austragen (Sweep), Schale, Verrundung, Fase,
-     Spiegeln, lineares und kreisförmiges Muster, boolesche Operationen – mit stabiler Identität (ap-39)
+     Spiegeln, lineares, kreisförmiges und Raster-Muster, boolesche Operationen (auch Körper teilen), Bohrung, Rippe,
+     Extrudieren mit Optionen (beidseitig, Schräge, bis Fläche) – mit stabiler Identität (ap-39)
    - ap-10 Material als Element mit Eigenschaftsgruppen (ADR-039); Akustik ist eine Gruppe unter mehreren
    - ap-13a Komponenten, Varianten und Instanzen mit Verbindungspunkten (ADR-043) an einem fachneutralen Katalog
    - neu **ap-46 Baugruppen mit Verbindungen:** Verbindungen (fest, Drehen, Schieben, Zylinder, Kugel, eben)
