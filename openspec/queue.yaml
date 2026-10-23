@@ -51,7 +51,7 @@ changes:
   - id: ap-41b-ux-bedienkonzept
     phase: tests
     model: sonnet
-    night: false   # pausiert 2026-10-23: Spec wird als „Interaktions-Grundlagen“ neu geschnitten (Spec-PR zuerst); danach wieder true. Ersetzt ap-41 (No-Go im Pilot TP1)
+    night: true    # freigegeben 2026-10-23 (Kernteam): Spec „Interaktions-Grundlagen“ und Tests sind auf main; sieben [mensch]-Scenarios nach dem Bau. Ersetzt ap-41 (No-Go im Pilot TP1)
     depends_on: []
 
   - id: ap-49-spike-auswahl
