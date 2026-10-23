@@ -34,9 +34,9 @@
 
 ## 5. Gleichheit, Messung, Abschluss
 
-- [ ] 5.1 Bytes und Merge über Laufzeitgrenzen, Fachpaket-Funktion in allen Laufzeiten – Prüfung: AK-2, AK-7
-- [ ] 5.2 Budgets einhalten; Lizenzprüfungen für die neuen Abhängigkeiten – Prüfung: AK-6, AK-9
-- [ ] 5.3 Bericht: `crates/bind/README.md` (Aufbau, Fassadentabelle, wie ein Fachpaket-Crate Funktionen anmeldet,
+- [x] 5.1 Bytes und Merge über Laufzeitgrenzen, Fachpaket-Funktion in allen Laufzeiten – Prüfung: AK-2, AK-7
+- [x] 5.2 Budgets einhalten; Lizenzprüfungen für die neuen Abhängigkeiten – Prüfung: AK-6, AK-9
+- [x] 5.3 Bericht: `crates/bind/README.md` (Aufbau, Fassadentabelle, wie ein Fachpaket-Crate Funktionen anmeldet,
   Messwerte aller Laufzeiten aus `bindctl bench` mit Rechner und Versionen) und `sdk/python/README.md`
   (Installation, Beispiel) – Prüfung: gesamt `uv run pytest -q tests/acceptance/ap-40-bindungen-sdk`
 
