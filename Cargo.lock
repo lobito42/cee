@@ -151,6 +151,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "cee-graph-wasm"
+version = "0.0.1"
+dependencies = [
+ "cee-bind",
+ "js-sys",
+ "wasm-bindgen",
+]
+
+[[package]]
 name = "cee-pkg-beispiel"
 version = "0.0.1"
 dependencies = [

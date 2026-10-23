@@ -17,10 +17,10 @@
 
 ## 3. WASM
 
-- [ ] 3.1 `crates/graph-wasm`, Ziel `wasm32-unknown-unknown` in `rust-toolchain.toml`, `npm run kern:build`
+- [x] 3.1 `crates/graph-wasm`, Ziel `wasm32-unknown-unknown` in `rust-toolchain.toml`, `npm run kern:build`
   (Node- und Web-Paket, wasm-bindgen-cli in passender Version) – Prüfung: `cd client && npm run kern:build`
-- [ ] 3.2 `client/tools/bindctl-node.mjs` – Prüfung: AK-1, AK-4 und AK-6 für Node
-- [ ] 3.3 `client/tools/bindctl-browser.mjs` und `bindctl.html` mit Playwright (Headless-Chromium) – Prüfung:
+- [x] 3.2 `client/tools/bindctl-node.mjs` – Prüfung: AK-1, AK-4 und AK-6 für Node
+- [x] 3.3 `client/tools/bindctl-browser.mjs` und `bindctl.html` mit Playwright (Headless-Chromium) – Prüfung:
   AK-1, AK-4 und AK-6 für den Browser; `cd client && npm run lint`
 
 ## 4. PyO3 und Python-SDK
