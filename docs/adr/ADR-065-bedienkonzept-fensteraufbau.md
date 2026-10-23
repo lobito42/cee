@@ -47,7 +47,17 @@ und später Vision Pro (ADR-060) spricht für das Apple-Gerüst.
     auf; die Oberfläche merkt sich je Person und Feature, was oft genutzt wird.
 11. **Gleichheit statt Ausnahmen:** Erweiterungen füllen dieselben Zonen (Einträge der Taskleiste, Menüs, Struktur,
     Eigenschaften-Gruppen, Panel-Auswahl) und bringen keine eigenen Fenster oder Leisten mit.
-12. **Prüfung:** Das Befehlsinventar ist die Referenz. Jeder Befehl der Beta hat einen Ort (Menü, Kontextaktion, Suche).
+12. **Platzierungsregel:** Jeder Befehl gehört zu einer Familie (Skizze zeichnen, Skizze bearbeiten, Körper erzeugen,
+    Kanten und Muster, Baugruppe, Messen und Prüfen, Ansicht, Auswahl, Import und Export …), und die Familie bestimmt
+    seinen Ort: Dropdown mit Untergruppe, Kontextaktion, Ansichtsleiste im Modell oder Panel. Ein neuer Befehl braucht
+    keine neue Bedienlogik, auch wenn er nicht als wesentlich gilt. „Wesentlich“ bestimmt nur die Sichtbarkeit (vorne
+    oder über Suche und „Mehr“). Wo Befehle fehlen oder stören, meldet das Kernteam es beim Testen; dann ändert sich die
+    Sichtbarkeit, nicht die Familie.
+13. **Auswahl ist eine Befehlsfamilie:** Auswählen geschieht zuerst durch Klicken und Ziehen im Modell; dazu kommen
+    Alles, Umkehren, Ähnliche, Kantenschleife, Auswahlfilter und die Auswahl nach Regel („alle Kanten oben“). Regeln
+    sind Daten im Graphen und gelten über stabile Adressen (ADR-016, ADR-058). Der Spike ap-49-spike-auswahl klärt, wie
+    das im Kern trägt.
+14. **Prüfung:** Das Befehlsinventar ist die Referenz. Jeder Befehl der Beta hat einen Ort (Menü, Kontextaktion, Suche).
     Menü- und Kontextgrenzen aus den Punkten 2 und 3 gelten als Abnahmekriterium von ap-41b.
 
 ## Offen
@@ -69,4 +79,4 @@ Meilensteine (nur Idee, `docs/ideen/`); Wahl des UI-Frameworks (eigener Spike).
   aus PR #51 wird ersetzt.
 - `docs/design/muster.md`: Zeilen „Kontextaktionen“ und „Arbeitsbereiche“ anpassen; Vergleich, Panel,
   Dokument-Reiter und Sichtbarkeit als Muster aufnehmen. ADR-054 spricht noch von „Arbeitsbereichen“.
-- Das Befehlsinventar wird ergänzt (Isolieren, Alles einblenden, Sperren, Rückgängig) und mit dem Client abgeglichen.
+- Das Befehlsinventar ist um 33 Befehle aus dem Abgleich mit build123d, Onshape, FreeCAD und Blender ergänzt (279 Befehle) und wird mit dem Client abgeglichen. Die einfache Bohrung ist ein Kernbefehl (ADR-062 angepasst).
