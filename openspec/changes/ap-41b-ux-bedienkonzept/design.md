@@ -152,6 +152,7 @@ Auswahl, Überfahren, Fokus, die eine Hauptaktion und KI (ADR-061).
 | Auswahl | Dropdown „Auswahl“, Kontextmenü | siehe Auswahl |
 | Ansicht | Ansichtsleiste im Modell | `ansicht.einpassen`, `ansicht.auf-auswahl`, `ansicht.isolieren`, `ansicht.alles-einblenden`, `ansicht.projektion`, `darstellung.wechseln` (Körper, Kanten, Durchsicht) |
 | Sichtbarkeit | Auge, Kontextmenü | `element.ausblenden`, `element.einblenden`, `ansicht.verworfenes` |
+| Ansicht speichern | Ansichtsleiste, Suche, Kontextmenü | `ansicht.speichern`, `ansicht.anwenden` |
 | Fenster | Menüleiste (Schalter), Suche | `fenster.struktur`, `fenster.panel`, `fenster.rechts`, `suche.oeffnen` |
 | Baugruppe | Dropdown „Baugruppe“, Kontextmenü | `element.umhaengen` (Ziel), `element.aktivieren`, `element.verlassen` |
 | Hilfe | Suche | `katalog.oeffnen` |
@@ -207,10 +208,30 @@ Auswahl, Überfahren, Fokus, die eine Hauptaktion und KI (ADR-061).
 
 - Auge in jeder Strukturzeile (immer sichtbar, nicht nur beim Überfahren); `element.ausblenden`/`einblenden`,
   dazu H und Alt+H („Alles einblenden“) als Standardvorschlag.
-- Sichtbarkeit ist **Ansichtszustand der Person** (Standardvorschlag, Open Question 1): Sie steht in
-  `window.__cee.ansicht().ausgeblendet`, nie in `modell()`; der Hash von `modell()` ist vor und nach dem
+- Sichtbarkeit ist **Ansichtszustand der Person** (vom Kernteam im Sinn bestätigt, Open Question 1): Sie steht
+  in `window.__cee.ansicht().ausgeblendet`, nie in `modell()`; der Hash von `modell()` ist vor und nach dem
   Ausblenden gleich. Damit kann sie den Export nicht beeinflussen (ADR-015). Ausblenden eines Elements blendet
   seine Nachfahren mit aus; sie behalten ihr eigenes Auge.
+
+### Ansicht ist flüchtig, Speichern ist ausdrücklich (drei Schichten)
+
+| Schicht | Inhalt | Gespeichert? | Im Prototyp |
+| --- | --- | --- | --- |
+| 1 Arbeitsschritte | Elemente im Graphen: Eingaben, Projektzustand (ADR-028, ADR-051) | ja, versioniert und synchronisiert | `modell()`, Verlauf; gehalten in `localStorage` unter `cee-prototyp-graph` als Ersatz für den Server |
+| 2 Arbeitsergebnis | Geometrie, Rendering, Export, abgeleitet (ADR-032) | nie | aus `modell()` neu berechnet |
+| 3 Ansicht | Drehen, Zoom, Kamera, Beleuchtung, Darstellung (Körper/Kanten/Durchsicht), Projektion, Auswahl, Aktiv/Isolieren, Ausblenden/Einblenden | nein, flüchtig und je Person | nur `ansicht()` und `auswahl()` im Speicher der Seite; nach Neuladen Vorgaben |
+
+- Eine Ansichtsänderung erzeugt keinen Eintrag in `modell()`, `protokoll()` oder im Verlauf (passt zu Open
+  Questions 6) und keinen Speichereintrag.
+- **Ausdrücklich speichern:** Befehl `ansicht.speichern` (Familie Ansicht, Ansichtsleiste und Suche) legt ein
+  benanntes Element im Graphen an (z. B. „Ansicht: Schnitt A“) mit Kamera, Projektion, Darstellung und – nur auf
+  diesem Weg – Auswahl (Adressen) und Ausgeblendetem. Es ist Schicht 1: gilt für alle, steht in der Struktur, ist
+  ein Verlaufseintrag und lässt sich wie jedes Element umbenennen, duplizieren und verwerfen. `ansicht.anwenden`
+  (Doppelklick oder Enter auf das Element) setzt die Ansicht; das ändert den Graphen nicht.
+- Eine gespeicherte Ansicht wirkt nie auf den Export (ADR-015): Auch ihr Ausgeblendetes blendet nur die Ansicht aus.
+- Elementtyp im Prototyp `view`; ob das ein Grundtyp wird, entscheidet das Kernteam (Open Questions 17).
+- Testzustände per Adresse setzen Schicht 1 und 3 für den Test; ohne `zustand=` lädt die Seite den gehaltenen
+  Graphen und die Ansicht-Vorgaben.
 
 ### Rückmeldung und Fehler (ADR-050)
 
@@ -312,6 +333,7 @@ zeigen kann, dass Menüs und Kontextmenü aus dem Register erzeugt werden), dana
 | `rueckmeldung` | Orte von Status, Befund, Rückmeldung; Bedienbarkeit anderer Elemente bei Fehler |
 | `tastatur` | Tab-Reihenfolge, F6, Esc-Kette, Enter, Kürzel aus dem Register |
 | `anwesenheit` | Speicher (Storage, IndexedDB, Cookies) und Anfragen nach dem Zustand `andere` |
+| `neuladen` | Kamera, Auswahl, Ausblenden, `modellHash()` und Elementliste vor/nach Neuladen; gespeicherte Ansicht nach Neuladen |
 | `katalog --out <dir>` | je Baustein Seite, Bild hell/dunkel, Regeltext, Bezug |
 | `budget` | je Zustand Dialoge, Farben außerhalb der Tokens, Akzent an unzulässiger Stelle, Bedienelemente ohne `data-befehl`, Hover-only-Elemente, Zahl der Kürzel |
 | `texte` | feste Texte, fehlende Schlüssel, Git-Begriffe, Zahlen ohne Einheit |
@@ -391,6 +413,7 @@ nennt nur, was schon funktioniert.
 | AK-14 | `budget`, `texte`, Tokens | Einheiten, Texte und Tokens |
 | AK-15 | `katalog` | Bausteinkatalog |
 | AK-16 | `ablauf e…l`, `messen`, Leitfaden | Pilotaufgaben und Reaktion |
+| AK-17 | `neuladen` | Ansicht ist flüchtig, Speichern ist ausdrücklich |
 
 ### Veraltete Abnahmetests und Dateien (nicht in diesem Change geändert)
 
@@ -423,8 +446,8 @@ Ebenso veraltet: der Code auf `change/ap-41b-ux-bedienkonzept` (PR #51) und dess
 Nur das Kernteam entscheidet; jede Frage hat einen **Standardvorschlag**, nach dem gebaut wird, wenn bis zum
 Schreiben der Abnahmetests nichts anderes entschieden ist.
 
-1. **Ausblenden nur für mich?** Gilt Ausblenden nur für die Person (nicht für das Team)? *Standardvorschlag: Ja*
-   (wie ADR-065 „Offen“).
+1. **Ausblenden nur für mich?** Entschieden im Sinn des Kernteams: Ja. Ansicht (auch Ausblenden und Auswahl) ist
+   flüchtig und je Person; geteilt wird nur über „Ansicht speichern“ (Abschnitt „Ansicht ist flüchtig“).
 2. **Kontextaktionen und Kontextmenü:** ADR-065 Punkt 3 sagt „höchstens fünf je Objektart“, der Auftrag „höchstens
    12 je Gruppe“. *Standardvorschlag:* Das Kontextmenü (Rechtsklick) hat Gruppen mit höchstens 12 Einträgen; die
    Leiste über dem Gewählten zeigt dessen ersten fünf. Alternative: nur eines von beiden.
@@ -465,3 +488,5 @@ Schreiben der Abnahmetests nichts anderes entschieden ist.
     „Befehlsinventar hat einen Ort“ und wird Anschlussaufgabe für ap-08a.
 16. **Taskleiste „Simulation“:** nur Platzhalter, der Menüs und Struktur umschaltet (Leerer Zustand, gekennzeichnet
     „simuliert“)? *Standardvorschlag: Ja.*
+17. **Gespeicherte Ansicht als Elementtyp:** Im Prototyp Typ `view`. Wird das ein Grundtyp im Kern (Liste in
+    `format/`, Glossar)? *Standardvorschlag: Ja*, nach der Abnahme per Glossar und Format.

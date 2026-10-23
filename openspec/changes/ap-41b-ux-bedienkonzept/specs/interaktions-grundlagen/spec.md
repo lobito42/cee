@@ -262,6 +262,42 @@ Questions 1).
   bzw. Alt+H) je einmal wieder eingeblendet wird
 - **THEN** ist er nach jedem Weg wieder gezeichnet und `ansicht().ausgeblendet` leer
 
+### Requirement: Ansicht ist flüchtig
+Der Prototyp SHALL drei Schichten trennen: Arbeitsschritte sind Elemente im Graphen (ADR-028, ADR-051), das
+Arbeitsergebnis ist abgeleitet und wird nie gespeichert (ADR-032), und die Ansicht (Kamera, Beleuchtung,
+Darstellung, Projektion, Auswahl, Aktiv/Isolieren, Ausblenden) ist flüchtig und je Person. Die Ansicht MUST NOT
+im Projekt gespeichert werden.
+
+#### Scenario: [auto] Neuladen setzt die Ansicht zurück, der Graph bleibt
+- **WHEN** `pruefen neuladen` ohne `zustand=` den Halter öffnet, die Kamera dreht und zoomt, Darstellung auf Kanten
+  stellt, die Grundplatte wählt, den Steg ausblendet und die Seite neu lädt
+- **THEN** sind Kamera, Darstellung, Auswahl und Ausgeblendetes nach dem Neuladen auf den Vorgaben, und Zahl und
+  Inhalt der Elemente in `modell()` sind byte-gleich mit dem Stand vor dem Neuladen (gleicher `modellHash()`)
+
+#### Scenario: [auto] Ansichtsänderung ändert den Graphen nicht
+- **WHEN** nacheinander gedreht, gezoomt, die Darstellung gewechselt, die Projektion umgeschaltet, gewählt,
+  isoliert, ausgeblendet und eingeblendet wird
+- **THEN** sind `modellHash()`, die Länge von `protokoll()` und der Verlauf (Rückgängig) nach jedem Schritt
+  unverändert, und der gehaltene Graph in `localStorage` ist byte-gleich
+
+### Requirement: Speichern einer Ansicht ist ausdrücklich
+Der Befehl „Ansicht speichern“ SHALL ein benanntes Element im Graphen anlegen, das für alle gilt. Auswahl und
+Ausgeblendetes MUST nur auf diesem Weg mitgespeichert werden. Eine gespeicherte Ansicht MUST NOT auf Ergebnis
+oder Export wirken (ADR-015).
+
+#### Scenario: [auto] Gespeicherte Ansicht überlebt Neuladen
+- **WHEN** im Halter mit gedrehter Kamera, gewählter Grundplatte und ausgeblendetem Steg „Ansicht speichern“ mit
+  dem Namen „Ansicht: Schnitt A“ ausgeführt, die Seite neu geladen und die Ansicht angewendet wird
+- **THEN** gibt es nach dem Neuladen genau ein Element vom Typ `view` mit diesem Namen in `modell()` und in der
+  Struktur, das Speichern war genau ein Verlaufseintrag, und nach dem Anwenden stimmen Kamera (± 0,5°, ± 1 %
+  Abstand), Auswahl und Ausgeblendetes mit dem gespeicherten Stand überein, während `modellHash()` beim Anwenden
+  unverändert bleibt
+
+#### Scenario: [auto] Gespeicherte Ansicht wirkt nicht auf das Ergebnis
+- **WHEN** die Ansicht „Ansicht: Schnitt A“ (Steg ausgeblendet) angewendet ist
+- **THEN** enthält `teil()` weiter das Volumen mit Steg (49,49 cm³ ± 0,1 %), und der Steg ist in `modell()` nicht
+  als verworfen oder ausgeschlossen gekennzeichnet
+
 ### Requirement: Rückmeldung und Fehler
 Der Prototyp SHALL „rechnet“, „fehlerhaft“ und „pausiert“ als Statusanzeige am Element, Bestätigungen und
 Hinweise in der Rückmeldezeile und Befunde im Panel „Befunde“ zeigen – jeweils nur an diesen festen Orten. Ein

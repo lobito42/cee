@@ -33,6 +33,8 @@ gilt ADR-065 (Status „vorgeschlagen, gilt nach der Abnahme des Prototyps ap-41
 - **Ziehen:** Griff im Modell (Maß ändern) und Ziehen & Ablegen in der Struktur, mit sichtbarem Ziel, erlaubt/nicht
   erlaubt und Abbruch mit Esc.
 - **Ausblenden/Einblenden** am Auge der Strukturzeile, wirkt nur auf die Ansicht.
+- **Ansicht ist flüchtig, Speichern ist ausdrücklich:** drei Schichten (Arbeitsschritte im Graphen, abgeleitetes
+  Arbeitsergebnis, flüchtige Ansicht je Person); „Ansicht speichern“ legt ein benanntes Element im Graphen an.
 - **Rückmeldung und Fehler** („rechnet“, „fehlerhaft“, Meldungen an fester Stelle); das Modell zerbricht nie.
 - **Tastatur und Fokus:** Reihenfolge, Esc/Enter-Regeln, Kürzel aus dem Register.
 - **Andere Personen** (simuliert) nur live; Zahlen mit Einheit, Texte über Übersetzungsschlüssel.
@@ -61,7 +63,7 @@ Keine.
   ADR-065 geändert), ADR-060 (Navigationsprofile, Eingabe als Schicht, nichts am Überfahren, Kürzel nach
   Plattform), ADR-061 (ein Muster je Aufgabe, Tokens, ein Akzent, eine Statussprache), ADR-045 (ein
   Befehlsregister), ADR-050 (fehlerhaft/pausiert, Modell zerbricht nicht), ADR-051/ADR-052 (Verwerfen statt
-  Löschen, keine Git-Begriffe, eine Suche), ADR-015 (Sichtbarkeit wirkt nie auf den Export), ADR-016/ADR-058
+  Löschen, keine Git-Begriffe, eine Suche), ADR-015 (Sichtbarkeit wirkt nie auf den Export), ADR-028/ADR-032 (Graph ist Quelle, Ergebnis abgeleitet), ADR-016/ADR-058
   (Auswahl über Adressen, keine Indizes), ADR-021 (KI nur als Vorschlag), ADR-044 (Tippen beim Ziehen), ADR-056
   (Anwesenheit nur flüchtig), ADR-057 (Zahlen mit Einheit), ADR-037 (kein KI-Anbieter im Prototyp),
   ADR-059/ADR-062 (M0, Gate G1).
@@ -75,7 +77,7 @@ Keine.
      kennzeichnet sie als Kandidaten.
   4. Für „von anderen bearbeitet“ gibt es kein Token in `docs/design/tokens.json`.
 - **Gate:** G1.
-- **Abnahmetests:** `tests/acceptance/ap-41b-ux-bedienkonzept/` (AK-1 bis AK-16, Zuordnung in design.md). Die
+- **Abnahmetests:** `tests/acceptance/ap-41b-ux-bedienkonzept/` (AK-1 bis AK-17, Zuordnung in design.md). Die
   vorhandenen Abnahmetests dort prüfen den alten Stand und **veralten vollständig** (Liste in design.md); der
   test-author schreibt sie auf `tests/ap-41b-ux-bedienkonzept` neu. Bedienbarkeit und Augenschein sind
   `[mensch]` und Punkt der PR-Checkliste „Menschliche Abnahme“.

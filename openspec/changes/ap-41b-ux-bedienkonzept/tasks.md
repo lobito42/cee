@@ -58,8 +58,10 @@ einem klickbaren Stand und 3–6 Schritten unter „Klick-Anleitung“ im PR (de
   Zustände `ablegen`, `ablegen-verboten` – Prüfung: `pruefen ziehen`; AK-9
 - [ ] 4.5 Auge, Ausblenden/Einblenden, Nachfahren, Alles einblenden, `ansicht().ausgeblendet`; Zustände
   `ausgeblendet`, `verworfen` – Prüfung: `pruefen sichtbarkeit`; AK-10
-- [ ] 4.6 Vorschau bauen, Klick-Anleitung (drehen, verschieben, zoomen mit Maus und Trackpad; Dicke ziehen und 12
-  tippen; Deckel in die Baugruppe ziehen; Steg ausblenden) – Prüfung: `bash P/build.sh`
+- [ ] 4.6 Drei Schichten: Graph in `localStorage` (`cee-prototyp-graph`), Ansicht nur im Speicher der Seite;
+  `ansicht.speichern`/`ansicht.anwenden` mit Element `view` in der Struktur – Prüfung: `pruefen neuladen`; AK-17
+- [ ] 4.7 Vorschau bauen, Klick-Anleitung (drehen, verschieben, zoomen mit Maus und Trackpad; Dicke ziehen und 12
+  tippen; Deckel in die Baugruppe ziehen; Steg ausblenden; Seite neu laden; Ansicht speichern und neu laden) – Prüfung: `bash P/build.sh`
 
 ## 5. Rückmeldung, Chat, andere Personen
 
