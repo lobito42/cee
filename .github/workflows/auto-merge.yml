@@ -36,6 +36,7 @@ jobs:
       github.event.pull_request.draft == false &&
       github.event.pull_request.head.repo.full_name == github.repository &&
       (startsWith(github.event.pull_request.head.ref, 'tests/') ||
+       startsWith(github.event.pull_request.head.ref, 'neu/') ||
        startsWith(github.event.pull_request.head.ref, 'change/') ||
        startsWith(github.event.pull_request.head.ref, 'fix/') ||
        startsWith(github.event.pull_request.head.ref, 'archiv/'))

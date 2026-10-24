@@ -156,11 +156,21 @@ jobs:
           fi
           targets=$(CEE_ROOT="$PWD" uv run python "$sel")
           echo "Abnahmetests: ${targets:-keine}"
-          if [ -n "$targets" ]; then uv run pytest -q $targets; fi
+          # Zuerst der Change dieses Branches (schnelle erste Rückmeldung), danach die übrigen fälligen Tests.
+          head="${{ github.head_ref }}"
+          first=""
+          if [[ "$head" =~ ^(claude/)?(spec|change)/([a-z0-9][a-z0-9-]*)$ ]]; then
+            first="tests/acceptance/${BASH_REMATCH[3]}"
+          fi
+          if [ -n "$first" ] && [[ " $targets " == *" $first "* ]]; then
+            uv run pytest -q "$first"
+            targets=$(printf '%s\n' $targets | grep -vx "$first" | tr '\n' ' ')
+          fi
+          if [ -n "${targets// /}" ]; then uv run pytest -q $targets; fi
           # Auf tests/<id>: neue Abnahmetests sind absichtlich rot – nur prüfen, dass sie sich sammeln lassen.
           head="${{ github.head_ref }}"
-          if [[ "$head" =~ ^(claude/)?tests/([a-z0-9][a-z0-9-]*)$ ]]; then
-            own="tests/acceptance/${BASH_REMATCH[2]}"
+          if [[ "$head" =~ ^(claude/)?(tests|neu)/([a-z0-9][a-z0-9-]*)$ ]]; then
+            own="tests/acceptance/${BASH_REMATCH[3]}"
             if [ -d "$own" ]; then uv run pytest -q --collect-only "$own"; fi
           fi
 

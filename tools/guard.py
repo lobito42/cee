@@ -6,6 +6,7 @@ Was ein Agent schreiben darf, ergibt sich aus dem Branch:
   spec/<id>    nur openspec/changes/<id>/            (Proposal, Design, Spec-Deltas, Tasks)
   tests/<id>   nur tests/acceptance/<id>/, tests/golden/, tests/ui-reference/
   change/<id>  Produktcode und openspec/changes/<id>/tasks.md – aber keinen Vertrag
+  neu/<id>     Neuzuschnitt in einem Schritt: openspec/changes/<id>/, tests/acceptance/<id>/, tests/golden/
   archiv/<id>  nur Archivieren: openspec/changes/<id>/ (Verschieben), changes/archive/, openspec/specs/
   fix/<grund>  Produktcode und tests/unit/ – aber keinen Vertrag (main reparieren, rote PRs, Hausmeister)
   adr/<thema>  Kernteam-Dateien (ADRs, Regeln, Werkzeug); gemergt wird erst nach dem Ja des Menschen (ADR-064)
@@ -62,7 +63,7 @@ CORE_ONLY = (
     "sdk/LICENSE",
     "format/LICENSE",
 )
-BRANCH_RE = re.compile(r"^(?:claude/)?(spec|tests|change|archiv|fix|adr)/([a-z0-9][a-z0-9-]*)$")
+BRANCH_RE = re.compile(r"^(?:claude/)?(spec|tests|change|neu|archiv|fix|adr)/([a-z0-9][a-z0-9-]*)$")
 
 
 def run_git(*args: str, cwd: Path | None = None) -> str:
@@ -105,7 +106,7 @@ def reason(rel: str, branch: str, role: str = "") -> str | None:
     change = re.match(r"^openspec/changes/([^/]+)/(.*)$", rel)
     if change and change.group(1) != "archive":
         target, inner = change.group(1), change.group(2)
-        if kind == "spec" and target == cid:
+        if kind in ("spec", "neu") and target == cid:
             return None
         if kind == "change" and target == cid and inner == "tasks.md":
             return None
@@ -119,19 +120,19 @@ def reason(rel: str, branch: str, role: str = "") -> str | None:
 
     acceptance = re.match(r"^tests/acceptance/([^/]+)/", rel)
     if acceptance:
-        if kind == "tests" and acceptance.group(1) == cid:
+        if kind in ("tests", "neu") and acceptance.group(1) == cid:
             return None
         return f"{rel}: Abnahmetests schreibt man nur auf Branch tests/{acceptance.group(1)}"
 
     if rel.startswith(("tests/golden/", "tests/ui-reference/")):
-        return None if kind == "tests" else f"{rel}: Referenzdaten nur auf einem tests/<id>-Branch"
+        return None if kind in ("tests", "neu") else f"{rel}: Referenzdaten nur auf tests/<id> oder neu/<id>"
 
     for prefix in CORE_ONLY:
         if rel == prefix.rstrip("/") or rel.startswith(prefix):
             return f"{rel}: gehört zum Projektvertrag ({prefix}), nur das Kernteam ändert das"
 
-    if kind == "spec":
-        return f"{rel}: auf spec/{cid} nur openspec/changes/{cid}/ bearbeiten"
+    if kind in ("spec", "neu"):
+        return f"{rel}: auf {kind}/{cid} nur openspec/changes/{cid}/ bearbeiten"
     if kind == "tests" and not rel.startswith(("tests/acceptance/", "tests/golden/", "tests/ui-reference/")):
         return f"{rel}: auf tests/{cid} nur Tests schreiben, keinen Produktcode"
     return None
