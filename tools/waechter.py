@@ -46,8 +46,14 @@ def main() -> int:
         if labels & {"review-ok", "review-abgelehnt"}:
             continue
         runs = gh_json(
-            "run", "list", "--branch", pr["headRefName"], "--limit", "10",
-            "--json", "databaseId,name,conclusion,attempt,createdAt",
+            "run",
+            "list",
+            "--branch",
+            pr["headRefName"],
+            "--limit",
+            "10",
+            "--json",
+            "databaseId,name,conclusion,attempt,createdAt",
         )
         for run in runs:
             if run["name"] in REVIEW_WORKFLOWS and run["conclusion"] == "failure" and run["attempt"] < 2:
@@ -71,8 +77,14 @@ def main() -> int:
     # 3. Nachtschicht eingeschaltet, aber ohne Erfolg seit Stunden
     if "an" in gh("variable", "get", "NACHTSCHICHT").split():
         runs = gh_json(
-            "run", "list", "--workflow", "nachtschicht.yml", "--limit", "10",
-            "--json", "conclusion,createdAt",
+            "run",
+            "list",
+            "--workflow",
+            "nachtschicht.yml",
+            "--limit",
+            "10",
+            "--json",
+            "conclusion,createdAt",
         )
         erfolge = [parse(r["createdAt"]) for r in runs if r["conclusion"] == "success"]
         if not erfolge or now - max(erfolge) > NACHT_MAX_STILLSTAND:
