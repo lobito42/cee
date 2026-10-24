@@ -1,0 +1,27 @@
+name: Wächter
+
+# Prüft mehrmals täglich, ob Prüf-Roboter, Auto-Merge und Nachtschicht laufen, wiederholt fehlgeschlagene
+# Review-Läufe und meldet nur Stillstand, den er nicht beheben kann (Issue „Fragen an das Kernteam“).
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+  pull-requests: read
+  issues: write
+  checks: read
+
+env:
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  waechter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tools/waechter.py
