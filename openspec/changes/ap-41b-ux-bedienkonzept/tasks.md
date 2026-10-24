@@ -8,17 +8,17 @@ einem klickbaren Stand und 3–6 Schritten unter „Klick-Anleitung“ im PR (de
 
 ## 1. Gerüst und Fensteraufbau
 
-- [ ] 1.1 `P/` aus dem vorigen Stand übernehmen (Werkzeugkette, Tokens, i18n, Wertfeld, Register, Protokoll,
+- [x] 1.1 `P/` aus dem vorigen Stand übernehmen (Werkzeugkette, Tokens, i18n, Wertfeld, Register, Protokoll,
   Rückgängig, Halter-Geometrie, 3D-Lesbarkeit, `pruefen/basis.mjs`); alte Zonen, Paket Simulation und
   Gespräch entfernen – Prüfung: `bash P/build.sh && npm --prefix P run lint && npm --prefix P test && npm --prefix P run tokens:check`; AK-1
-- [ ] 1.2 Fensteraufbau mit allen Zonen (`data-zone`, Maße nach design.md), Dokument-Reiter Halter und
+- [x] 1.2 Fensteraufbau mit allen Zonen (`data-zone`, Maße nach design.md), Dokument-Reiter Halter und
   Sensorgehäuse, Pfad, Ansichtsleiste, Schalter Mod+B/Mod+J/Mod+Alt+B, Taskleiste mit Platzhalter „Simulation“,
   Rückmeldezeile – Prüfung: `pruefen fenster`; AK-3
-- [ ] 1.3 Register mit `familie`, `bezug`, `rang`, `wesentlich`; Start-Menü und Dropdowns aus dem Register
+- [x] 1.3 Register mit `familie`, `bezug`, `rang`, `wesentlich`; Start-Menü und Dropdowns aus dem Register
   (≤ 12 je Untergruppe), `?register=` – Prüfung: Vitest (Erzeugung der Menüs) und `pruefen fenster`; AK-3, AK-7
-- [ ] 1.4 Testzustände (alle 22, zunächst ohne die Wirkung späterer Gruppen) und unbekannter Zustand; Prüfbefehle
+- [x] 1.4 Testzustände (alle 22, zunächst ohne die Wirkung späterer Gruppen) und unbekannter Zustand; Prüfbefehle
   `zustaende`, `anfragen` – Prüfung: `pruefen zustaende` und `pruefen anfragen`; AK-1, AK-2
-- [ ] 1.5 Taskleiste wechselt Menüs: Wechsel „Modellieren“ ↔ „Simulation“ tauscht Dropdowns und Struktur
+- [x] 1.5 Taskleiste wechselt Menüs: Wechsel „Modellieren“ ↔ „Simulation“ tauscht Dropdowns und Struktur
   (Leerer Zustand „simuliert“), Rückweg stellt Menüs, Struktur und Auswahl wieder her – Prüfung: `pruefen
   fenster` (Scenario „Taskleiste wechselt Menüs“); AK-3
 - [ ] 1.6 Vorschau bauen, Klick-Anleitung im PR (Fenster ansehen, Taskleiste wechseln, Reiter wechseln, Bereiche ein- und ausblenden,
