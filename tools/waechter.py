@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Wächter für den Betrieb: prüft, ob Prüf-Roboter, Auto-Merge und Nachtschicht laufen.
 
-Behebt selbst, was mechanisch ist (fehlgeschlagene Review-Läufe offener PRs einmal wiederholen), und meldet nur
-Stillstand, den er nicht beheben kann, als Kommentar im Issue „Fragen an das Kernteam“ (Label `fragen`).
+Behebt selbst, was mechanisch ist (fehlgeschlagene Review-Läufe offener PRs einmal wiederholen), und
+meldet nur Stillstand, den er nicht beheben kann, als Kommentar im Issue „Fragen an das Kernteam“
+(Label `fragen`).
 
   python3 tools/waechter.py            prüfen und beheben
   python3 tools/waechter.py --dry-run  nur anzeigen
@@ -13,7 +14,7 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 DRY = "--dry-run" in sys.argv
 NACHT_MAX_STILLSTAND = timedelta(hours=8)
@@ -36,7 +37,7 @@ def parse(ts: str) -> datetime:
 
 
 def main() -> int:
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     befunde: list[str] = []
 
     # 1. Fehlgeschlagene Review-Läufe offener PRs einmal wiederholen
