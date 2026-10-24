@@ -32,6 +32,10 @@ ALLOWED = [
     ("crates/graph/src/doc.rs", "fix/main-rot"),
     ("tests/unit/test_next_step.py", "fix/main-rot"),
     ("docs/adr/ADR-064-x.md", "adr/mensch-entscheidet"),
+    # Neuzuschnitt in einem Schritt: Spec und Tests desselben Changes
+    ("openspec/changes/ap-41b/specs/x/spec.md", "neu/ap-41b"),
+    ("tests/acceptance/ap-41b/test_x.py", "neu/ap-41b"),
+    ("tests/golden/ap-41b/inventar.json", "neu/ap-41b"),
     ("tools/guard.py", "adr/mensch-entscheidet"),
     (".github/workflows/ci.yml", "adr/mensch-entscheidet"),
     ("AGENTS.md", "claude/adr/mensch-entscheidet"),
@@ -83,6 +87,13 @@ BLOCKED = [
     ("openspec/specs/graph-kern/spec.md", "fix/main-rot"),
     ("openspec/changes/ap-17-identitaet/proposal.md", "fix/main-rot"),
     ("tests/acceptance/ap-17-identitaet/test_x.py", "fix/main-rot"),
+    # neu/<id> ist eng begrenzt: nur der eigene Change, kein Produktcode, keine Verträge
+    ("openspec/changes/ap-06/tasks.md", "neu/ap-41b"),
+    ("tests/acceptance/ap-06/test_x.py", "neu/ap-41b"),
+    ("packages/x.py", "neu/ap-41b"),
+    ("docs/adr/ADR-001.md", "neu/ap-41b"),
+    ("openspec/specs/graph-kern/spec.md", "neu/ap-41b"),
+    ("tools/guard.py", "neu/ap-41b"),
     ("openspec/specs/graph-kern/spec.md", "adr-fake/x"),  # unbekannte Präfixe bleiben gesperrt
     ("tools/guard.py", "main"),
 ]

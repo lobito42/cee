@@ -30,6 +30,7 @@ Hintergrund: `docs/konzept.md` (Export des Konzepts, nur gezielt lesen), Entsche
    - `tests/<id>` – Abnahmetests schreiben: nur `tests/acceptance/<id>/`, `tests/golden/`, `tests/ui-reference/`
    - `change/<id>` – umsetzen: Produktcode + Häkchen in `openspec/changes/<id>/tasks.md`
    - `fix/<grund>` – Hausmeister (`main` reparieren, rote PRs): Produktcode und `tests/unit/`, keine Verträge
+   - `neu/<id>` – Neuzuschnitt in einem Schritt: `openspec/changes/<id>/`, `tests/acceptance/<id>/`, `tests/golden/`
    - `archiv/<id>` – gemergten Change archivieren: `openspec/changes/<id>/`, `openspec/changes/archive/`, `openspec/specs/`
    - `adr/<thema>` – Kernteam-Dateien ändern (ADRs, Regeln, Werkzeug): erst nach dem Ja des Menschen mergen
 3. **Abnahmetests sind der Vertrag.** Sie sind pytest-Tests und dürfen `cargo`, `mix` oder `npm` aufrufen.
@@ -63,9 +64,9 @@ Der Mensch entscheidet über Inhalte und kennt weder Git noch Abkürzungen noch 
 - **Referenzdaten** (Inventare, Goldene Dateien, Listen „vom Kernteam“) leitest du aus echten Quellen im
   Repository ab. Fehlt eine Quelle, wird die Datei kleiner. Nie Zahlen oder Einträge erfinden oder auf eine
   Zielzahl auffüllen. Eine Lücke, die nur der Mensch inhaltlich füllen kann, wird als inhaltliche Frage gestellt.
-- **Neuzuschnitt eines Changes:** Eine Aufgabe, drei Schritte hintereinander ohne Rückfrage: (1) `tests/<id>`:
-  Abnahmetests des alten Zuschnitts entfernen, (2) `spec/<id>`: neue Spec, (3) `tests/<id>`: neue Tests. Der
-  Mensch bestätigt nur den neuen Zuschnitt inhaltlich.
+- **Neuzuschnitt eines Changes:** Eine Aufgabe auf einem Branch `neu/<id>` und in einem PR: neue Spec,
+  alte Abnahmetests ersetzen, neue Tests schreiben. Der PR sagt in einfachen Worten, was entfällt. Der Mensch
+  bestätigt nur den neuen Zuschnitt inhaltlich.
 
 ## Token sparen (Pro-Abo)
 

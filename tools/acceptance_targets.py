@@ -15,7 +15,7 @@ import subprocess
 from pathlib import Path
 
 ROOT = Path(os.environ.get("CEE_ROOT") or Path(__file__).resolve().parents[1])
-BRANCH_RE = re.compile(r"^(?:claude/)?(?:spec|tests|change)/([a-z0-9][a-z0-9-]*)$")
+BRANCH_RE = re.compile(r"^(?:claude/)?(?:spec|tests|neu|change)/([a-z0-9][a-z0-9-]*)$")
 
 
 def branch() -> str:
@@ -49,7 +49,7 @@ def change_ids() -> set[str]:
         text = tasks.read_text(encoding="utf-8")
         if re.search(r"^\s*- \[[xX]\]", text, re.M) and not re.search(r"^\s*- \[ \]", text, re.M):
             ids.add(tasks.parent.name)
-    if (m := BRANCH_RE.match(branch())) and not branch().split("/")[-2].endswith("tests"):
+    if (m := BRANCH_RE.match(branch())) and branch().split("/")[-2] not in ("tests", "neu"):
         ids.add(m.group(1))
     return ids
 
