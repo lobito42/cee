@@ -80,15 +80,15 @@ einem klickbaren Stand und 3–6 Schritten unter „Klick-Anleitung“ im PR (de
 
 ## 6. Bausteinkatalog, Budget, Leitfaden
 
-- [ ] 6.1 Bausteinkatalog (`?katalog`, `katalog.oeffnen`), mindestens 19 Seiten mit Bild hell/dunkel, Regel,
+- [x] 6.1 Bausteinkatalog (`?katalog`, `katalog.oeffnen`), mindestens 19 Seiten mit Bild hell/dunkel, Regel,
   Bezug, Befehlen, Tokens; Prüfbefehl `katalog` – Prüfung: `pruefen katalog`; AK-15
-- [ ] 6.2 Prüfbefehle `budget`, `texte` für alle Zustände; Nacharbeit, bis Tokens, Akzent, Texte und Einheiten
+- [x] 6.2 Prüfbefehle `budget`, `texte` für alle Zustände; Nacharbeit, bis Tokens, Akzent, Texte und Einheiten
   halten – Prüfung: `pruefen budget` und `pruefen texte`; AK-14
-- [ ] 6.3 Prüfbefehle `ablauf e…l` und `messen`; Nacharbeit, bis alle Sollzustände und Schwellen halten –
+- [x] 6.3 Prüfbefehle `ablauf e…l` und `messen`; Nacharbeit, bis alle Sollzustände und Schwellen halten –
   Prüfung: `pruefen ablauf` und `pruefen messen`; AK-16
-- [ ] 6.4 Testleitfaden `docs/spikes/ux-prototyp-2.md` nach design.md (Aufgaben E–L, Ergebnisbogen TP1–TP5,
+- [x] 6.4 Testleitfaden `docs/spikes/ux-prototyp-2.md` nach design.md (Aufgaben E–L, Ergebnisbogen TP1–TP5,
   Nachbefragung, Datenschutz, Start mit `npm run preview`) – Prüfung: AK-16
-- [ ] 6.5 Vorschau bauen, Klick-Anleitung zur vollständigen Pilot-Anleitung (Aufgaben E–L mit Startadressen,
+- [x] 6.5 Vorschau bauen, Klick-Anleitung zur vollständigen Pilot-Anleitung (Aufgaben E–L mit Startadressen,
   Katalog) zusammenfassen – Prüfung: `uv run pytest -q tests/acceptance/ap-41b-ux-bedienkonzept`
 
 ## Menschliche Abnahme (eigener Schritt des Kernteams, nicht nachts)

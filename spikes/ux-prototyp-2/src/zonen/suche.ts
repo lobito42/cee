@@ -58,7 +58,7 @@ export function baueSuche(app: App): HTMLElement {
     }),
     h(
       'div',
-      { class: 'ergebnisse' },
+      { class: 'ergebnisse', 'data-text': app.suche.text },
       h('div', { class: 'gruppenkopf' }, app.t('suche.befehle')),
       ...treffer.map((b, i) =>
         h(

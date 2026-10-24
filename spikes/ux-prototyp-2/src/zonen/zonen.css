@@ -1063,3 +1063,86 @@ h3 {
   border: 2px solid var(--farbe-akzent);
   pointer-events: none;
 }
+
+/* Bausteinkatalog: dieselben Bausteine, aber im Fluss statt über dem Modell */
+.katalog h1 {
+  margin: 0 0 var(--abstand-3);
+  font: var(--schrift-schnitt-halbfett) var(--schrift-groesse-ueberschrift) /
+    var(--schrift-zeilenhoehe) var(--schrift-familie-ui);
+}
+
+.katalog h2 {
+  margin: var(--abstand-4) 0 var(--abstand-2);
+}
+
+.katalog a {
+  color: var(--farbe-text-2);
+}
+
+.katalog .bild {
+  background: var(--farbe-flaeche);
+  color: var(--farbe-text);
+}
+
+.katalog .bild h3 {
+  margin-bottom: var(--abstand-3);
+}
+
+.katalog .beispiel {
+  margin: 0 0 var(--abstand-4);
+}
+
+.katalog figcaption {
+  margin-bottom: var(--abstand-1);
+  color: var(--farbe-text-2);
+  font: var(--schrift-schnitt-normal) var(--schrift-groesse-klein) / var(--schrift-zeilenhoehe)
+    var(--schrift-familie-ui);
+}
+
+.katalog .reiterzeile,
+.katalog .pfad,
+.katalog .ansichtsleiste,
+.katalog .kontextaktionen,
+.katalog .griff,
+.katalog .zeigerzahl,
+.katalog .popup,
+.katalog .kontextmenue,
+.katalog .fertig {
+  position: static;
+  transform: none;
+  margin: 0;
+}
+
+.katalog .griff {
+  flex: none;
+}
+
+.katalog .zeile-bsp {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--abstand-4);
+}
+
+.katalog .kuerzel-liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--abstand-1);
+}
+
+.katalog .kuerzel-liste li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--abstand-3);
+}
+
+.katalog .leise {
+  display: flex;
+  min-height: 24px;
+  align-items: center;
+  padding: 0 var(--abstand-3);
+  border-top: var(--linie-breite) solid var(--farbe-linie);
+  color: var(--farbe-text-2);
+}

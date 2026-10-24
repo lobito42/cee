@@ -72,7 +72,7 @@ async function start(): Promise<void> {
   const t = uebersetzer(sprache);
 
   if (adresse.has('katalog')) {
-    await ladeKatalog(wurzel, adresse.get('katalog') ?? '', t);
+    await ladeKatalog(wurzel, adresse.get('katalog') ?? '', t, sprache, thema);
     return;
   }
 
@@ -159,8 +159,9 @@ async function start(): Promise<void> {
 
   const darstellungen = (id: string) => {
     const zeilen = app.zeilen().some((z) => z.element.id === id);
-    const hatKoerper = ergebnisVon(app.angezeigtesDokument()).koerper.some(
-      (k) => k.elementId === id,
+    const eigene = new Set(app.mitNachfahren(id));
+    const hatKoerper = ergebnisVon(app.angezeigtesDokument()).koerper.some((k) =>
+      eigene.has(k.elementId),
     );
     const ausgeblendet = app.istAusgeblendet(id);
     const einzeln = app.auswahlIds().length === 1 && app.auswahlIds()[0] === id;

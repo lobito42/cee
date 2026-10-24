@@ -2,7 +2,7 @@
 import type { App } from '../app';
 import { h, symbol } from '../ui/dom';
 
-function kontext(app: App): HTMLElement {
+export function kontext(app: App): HTMLElement {
   const gewaehlt = app.gewaehlteElemente();
   let inhalt: HTMLElement;
   if (gewaehlt.length > 1) {
@@ -35,7 +35,7 @@ function kontext(app: App): HTMLElement {
   );
 }
 
-function karte(app: App): HTMLElement | null {
+export function karte(app: App): HTMLElement | null {
   const v = app.chat.vorschlag;
   if (!v) return null;
   return h(

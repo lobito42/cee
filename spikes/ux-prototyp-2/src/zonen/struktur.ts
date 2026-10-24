@@ -48,7 +48,7 @@ export function statusElement(app: App, s: StatusAnzeige, id: string): HTMLEleme
   );
 }
 
-function zeile(app: App, e: Element, ebene: number, index: number): HTMLElement {
+export function zeile(app: App, e: Element, ebene: number, index: number): HTMLElement {
   const z = app.zustaende(e.id);
   const gewaehlt = app.auswahlIds().includes(e.id);
   const versteckt = app.istAusgeblendet(e.id);

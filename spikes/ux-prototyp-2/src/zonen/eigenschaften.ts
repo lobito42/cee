@@ -128,7 +128,7 @@ export function gemeinsameFelder(
   return { gruppen, gemischt };
 }
 
-function feldElement(app: App, f: Feld, ids: string[], gemischt: boolean): HTMLElement {
+export function feldElement(app: App, f: Feld, ids: string[], gemischt: boolean): HTMLElement {
   const befund = app.feldBefund?.feld === f.key ? app.feldBefund : null;
   return h(
     'div',

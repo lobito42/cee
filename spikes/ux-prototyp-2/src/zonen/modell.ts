@@ -154,7 +154,7 @@ function kantenLinien(app: App, ursprung: Punkt): HTMLElement[] {
   return aus;
 }
 
-function reiter(app: App): HTMLElement {
+export function reiter(app: App): HTMLElement {
   return h(
     'div',
     { class: 'reiterzeile', role: 'tablist', 'data-chrome': '', 'data-key': 'reiter' },
@@ -188,7 +188,7 @@ function reiter(app: App): HTMLElement {
   );
 }
 
-function pfad(app: App): HTMLElement {
+export function pfad(app: App): HTMLElement {
   const glieder = app.pfadGlieder();
   const wurzel = app.dokument();
   const teile: (HTMLElement | null)[] = [];
@@ -241,7 +241,7 @@ const LEISTE: string[] = [
   'darstellung.wechseln',
 ];
 
-function ansichtsleiste(app: App): HTMLElement {
+export function ansichtsleiste(app: App): HTMLElement {
   const knoepfe = LEISTE.map((id) => app.befehl(id)).filter((b): b is Befehl => !!b);
   return h(
     'div',
@@ -313,6 +313,11 @@ function kontextleiste(app: App, ursprung: Punkt, breite: number): HTMLElement |
   const box = huellbox(alle);
   const mitteX = Math.min(Math.max(box.x + box.breite / 2 - ursprung.x, 110), breite - 110);
   const oben = Math.max(box.y - ursprung.y - 46, 84);
+  return aktionsLeiste(app, aktionen, `left:${Math.round(mitteX)}px;top:${Math.round(oben)}px`);
+}
+
+/** Die Kontextaktionen: die ersten fünf Einträge des Kontextmenüs nach Rang (Muster Kontextaktionen). */
+export function aktionsLeiste(app: App, aktionen: Befehl[], stil: string | null): HTMLElement {
   return h(
     'div',
     {
@@ -322,7 +327,7 @@ function kontextleiste(app: App, ursprung: Punkt, breite: number): HTMLElement |
       'data-chrome': '',
       'data-weg': 'kontextaktion',
       'data-key': 'kontextaktionen',
-      style: `left:${Math.round(mitteX)}px;top:${Math.round(oben)}px`,
+      style: stil,
     },
     ...aktionen.map((b) =>
       h(
