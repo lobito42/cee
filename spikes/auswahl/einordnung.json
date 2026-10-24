@@ -1,0 +1,107 @@
+[
+  {
+    "befehl": "Klicken",
+    "klasse": "B",
+    "begruendung": "Eine Geste im Modell, deren Ergebnis die stabile Adresse des getroffenen Elements bzw. seiner Fläche oder Kante ist; es gibt keine Regel, die man neu auswerten könnte."
+  },
+  {
+    "befehl": "Rahmen",
+    "klasse": "B",
+    "begruendung": "Der Rahmen hängt an Kamera und Bildschirmausschnitt, die nicht im Graphen stehen; gespeichert wird nur die Liste der getroffenen stabilen Adressen."
+  },
+  {
+    "befehl": "Lasso",
+    "klasse": "B",
+    "begruendung": "Wie der Rahmen eine Geste in Bildschirmkoordinaten; das Ergebnis ist eine Liste stabiler Adressen ohne Regel."
+  },
+  {
+    "befehl": "Unter dem Zeiger wählen (Überlappung)",
+    "klasse": "B",
+    "begruendung": "Der Mensch wählt aus den überlappenden Kandidaten unter dem Zeiger einen aus; übrig bleibt eine stabile Adresse."
+  },
+  {
+    "befehl": "Alles",
+    "klasse": "A",
+    "begruendung": "Eine Regel mit Art und Ausgangselement und ohne Bedingungen; sie trifft nach jeder Neuberechnung wieder alles dieser Art."
+  },
+  {
+    "befehl": "Nichts",
+    "klasse": "C",
+    "begruendung": "Leert nur die aktuelle Auswahl der Sitzung; eine gespeicherte leere Auswahl hätte keine Bedeutung im Graphen."
+  },
+  {
+    "befehl": "Umkehren",
+    "klasse": "A",
+    "begruendung": "Eine Regel „alle dieser Art außer der Auswahl am Eingang“, also Alles mit einer Bedingung nicht-enthalten, die auf eine andere Auswahl über <id>.<output> verweist."
+  },
+  {
+    "befehl": "Ähnliche",
+    "klasse": "A",
+    "begruendung": "Beim Anlegen werden die Merkmale der Vorlage (Art, Geometrietyp, Radius oder Flächeninhalt) als Bedingungen mit Werten und Toleranz in die Regel geschrieben, nicht die Vorlage selbst."
+  },
+  {
+    "befehl": "Kantenschleife",
+    "klasse": "A",
+    "begruendung": "Eine Regel „Kanten der Berandung der Fläche aus der Auswahl am Eingang“, die über die Nachbarschaft der Topologie bei jeder Neuberechnung neu gebildet wird (im Prototyp nicht gebaut)."
+  },
+  {
+    "befehl": "Auswahlfilter nach Art (Punkt, Kante, Fläche, Körper, Teil)",
+    "klasse": "A",
+    "begruendung": "Feld art und Bedingung geometrie der Regel; im Prototyp als R1 (alle zylindrischen Flächen) gebaut."
+  },
+  {
+    "befehl": "nach Lage",
+    "klasse": "A",
+    "begruendung": "Bedingung lage mit Achse und Bezug (äußerste Ebene); im Prototyp als R2 (alle Kanten oben) gebaut."
+  },
+  {
+    "befehl": "nach Richtung",
+    "klasse": "A",
+    "begruendung": "Bedingung richtung bzw. normale mit Achse und Winkeltoleranz; im Prototyp als R3 (Kanten parallel zu Z) gebaut."
+  },
+  {
+    "befehl": "nach Wert",
+    "klasse": "A",
+    "begruendung": "Bedingung wert mit Parameter, Vergleich und Grenze; im Prototyp als Graph-Regel über 10.000 Elemente gebaut (length ≥ 3000)."
+  },
+  {
+    "befehl": "Sortieren (höchste, nächste)",
+    "klasse": "A",
+    "begruendung": "Felder sortieren und anzahl der Regel; gleichrangige Ziele ergeben den Befund mehrdeutig statt einer Wahl (Fall K2)."
+  },
+  {
+    "befehl": "Gruppe",
+    "klasse": "A",
+    "begruendung": "Feld gruppe mit Achse und Wahl (erste, letzte) nach Toleranz; im Prototyp als R4 (Montagefläche) gebaut."
+  },
+  {
+    "befehl": "neu entstanden",
+    "klasse": "A",
+    "begruendung": "Bedingung herkunft erzeugt auf dem Ausgang eines Elements, ausgewertet über die Topologie-Historie der Operation; im Prototyp als R5 (Flächen der Bohrung) gebaut."
+  },
+  {
+    "befehl": "nach Eigenschaft (z. B. gleiches Material)",
+    "klasse": "A",
+    "begruendung": "Bedingung eingang bzw. Eigenschaft mit Verweis <id>.<output>, etwa auf ein Material; im Prototyp Teil der Graph-Regel (Material e000005)."
+  },
+  {
+    "befehl": "Verbundene",
+    "klasse": "A",
+    "begruendung": "Eine Regel „mit der Auswahl am Eingang über Kanten oder Verbindungen verbunden“, die über Nachbarschaft in Topologie bzw. Graph neu ausgewertet wird (im Prototyp nicht gebaut)."
+  },
+  {
+    "befehl": "Benannte Auswahl",
+    "klasse": "B",
+    "begruendung": "Ein Auswahl-Element mit Namen in meta, das das Ergebnis einer Geste als Liste stabiler Adressen festhält; ist der Inhalt eine Regel, ist es einfach die Regel selbst."
+  },
+  {
+    "befehl": "Auswahl-Verlauf (zurück, vor)",
+    "klasse": "C",
+    "begruendung": "Verlauf der Sitzung in der Oberfläche; er gehört nicht in den Graphen, weil dort keine Anwesenheit und kein Bedienverlauf gespeichert werden."
+  },
+  {
+    "befehl": "Mehrdeutige Auswahl klären",
+    "klasse": "B",
+    "begruendung": "Antwort des Menschen auf den Befund mehrdeutig: Die gewählten Kandidaten werden als Liste stabiler Adressen an der Regel festgehalten, der Prototyp rät nie selbst."
+  }
+]
