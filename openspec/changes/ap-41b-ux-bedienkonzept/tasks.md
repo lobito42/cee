@@ -21,18 +21,18 @@ einem klickbaren Stand und 3–6 Schritten unter „Klick-Anleitung“ im PR (de
 - [x] 1.5 Taskleiste wechselt Menüs: Wechsel „Modellieren“ ↔ „Simulation“ tauscht Dropdowns und Struktur
   (Leerer Zustand „simuliert“), Rückweg stellt Menüs, Struktur und Auswahl wieder her – Prüfung: `pruefen
   fenster` (Scenario „Taskleiste wechselt Menüs“); AK-3
-- [ ] 1.6 Vorschau bauen, Klick-Anleitung im PR (Fenster ansehen, Taskleiste wechseln, Reiter wechseln, Bereiche ein- und ausblenden,
+- [x] 1.6 Vorschau bauen, Klick-Anleitung im PR (Fenster ansehen, Taskleiste wechseln, Reiter wechseln, Bereiche ein- und ausblenden,
   Menüs öffnen) – Prüfung: `bash P/build.sh` und `npm --prefix P run preview` startet
 
 ## 2. Elementzustände und Auswahl
 
-- [ ] 2.1 Elementzustände als Kanäle nach design.md in Modell, Struktur, Chat-Kontext und Pfad;
+- [x] 2.1 Elementzustände als Kanäle nach design.md in Modell, Struktur, Chat-Kontext und Pfad;
   `window.__cee.zustaende(id)`; Vorrangregel; Zustand `zustaende` – Prüfung: `pruefen elementzustaende`; AK-4
-- [ ] 2.2 Ein Auswahlzustand als Adressliste; Klick, Umschalt, Mod, Leere, Esc, Mod+A in Struktur und Modell;
+- [x] 2.2 Ein Auswahlzustand als Adressliste; Klick, Umschalt, Mod, Leere, Esc, Mod+A in Struktur und Modell;
   Überfahren beidseitig ohne Hover-only-Bedienung – Prüfung: `pruefen auswahl`; AK-5
-- [ ] 2.3 Aktiv und Isolieren: Doppelklick/Enter, Ebenen in Teil und Baugruppe, Dimmen, Pfad, „Fertig“/Esc/Pfad;
+- [x] 2.3 Aktiv und Isolieren: Doppelklick/Enter, Ebenen in Teil und Baugruppe, Dimmen, Pfad, „Fertig“/Esc/Pfad;
   Zustände `aktiv`, `isoliert` – Prüfung: `pruefen auswahl`; AK-5
-- [ ] 2.4 Eigenschaften der Auswahl (eins, mehrere mit „gemischt“, keins = aktives Element), Wertfelder live,
+- [x] 2.4 Eigenschaften der Auswahl (eins, mehrere mit „gemischt“, keins = aktives Element), Wertfelder live,
   Enter, Esc; Chat-Kontext „zu: …“ – Prüfung: Vitest und `pruefen auswahl`; AK-5
 - [ ] 2.5 Vorschau bauen, Klick-Anleitung (Grundplatte im Modell und in der Struktur wählen, Umschalt-Klick, ins
   Leere klicken, Gehäuse doppelklicken) – Prüfung: `bash P/build.sh`

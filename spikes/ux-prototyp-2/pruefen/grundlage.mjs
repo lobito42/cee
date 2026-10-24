@@ -200,6 +200,13 @@ function installiere() {
     }
     return liste;
   };
+  const wirklichSichtbar = (e) => {
+    if (!sichtbar(e)) return false;
+    for (let n = e; n && n !== document.documentElement; n = n.parentElement) {
+      if (parseFloat(getComputedStyle(n).opacity) === 0) return false;
+    }
+    return true;
+  };
   const text = (e) => (e?.textContent ?? '').replace(/\s+/g, ' ').trim();
   const zone = (e) => e.closest('[data-zone]')?.dataset.zone ?? null;
   const zeile = (z) => {
@@ -239,6 +246,7 @@ function installiere() {
   };
   window.__pruef = {
     sichtbar,
+    wirklichSichtbar,
     rechteck,
     hex,
     texte,

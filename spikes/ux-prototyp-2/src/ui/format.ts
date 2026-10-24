@@ -20,7 +20,6 @@ export function groesseText(
 export const volumenText = (mm3: number, sprache: Sprache): string =>
   `${dez(mm3 / 1000, 2, sprache)} cm³`;
 export const masseText = (g: number, sprache: Sprache): string => `${dez(g, 2, sprache)} g`;
-export const dichteText = (sprache: Sprache): string => `${dez(1.24, 2, sprache)} g/cm³`;
 
 /** „80 × 50 × 38 mm“. */
 export function abmessungenText(abm: [number, number, number], sprache: Sprache): string {

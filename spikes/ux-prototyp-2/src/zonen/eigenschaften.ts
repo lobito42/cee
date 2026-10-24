@@ -1,7 +1,7 @@
 // Eigenschaften (ADR-065): Gruppen › Felder der Auswahl; ohne Auswahl das aktive Element, bei mehreren nur Gemeinsames.
 import type { App } from '../app';
 import { istVerworfen, pfadZu, type Element } from '../modell/element';
-import { abmessungenText, dichteText, groesseText, masseText, volumenText } from '../ui/format';
+import { abmessungenText, groesseText, masseText, volumenText } from '../ui/format';
 import { ergebnisVon } from '../geometrie/teil';
 import { h } from '../ui/dom';
 
@@ -51,10 +51,7 @@ export function gruppenVon(app: App, e: Element): Gruppe[] {
     if (e.type === 'teil' || erg.volumen_mm3 > 0) {
       gruppen.push({
         key: 'material',
-        felder: [
-          { key: 'material', param: null, text: materialVon(app, e), editierbar: false },
-          { key: 'dichte', param: null, text: dichteText(sp), editierbar: false },
-        ],
+        felder: [{ key: 'material', param: null, text: materialVon(app, e), editierbar: false }],
       });
       gruppen.push({
         key: 'ergebnis',

@@ -11,7 +11,7 @@ body {
   margin: 0;
   height: 100%;
   overflow: hidden;
-  background: var(--farbe-grund);
+  background: var(--farbe-flaeche);
   color: var(--farbe-text);
   font: var(--schrift-schnitt-normal) var(--schrift-groesse-basis) / var(--schrift-zeilenhoehe)
     var(--schrift-familie-ui);
@@ -102,7 +102,7 @@ h3 {
     'task struktur modell rechts'
     'task struktur panel rechts'
     'rueck rueck rueck rueck';
-  background: var(--farbe-grund);
+  background: var(--farbe-flaeche);
 }
 
 .fenster.ohne-struktur {
@@ -290,7 +290,7 @@ h3 {
 
 .suchfeld {
   min-width: 200px;
-  background: var(--farbe-grund);
+  background: var(--farbe-flaeche-2);
   border: var(--linie-breite) solid var(--farbe-linie);
   color: var(--farbe-text-2);
   justify-content: flex-start;
@@ -386,7 +386,7 @@ h3 {
   padding: 0 var(--abstand-2);
   border: var(--linie-breite) solid var(--farbe-linie-stark);
   border-radius: var(--radius-mittel);
-  background: var(--farbe-grund);
+  background: var(--farbe-flaeche-2);
 }
 
 .suche-eingabe:focus-visible,
@@ -875,7 +875,7 @@ h3 {
   padding: 0 var(--abstand-2);
   border: var(--linie-breite) solid var(--farbe-linie);
   border-radius: var(--radius-klein);
-  background: var(--farbe-grund);
+  background: var(--farbe-flaeche-2);
   font-feature-settings: var(--schrift-merkmale);
 }
 
@@ -998,7 +998,7 @@ h3 {
   padding: 0 var(--abstand-2);
   border: var(--linie-breite) solid var(--farbe-linie);
   border-radius: var(--radius-mittel);
-  background: var(--farbe-grund);
+  background: var(--farbe-flaeche-2);
 }
 
 .simuliert {
@@ -1013,7 +1013,7 @@ h3 {
   height: 100%;
   overflow: auto;
   padding: var(--abstand-5);
-  background: var(--farbe-grund);
+  background: var(--farbe-flaeche);
 }
 
 .katalog-raster {

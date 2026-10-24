@@ -70,6 +70,7 @@ export function baueSuche(app: App): HTMLElement {
             'data-befehl': b.id,
             'data-key': `s-${b.id}`,
             'aria-selected': i === index ? 'true' : 'false',
+            'data-akzent': i === index ? 'auswahl' : null,
             'data-folgt': b.folgt ? 'true' : null,
             tabindex: '-1',
           },
