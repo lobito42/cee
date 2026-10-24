@@ -65,10 +65,14 @@ jobs:
           gate=ok
           # 1. Vertragsschutz: jede Meldung ist ein harter Befund
           if ! python3 tools/guard.py range origin/main; then gate=guard; fi
-          # 2. Offene menschliche Abnahme hält den PR an
+          # 2. Offene menschliche Abnahme hält den PR an – nur bei change/ und archiv/. Test-Pakete (tests/)
+          #    dürfen gemergt werden: Die Punkte zum Ausprobieren sind erst nach dem Bau fällig.
           id="${BRANCH#*/}"
-          if [ -f "openspec/changes/$id/tasks.md" ] && grep -Eq '^\s*- \[ \].*\[mensch\]' "openspec/changes/$id/tasks.md"; then gate=mensch; fi
-          if printf '%s\n' "$BODY" | awk '/^## /{f=($0 ~ /Menschliche Abnahme/)} f && /^- \[ \]/{found=1} END{exit !found}'; then gate=mensch; fi
+          case "$BRANCH" in
+            change/*|archiv/*)
+              if [ -f "openspec/changes/$id/tasks.md" ] && grep -Eq '^\s*- \[ \].*\[mensch\]' "openspec/changes/$id/tasks.md"; then gate=mensch; fi
+              if printf '%s\n' "$BODY" | awk '/^## /{f=($0 ~ /Menschliche Abnahme/)} f && /^- \[ \]/{found=1} END{exit !found}'; then gate=mensch; fi ;;
+          esac
           echo "gate=$gate" >> "$GITHUB_OUTPUT"
           case "$gate" in
             guard) gh pr edit "$PR" --add-label review-abgelehnt
