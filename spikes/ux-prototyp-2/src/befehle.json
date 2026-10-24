@@ -1,0 +1,897 @@
+{
+  "befehle": [
+    {
+      "id": "element.anlegen",
+      "familie": "Datei",
+      "titel": "befehl.element.anlegen",
+      "parameter": {
+        "typ": {
+          "typ": "wahl"
+        }
+      },
+      "bezug": "keine",
+      "rang": 101,
+      "wesentlich": true,
+      "untergruppe": "Neu",
+      "kontext": true
+    },
+    {
+      "id": "dokument.oeffnen",
+      "familie": "Datei",
+      "titel": "befehl.dokument.oeffnen",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 102,
+      "wesentlich": true,
+      "untergruppe": "Öffnen",
+      "folgt": true
+    },
+    {
+      "id": "wurzel.setzen",
+      "familie": "Datei",
+      "titel": "befehl.wurzel.setzen",
+      "parameter": {},
+      "bezug": "element",
+      "rang": 103,
+      "wesentlich": true,
+      "untergruppe": "Öffnen",
+      "folgt": true
+    },
+    {
+      "id": "einstellungen.oeffnen",
+      "familie": "Datei",
+      "titel": "befehl.einstellungen.oeffnen",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 104,
+      "wesentlich": true,
+      "untergruppe": "Projekt",
+      "folgt": true
+    },
+    {
+      "id": "dokument.schliessen",
+      "familie": "Datei",
+      "titel": "befehl.dokument.schliessen",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 105,
+      "wesentlich": false,
+      "untergruppe": "Öffnen",
+      "folgt": true
+    },
+    {
+      "id": "projekt.teilen",
+      "familie": "Datei",
+      "titel": "befehl.projekt.teilen",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 106,
+      "wesentlich": false,
+      "untergruppe": "Projekt",
+      "folgt": true
+    },
+    {
+      "id": "projekt.einladen",
+      "familie": "Datei",
+      "titel": "befehl.projekt.einladen",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 107,
+      "wesentlich": false,
+      "untergruppe": "Projekt",
+      "folgt": true
+    },
+    {
+      "id": "bearbeiten.rueckgaengig",
+      "familie": "Bearbeiten",
+      "titel": "befehl.bearbeiten.rueckgaengig",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 108,
+      "wesentlich": true,
+      "untergruppe": "Verlauf",
+      "kuerzel": "Mod+Z",
+      "kontext": true
+    },
+    {
+      "id": "bearbeiten.wiederholen",
+      "familie": "Bearbeiten",
+      "titel": "befehl.bearbeiten.wiederholen",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 109,
+      "wesentlich": true,
+      "untergruppe": "Verlauf",
+      "kuerzel": "Mod+Umschalt+Z",
+      "kontext": true
+    },
+    {
+      "id": "element.duplizieren",
+      "familie": "Bearbeiten",
+      "titel": "befehl.element.duplizieren",
+      "parameter": {},
+      "bezug": "element",
+      "rang": 1,
+      "wesentlich": true,
+      "untergruppe": "Element",
+      "kuerzel": "Mod+D"
+    },
+    {
+      "id": "element.umbenennen",
+      "familie": "Bearbeiten",
+      "titel": "befehl.element.umbenennen",
+      "parameter": {
+        "name": {
+          "typ": "text"
+        }
+      },
+      "bezug": "element",
+      "rang": 2,
+      "wesentlich": true,
+      "untergruppe": "Element",
+      "kuerzel": "F2"
+    },
+    {
+      "id": "element.verwerfen",
+      "familie": "Bearbeiten",
+      "titel": "befehl.element.verwerfen",
+      "parameter": {},
+      "bezug": "element",
+      "rang": 3,
+      "wesentlich": true,
+      "untergruppe": "Element",
+      "kuerzel": "Entf"
+    },
+    {
+      "id": "auswahl.duplizieren",
+      "familie": "Bearbeiten",
+      "titel": "befehl.auswahl.duplizieren",
+      "parameter": {},
+      "bezug": "mehrfach",
+      "rang": 12,
+      "wesentlich": true,
+      "untergruppe": "Element"
+    },
+    {
+      "id": "auswahl.verwerfen",
+      "familie": "Bearbeiten",
+      "titel": "befehl.auswahl.verwerfen",
+      "parameter": {},
+      "bezug": "mehrfach",
+      "rang": 13,
+      "wesentlich": true,
+      "untergruppe": "Element"
+    },
+    {
+      "id": "element.zurueckholen",
+      "familie": "Bearbeiten",
+      "titel": "befehl.element.zurueckholen",
+      "parameter": {},
+      "bezug": "verworfen",
+      "rang": 7,
+      "wesentlich": true,
+      "untergruppe": "Element"
+    },
+    {
+      "id": "element.wert-setzen",
+      "familie": "Bearbeiten",
+      "titel": "befehl.element.wert-setzen",
+      "parameter": {
+        "element": {
+          "typ": "referenz"
+        },
+        "name": {
+          "typ": "text"
+        },
+        "wert": {
+          "dimension": "laenge",
+          "einheit": "mm"
+        }
+      },
+      "bezug": "element",
+      "rang": 11,
+      "wesentlich": true,
+      "untergruppe": "Werte"
+    },
+    {
+      "id": "element.parameter-anlegen",
+      "familie": "Bearbeiten",
+      "titel": "befehl.element.parameter-anlegen",
+      "parameter": {},
+      "bezug": "element",
+      "rang": 117,
+      "wesentlich": false,
+      "untergruppe": "Werte",
+      "folgt": true
+    },
+    {
+      "id": "bearbeiten.einfuegen",
+      "familie": "Bearbeiten",
+      "titel": "befehl.bearbeiten.einfuegen",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 118,
+      "wesentlich": false,
+      "untergruppe": "Element",
+      "folgt": true
+    },
+    {
+      "id": "element.pausieren",
+      "familie": "Bearbeiten",
+      "titel": "befehl.element.pausieren",
+      "parameter": {},
+      "bezug": "element",
+      "rang": 119,
+      "wesentlich": false,
+      "untergruppe": "Berechnung"
+    },
+    {
+      "id": "element.fortsetzen",
+      "familie": "Bearbeiten",
+      "titel": "befehl.element.fortsetzen",
+      "parameter": {},
+      "bezug": "element",
+      "rang": 120,
+      "wesentlich": false,
+      "untergruppe": "Berechnung"
+    },
+    {
+      "id": "auswahl.alles",
+      "familie": "Auswahl",
+      "titel": "befehl.auswahl.alles",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 121,
+      "wesentlich": true,
+      "untergruppe": "Auswahl",
+      "kuerzel": "Mod+A",
+      "kontext": true
+    },
+    {
+      "id": "auswahl.aufheben",
+      "familie": "Auswahl",
+      "titel": "befehl.auswahl.aufheben",
+      "parameter": {},
+      "bezug": "mehrfach",
+      "rang": 122,
+      "wesentlich": true,
+      "untergruppe": "Auswahl"
+    },
+    {
+      "id": "auswahl.umkehren",
+      "familie": "Auswahl",
+      "titel": "befehl.auswahl.umkehren",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 123,
+      "wesentlich": false,
+      "untergruppe": "Auswahl",
+      "kontext": true
+    },
+    {
+      "id": "auswahl.setzen",
+      "familie": "Auswahl",
+      "titel": "befehl.auswahl.setzen",
+      "parameter": {
+        "elemente": {
+          "typ": "referenz"
+        }
+      },
+      "bezug": "keine",
+      "rang": 124,
+      "wesentlich": false,
+      "untergruppe": "Befehle",
+      "folgt": true
+    },
+    {
+      "id": "auswahl.hinzufuegen",
+      "familie": "Auswahl",
+      "titel": "befehl.auswahl.hinzufuegen",
+      "parameter": {
+        "elemente": {
+          "typ": "referenz"
+        }
+      },
+      "bezug": "keine",
+      "rang": 125,
+      "wesentlich": false,
+      "untergruppe": "Befehle",
+      "folgt": true
+    },
+    {
+      "id": "auswahl.umschalten",
+      "familie": "Auswahl",
+      "titel": "befehl.auswahl.umschalten",
+      "parameter": {
+        "elemente": {
+          "typ": "referenz"
+        }
+      },
+      "bezug": "keine",
+      "rang": 126,
+      "wesentlich": false,
+      "untergruppe": "Befehle",
+      "folgt": true
+    },
+    {
+      "id": "auswahl.aehnliche",
+      "familie": "Auswahl",
+      "titel": "befehl.auswahl.aehnliche",
+      "parameter": {},
+      "bezug": "element",
+      "rang": 127,
+      "wesentlich": false,
+      "untergruppe": "Regeln",
+      "folgt": true
+    },
+    {
+      "id": "auswahl.kantenschleife",
+      "familie": "Auswahl",
+      "titel": "befehl.auswahl.kantenschleife",
+      "parameter": {},
+      "bezug": "kante",
+      "rang": 128,
+      "wesentlich": false,
+      "untergruppe": "Regeln",
+      "folgt": true
+    },
+    {
+      "id": "ansicht.einpassen",
+      "familie": "Ansicht",
+      "titel": "befehl.ansicht.einpassen",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 129,
+      "wesentlich": true,
+      "untergruppe": "Blick",
+      "kontext": true
+    },
+    {
+      "id": "ansicht.auf-auswahl",
+      "familie": "Ansicht",
+      "titel": "befehl.ansicht.auf-auswahl",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 5,
+      "wesentlich": true,
+      "untergruppe": "Blick",
+      "kuerzel": "F",
+      "kontext": true
+    },
+    {
+      "id": "ansicht.projektion",
+      "familie": "Ansicht",
+      "titel": "befehl.ansicht.projektion",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 131,
+      "wesentlich": true,
+      "untergruppe": "Blick",
+      "kontext": true
+    },
+    {
+      "id": "ansicht.vorne",
+      "familie": "Ansicht",
+      "titel": "befehl.ansicht.vorne",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 132,
+      "wesentlich": false,
+      "untergruppe": "Blick"
+    },
+    {
+      "id": "ansicht.oben",
+      "familie": "Ansicht",
+      "titel": "befehl.ansicht.oben",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 133,
+      "wesentlich": false,
+      "untergruppe": "Blick"
+    },
+    {
+      "id": "ansicht.isometrisch",
+      "familie": "Ansicht",
+      "titel": "befehl.ansicht.isometrisch",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 134,
+      "wesentlich": false,
+      "untergruppe": "Blick"
+    },
+    {
+      "id": "ansicht.schnitt",
+      "familie": "Ansicht",
+      "titel": "befehl.ansicht.schnitt",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 135,
+      "wesentlich": false,
+      "untergruppe": "Blick",
+      "folgt": true
+    },
+    {
+      "id": "darstellung.wechseln",
+      "familie": "Ansicht",
+      "titel": "befehl.darstellung.wechseln",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 136,
+      "wesentlich": true,
+      "untergruppe": "Darstellung",
+      "kuerzel": "W",
+      "kontext": true
+    },
+    {
+      "id": "ansicht.isolieren",
+      "familie": "Ansicht",
+      "titel": "befehl.ansicht.isolieren",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 137,
+      "wesentlich": true,
+      "untergruppe": "Darstellung",
+      "kontext": true
+    },
+    {
+      "id": "ansicht.alles-einblenden",
+      "familie": "Ansicht",
+      "titel": "befehl.ansicht.alles-einblenden",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 138,
+      "wesentlich": true,
+      "untergruppe": "Darstellung",
+      "kuerzel": "Alt+H",
+      "kontext": true
+    },
+    {
+      "id": "ansicht.verworfenes",
+      "familie": "Ansicht",
+      "titel": "befehl.ansicht.verworfenes",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 139,
+      "wesentlich": false,
+      "untergruppe": "Darstellung"
+    },
+    {
+      "id": "ansicht.ergebnis",
+      "familie": "Ansicht",
+      "titel": "befehl.ansicht.ergebnis",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 140,
+      "wesentlich": false,
+      "untergruppe": "Stand",
+      "folgt": true
+    },
+    {
+      "id": "ansicht.alle-entwuerfe",
+      "familie": "Ansicht",
+      "titel": "befehl.ansicht.alle-entwuerfe",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 141,
+      "wesentlich": false,
+      "untergruppe": "Stand",
+      "folgt": true
+    },
+    {
+      "id": "element.ausblenden",
+      "familie": "Sichtbarkeit",
+      "titel": "befehl.element.ausblenden",
+      "parameter": {},
+      "bezug": "element",
+      "rang": 4,
+      "wesentlich": true,
+      "untergruppe": "Sichtbarkeit",
+      "kuerzel": "H"
+    },
+    {
+      "id": "element.einblenden",
+      "familie": "Sichtbarkeit",
+      "titel": "befehl.element.einblenden",
+      "parameter": {},
+      "bezug": "element",
+      "rang": 8,
+      "wesentlich": true,
+      "untergruppe": "Sichtbarkeit"
+    },
+    {
+      "id": "auswahl.ausblenden",
+      "familie": "Sichtbarkeit",
+      "titel": "befehl.auswahl.ausblenden",
+      "parameter": {},
+      "bezug": "mehrfach",
+      "rang": 14,
+      "wesentlich": true,
+      "untergruppe": "Sichtbarkeit"
+    },
+    {
+      "id": "sichtbarkeit.nur-dieses",
+      "familie": "Sichtbarkeit",
+      "titel": "befehl.sichtbarkeit.nur-dieses",
+      "parameter": {},
+      "bezug": "element",
+      "rang": 145,
+      "wesentlich": false,
+      "untergruppe": "Sichtbarkeit",
+      "folgt": true
+    },
+    {
+      "id": "sichtbarkeit.farbe-setzen",
+      "familie": "Sichtbarkeit",
+      "titel": "befehl.sichtbarkeit.farbe-setzen",
+      "parameter": {},
+      "bezug": "element",
+      "rang": 146,
+      "wesentlich": false,
+      "untergruppe": "Sichtbarkeit",
+      "folgt": true
+    },
+    {
+      "id": "ansicht.speichern",
+      "familie": "Ansicht speichern",
+      "titel": "befehl.ansicht.speichern",
+      "parameter": {
+        "name": {
+          "typ": "text"
+        }
+      },
+      "bezug": "keine",
+      "rang": 147,
+      "wesentlich": false,
+      "untergruppe": "Gespeichert",
+      "kontext": true
+    },
+    {
+      "id": "ansicht.anwenden",
+      "familie": "Ansicht speichern",
+      "titel": "befehl.ansicht.anwenden",
+      "parameter": {},
+      "bezug": "ansicht",
+      "rang": 9,
+      "wesentlich": true,
+      "untergruppe": "Gespeichert"
+    },
+    {
+      "id": "fenster.struktur",
+      "familie": "Fenster",
+      "titel": "befehl.fenster.struktur",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 149,
+      "wesentlich": true,
+      "untergruppe": "Zonen",
+      "kuerzel": "Mod+B"
+    },
+    {
+      "id": "fenster.panel",
+      "familie": "Fenster",
+      "titel": "befehl.fenster.panel",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 150,
+      "wesentlich": true,
+      "untergruppe": "Zonen",
+      "kuerzel": "Mod+J"
+    },
+    {
+      "id": "fenster.rechts",
+      "familie": "Fenster",
+      "titel": "befehl.fenster.rechts",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 151,
+      "wesentlich": true,
+      "untergruppe": "Zonen",
+      "kuerzel": "Mod+Alt+B"
+    },
+    {
+      "id": "fenster.naechste-zone",
+      "familie": "Fenster",
+      "titel": "befehl.fenster.naechste-zone",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 152,
+      "wesentlich": false,
+      "untergruppe": "Zonen",
+      "kuerzel": "F6"
+    },
+    {
+      "id": "suche.oeffnen",
+      "familie": "Fenster",
+      "titel": "befehl.suche.oeffnen",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 153,
+      "wesentlich": true,
+      "untergruppe": "Suche",
+      "kuerzel": "Mod+K"
+    },
+    {
+      "id": "fenster.teilen",
+      "familie": "Fenster",
+      "titel": "befehl.fenster.teilen",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 154,
+      "wesentlich": false,
+      "untergruppe": "Fenster",
+      "folgt": true
+    },
+    {
+      "id": "thema.umschalten",
+      "familie": "Fenster",
+      "titel": "befehl.thema.umschalten",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 155,
+      "wesentlich": false,
+      "untergruppe": "Einstellungen"
+    },
+    {
+      "id": "einstellung.navigationsprofil",
+      "familie": "Fenster",
+      "titel": "befehl.einstellung.navigationsprofil",
+      "parameter": {
+        "profil": {
+          "typ": "wahl"
+        }
+      },
+      "bezug": "keine",
+      "rang": 156,
+      "wesentlich": false,
+      "untergruppe": "Einstellungen"
+    },
+    {
+      "id": "katalog.oeffnen",
+      "familie": "Hilfe",
+      "titel": "befehl.katalog.oeffnen",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 157,
+      "wesentlich": false,
+      "untergruppe": "Hilfe"
+    },
+    {
+      "id": "hilfe.befehle-zeigen",
+      "familie": "Hilfe",
+      "titel": "befehl.hilfe.befehle-zeigen",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 158,
+      "wesentlich": false,
+      "untergruppe": "Hilfe"
+    },
+    {
+      "id": "hilfe.einfuehrung",
+      "familie": "Hilfe",
+      "titel": "befehl.hilfe.einfuehrung",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 159,
+      "wesentlich": false,
+      "untergruppe": "Hilfe",
+      "folgt": true
+    },
+    {
+      "id": "element.umhaengen",
+      "familie": "Baugruppe",
+      "titel": "befehl.element.umhaengen",
+      "parameter": {
+        "ziel": {
+          "typ": "referenz"
+        }
+      },
+      "bezug": "teil",
+      "rang": 10,
+      "wesentlich": true,
+      "untergruppe": "Hierarchie"
+    },
+    {
+      "id": "element.aktivieren",
+      "familie": "Baugruppe",
+      "titel": "befehl.element.aktivieren",
+      "parameter": {},
+      "bezug": "teil",
+      "rang": 6,
+      "wesentlich": true,
+      "untergruppe": "Hierarchie"
+    },
+    {
+      "id": "element.verlassen",
+      "familie": "Baugruppe",
+      "titel": "befehl.element.verlassen",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 162,
+      "wesentlich": true,
+      "untergruppe": "Hierarchie",
+      "kontext": true
+    },
+    {
+      "id": "baugruppe.anlegen",
+      "familie": "Baugruppe",
+      "titel": "befehl.baugruppe.anlegen",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 163,
+      "wesentlich": false,
+      "untergruppe": "Hierarchie",
+      "kontext": true
+    },
+    {
+      "id": "baugruppe.instanz-anlegen",
+      "familie": "Baugruppe",
+      "titel": "befehl.baugruppe.instanz-anlegen",
+      "parameter": {},
+      "bezug": "baugruppe",
+      "rang": 164,
+      "wesentlich": false,
+      "untergruppe": "Verbinden",
+      "folgt": true
+    },
+    {
+      "id": "baugruppe.variante-waehlen",
+      "familie": "Baugruppe",
+      "titel": "befehl.baugruppe.variante-waehlen",
+      "parameter": {},
+      "bezug": "baugruppe",
+      "rang": 165,
+      "wesentlich": false,
+      "untergruppe": "Verbinden",
+      "folgt": true
+    },
+    {
+      "id": "verbindung.anlegen",
+      "familie": "Baugruppe",
+      "titel": "befehl.verbindung.anlegen",
+      "parameter": {},
+      "bezug": "baugruppe",
+      "rang": 166,
+      "wesentlich": false,
+      "untergruppe": "Verbinden",
+      "folgt": true
+    },
+    {
+      "id": "verbindung.verbindungspunkt-setzen",
+      "familie": "Baugruppe",
+      "titel": "befehl.verbindung.verbindungspunkt-setzen",
+      "parameter": {},
+      "bezug": "baugruppe",
+      "rang": 167,
+      "wesentlich": false,
+      "untergruppe": "Verbinden",
+      "folgt": true
+    },
+    {
+      "id": "verbindung.bewegen",
+      "familie": "Baugruppe",
+      "titel": "befehl.verbindung.bewegen",
+      "parameter": {},
+      "bezug": "baugruppe",
+      "rang": 168,
+      "wesentlich": false,
+      "untergruppe": "Verbinden",
+      "folgt": true
+    },
+    {
+      "id": "baugruppe.kollision-pruefen",
+      "familie": "Baugruppe",
+      "titel": "befehl.baugruppe.kollision-pruefen",
+      "parameter": {},
+      "bezug": "baugruppe",
+      "rang": 169,
+      "wesentlich": false,
+      "untergruppe": "Verbinden",
+      "folgt": true
+    },
+    {
+      "id": "baugruppe.fixieren",
+      "familie": "Baugruppe",
+      "titel": "befehl.baugruppe.fixieren",
+      "parameter": {},
+      "bezug": "teil",
+      "rang": 170,
+      "wesentlich": false,
+      "untergruppe": "Verbinden",
+      "folgt": true
+    },
+    {
+      "id": "baugruppe.komponente-anlegen",
+      "familie": "Baugruppe",
+      "titel": "befehl.baugruppe.komponente-anlegen",
+      "parameter": {},
+      "bezug": "teil",
+      "rang": 171,
+      "wesentlich": false,
+      "untergruppe": "Verbinden",
+      "folgt": true
+    },
+    {
+      "id": "simulation.lager",
+      "familie": "Simulation",
+      "titel": "befehl.simulation.lager",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 172,
+      "wesentlich": true,
+      "untergruppe": "Studie",
+      "folgt": true
+    },
+    {
+      "id": "simulation.kraft",
+      "familie": "Simulation",
+      "titel": "befehl.simulation.kraft",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 173,
+      "wesentlich": true,
+      "untergruppe": "Studie",
+      "folgt": true
+    },
+    {
+      "id": "simulation.ergebnis",
+      "familie": "Simulation",
+      "titel": "befehl.simulation.ergebnis",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 174,
+      "wesentlich": true,
+      "untergruppe": "Studie",
+      "folgt": true
+    },
+    {
+      "id": "chat.senden",
+      "familie": "Chat",
+      "titel": "befehl.chat.senden",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 175,
+      "wesentlich": true,
+      "untergruppe": "Chat"
+    },
+    {
+      "id": "chat.uebernehmen",
+      "familie": "Chat",
+      "titel": "befehl.chat.uebernehmen",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 176,
+      "wesentlich": true,
+      "untergruppe": "Chat"
+    },
+    {
+      "id": "chat.verwerfen",
+      "familie": "Chat",
+      "titel": "befehl.chat.verwerfen",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 177,
+      "wesentlich": true,
+      "untergruppe": "Chat"
+    },
+    {
+      "id": "task.wechseln",
+      "familie": "Fenster",
+      "titel": "befehl.task.wechseln",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 178,
+      "wesentlich": false,
+      "untergruppe": "Zonen"
+    },
+    {
+      "id": "dokument.wechseln",
+      "familie": "Fenster",
+      "titel": "befehl.dokument.wechseln",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 179,
+      "wesentlich": false,
+      "untergruppe": "Zonen"
+    }
+  ]
+}

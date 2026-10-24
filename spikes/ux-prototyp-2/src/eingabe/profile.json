@@ -1,0 +1,38 @@
+{
+  "standard": {
+    "titel": "profil.standard",
+    "maus": {
+      "drehen": [{ "taste": 2 }],
+      "verschieben": [{ "taste": 1 }, { "taste": 2, "umschalt": true }],
+      "zoomen": [{ "rad": true }]
+    },
+    "trackpad": {
+      "drehen": [{ "wischen": true }],
+      "verschieben": [{ "wischen": true, "umschalt": true }],
+      "zoomen": [{ "spreizen": true }]
+    },
+    "touch": {
+      "drehen": [{ "finger": 1 }],
+      "verschieben": [{ "finger": 2, "ziehen": true }],
+      "zoomen": [{ "finger": 2, "spreizen": true }]
+    }
+  },
+  "solidworks": {
+    "titel": "profil.solidworks",
+    "maus": {
+      "drehen": [{ "taste": 1 }],
+      "verschieben": [{ "taste": 1, "strg": true }],
+      "zoomen": [{ "rad": true }]
+    },
+    "trackpad": {
+      "drehen": [{ "wischen": true }],
+      "verschieben": [{ "wischen": true, "umschalt": true }],
+      "zoomen": [{ "spreizen": true }]
+    },
+    "touch": {
+      "drehen": [{ "finger": 1 }],
+      "verschieben": [{ "finger": 2, "ziehen": true }],
+      "zoomen": [{ "finger": 2, "spreizen": true }]
+    }
+  }
+}
