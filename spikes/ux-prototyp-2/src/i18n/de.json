@@ -1,0 +1,427 @@
+{
+  "zone": {
+    "menueleiste": "Menüleiste",
+    "taskleiste": "Taskleiste",
+    "struktur": "Struktur",
+    "modell": "Modell",
+    "eigenschaften": "Eigenschaften",
+    "chat": "Chat",
+    "panel": "Panel",
+    "rueckmeldung": "Rückmeldung"
+  },
+  "menue": {
+    "start": "Start",
+    "folgt": "folgt",
+    "mehr": "Mehr …"
+  },
+  "task": {
+    "modellieren": "Modellieren",
+    "simulation": "Simulation (simuliert)",
+    "shop": "Shop (folgt)"
+  },
+  "simuliert": "simuliert",
+  "suche": {
+    "platzhalter": "Befehle und Inhalte suchen",
+    "befehle": "Befehle",
+    "inhalte": "Inhalte",
+    "nichts": "Nichts gefunden"
+  },
+  "familie": {
+    "Datei": "Datei",
+    "Bearbeiten": "Bearbeiten",
+    "Auswahl": "Auswahl",
+    "Ansicht": "Ansicht",
+    "Sichtbarkeit": "Sichtbarkeit",
+    "Ansicht speichern": "Gespeicherte Ansichten",
+    "Fenster": "Fenster",
+    "Hilfe": "Hilfe",
+    "Baugruppe": "Baugruppe",
+    "Simulation": "Simulation",
+    "Chat": "Chat"
+  },
+  "untergruppe": {
+    "Neu": "Neu",
+    "Öffnen": "Öffnen",
+    "Projekt": "Projekt",
+    "Verlauf": "Verlauf",
+    "Element": "Element",
+    "Werte": "Werte",
+    "Berechnung": "Berechnung",
+    "Auswahl": "Auswahl",
+    "Befehle": "Auswahl setzen",
+    "Regeln": "Nach Regel",
+    "Zonen": "Zonen",
+    "Suche": "Suche",
+    "Fenster": "Fenster",
+    "Einstellungen": "Einstellungen",
+    "Hierarchie": "Hierarchie",
+    "Verbinden": "Verbinden",
+    "Studie": "Studie",
+    "Blick": "Blick",
+    "Darstellung": "Darstellung",
+    "Stand": "Stand",
+    "Sichtbarkeit": "Sichtbarkeit",
+    "Gespeichert": "Gespeichert",
+    "Hilfe": "Hilfe",
+    "Chat": "Chat",
+    "Weitere": "Weitere"
+  },
+  "struktur": {
+    "titel": "Struktur",
+    "wurzel": "Wurzel",
+    "leer": "Noch nichts da. Lege dein erstes Teil an.",
+    "leer-simulation": "Noch keine Studie. Die Simulation ist ein Platzhalter und simuliert.",
+    "verworfen": "verworfen"
+  },
+  "modell": {
+    "leer": "Das Modell ist leer."
+  },
+  "aktiv": {
+    "fertig": "Fertig"
+  },
+  "pfad": {
+    "titel": "Pfad"
+  },
+  "ansichtsleiste": {
+    "titel": "Ansicht",
+    "mehr": "Mehr Ansichten"
+  },
+  "anwesenheit": {
+    "person": "Testperson B",
+    "kuerzel": "B"
+  },
+  "befund": {
+    "zustand-unbekannt": "Zustand unbekannt",
+    "korrektur": "Letzten gültigen Wert setzen",
+    "bohrung-zu-gross": "Der Durchmesser {wert} ist zu groß; unter {grenze} ist die Bohrung gültig.",
+    "steg-ohne-hoehe": "Der Steg braucht eine Höhe über {grenze}."
+  },
+  "status": {
+    "fehlerhaft": "fehlerhaft",
+    "pausiert": "pausiert",
+    "rechnet": "rechnet"
+  },
+  "panel": {
+    "befunde": "Befunde",
+    "keine-befunde": "Keine Befunde. Alles ist aktuell."
+  },
+  "wert": {
+    "fehler": {
+      "nicht-lesbar": "Wert nicht lesbar. Beispiel: 12 mm",
+      "dimension": "Falsche Einheit für dieses Feld",
+      "teilung": "Teilen durch null geht nicht"
+    }
+  },
+  "eigenschaften": {
+    "gemischt": "gemischt",
+    "n-elemente": "{n} Elemente",
+    "umbenennen-hinweis": "Doppelklick zum Umbenennen"
+  },
+  "gruppe": {
+    "masse": "Maße",
+    "material": "Material",
+    "ergebnis": "Ergebnis",
+    "ansicht": "Ansicht"
+  },
+  "feld": {
+    "laenge": "Länge",
+    "breite": "Breite",
+    "dicke": "Dicke",
+    "hoehe": "Höhe",
+    "eckradius": "Eckradius",
+    "durchmesser": "Durchmesser",
+    "wand": "Wand",
+    "material": "Material",
+    "dichte": "Dichte",
+    "abmessungen": "Abmessungen",
+    "volumen": "Volumen",
+    "masse-wert": "Masse",
+    "projektion": "Projektion",
+    "darstellung": "Darstellung"
+  },
+  "projektion": {
+    "orthogonal": "orthogonal",
+    "perspektivisch": "perspektivisch"
+  },
+  "darstellung": {
+    "koerper": "Körper",
+    "kanten": "Kanten",
+    "durchsicht": "Durchsicht"
+  },
+  "profil": {
+    "standard": "Standard",
+    "solidworks": "wie Onshape/SolidWorks"
+  },
+  "name": {
+    "kopie": "Kopie",
+    "ansicht": "Ansicht",
+    "schnitt": "Schnitt"
+  },
+  "chat": {
+    "titel": "Chat",
+    "zu": "zu:",
+    "n-elemente": "{n} Elemente",
+    "platzhalter": "Frage oder Auftrag …",
+    "hinweis": "Zum Beispiel: Steg 40 mm hoch",
+    "uebernehmen": "Übernehmen",
+    "verwerfen": "Verwerfen",
+    "beispiel": {
+      "frage": "Der Steg soll 40 mm hoch werden."
+    },
+    "antwort": {
+      "vorschlag": "Ich schlage diese Änderung vor. Schau dir die Vorschau an.",
+      "unklar": "Das habe ich nicht verstanden. Versuche: Steg 40 mm hoch, Kopie vom Steg oder Steg verwerfen.",
+      "erledigt": "Erledigt. Du kannst es mit Rückgängig zurücknehmen.",
+      "verworfen": "Der Vorschlag ist verworfen."
+    },
+    "vorschlag": {
+      "wert": "{element}: {feld} auf {nachher}",
+      "duplizieren": "{element} duplizieren",
+      "verwerfen": "{element} verwerfen",
+      "anlegen": "Neues Element anlegen",
+      "begruendung": "Simulierter Vorschlag; erst nach dem Übernehmen gilt er."
+    }
+  },
+  "rueck": {
+    "folgt": "{befehl} folgt in einer späteren Stufe.",
+    "angelegt": "{name} angelegt",
+    "dupliziert": "{name} angelegt",
+    "umbenannt": "Umbenannt in {name}",
+    "verworfen": "{name} verworfen; mit Rückgängig oder Zurückholen wieder da",
+    "zurueckgeholt": "{name} zurückgeholt",
+    "wert-gesetzt": "Wert an {name} geändert",
+    "umgehaengt": "{name} liegt jetzt in {ziel}",
+    "ansicht-gespeichert": "{name} gespeichert",
+    "rueckgaengig": "Letzten Schritt zurückgenommen",
+    "wiederholt": "Schritt wiederhergestellt",
+    "befund": "Befund bei {name}; die anderen Elemente bleiben bedienbar",
+    "ziel-waehlen": "Wähle in der Struktur das Ziel.",
+    "auswahl-ziel": "Wähle Elemente im Modell oder in der Struktur.",
+    "isolieren-ziel": "Wähle zuerst, was du isolieren willst."
+  },
+  "dnd": {
+    "kein-ziel": "Hier kann nichts abgelegt werden.",
+    "nur-teile": "Nur Teile und Baugruppen lassen sich umhängen, Schritte bleiben in ihrem Teil.",
+    "eigener-nachfahre": "Ein Element kann nicht in sich selbst oder in sein eigenes Teil.",
+    "kein-behaelter": "Ein Teil nimmt keine anderen Elemente auf; wähle eine Baugruppe.",
+    "schon-darin": "Das Element liegt schon dort."
+  },
+  "katalog": {
+    "titel": "Bausteinkatalog",
+    "einleitung": "Jeder Baustein ist hier so zu sehen, wie er im Prototyp wirklich gebaut ist. Wer eine neue Oberfläche baut, nimmt diese Seiten als Maßstab.",
+    "zurueck": "Zur Übersicht",
+    "ueberschrift": {
+      "regel": "Regel",
+      "bezug": "Bezug",
+      "befehle": "Befehle",
+      "tokens": "Tokens"
+    },
+    "hell": "Hell",
+    "dunkel": "Dunkel",
+    "bezug": {
+      "muster": "Muster „{name}“ aus dem Musterkatalog.",
+      "kandidat": "Kandidat „{name}“, noch kein Muster."
+    },
+    "baustein": {
+      "zustaende": "Elementzustände",
+      "auswahl": "Auswahl",
+      "struktur-zeile": "Struktur-Zeile",
+      "auge": "Auge",
+      "kontextmenue": "Kontextmenü",
+      "kontextaktionen": "Kontextaktionen",
+      "dropdown": "Dropdown",
+      "suche": "Suche",
+      "wertfeld": "Wertfeld",
+      "griff": "Griff",
+      "ziehen-ablegen": "Ziehen und Ablegen",
+      "statusanzeige": "Statusanzeige",
+      "befund": "Befund",
+      "rueckmeldung": "Rückmeldung",
+      "entscheidungskarte": "Entscheidungskarte",
+      "pfad": "Pfad",
+      "dokument-reiter": "Dokument-Reiter",
+      "ansichtsleiste": "Ansichtsleiste",
+      "fokus-tastatur": "Fokus und Tastatur"
+    },
+    "regel": {
+      "zustaende": "Ein Element zeigt jeden Zustand über einen festen Kanal, damit sich Zustände nicht verdecken. Die Kontur gehört der Auswahl, dem Überfahren und der anderen Person, und es gewinnt genau eine: ausgewählt vor anderer Person vor überfahren. Status, Sichtbarkeit und Umfeld kommen immer zusätzlich dazu. Der Akzent steht nur für Auswahl und Überfahren.",
+      "auswahl": "Es gibt genau eine Auswahl für das ganze Fenster. Struktur, Modell, Eigenschaften und Chat lesen sie und ändern sie nur über dieselben Befehle. Ein Klick wählt, Umschalt fügt hinzu, Strg schaltet um, ein Klick ins Leere hebt auf. Die Eigenschaften zeigen bei mehreren nur das Gemeinsame.",
+      "struktur-zeile": "Eine Zeile zeigt Symbol, Name, Status und das Auge, alles immer sichtbar. Die gewählte Zeile trägt die Akzentfläche, überfahren trägt die leise Fläche. Ein Doppelklick oder Enter macht das Element aktiv. Zeilen lassen sich zum Umhängen ziehen.",
+      "auge": "Das Auge ist in jeder Zeile immer sichtbar und nicht erst beim Überfahren. Es blendet nur für diese Person aus; der Export bleibt davon unberührt. Alles einblenden holt alles zurück. Die Sichtbarkeit ist Ansicht und kein Schritt im Verlauf.",
+      "kontextmenue": "Das Kontextmenü entsteht aus dem Befehlsregister und ist in Struktur und Modell für dieselbe Auswahl gleich. Es ist nach Familien gruppiert, jede Gruppe zeigt höchstens zwölf Einträge, Unwesentliches steht hinter „Mehr …“. Innerhalb einer Gruppe gilt der Rang. Kürzel stehen neben dem Eintrag.",
+      "kontextaktionen": "Die Leiste über dem Gewählten zeigt die ersten fünf Einträge des Kontextmenüs nach Rang, keine eigene Liste. Sie ersetzt die Werkzeugleiste. Zahlen stehen nie hier, sondern in den Eigenschaften.",
+      "dropdown": "Ein Dropdown der Menüleiste zeigt alle Befehle seiner Familie in Untergruppen mit je höchstens zwölf Einträgen. Der Inhalt kommt aus dem Register, nicht von Hand. Nicht passende Einträge sind grau. Das Kürzel steht neben jedem Eintrag.",
+      "suche": "Die Suche findet Befehle und Inhalte in einem Feld und öffnet mit Strg und K. Ergebnisse kommen aus dem Befehlsregister und zeigen ihr Kürzel. Pfeiltasten wählen, Enter führt aus, Esc schließt. Befehle ohne anderen Ort, etwa die Hilfe, findet man nur hier.",
+      "wertfeld": "Jede Zahl steht als Größe mit Einheit in einem Wertfeld. Man tippt den Wert, auch mit Einheit oder einer einfachen Formel, und übernimmt mit Enter; Esc stellt den alten Wert wieder her. Während des Tippens ändert sich das Modell live. Eine unlesbare Eingabe zeigt einen Befund am Feld.",
+      "griff": "Am gewählten Element steht ein Griff für seine Länge, zum Beispiel die Dicke. Beim Ziehen springt der Wert in ganzen Millimetern, die Zahl steht am Zeiger. Tippt man dabei Ziffern, gilt dieser genaue Wert. Loslassen oder Enter übernimmt, Esc bricht ab.",
+      "ziehen-ablegen": "Eine Zeile lässt sich auf eine andere ziehen, um sie umzuhängen. Ein erlaubtes Ziel trägt die Akzentfläche, ein nicht erlaubtes die Fehlerfläche, und der Grund steht in der Rückmeldezeile. Teile und Baugruppen dürfen in eine Baugruppe, Schritte bleiben in ihrem Teil. Esc bricht das Ziehen ab, dann ändert sich nichts.",
+      "statusanzeige": "Ein Status erscheint immer als Farbe, Symbol und Wort zusammen. Er steht an der Zeile in der Struktur und am Element im Modell. Rechnet, fehlerhaft und pausiert sind die drei Zustände. Ein Fehler eines Elements legt nie das ganze Modell lahm.",
+      "befund": "Ein Befund sagt, was los ist, wo es ist und wie man es behebt. Er steht im Panel Befunde, bei einer falschen Eingabe auch am Wertfeld. Die Korrektur ist ein Knopf, zum Beispiel „Letzten gültigen Wert setzen“. Alle anderen Elemente bleiben bedienbar.",
+      "rueckmeldung": "Bestätigungen und Hinweise stehen leise in der schmalen Zeile ganz unten. Es gibt keine Dialoge und keine Meldungen an anderen Orten. Der Text sagt knapp, was geschehen ist, ohne Ausrufezeichen. Verworfenes lässt sich mit Rückgängig zurückholen.",
+      "entscheidungskarte": "Jede Änderung der KI erscheint als Karte mit Vorschau, nie direkt. Die Karte nennt, was sich ändert, mit Wert vorher und nachher. Übernehmen ist die eine Hauptaktion und trägt den Akzent. Erst nach dem Übernehmen steht derselbe Befehl im Verlauf, mit der Quelle KI.",
+      "pfad": "Der Pfad zeigt, wo man gerade arbeitet: von der Wurzel bis zum aktiven Element. Ein Klick auf ein Glied geht dorthin zurück, ein Klick auf die Wurzel verlässt das aktive Element. Das letzte Glied ist hervorgehoben. Fertig und Esc führen auf demselben Weg heraus.",
+      "dokument-reiter": "Die Reiter über dem Modell sind Dokumente, nichts anderes. Es gibt keine Befehlsreiter und keine Reiter in Reitern. Der gewählte Reiter ist hervorgehoben. Arbeitet eine andere Person in einem Reiter, zeigt er ein kleines Personensymbol.",
+      "ansichtsleiste": "Die Ansichtsleiste im Modell enthält Einpassen, Auf Auswahl zoomen, Isolieren, Alles einblenden, Projektion und Darstellung. Weitere Ansichten und das Speichern einer Ansicht stehen im Menü am Rand der Leiste. Alles hier ist Ansicht und ändert nie den Graphen. Eine gespeicherte Ansicht wird ausdrücklich als Element abgelegt.",
+      "fokus-tastatur": "Jede Zone ist per Tab oder F6 erreichbar, und der Fokus ist als Ring in der Akzentfarbe sichtbar. Esc schließt immer genau eine Ebene. Es gibt höchstens fünfzehn Kürzel, und alle stehen im Befehlsregister und neben dem Befehl im Menü. Nichts ist nur mit der Maus erreichbar."
+    },
+    "zustand": {
+      "hover": "Überfahren",
+      "ausgewaehlt": "Ausgewählt",
+      "andere": "Von anderen bearbeitet",
+      "aktiv": "Aktiv",
+      "gedimmt": "Umfeld des aktiven Elements",
+      "ausgeblendet": "Ausgeblendet",
+      "fehlerhaft": "Fehlerhaft",
+      "pausiert": "Pausiert",
+      "rechnet": "Rechnet"
+    },
+    "bsp": {
+      "auswahl-struktur": "Struktur mit zwei gewählten Zeilen",
+      "auswahl-eigenschaften": "Eigenschaften mit „gemischt“",
+      "auswahl-chat": "Chat-Kontext",
+      "auge-an": "Sichtbar",
+      "auge-aus": "Ausgeblendet",
+      "kontextmenue": "Kontextmenü auf einem Schritt",
+      "ein-element": "Ein Element gewählt",
+      "mehrere": "Mehrere Elemente gewählt",
+      "suche": "Suche mit Eingabe „ver“",
+      "wert": "Wertfeld",
+      "gemischt": "Unterschiedliche Werte",
+      "fehler": "Unlesbare Eingabe",
+      "griff": "Griff mit Zahl am Zeiger",
+      "ablegen-ok": "Erlaubtes Ziel",
+      "ablegen-nein": "Nicht erlaubtes Ziel",
+      "rueckmeldung": "Leise Zeile",
+      "karte": "Vorschlag der KI (simuliert)",
+      "pfad": "Aktives Teil in einer Baugruppe",
+      "pfad-wurzel": "Nichts aktiv",
+      "reiter": "Zwei Dokumente",
+      "ansichtsleiste": "Ansichtsleiste",
+      "fokus": "Zeile mit Fokusring",
+      "kuerzel": "Alle Kürzel"
+    }
+  },
+  "befehl": {
+    "element": {
+      "anlegen": "Neu anlegen",
+      "duplizieren": "Duplizieren",
+      "umbenennen": "Umbenennen",
+      "verwerfen": "Verwerfen",
+      "zurueckholen": "Zurückholen",
+      "wert-setzen": "Wert setzen",
+      "parameter-anlegen": "Parameter anlegen",
+      "pausieren": "Berechnung pausieren",
+      "fortsetzen": "Berechnung fortsetzen",
+      "ausblenden": "Ausblenden",
+      "einblenden": "Einblenden",
+      "umhaengen": "Umhängen (Ziel wählen)",
+      "aktivieren": "Aktivieren",
+      "verlassen": "Aktives Element verlassen"
+    },
+    "dokument": {
+      "oeffnen": "Öffnen",
+      "schliessen": "Dokument schließen",
+      "wechseln": "Dokument wechseln"
+    },
+    "wurzel": {
+      "setzen": "Wurzel der Struktur wählen"
+    },
+    "einstellungen": {
+      "oeffnen": "Einstellungen öffnen"
+    },
+    "projekt": {
+      "teilen": "Projekt teilen",
+      "einladen": "Person einladen"
+    },
+    "bearbeiten": {
+      "rueckgaengig": "Rückgängig",
+      "wiederholen": "Wiederholen",
+      "einfuegen": "Einfügen"
+    },
+    "auswahl": {
+      "duplizieren": "Auswahl duplizieren",
+      "verwerfen": "Auswahl verwerfen",
+      "alles": "Alles auswählen",
+      "aufheben": "Auswahl aufheben",
+      "umkehren": "Auswahl umkehren",
+      "setzen": "Auswählen",
+      "hinzufuegen": "Zur Auswahl hinzufügen",
+      "umschalten": "Auswahl umschalten",
+      "aehnliche": "Ähnliche auswählen",
+      "kantenschleife": "Kantenschleife auswählen",
+      "ausblenden": "Auswahl ausblenden"
+    },
+    "ansicht": {
+      "einpassen": "Alles einpassen",
+      "auf-auswahl": "Auf Auswahl zoomen",
+      "projektion": "Perspektive oder Orthogonal",
+      "vorne": "Ansicht von vorne",
+      "oben": "Ansicht von oben",
+      "isometrisch": "Isometrische Ansicht",
+      "schnitt": "Schnittansicht",
+      "isolieren": "Isolieren",
+      "alles-einblenden": "Alles einblenden",
+      "verworfenes": "Verworfenes zeigen",
+      "ergebnis": "Ansicht Ergebnis",
+      "alle-entwuerfe": "Ansicht Alle Entwürfe",
+      "speichern": "Ansicht speichern",
+      "anwenden": "Gespeicherte Ansicht anwenden"
+    },
+    "darstellung": {
+      "wechseln": "Darstellung wechseln"
+    },
+    "sichtbarkeit": {
+      "nur-dieses": "Nur dieses zeigen",
+      "farbe-setzen": "Anzeigefarbe setzen"
+    },
+    "fenster": {
+      "struktur": "Struktur ein- oder ausblenden",
+      "panel": "Panel ein- oder ausblenden",
+      "rechts": "Rechte Seitenleiste ein- oder ausblenden",
+      "naechste-zone": "Nächste Zone",
+      "teilen": "Fenster teilen (zwei Teile nebeneinander)"
+    },
+    "suche": {
+      "oeffnen": "Befehlssuche öffnen"
+    },
+    "thema": {
+      "umschalten": "Hell oder Dunkel"
+    },
+    "einstellung": {
+      "navigationsprofil": "Navigationsprofil wählen"
+    },
+    "katalog": {
+      "oeffnen": "Katalog öffnen"
+    },
+    "hilfe": {
+      "befehle-zeigen": "Alle Befehle zeigen",
+      "einfuehrung": "Einführung starten"
+    },
+    "baugruppe": {
+      "anlegen": "Baugruppe anlegen",
+      "instanz-anlegen": "Instanz einer Komponente anlegen",
+      "variante-waehlen": "Variante wählen",
+      "kollision-pruefen": "Kollision prüfen",
+      "fixieren": "Teil fixieren",
+      "komponente-anlegen": "Komponente aus Teil anlegen"
+    },
+    "verbindung": {
+      "anlegen": "Verbindung anlegen",
+      "verbindungspunkt-setzen": "Verbindungspunkt setzen",
+      "bewegen": "Innerhalb der Freiheitsgrade bewegen"
+    },
+    "simulation": {
+      "lager": "Lager setzen (simuliert)",
+      "kraft": "Kraft setzen (simuliert)",
+      "ergebnis": "Ergebnis zeigen (simuliert)"
+    },
+    "chat": {
+      "senden": "Nachricht senden",
+      "uebernehmen": "Vorschlag übernehmen",
+      "verwerfen": "Vorschlag verwerfen"
+    },
+    "task": {
+      "wechseln": "Aufgabe wechseln"
+    }
+  }
+}

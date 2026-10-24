@@ -1,0 +1,427 @@
+{
+  "zone": {
+    "menueleiste": "Menu bar",
+    "taskleiste": "Task bar",
+    "struktur": "Structure",
+    "modell": "Model",
+    "eigenschaften": "Properties",
+    "chat": "Chat",
+    "panel": "Panel",
+    "rueckmeldung": "Feedback"
+  },
+  "menue": {
+    "start": "Start",
+    "folgt": "soon",
+    "mehr": "More …"
+  },
+  "task": {
+    "modellieren": "Modeling",
+    "simulation": "Simulation (simulated)",
+    "shop": "Shop (soon)"
+  },
+  "simuliert": "simulated",
+  "suche": {
+    "platzhalter": "Search commands and content",
+    "befehle": "Commands",
+    "inhalte": "Content",
+    "nichts": "Nothing found"
+  },
+  "familie": {
+    "Datei": "File",
+    "Bearbeiten": "Edit",
+    "Auswahl": "Selection",
+    "Ansicht": "View",
+    "Sichtbarkeit": "Visibility",
+    "Ansicht speichern": "Saved views",
+    "Fenster": "Window",
+    "Hilfe": "Help",
+    "Baugruppe": "Assembly",
+    "Simulation": "Simulation",
+    "Chat": "Chat"
+  },
+  "untergruppe": {
+    "Neu": "New",
+    "Öffnen": "Open",
+    "Projekt": "Project",
+    "Verlauf": "History",
+    "Element": "Element",
+    "Werte": "Values",
+    "Berechnung": "Calculation",
+    "Auswahl": "Selection",
+    "Befehle": "Set selection",
+    "Regeln": "By rule",
+    "Zonen": "Zones",
+    "Suche": "Search",
+    "Fenster": "Window",
+    "Einstellungen": "Settings",
+    "Hierarchie": "Hierarchy",
+    "Verbinden": "Connect",
+    "Studie": "Study",
+    "Blick": "View angle",
+    "Darstellung": "Display",
+    "Stand": "State",
+    "Sichtbarkeit": "Visibility",
+    "Gespeichert": "Saved",
+    "Hilfe": "Help",
+    "Chat": "Chat",
+    "Weitere": "More"
+  },
+  "struktur": {
+    "titel": "Structure",
+    "wurzel": "Root",
+    "leer": "Nothing here yet. Create your first part.",
+    "leer-simulation": "No study yet. Simulation is a placeholder and simulated.",
+    "verworfen": "discarded"
+  },
+  "modell": {
+    "leer": "The model is empty."
+  },
+  "aktiv": {
+    "fertig": "Done"
+  },
+  "pfad": {
+    "titel": "Path"
+  },
+  "ansichtsleiste": {
+    "titel": "View",
+    "mehr": "More views"
+  },
+  "anwesenheit": {
+    "person": "Test person B",
+    "kuerzel": "B"
+  },
+  "befund": {
+    "zustand-unbekannt": "State unknown",
+    "korrektur": "Set last valid value",
+    "bohrung-zu-gross": "The diameter {wert} is too large; below {grenze} the hole is valid.",
+    "steg-ohne-hoehe": "The rib needs a height above {grenze}."
+  },
+  "status": {
+    "fehlerhaft": "faulty",
+    "pausiert": "paused",
+    "rechnet": "calculating"
+  },
+  "panel": {
+    "befunde": "Findings",
+    "keine-befunde": "No findings. Everything is up to date."
+  },
+  "wert": {
+    "fehler": {
+      "nicht-lesbar": "Value not readable. Example: 12 mm",
+      "dimension": "Wrong unit for this field",
+      "teilung": "Division by zero is not possible"
+    }
+  },
+  "eigenschaften": {
+    "gemischt": "mixed",
+    "n-elemente": "{n} elements",
+    "umbenennen-hinweis": "Double-click to rename"
+  },
+  "gruppe": {
+    "masse": "Dimensions",
+    "material": "Material",
+    "ergebnis": "Result",
+    "ansicht": "View"
+  },
+  "feld": {
+    "laenge": "Length",
+    "breite": "Width",
+    "dicke": "Thickness",
+    "hoehe": "Height",
+    "eckradius": "Corner radius",
+    "durchmesser": "Diameter",
+    "wand": "Wall",
+    "material": "Material",
+    "dichte": "Density",
+    "abmessungen": "Size",
+    "volumen": "Volume",
+    "masse-wert": "Mass",
+    "projektion": "Projection",
+    "darstellung": "Display"
+  },
+  "projektion": {
+    "orthogonal": "orthographic",
+    "perspektivisch": "perspective"
+  },
+  "darstellung": {
+    "koerper": "Solid",
+    "kanten": "Edges",
+    "durchsicht": "See-through"
+  },
+  "profil": {
+    "standard": "Default",
+    "solidworks": "like Onshape/SolidWorks"
+  },
+  "name": {
+    "kopie": "copy",
+    "ansicht": "View",
+    "schnitt": "Section"
+  },
+  "chat": {
+    "titel": "Chat",
+    "zu": "to:",
+    "n-elemente": "{n} elements",
+    "platzhalter": "Question or task …",
+    "hinweis": "For example: rib 40 mm high",
+    "uebernehmen": "Accept",
+    "verwerfen": "Discard",
+    "beispiel": {
+      "frage": "The rib should become 40 mm high."
+    },
+    "antwort": {
+      "vorschlag": "I propose this change. Have a look at the preview.",
+      "unklar": "I did not understand. Try: rib 40 mm high, copy of the rib or discard the rib.",
+      "erledigt": "Done. You can take it back with undo.",
+      "verworfen": "The proposal is discarded."
+    },
+    "vorschlag": {
+      "wert": "{element}: {feld} to {nachher}",
+      "duplizieren": "Duplicate {element}",
+      "verwerfen": "Discard {element}",
+      "anlegen": "Create a new element",
+      "begruendung": "Simulated proposal; it applies only after you accept."
+    }
+  },
+  "rueck": {
+    "folgt": "{befehl} comes in a later stage.",
+    "angelegt": "{name} created",
+    "dupliziert": "{name} created",
+    "umbenannt": "Renamed to {name}",
+    "verworfen": "{name} discarded; bring it back with undo or restore",
+    "zurueckgeholt": "{name} restored",
+    "wert-gesetzt": "Value of {name} changed",
+    "umgehaengt": "{name} now sits in {ziel}",
+    "ansicht-gespeichert": "{name} saved",
+    "rueckgaengig": "Last step undone",
+    "wiederholt": "Step restored",
+    "befund": "Finding at {name}; the other elements stay usable",
+    "ziel-waehlen": "Choose the target in the structure.",
+    "auswahl-ziel": "Pick elements in the model or the structure.",
+    "isolieren-ziel": "Select what you want to isolate first."
+  },
+  "dnd": {
+    "kein-ziel": "Nothing can be dropped here.",
+    "nur-teile": "Only parts and assemblies can be moved; steps stay in their part.",
+    "eigener-nachfahre": "An element cannot go into itself or into its own part.",
+    "kein-behaelter": "A part cannot hold other elements; choose an assembly.",
+    "schon-darin": "The element is already there."
+  },
+  "katalog": {
+    "titel": "Component catalog",
+    "einleitung": "Each component is shown here exactly as it is built in the prototype. Whoever builds a new screen uses these pages as the yardstick.",
+    "zurueck": "Back to overview",
+    "ueberschrift": {
+      "regel": "Rule",
+      "bezug": "Reference",
+      "befehle": "Commands",
+      "tokens": "Tokens"
+    },
+    "hell": "Light",
+    "dunkel": "Dark",
+    "bezug": {
+      "muster": "Pattern “{name}” from the pattern catalog.",
+      "kandidat": "Candidate “{name}”, not yet a pattern."
+    },
+    "baustein": {
+      "zustaende": "Element states",
+      "auswahl": "Selection",
+      "struktur-zeile": "Structure row",
+      "auge": "Eye",
+      "kontextmenue": "Context menu",
+      "kontextaktionen": "Context actions",
+      "dropdown": "Dropdown",
+      "suche": "Search",
+      "wertfeld": "Value field",
+      "griff": "Handle",
+      "ziehen-ablegen": "Drag and drop",
+      "statusanzeige": "Status display",
+      "befund": "Finding",
+      "rueckmeldung": "Feedback",
+      "entscheidungskarte": "Decision card",
+      "pfad": "Path",
+      "dokument-reiter": "Document tab",
+      "ansichtsleiste": "View bar",
+      "fokus-tastatur": "Focus and keyboard"
+    },
+    "regel": {
+      "zustaende": "An element shows every state through a fixed channel so states never hide each other. The outline belongs to selection, hovering and another person, and exactly one wins: selected before other person before hovered. Status, visibility and surroundings always come on top. The accent stands only for selection and hovering.",
+      "auswahl": "There is exactly one selection for the whole window. Structure, model, properties and chat read it and change it only through the same commands. A click selects, Shift adds, Ctrl toggles, a click into empty space clears. With several elements the properties show only what they share.",
+      "struktur-zeile": "A row shows icon, name, status and the eye, all always visible. The selected row carries the accent surface, hovering carries the quiet surface. A double-click or Enter makes the element active. Rows can be dragged to move them.",
+      "auge": "The eye is always visible in every row, not only on hover. It hides only for this person; export stays untouched. Show everything brings everything back. Visibility is view and not a step in the history.",
+      "kontextmenue": "The context menu is generated from the command register and is the same in structure and model for the same selection. It is grouped by family, each group shows at most twelve entries, minor ones sit behind “More …”. Within a group the rank applies. Shortcuts stand next to the entry.",
+      "kontextaktionen": "The bar above the selection shows the first five entries of the context menu by rank, not a list of its own. It replaces the toolbar. Numbers never appear here but in the properties.",
+      "dropdown": "A dropdown of the menu bar shows all commands of its family in subgroups with at most twelve entries each. The content comes from the register, not by hand. Entries that do not fit are grey. The shortcut stands next to each entry.",
+      "suche": "Search finds commands and content in one field and opens with Ctrl and K. Results come from the command register and show their shortcut. Arrow keys choose, Enter runs, Esc closes. Commands without another place, such as help, are found only here.",
+      "wertfeld": "Every number stands as a quantity with a unit in a value field. You type the value, also with a unit or a simple formula, and accept with Enter; Esc restores the old value. While typing the model changes live. An unreadable entry shows a finding at the field.",
+      "griff": "On the selected element there is a handle for its length, for example the thickness. While dragging the value jumps in whole millimetres, the number stands at the pointer. Typing digits then sets that exact value. Releasing or Enter accepts, Esc cancels.",
+      "ziehen-ablegen": "A row can be dragged onto another to move it. A permitted target carries the accent surface, a forbidden one the error surface, and the reason appears in the feedback line. Parts and assemblies may go into an assembly, steps stay in their part. Esc cancels the drag, then nothing changes.",
+      "statusanzeige": "A status always appears as colour, icon and word together. It stands at the row in the structure and at the element in the model. Calculating, faulty and paused are the three states. A fault in one element never paralyses the whole model.",
+      "befund": "A finding says what is wrong, where, and how to fix it. It stands in the findings panel, and for a wrong entry also at the value field. The correction is a button, for example “Set last valid value”. All other elements stay usable.",
+      "rueckmeldung": "Confirmations and hints stand quietly in the narrow line at the very bottom. There are no dialogs and no messages anywhere else. The text says briefly what happened, without exclamation marks. Discarded items can be brought back with undo.",
+      "entscheidungskarte": "Every change by the AI appears as a card with a preview, never directly. The card says what changes, with the value before and after. Accept is the one main action and carries the accent. Only after accepting does the same command appear in the history, with the source AI.",
+      "pfad": "The path shows where you are working: from the root to the active element. A click on a link goes back there, a click on the root leaves the active element. The last link is emphasised. Done and Esc lead out the same way.",
+      "dokument-reiter": "The tabs above the model are documents, nothing else. There are no command tabs and no tabs within tabs. The chosen tab is emphasised. If another person works in a tab, it shows a small person icon.",
+      "ansichtsleiste": "The view bar in the model contains fit, zoom to selection, isolate, show everything, projection and display. More views and saving a view are in the menu at the edge of the bar. Everything here is view and never changes the graph. A saved view is stored explicitly as an element.",
+      "fokus-tastatur": "Every zone is reachable by Tab or F6, and focus is visible as a ring in the accent colour. Esc always closes exactly one level. There are at most fifteen shortcuts, and all stand in the command register and next to the command in the menu. Nothing is reachable by mouse alone."
+    },
+    "zustand": {
+      "hover": "Hovered",
+      "ausgewaehlt": "Selected",
+      "andere": "Edited by others",
+      "aktiv": "Active",
+      "gedimmt": "Surroundings of the active element",
+      "ausgeblendet": "Hidden",
+      "fehlerhaft": "Faulty",
+      "pausiert": "Paused",
+      "rechnet": "Calculating"
+    },
+    "bsp": {
+      "auswahl-struktur": "Structure with two selected rows",
+      "auswahl-eigenschaften": "Properties with “mixed”",
+      "auswahl-chat": "Chat context",
+      "auge-an": "Visible",
+      "auge-aus": "Hidden",
+      "kontextmenue": "Context menu on a step",
+      "ein-element": "One element selected",
+      "mehrere": "Several elements selected",
+      "suche": "Search with input “ver”",
+      "wert": "Value field",
+      "gemischt": "Different values",
+      "fehler": "Unreadable entry",
+      "griff": "Handle with number at the pointer",
+      "ablegen-ok": "Permitted target",
+      "ablegen-nein": "Forbidden target",
+      "rueckmeldung": "Quiet line",
+      "karte": "AI proposal (simulated)",
+      "pfad": "Active part in an assembly",
+      "pfad-wurzel": "Nothing active",
+      "reiter": "Two documents",
+      "ansichtsleiste": "View bar",
+      "fokus": "Row with focus ring",
+      "kuerzel": "All shortcuts"
+    }
+  },
+  "befehl": {
+    "element": {
+      "anlegen": "Create new",
+      "duplizieren": "Duplicate",
+      "umbenennen": "Rename",
+      "verwerfen": "Discard",
+      "zurueckholen": "Restore",
+      "wert-setzen": "Set value",
+      "parameter-anlegen": "Create parameter",
+      "pausieren": "Pause calculation",
+      "fortsetzen": "Resume calculation",
+      "ausblenden": "Hide",
+      "einblenden": "Show",
+      "umhaengen": "Move (choose target)",
+      "aktivieren": "Activate",
+      "verlassen": "Leave active element"
+    },
+    "dokument": {
+      "oeffnen": "Open",
+      "schliessen": "Close document",
+      "wechseln": "Switch document"
+    },
+    "wurzel": {
+      "setzen": "Choose root of the structure"
+    },
+    "einstellungen": {
+      "oeffnen": "Open settings"
+    },
+    "projekt": {
+      "teilen": "Share project",
+      "einladen": "Invite person"
+    },
+    "bearbeiten": {
+      "rueckgaengig": "Undo",
+      "wiederholen": "Redo",
+      "einfuegen": "Paste"
+    },
+    "auswahl": {
+      "duplizieren": "Duplicate selection",
+      "verwerfen": "Discard selection",
+      "alles": "Select all",
+      "aufheben": "Clear selection",
+      "umkehren": "Invert selection",
+      "setzen": "Select",
+      "hinzufuegen": "Add to selection",
+      "umschalten": "Toggle selection",
+      "aehnliche": "Select similar",
+      "kantenschleife": "Select edge loop",
+      "ausblenden": "Hide selection"
+    },
+    "ansicht": {
+      "einpassen": "Fit all",
+      "auf-auswahl": "Zoom to selection",
+      "projektion": "Perspective or orthographic",
+      "vorne": "Front view",
+      "oben": "Top view",
+      "isometrisch": "Isometric view",
+      "schnitt": "Section view",
+      "isolieren": "Isolate",
+      "alles-einblenden": "Show everything",
+      "verworfenes": "Show discarded",
+      "ergebnis": "Result view",
+      "alle-entwuerfe": "All drafts view",
+      "speichern": "Save view",
+      "anwenden": "Apply saved view"
+    },
+    "darstellung": {
+      "wechseln": "Change display"
+    },
+    "sichtbarkeit": {
+      "nur-dieses": "Show only this",
+      "farbe-setzen": "Set display color"
+    },
+    "fenster": {
+      "struktur": "Show or hide structure",
+      "panel": "Show or hide panel",
+      "rechts": "Show or hide right sidebar",
+      "naechste-zone": "Next zone",
+      "teilen": "Split window"
+    },
+    "suche": {
+      "oeffnen": "Open command search"
+    },
+    "thema": {
+      "umschalten": "Light or dark"
+    },
+    "einstellung": {
+      "navigationsprofil": "Choose navigation profile"
+    },
+    "katalog": {
+      "oeffnen": "Open catalog"
+    },
+    "hilfe": {
+      "befehle-zeigen": "Show all commands",
+      "einfuehrung": "Start introduction"
+    },
+    "baugruppe": {
+      "anlegen": "Create assembly",
+      "instanz-anlegen": "Create instance of a component",
+      "variante-waehlen": "Choose variant",
+      "kollision-pruefen": "Check collision",
+      "fixieren": "Fix part",
+      "komponente-anlegen": "Create component from part"
+    },
+    "verbindung": {
+      "anlegen": "Create connection",
+      "verbindungspunkt-setzen": "Set connection point",
+      "bewegen": "Move within degrees of freedom"
+    },
+    "simulation": {
+      "lager": "Add support",
+      "kraft": "Add force",
+      "ergebnis": "Show result"
+    },
+    "chat": {
+      "senden": "Send message",
+      "uebernehmen": "Accept proposal",
+      "verwerfen": "Reject proposal"
+    },
+    "task": {
+      "wechseln": "Switch task"
+    }
+  }
+}
