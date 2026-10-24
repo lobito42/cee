@@ -1048,3 +1048,18 @@ h3 {
   border-radius: var(--radius-gross);
   min-height: 160px;
 }
+
+/* Das Modell liegt unter der Leinwand: der Fokusring wird als Rahmen über die Überlagerung gelegt. */
+[data-zone='modell']:focus-visible,
+[data-zone='modell'][data-fokus] {
+  outline: none;
+}
+
+[data-zone='modell']:focus-visible > .chrome::after,
+[data-zone='modell'][data-fokus] > .chrome::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--farbe-akzent);
+  pointer-events: none;
+}

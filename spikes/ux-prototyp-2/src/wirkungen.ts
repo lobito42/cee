@@ -390,10 +390,10 @@ export function wirkungenRegistrieren(app: App): void {
   });
   r('fenster.naechste-zone', () => app.naechsteZone());
   r('suche.oeffnen', () => {
-    app.suche = { offen: true, text: '', index: 0, alle: false };
+    app.suche = { offen: true, text: '', index: 0, alle: false, fokussiert: false };
   });
   r('hilfe.befehle-zeigen', () => {
-    app.suche = { offen: true, text: '', index: 0, alle: true };
+    app.suche = { offen: true, text: '', index: 0, alle: true, fokussiert: false };
   });
   r('thema.umschalten', () => {
     app.thema = app.thema === 'hell' ? 'dunkel' : 'hell';

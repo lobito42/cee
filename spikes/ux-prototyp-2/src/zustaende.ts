@@ -161,7 +161,7 @@ export function anwenden(name: string, app: App): { gezeigt: string; danach?: ()
       break;
     }
     case 'suche':
-      app.suche = { offen: true, text: 'ver', index: 0, alle: false };
+      app.suche = { offen: true, text: 'ver', index: 0, alle: false, fokussiert: false };
       break;
     case 'fokus':
       danach = () => {

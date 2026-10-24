@@ -186,6 +186,8 @@ async function start(): Promise<void> {
           id: b.id,
           kuerzel: b.kuerzel ?? null,
           titel: b.titel,
+          titel_text: app.t(b.titel),
+          rang: b.rang,
           familie: b.familie,
         })),
       teil: () => {

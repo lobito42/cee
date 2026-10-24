@@ -4,7 +4,7 @@ import type { Fenster } from './fenster';
 import { entscheideNavigation, erkenneWheel } from './eingabe/navigation';
 import { lesen } from './wert/wertfeld';
 import { kontextmenue, type Auswahlart } from './modell/register';
-import { wert } from './modell/element';
+import { pfadZu, wert } from './modell/element';
 import { griffRichtung } from './griffe';
 
 const SCHWELLE_PX = 4;
@@ -190,7 +190,9 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
       const id = t ? app.zielFuerTreffer(t.elementId) : null;
       if (id) {
         const kante = app.kanteBei(id, e.clientX, e.clientY);
-        const schon = app.auswahl.some((a) => a.element_id === id);
+        // Rechtsklick auf etwas im bereits Gewählten (auch in einer gewählten Baugruppe) behält die Auswahl.
+        const pfad = pfadZu(app.dokument(), t?.elementId ?? id).map((x) => x.id);
+        const schon = app.auswahl.some((a) => pfad.includes(a.element_id));
         if (!schon || kante) app.waehle(id, 'setzen', kante ?? undefined);
       } else app.setzeAuswahl([]);
       kontextOeffnen(e.clientX, e.clientY);

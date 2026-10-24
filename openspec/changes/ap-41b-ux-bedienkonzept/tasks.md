@@ -34,20 +34,20 @@ einem klickbaren Stand und 3–6 Schritten unter „Klick-Anleitung“ im PR (de
   Zustände `aktiv`, `isoliert` – Prüfung: `pruefen auswahl`; AK-5
 - [x] 2.4 Eigenschaften der Auswahl (eins, mehrere mit „gemischt“, keins = aktives Element), Wertfelder live,
   Enter, Esc; Chat-Kontext „zu: …“ – Prüfung: Vitest und `pruefen auswahl`; AK-5
-- [ ] 2.5 Vorschau bauen, Klick-Anleitung (Grundplatte im Modell und in der Struktur wählen, Umschalt-Klick, ins
+- [x] 2.5 Vorschau bauen, Klick-Anleitung (Grundplatte im Modell und in der Struktur wählen, Umschalt-Klick, ins
   Leere klicken, Gehäuse doppelklicken) – Prüfung: `bash P/build.sh`
 
 ## 3. Anlegen, Verwerfen, Kontextmenü, Tastatur
 
-- [ ] 3.1 Befehle `element.anlegen`, `umbenennen`, `duplizieren`, `verwerfen`, `zurueckholen`,
+- [x] 3.1 Befehle `element.anlegen`, `umbenennen`, `duplizieren`, `verwerfen`, `zurueckholen`,
   `ansicht.verworfenes`; Protokoll mit `weg`; ein Verlauf je Dokument – Prüfung: `pruefen crud`; AK-6
-- [ ] 3.2 Kontextmenü aus dem Register (Rechtsklick, Shift+F10) gleich in Struktur und Modell, Gruppen ≤ 12,
+- [x] 3.2 Kontextmenü aus dem Register (Rechtsklick, Shift+F10) gleich in Struktur und Modell, Gruppen ≤ 12,
   „Mehr …“; Kontextaktionen als erste ≤ 5; jeder Beta-Befehl aus
   `tests/golden/ap-41b-ux-bedienkonzept/befehlsinventar.json` als Eintrag im Register mit Familie – Prüfung:
   `pruefen kontextmenue`; AK-7
-- [ ] 3.3 Tastatur und Fokus: Tab/F6-Reihenfolge, Fokusring, Esc-Kette, Enter-Regeln, Kürzel nur aus dem Register
+- [x] 3.3 Tastatur und Fokus: Tab/F6-Reihenfolge, Fokusring, Esc-Kette, Enter-Regeln, Kürzel nur aus dem Register
   – Prüfung: `pruefen tastatur`; AK-12
-- [ ] 3.4 Vorschau bauen, Klick-Anleitung (Steg kopieren, umbenennen, verwerfen, zurückholen; Rechtsklick in
+- [x] 3.4 Vorschau bauen, Klick-Anleitung (Steg kopieren, umbenennen, verwerfen, zurückholen; Rechtsklick in
   Struktur und Modell vergleichen; Mod+Z) – Prüfung: `bash P/build.sh`
 
 ## 4. Modell: Navigation, Ziehen, Sichtbarkeit

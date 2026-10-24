@@ -139,6 +139,32 @@ export class Fenster {
     this.zeichneSzene();
     this.chromeZeichnen();
     this.ueberlagerung();
+    this.fokusSetzen();
+  }
+
+  /** Fokus dorthin, wo die Eingabe weitergeht: Suchfeld, Namensfeld, erstes Wertfeld. */
+  private fokusSetzen(): void {
+    const app = this.app;
+    const aktiv = document.activeElement;
+    if (app.suche.offen) {
+      const f = this.rahmen.querySelector<HTMLInputElement>('[data-suchfeld]');
+      if (f && aktiv !== f && !app.suche.fokussiert) {
+        app.suche.fokussiert = true;
+        f.focus();
+      }
+    } else app.suche.fokussiert = false;
+    if (app.umbenennen) {
+      const f = this.rahmen.querySelector<HTMLInputElement>('[data-umbenennen]');
+      if (f && aktiv !== f && !app.umbenennenFokussiert) {
+        app.umbenennenFokussiert = true;
+        f.focus();
+        f.select();
+      }
+    } else app.umbenennenFokussiert = false;
+    if (app.fokusEigenschaften) {
+      app.fokusEigenschaften = false;
+      this.rahmen.querySelector<HTMLInputElement>('[data-feld-eingabe]')?.focus();
+    }
   }
 
   private zeichneSzene(): void {
@@ -159,7 +185,6 @@ export class Fenster {
       geister,
     ]);
     if (signatur === this.zeichenSignatur) return;
-    const erstes = this.zeichenSignatur === '';
     this.zeichenSignatur = signatur;
     this.szene.zeichne({
       koerper: erg.koerper,
@@ -169,7 +194,10 @@ export class Fenster {
       blass,
       geister,
     });
-    if (erstes) this.einpassenSofort();
+    if (app.einpassenNoetig) {
+      app.einpassenNoetig = false;
+      this.einpassenSofort();
+    }
   }
 
   /** Beim ersten Zeichnen eines Dokuments: ganzes Teil einpassen, ohne Übergang. */

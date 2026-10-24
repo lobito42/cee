@@ -126,8 +126,9 @@ export class App {
     gruppen: KontextGruppe[];
     mehr: Set<string>;
   } | null = null;
-  suche = { offen: false, text: '', index: 0, alle: false };
+  suche = { offen: false, text: '', index: 0, alle: false, fokussiert: false };
   umbenennen: { id: string; weg: Weg } | null = null;
+  umbenennenFokussiert = false;
   umhaengenModus: string | null = null;
   fokusZone: string | null = null;
   rueckmeldung: { schluessel: string; werte?: Werte } | null = null;
