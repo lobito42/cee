@@ -1,0 +1,30 @@
+[package]
+name = "cee-graph-wasm"
+version = "0.0.1"
+description = "WebAssembly-Bindung für Node und Browser (wasm-bindgen): ruft nur die Fassade cee-bind auf (ADR-029)"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+publish = false
+
+[lib]
+name = "cee_graph_wasm"
+crate-type = ["cdylib", "rlib"]
+# Geprüft wird die Bindung über `npm run kern:bindctl` (Node) und `kern:bindctl-browser`; die Logik liegt in
+# cee-bind und hat dort ihre Tests.
+test = false
+doctest = false
+
+[lints]
+workspace = true
+
+[features]
+pkg-beispiel = ["cee-bind/pkg-beispiel"]
+test-hooks = ["cee-bind/test-hooks"]
+
+[dependencies]
+# Lizenzen (ADR-034): cee-bind MPL-2.0, wasm-bindgen und js-sys MIT/Apache-2.0.
+# Die Version von wasm-bindgen-cli muss exakt passen; client/tools/kern-build.mjs liest sie aus Cargo.lock.
+cee-bind = { path = "../bind" }
+wasm-bindgen = "=0.2.129"
+js-sys = "0.3"

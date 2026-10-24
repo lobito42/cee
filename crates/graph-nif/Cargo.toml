@@ -1,0 +1,28 @@
+[package]
+name = "cee-graph-nif"
+version = "0.0.1"
+description = "Rustler-NIF für den Server (CeeServer.Graph): ruft nur die Fassade cee-bind auf (ADR-029, ADR-030)"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+publish = false
+
+[lib]
+name = "cee_graph_nif"
+crate-type = ["cdylib"]
+# Die Symbole der BEAM gibt es erst beim Laden; ein Test-Binary ließe sich nicht linken. Getestet wird die
+# Fassade in cee-bind und die Bindung über `mix test` im Server.
+test = false
+doctest = false
+
+[lints]
+workspace = true
+
+[features]
+pkg-beispiel = ["cee-bind/pkg-beispiel"]
+test-hooks = ["cee-bind/test-hooks"]
+
+[dependencies]
+# Lizenzen (ADR-034): cee-bind MPL-2.0, rustler MIT/Apache-2.0
+cee-bind = { path = "../bind" }
+rustler = "0.39"

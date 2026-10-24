@@ -1,0 +1,27 @@
+[project]
+name = "cee-sdk"
+version = "0.0.1"
+description = "Python-SDK für CEE: Dokument, Größen und Lesezugriff auf Elemente über den Rust-Kern (PyO3)"
+readme = "README.md"
+requires-python = ">=3.11"
+# Python-Code unter Apache-2.0 (ADR-034); die eingebaute Erweiterung aus crates/graph-py steht unter MPL-2.0
+# (dateiweise), daher gilt für das Wheel beides (offene Frage 1 im Proposal ap-40).
+license = "Apache-2.0 AND MPL-2.0"
+classifiers = ["Programming Language :: Rust", "Programming Language :: Python :: 3"]
+
+[dependency-groups]
+# Entwicklung: `uv run --package cee-sdk maturin develop --release -m crates/graph-py/Cargo.toml`
+dev = ["maturin>=1.9,<2", "pytest>=8"]
+
+[build-system]
+# maturin (MIT/Apache-2.0), nur zum Bauen
+requires = ["maturin>=1.9,<2"]
+build-backend = "maturin"
+
+[tool.maturin]
+manifest-path = "../../crates/graph-py/Cargo.toml"
+module-name = "cee_sdk._graph"
+python-source = "."
+python-packages = ["cee_sdk"]
+include = [{ path = "cee_sdk/py.typed", format = "wheel" }]
+exclude = ["tools/**", "tests/**"]
