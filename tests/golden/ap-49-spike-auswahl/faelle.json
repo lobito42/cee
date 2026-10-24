@@ -1,0 +1,1073 @@
+{
+  "quelle": "abgeleitet mit ableiten.py aus parts/examples/halter.py und design.md",
+  "toleranz": {
+    "schwerpunkt_mm": 0.001,
+    "richtung_rad": 1e-06
+  },
+  "parameter_basis": {
+    "breite": 80.0,
+    "tiefe": 50.0,
+    "dicke": 8.0,
+    "steg_hoehe": 50.0,
+    "bohrung_d": 6.6,
+    "bohrung_abstand": 40.0
+  },
+  "saetze": {
+    "P0": {
+      "dicke": 8.0,
+      "breite": 80.0
+    },
+    "P1": {
+      "dicke": 10.0,
+      "breite": 80.0
+    },
+    "P2": {
+      "dicke": 8.0,
+      "breite": 90.0
+    },
+    "P3": {
+      "dicke": 10.0,
+      "breite": 90.0
+    }
+  },
+  "faelle": [
+    {
+      "regel": "R1",
+      "satz": "P0",
+      "ziele": [
+        {
+          "art": "flaeche",
+          "geometrie": "zylinder",
+          "schwerpunkt_mm": [
+            -20.0,
+            4.0,
+            4.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "art": "flaeche",
+          "geometrie": "zylinder",
+          "schwerpunkt_mm": [
+            20.0,
+            4.0,
+            4.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "regel": "R1",
+      "satz": "P1",
+      "ziele": [
+        {
+          "art": "flaeche",
+          "geometrie": "zylinder",
+          "schwerpunkt_mm": [
+            -20.0,
+            5.0,
+            5.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "art": "flaeche",
+          "geometrie": "zylinder",
+          "schwerpunkt_mm": [
+            20.0,
+            5.0,
+            5.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "regel": "R1",
+      "satz": "P2",
+      "ziele": [
+        {
+          "art": "flaeche",
+          "geometrie": "zylinder",
+          "schwerpunkt_mm": [
+            -20.0,
+            4.0,
+            4.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "art": "flaeche",
+          "geometrie": "zylinder",
+          "schwerpunkt_mm": [
+            20.0,
+            4.0,
+            4.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "regel": "R1",
+      "satz": "P3",
+      "ziele": [
+        {
+          "art": "flaeche",
+          "geometrie": "zylinder",
+          "schwerpunkt_mm": [
+            -20.0,
+            5.0,
+            5.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "art": "flaeche",
+          "geometrie": "zylinder",
+          "schwerpunkt_mm": [
+            20.0,
+            5.0,
+            5.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "regel": "R2",
+      "satz": "P0",
+      "ziele": [
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            -40.0,
+            -21.0,
+            58.0
+          ],
+          "richtung": [
+            0.0,
+            -1.0,
+            0.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            0.0,
+            -25.0,
+            58.0
+          ],
+          "richtung": [
+            1.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            0.0,
+            -17.0,
+            58.0
+          ],
+          "richtung": [
+            -1.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            40.0,
+            -21.0,
+            58.0
+          ],
+          "richtung": [
+            0.0,
+            -1.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "regel": "R2",
+      "satz": "P1",
+      "ziele": [
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            -40.0,
+            -20.0,
+            60.0
+          ],
+          "richtung": [
+            0.0,
+            -1.0,
+            0.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            0.0,
+            -25.0,
+            60.0
+          ],
+          "richtung": [
+            1.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            0.0,
+            -15.0,
+            60.0
+          ],
+          "richtung": [
+            -1.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            40.0,
+            -20.0,
+            60.0
+          ],
+          "richtung": [
+            0.0,
+            -1.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "regel": "R2",
+      "satz": "P2",
+      "ziele": [
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            -45.0,
+            -21.0,
+            58.0
+          ],
+          "richtung": [
+            0.0,
+            -1.0,
+            0.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            0.0,
+            -25.0,
+            58.0
+          ],
+          "richtung": [
+            1.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            0.0,
+            -17.0,
+            58.0
+          ],
+          "richtung": [
+            -1.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            45.0,
+            -21.0,
+            58.0
+          ],
+          "richtung": [
+            0.0,
+            -1.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "regel": "R2",
+      "satz": "P3",
+      "ziele": [
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            -45.0,
+            -20.0,
+            60.0
+          ],
+          "richtung": [
+            0.0,
+            -1.0,
+            0.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            0.0,
+            -25.0,
+            60.0
+          ],
+          "richtung": [
+            1.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            0.0,
+            -15.0,
+            60.0
+          ],
+          "richtung": [
+            -1.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            45.0,
+            -20.0,
+            60.0
+          ],
+          "richtung": [
+            0.0,
+            -1.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "regel": "R3",
+      "satz": "P0",
+      "ziele": [
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            -40.0,
+            -25.0,
+            29.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            -40.0,
+            -17.0,
+            33.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            -40.0,
+            25.0,
+            4.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            40.0,
+            -25.0,
+            29.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            40.0,
+            -17.0,
+            33.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            40.0,
+            25.0,
+            4.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "regel": "R3",
+      "satz": "P1",
+      "ziele": [
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            -40.0,
+            -25.0,
+            30.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            -40.0,
+            -15.0,
+            35.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            -40.0,
+            25.0,
+            5.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            40.0,
+            -25.0,
+            30.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            40.0,
+            -15.0,
+            35.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            40.0,
+            25.0,
+            5.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "regel": "R3",
+      "satz": "P2",
+      "ziele": [
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            -45.0,
+            -25.0,
+            29.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            -45.0,
+            -17.0,
+            33.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            -45.0,
+            25.0,
+            4.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            45.0,
+            -25.0,
+            29.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            45.0,
+            -17.0,
+            33.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            45.0,
+            25.0,
+            4.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "regel": "R3",
+      "satz": "P3",
+      "ziele": [
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            -45.0,
+            -25.0,
+            30.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            -45.0,
+            -15.0,
+            35.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            -45.0,
+            25.0,
+            5.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            45.0,
+            -25.0,
+            30.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            45.0,
+            -15.0,
+            35.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "art": "kante",
+          "geometrie": "linie",
+          "schwerpunkt_mm": [
+            45.0,
+            25.0,
+            5.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "regel": "R4",
+      "satz": "P0",
+      "ziele": [
+        {
+          "art": "flaeche",
+          "geometrie": "ebene",
+          "schwerpunkt_mm": [
+            0.0,
+            -0.069615,
+            0.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        }
+      ]
+    },
+    {
+      "regel": "R4",
+      "satz": "P1",
+      "ziele": [
+        {
+          "art": "flaeche",
+          "geometrie": "ebene",
+          "schwerpunkt_mm": [
+            0.0,
+            -0.087018,
+            0.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        }
+      ]
+    },
+    {
+      "regel": "R4",
+      "satz": "P2",
+      "ziele": [
+        {
+          "art": "flaeche",
+          "geometrie": "ebene",
+          "schwerpunkt_mm": [
+            0.0,
+            -0.06176,
+            0.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        }
+      ]
+    },
+    {
+      "regel": "R4",
+      "satz": "P3",
+      "ziele": [
+        {
+          "art": "flaeche",
+          "geometrie": "ebene",
+          "schwerpunkt_mm": [
+            0.0,
+            -0.0772,
+            0.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        }
+      ]
+    },
+    {
+      "regel": "R5",
+      "satz": "P0",
+      "ziele": [
+        {
+          "art": "flaeche",
+          "geometrie": "zylinder",
+          "schwerpunkt_mm": [
+            -20.0,
+            4.0,
+            4.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "art": "flaeche",
+          "geometrie": "zylinder",
+          "schwerpunkt_mm": [
+            20.0,
+            4.0,
+            4.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "regel": "R5",
+      "satz": "P1",
+      "ziele": [
+        {
+          "art": "flaeche",
+          "geometrie": "zylinder",
+          "schwerpunkt_mm": [
+            -20.0,
+            5.0,
+            5.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "art": "flaeche",
+          "geometrie": "zylinder",
+          "schwerpunkt_mm": [
+            20.0,
+            5.0,
+            5.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "regel": "R5",
+      "satz": "P2",
+      "ziele": [
+        {
+          "art": "flaeche",
+          "geometrie": "zylinder",
+          "schwerpunkt_mm": [
+            -20.0,
+            4.0,
+            4.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "art": "flaeche",
+          "geometrie": "zylinder",
+          "schwerpunkt_mm": [
+            20.0,
+            4.0,
+            4.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "regel": "R5",
+      "satz": "P3",
+      "ziele": [
+        {
+          "art": "flaeche",
+          "geometrie": "zylinder",
+          "schwerpunkt_mm": [
+            -20.0,
+            5.0,
+            5.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        {
+          "art": "flaeche",
+          "geometrie": "zylinder",
+          "schwerpunkt_mm": [
+            20.0,
+            5.0,
+            5.0
+          ],
+          "richtung": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    {
+      "fall": "K1",
+      "regel": "R5",
+      "satz": "P0",
+      "ausloeser": "Element Bohrung verworfen, R5 bleibt gespeichert",
+      "ziele": [],
+      "befund": "kein_ziel"
+    },
+    {
+      "fall": "K2",
+      "regel": "größte ebene Fläche mit Normale +Y, genau ein Ziel",
+      "gespeichert_an": {
+        "satz": "P0",
+        "ziel": {
+          "art": "flaeche",
+          "geometrie": "ebene",
+          "schwerpunkt_mm": [
+            0.0,
+            -17.0,
+            33.0
+          ],
+          "richtung": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        }
+      },
+      "parameter": {
+        "breite": 80.0,
+        "tiefe": 50.0,
+        "dicke": 8.0,
+        "steg_hoehe": 8.0,
+        "bohrung_d": 6.6,
+        "bohrung_abstand": 40.0
+      },
+      "ziele": [],
+      "befund": "mehrdeutig",
+      "kandidaten": [
+        {
+          "art": "flaeche",
+          "geometrie": "ebene",
+          "schwerpunkt_mm": [
+            0.0,
+            -17.0,
+            12.0
+          ],
+          "richtung": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "art": "flaeche",
+          "geometrie": "ebene",
+          "schwerpunkt_mm": [
+            0.0,
+            25.0,
+            4.0
+          ],
+          "richtung": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "fall": "K3",
+      "ausloeser": "Folgeelement nutzt die Auswahl aus K1, ein unabhängiges Element nicht",
+      "zustand_folgeelement": [
+        "fehlerhaft",
+        "pausiert"
+      ],
+      "zustand_unabhaengig": "aktuell"
+    }
+  ]
+}
