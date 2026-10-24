@@ -1,0 +1,335 @@
+{
+  "zone": {
+    "menueleiste": "Menüleiste",
+    "taskleiste": "Taskleiste",
+    "struktur": "Struktur",
+    "modell": "Modell",
+    "eigenschaften": "Eigenschaften",
+    "chat": "Chat",
+    "panel": "Panel",
+    "rueckmeldung": "Rückmeldung"
+  },
+  "menue": {
+    "start": "Start",
+    "folgt": "folgt",
+    "mehr": "Mehr …"
+  },
+  "task": {
+    "modellieren": "Modellieren",
+    "simulation": "Simulation (simuliert)",
+    "shop": "Shop (folgt)"
+  },
+  "simuliert": "simuliert",
+  "suche": {
+    "platzhalter": "Befehle und Inhalte suchen",
+    "befehle": "Befehle",
+    "inhalte": "Inhalte",
+    "nichts": "Nichts gefunden"
+  },
+  "familie": {
+    "Datei": "Datei",
+    "Bearbeiten": "Bearbeiten",
+    "Auswahl": "Auswahl",
+    "Ansicht": "Ansicht",
+    "Sichtbarkeit": "Sichtbarkeit",
+    "Ansicht speichern": "Gespeicherte Ansichten",
+    "Fenster": "Fenster",
+    "Hilfe": "Hilfe",
+    "Baugruppe": "Baugruppe",
+    "Simulation": "Simulation",
+    "Chat": "Chat"
+  },
+  "untergruppe": {
+    "Neu": "Neu",
+    "Öffnen": "Öffnen",
+    "Projekt": "Projekt",
+    "Verlauf": "Verlauf",
+    "Element": "Element",
+    "Werte": "Werte",
+    "Berechnung": "Berechnung",
+    "Auswahl": "Auswahl",
+    "Befehle": "Auswahl setzen",
+    "Regeln": "Nach Regel",
+    "Zonen": "Zonen",
+    "Suche": "Suche",
+    "Fenster": "Fenster",
+    "Einstellungen": "Einstellungen",
+    "Hierarchie": "Hierarchie",
+    "Verbinden": "Verbinden",
+    "Studie": "Studie",
+    "Blick": "Blick",
+    "Darstellung": "Darstellung",
+    "Stand": "Stand",
+    "Sichtbarkeit": "Sichtbarkeit",
+    "Gespeichert": "Gespeichert",
+    "Hilfe": "Hilfe",
+    "Chat": "Chat",
+    "Weitere": "Weitere"
+  },
+  "struktur": {
+    "titel": "Struktur",
+    "wurzel": "Wurzel",
+    "leer": "Noch nichts da. Lege dein erstes Teil an.",
+    "leer-simulation": "Noch keine Studie. Die Simulation ist ein Platzhalter und simuliert.",
+    "verworfen": "verworfen"
+  },
+  "modell": {
+    "leer": "Das Modell ist leer."
+  },
+  "aktiv": {
+    "fertig": "Fertig"
+  },
+  "pfad": {
+    "titel": "Pfad"
+  },
+  "ansichtsleiste": {
+    "titel": "Ansicht",
+    "mehr": "Mehr Ansichten"
+  },
+  "anwesenheit": {
+    "person": "Testperson B",
+    "kuerzel": "B"
+  },
+  "befund": {
+    "zustand-unbekannt": "Zustand unbekannt",
+    "korrektur": "Letzten gültigen Wert setzen",
+    "bohrung-zu-gross": "Der Durchmesser {wert} ist zu groß; unter {grenze} ist die Bohrung gültig.",
+    "steg-ohne-hoehe": "Der Steg braucht eine Höhe über {grenze}."
+  },
+  "status": {
+    "fehlerhaft": "fehlerhaft",
+    "pausiert": "pausiert",
+    "rechnet": "rechnet"
+  },
+  "panel": {
+    "befunde": "Befunde",
+    "keine-befunde": "Keine Befunde. Alles ist aktuell."
+  },
+  "wert": {
+    "fehler": {
+      "nicht-lesbar": "Wert nicht lesbar. Beispiel: 12 mm",
+      "dimension": "Falsche Einheit für dieses Feld",
+      "teilung": "Teilen durch null geht nicht"
+    }
+  },
+  "eigenschaften": {
+    "gemischt": "gemischt",
+    "n-elemente": "{n} Elemente",
+    "umbenennen-hinweis": "Doppelklick zum Umbenennen"
+  },
+  "gruppe": {
+    "masse": "Maße",
+    "material": "Material",
+    "ergebnis": "Ergebnis",
+    "ansicht": "Ansicht"
+  },
+  "feld": {
+    "laenge": "Länge",
+    "breite": "Breite",
+    "dicke": "Dicke",
+    "hoehe": "Höhe",
+    "eckradius": "Eckradius",
+    "durchmesser": "Durchmesser",
+    "wand": "Wand",
+    "material": "Material",
+    "dichte": "Dichte",
+    "abmessungen": "Abmessungen",
+    "volumen": "Volumen",
+    "masse-wert": "Masse",
+    "projektion": "Projektion",
+    "darstellung": "Darstellung"
+  },
+  "projektion": {
+    "orthogonal": "orthogonal",
+    "perspektivisch": "perspektivisch"
+  },
+  "darstellung": {
+    "koerper": "Körper",
+    "kanten": "Kanten",
+    "durchsicht": "Durchsicht"
+  },
+  "profil": {
+    "standard": "Standard",
+    "solidworks": "wie Onshape/SolidWorks"
+  },
+  "name": {
+    "kopie": "Kopie",
+    "ansicht": "Ansicht",
+    "schnitt": "Schnitt"
+  },
+  "chat": {
+    "titel": "Chat",
+    "zu": "zu:",
+    "n-elemente": "{n} Elemente",
+    "platzhalter": "Frage oder Auftrag …",
+    "hinweis": "Zum Beispiel: Steg 40 mm hoch",
+    "uebernehmen": "Übernehmen",
+    "verwerfen": "Verwerfen",
+    "beispiel": {
+      "frage": "Der Steg soll 40 mm hoch werden."
+    },
+    "antwort": {
+      "vorschlag": "Ich schlage diese Änderung vor. Schau dir die Vorschau an.",
+      "unklar": "Das habe ich nicht verstanden. Versuche: Steg 40 mm hoch, Kopie vom Steg oder Steg verwerfen.",
+      "erledigt": "Erledigt. Du kannst es mit Rückgängig zurücknehmen.",
+      "verworfen": "Der Vorschlag ist verworfen."
+    },
+    "vorschlag": {
+      "wert": "{element}: {feld} auf {nachher}",
+      "duplizieren": "{element} duplizieren",
+      "verwerfen": "{element} verwerfen",
+      "anlegen": "Neues Element anlegen",
+      "begruendung": "Simulierter Vorschlag; erst nach dem Übernehmen gilt er."
+    }
+  },
+  "rueck": {
+    "folgt": "{befehl} folgt in einer späteren Stufe.",
+    "angelegt": "{name} angelegt",
+    "dupliziert": "{name} angelegt",
+    "umbenannt": "Umbenannt in {name}",
+    "verworfen": "{name} verworfen; mit Rückgängig oder Zurückholen wieder da",
+    "zurueckgeholt": "{name} zurückgeholt",
+    "wert-gesetzt": "Wert an {name} geändert",
+    "umgehaengt": "{name} liegt jetzt in {ziel}",
+    "ansicht-gespeichert": "{name} gespeichert",
+    "rueckgaengig": "Letzten Schritt zurückgenommen",
+    "wiederholt": "Schritt wiederhergestellt",
+    "befund": "Befund bei {name}; die anderen Elemente bleiben bedienbar",
+    "ziel-waehlen": "Wähle in der Struktur das Ziel.",
+    "auswahl-ziel": "Wähle Elemente im Modell oder in der Struktur.",
+    "isolieren-ziel": "Wähle zuerst, was du isolieren willst."
+  },
+  "dnd": {
+    "kein-ziel": "Hier kann nichts abgelegt werden.",
+    "nur-teile": "Nur Teile und Baugruppen lassen sich umhängen, Schritte bleiben in ihrem Teil.",
+    "eigener-nachfahre": "Ein Element kann nicht in sich selbst oder in sein eigenes Teil.",
+    "kein-behaelter": "Ein Teil nimmt keine anderen Elemente auf; wähle eine Baugruppe.",
+    "schon-darin": "Das Element liegt schon dort."
+  },
+  "katalog": {
+    "titel": "Bausteinkatalog"
+  },
+  "befehl": {
+    "element": {
+      "anlegen": "Neu anlegen",
+      "duplizieren": "Duplizieren",
+      "umbenennen": "Umbenennen",
+      "verwerfen": "Verwerfen",
+      "zurueckholen": "Zurückholen",
+      "wert-setzen": "Wert setzen",
+      "parameter-anlegen": "Parameter anlegen",
+      "pausieren": "Berechnung pausieren",
+      "fortsetzen": "Berechnung fortsetzen",
+      "ausblenden": "Ausblenden",
+      "einblenden": "Einblenden",
+      "umhaengen": "Umhängen (Ziel wählen)",
+      "aktivieren": "Aktivieren",
+      "verlassen": "Aktives Element verlassen"
+    },
+    "dokument": {
+      "oeffnen": "Öffnen",
+      "schliessen": "Dokument schließen",
+      "wechseln": "Dokument wechseln"
+    },
+    "wurzel": {
+      "setzen": "Wurzel der Struktur wählen"
+    },
+    "einstellungen": {
+      "oeffnen": "Einstellungen öffnen"
+    },
+    "projekt": {
+      "teilen": "Projekt teilen",
+      "einladen": "Person einladen"
+    },
+    "bearbeiten": {
+      "rueckgaengig": "Rückgängig",
+      "wiederholen": "Wiederholen",
+      "einfuegen": "Einfügen"
+    },
+    "auswahl": {
+      "duplizieren": "Auswahl duplizieren",
+      "verwerfen": "Auswahl verwerfen",
+      "alles": "Alles auswählen",
+      "aufheben": "Auswahl aufheben",
+      "umkehren": "Auswahl umkehren",
+      "setzen": "Auswählen",
+      "hinzufuegen": "Zur Auswahl hinzufügen",
+      "umschalten": "Auswahl umschalten",
+      "aehnliche": "Ähnliche auswählen",
+      "kantenschleife": "Kantenschleife auswählen",
+      "ausblenden": "Auswahl ausblenden"
+    },
+    "ansicht": {
+      "einpassen": "Alles einpassen",
+      "auf-auswahl": "Auf Auswahl zoomen",
+      "projektion": "Perspektive oder Orthogonal",
+      "vorne": "Ansicht von vorne",
+      "oben": "Ansicht von oben",
+      "isometrisch": "Isometrische Ansicht",
+      "schnitt": "Schnittansicht",
+      "isolieren": "Isolieren",
+      "alles-einblenden": "Alles einblenden",
+      "verworfenes": "Verworfenes zeigen",
+      "ergebnis": "Ansicht Ergebnis",
+      "alle-entwuerfe": "Ansicht Alle Entwürfe",
+      "speichern": "Ansicht speichern",
+      "anwenden": "Gespeicherte Ansicht anwenden"
+    },
+    "darstellung": {
+      "wechseln": "Darstellung wechseln"
+    },
+    "sichtbarkeit": {
+      "nur-dieses": "Nur dieses zeigen",
+      "farbe-setzen": "Anzeigefarbe setzen"
+    },
+    "fenster": {
+      "struktur": "Struktur ein- oder ausblenden",
+      "panel": "Panel ein- oder ausblenden",
+      "rechts": "Rechte Seitenleiste ein- oder ausblenden",
+      "naechste-zone": "Nächste Zone",
+      "teilen": "Fenster teilen (zwei Teile nebeneinander)"
+    },
+    "suche": {
+      "oeffnen": "Befehlssuche öffnen"
+    },
+    "thema": {
+      "umschalten": "Hell oder Dunkel"
+    },
+    "einstellung": {
+      "navigationsprofil": "Navigationsprofil wählen"
+    },
+    "katalog": {
+      "oeffnen": "Katalog öffnen"
+    },
+    "hilfe": {
+      "befehle-zeigen": "Alle Befehle zeigen",
+      "einfuehrung": "Einführung starten"
+    },
+    "baugruppe": {
+      "anlegen": "Baugruppe anlegen",
+      "instanz-anlegen": "Instanz einer Komponente anlegen",
+      "variante-waehlen": "Variante wählen",
+      "kollision-pruefen": "Kollision prüfen",
+      "fixieren": "Teil fixieren",
+      "komponente-anlegen": "Komponente aus Teil anlegen"
+    },
+    "verbindung": {
+      "anlegen": "Verbindung anlegen",
+      "verbindungspunkt-setzen": "Verbindungspunkt setzen",
+      "bewegen": "Innerhalb der Freiheitsgrade bewegen"
+    },
+    "simulation": {
+      "lager": "Lager setzen (simuliert)",
+      "kraft": "Kraft setzen (simuliert)",
+      "ergebnis": "Ergebnis zeigen (simuliert)"
+    },
+    "chat": {
+      "senden": "Nachricht senden",
+      "uebernehmen": "Vorschlag übernehmen",
+      "verwerfen": "Vorschlag verwerfen"
+    },
+    "task": {
+      "wechseln": "Aufgabe wechseln"
+    }
+  }
+}

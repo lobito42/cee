@@ -1,0 +1,335 @@
+{
+  "zone": {
+    "menueleiste": "Menu bar",
+    "taskleiste": "Task bar",
+    "struktur": "Structure",
+    "modell": "Model",
+    "eigenschaften": "Properties",
+    "chat": "Chat",
+    "panel": "Panel",
+    "rueckmeldung": "Feedback"
+  },
+  "menue": {
+    "start": "Start",
+    "folgt": "soon",
+    "mehr": "More …"
+  },
+  "task": {
+    "modellieren": "Modeling",
+    "simulation": "Simulation (simulated)",
+    "shop": "Shop (soon)"
+  },
+  "simuliert": "simulated",
+  "suche": {
+    "platzhalter": "Search commands and content",
+    "befehle": "Commands",
+    "inhalte": "Content",
+    "nichts": "Nothing found"
+  },
+  "familie": {
+    "Datei": "File",
+    "Bearbeiten": "Edit",
+    "Auswahl": "Selection",
+    "Ansicht": "View",
+    "Sichtbarkeit": "Visibility",
+    "Ansicht speichern": "Saved views",
+    "Fenster": "Window",
+    "Hilfe": "Help",
+    "Baugruppe": "Assembly",
+    "Simulation": "Simulation",
+    "Chat": "Chat"
+  },
+  "untergruppe": {
+    "Neu": "New",
+    "Öffnen": "Open",
+    "Projekt": "Project",
+    "Verlauf": "History",
+    "Element": "Element",
+    "Werte": "Values",
+    "Berechnung": "Calculation",
+    "Auswahl": "Selection",
+    "Befehle": "Set selection",
+    "Regeln": "By rule",
+    "Zonen": "Zones",
+    "Suche": "Search",
+    "Fenster": "Window",
+    "Einstellungen": "Settings",
+    "Hierarchie": "Hierarchy",
+    "Verbinden": "Connect",
+    "Studie": "Study",
+    "Blick": "View angle",
+    "Darstellung": "Display",
+    "Stand": "State",
+    "Sichtbarkeit": "Visibility",
+    "Gespeichert": "Saved",
+    "Hilfe": "Help",
+    "Chat": "Chat",
+    "Weitere": "More"
+  },
+  "struktur": {
+    "titel": "Structure",
+    "wurzel": "Root",
+    "leer": "Nothing here yet. Create your first part.",
+    "leer-simulation": "No study yet. Simulation is a placeholder and simulated.",
+    "verworfen": "discarded"
+  },
+  "modell": {
+    "leer": "The model is empty."
+  },
+  "aktiv": {
+    "fertig": "Done"
+  },
+  "pfad": {
+    "titel": "Path"
+  },
+  "ansichtsleiste": {
+    "titel": "View",
+    "mehr": "More views"
+  },
+  "anwesenheit": {
+    "person": "Test person B",
+    "kuerzel": "B"
+  },
+  "befund": {
+    "zustand-unbekannt": "State unknown",
+    "korrektur": "Set last valid value",
+    "bohrung-zu-gross": "The diameter {wert} is too large; below {grenze} the hole is valid.",
+    "steg-ohne-hoehe": "The rib needs a height above {grenze}."
+  },
+  "status": {
+    "fehlerhaft": "faulty",
+    "pausiert": "paused",
+    "rechnet": "calculating"
+  },
+  "panel": {
+    "befunde": "Findings",
+    "keine-befunde": "No findings. Everything is up to date."
+  },
+  "wert": {
+    "fehler": {
+      "nicht-lesbar": "Value not readable. Example: 12 mm",
+      "dimension": "Wrong unit for this field",
+      "teilung": "Division by zero is not possible"
+    }
+  },
+  "eigenschaften": {
+    "gemischt": "mixed",
+    "n-elemente": "{n} elements",
+    "umbenennen-hinweis": "Double-click to rename"
+  },
+  "gruppe": {
+    "masse": "Dimensions",
+    "material": "Material",
+    "ergebnis": "Result",
+    "ansicht": "View"
+  },
+  "feld": {
+    "laenge": "Length",
+    "breite": "Width",
+    "dicke": "Thickness",
+    "hoehe": "Height",
+    "eckradius": "Corner radius",
+    "durchmesser": "Diameter",
+    "wand": "Wall",
+    "material": "Material",
+    "dichte": "Density",
+    "abmessungen": "Size",
+    "volumen": "Volume",
+    "masse-wert": "Mass",
+    "projektion": "Projection",
+    "darstellung": "Display"
+  },
+  "projektion": {
+    "orthogonal": "orthographic",
+    "perspektivisch": "perspective"
+  },
+  "darstellung": {
+    "koerper": "Solid",
+    "kanten": "Edges",
+    "durchsicht": "See-through"
+  },
+  "profil": {
+    "standard": "Default",
+    "solidworks": "like Onshape/SolidWorks"
+  },
+  "name": {
+    "kopie": "copy",
+    "ansicht": "View",
+    "schnitt": "Section"
+  },
+  "chat": {
+    "titel": "Chat",
+    "zu": "to:",
+    "n-elemente": "{n} elements",
+    "platzhalter": "Question or task …",
+    "hinweis": "For example: rib 40 mm high",
+    "uebernehmen": "Accept",
+    "verwerfen": "Discard",
+    "beispiel": {
+      "frage": "The rib should become 40 mm high."
+    },
+    "antwort": {
+      "vorschlag": "I propose this change. Have a look at the preview.",
+      "unklar": "I did not understand. Try: rib 40 mm high, copy of the rib or discard the rib.",
+      "erledigt": "Done. You can take it back with undo.",
+      "verworfen": "The proposal is discarded."
+    },
+    "vorschlag": {
+      "wert": "{element}: {feld} to {nachher}",
+      "duplizieren": "Duplicate {element}",
+      "verwerfen": "Discard {element}",
+      "anlegen": "Create a new element",
+      "begruendung": "Simulated proposal; it applies only after you accept."
+    }
+  },
+  "rueck": {
+    "folgt": "{befehl} comes in a later stage.",
+    "angelegt": "{name} created",
+    "dupliziert": "{name} created",
+    "umbenannt": "Renamed to {name}",
+    "verworfen": "{name} discarded; bring it back with undo or restore",
+    "zurueckgeholt": "{name} restored",
+    "wert-gesetzt": "Value of {name} changed",
+    "umgehaengt": "{name} now sits in {ziel}",
+    "ansicht-gespeichert": "{name} saved",
+    "rueckgaengig": "Last step undone",
+    "wiederholt": "Step restored",
+    "befund": "Finding at {name}; the other elements stay usable",
+    "ziel-waehlen": "Choose the target in the structure.",
+    "auswahl-ziel": "Pick elements in the model or the structure.",
+    "isolieren-ziel": "Select what you want to isolate first."
+  },
+  "dnd": {
+    "kein-ziel": "Nothing can be dropped here.",
+    "nur-teile": "Only parts and assemblies can be moved; steps stay in their part.",
+    "eigener-nachfahre": "An element cannot go into itself or into its own part.",
+    "kein-behaelter": "A part cannot hold other elements; choose an assembly.",
+    "schon-darin": "The element is already there."
+  },
+  "katalog": {
+    "titel": "Component catalog"
+  },
+  "befehl": {
+    "element": {
+      "anlegen": "Create new",
+      "duplizieren": "Duplicate",
+      "umbenennen": "Rename",
+      "verwerfen": "Discard",
+      "zurueckholen": "Restore",
+      "wert-setzen": "Set value",
+      "parameter-anlegen": "Create parameter",
+      "pausieren": "Pause calculation",
+      "fortsetzen": "Resume calculation",
+      "ausblenden": "Hide",
+      "einblenden": "Show",
+      "umhaengen": "Move (choose target)",
+      "aktivieren": "Activate",
+      "verlassen": "Leave active element"
+    },
+    "dokument": {
+      "oeffnen": "Open",
+      "schliessen": "Close document",
+      "wechseln": "Switch document"
+    },
+    "wurzel": {
+      "setzen": "Choose root of the structure"
+    },
+    "einstellungen": {
+      "oeffnen": "Open settings"
+    },
+    "projekt": {
+      "teilen": "Share project",
+      "einladen": "Invite person"
+    },
+    "bearbeiten": {
+      "rueckgaengig": "Undo",
+      "wiederholen": "Redo",
+      "einfuegen": "Paste"
+    },
+    "auswahl": {
+      "duplizieren": "Duplicate selection",
+      "verwerfen": "Discard selection",
+      "alles": "Select all",
+      "aufheben": "Clear selection",
+      "umkehren": "Invert selection",
+      "setzen": "Select",
+      "hinzufuegen": "Add to selection",
+      "umschalten": "Toggle selection",
+      "aehnliche": "Select similar",
+      "kantenschleife": "Select edge loop",
+      "ausblenden": "Hide selection"
+    },
+    "ansicht": {
+      "einpassen": "Fit all",
+      "auf-auswahl": "Zoom to selection",
+      "projektion": "Perspective or orthographic",
+      "vorne": "Front view",
+      "oben": "Top view",
+      "isometrisch": "Isometric view",
+      "schnitt": "Section view",
+      "isolieren": "Isolate",
+      "alles-einblenden": "Show everything",
+      "verworfenes": "Show discarded",
+      "ergebnis": "Result view",
+      "alle-entwuerfe": "All drafts view",
+      "speichern": "Save view",
+      "anwenden": "Apply saved view"
+    },
+    "darstellung": {
+      "wechseln": "Change display"
+    },
+    "sichtbarkeit": {
+      "nur-dieses": "Show only this",
+      "farbe-setzen": "Set display color"
+    },
+    "fenster": {
+      "struktur": "Show or hide structure",
+      "panel": "Show or hide panel",
+      "rechts": "Show or hide right sidebar",
+      "naechste-zone": "Next zone",
+      "teilen": "Split window"
+    },
+    "suche": {
+      "oeffnen": "Open command search"
+    },
+    "thema": {
+      "umschalten": "Light or dark"
+    },
+    "einstellung": {
+      "navigationsprofil": "Choose navigation profile"
+    },
+    "katalog": {
+      "oeffnen": "Open catalog"
+    },
+    "hilfe": {
+      "befehle-zeigen": "Show all commands",
+      "einfuehrung": "Start introduction"
+    },
+    "baugruppe": {
+      "anlegen": "Create assembly",
+      "instanz-anlegen": "Create instance of a component",
+      "variante-waehlen": "Choose variant",
+      "kollision-pruefen": "Check collision",
+      "fixieren": "Fix part",
+      "komponente-anlegen": "Create component from part"
+    },
+    "verbindung": {
+      "anlegen": "Create connection",
+      "verbindungspunkt-setzen": "Set connection point",
+      "bewegen": "Move within degrees of freedom"
+    },
+    "simulation": {
+      "lager": "Add support",
+      "kraft": "Add force",
+      "ergebnis": "Show result"
+    },
+    "chat": {
+      "senden": "Send message",
+      "uebernehmen": "Accept proposal",
+      "verwerfen": "Reject proposal"
+    },
+    "task": {
+      "wechseln": "Switch task"
+    }
+  }
+}
