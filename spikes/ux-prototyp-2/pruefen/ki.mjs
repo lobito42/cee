@@ -302,11 +302,20 @@ export const kiBefehle = {
       );
       await seite.keyboard.press('Escape');
       await seite.keyboard.press('Control+K');
-      const t0 = Date.now();
-      await seite.keyboard.press('v');
-      await seite.waitForSelector('[data-suche] [role="option"]');
-      await zeichnen(seite);
-      suche.push(Date.now() - t0);
+      await seite.waitForSelector('[data-suche]');
+      suche.push(
+        await seite.evaluate(async () => {
+          const feld = document.activeElement;
+          const t0 = performance.now();
+          feld.value = 'v';
+          feld.dispatchEvent(new Event('input', { bubbles: true }));
+          while (!document.querySelector('[data-suche] [role="option"]')) {
+            await new Promise((r) => requestAnimationFrame(r));
+          }
+          await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+          return performance.now() - t0;
+        }),
+      );
       await seite.keyboard.press('Escape');
     }
     await seite.close();
