@@ -13,6 +13,7 @@ import { fensterBefehle } from './fenster.mjs';
 import { katalogBefehle } from './katalog.mjs';
 import { messBefehle } from './messen.mjs';
 import { modellBefehle } from './modell.mjs';
+import { rueckmeldungBefehle } from './rueckmeldung.mjs';
 
 const WURZEL = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -35,6 +36,7 @@ const BEFEHLE = {
   ...datenBefehle,
   ...auswahlBefehle,
   ...modellBefehle,
+  ...rueckmeldungBefehle,
   ...messBefehle,
   ...ablaufBefehle,
   ...katalogBefehle,

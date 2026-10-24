@@ -69,13 +69,13 @@ einem klickbaren Stand und 3–6 Schritten unter „Klick-Anleitung“ im PR (de
 
 ## 5. Rückmeldung, Chat, andere Personen
 
-- [ ] 5.1 Statusanzeige rechnet/fehlerhaft/pausiert, Befund mit Korrektur im Panel „Befunde“, Rückmeldezeile,
+- [x] 5.1 Statusanzeige rechnet/fehlerhaft/pausiert, Befund mit Korrektur im Panel „Befunde“, Rückmeldezeile,
   `&rechenzeit=`; Zustände `rechnet`, `befund` – Prüfung: `pruefen rueckmeldung`; AK-11
-- [ ] 5.2 Chat (simuliert) mit Kontext und Entscheidungskarte, ruft dieselben Befehle auf (`quelle: "ki"`);
+- [x] 5.2 Chat (simuliert) mit Kontext und Entscheidungskarte, ruft dieselben Befehle auf (`quelle: "ki"`);
   Absichten aus dem vorigen Stand übernehmen; Zustand `chat` – Prüfung: Vitest und `pruefen crud`; AK-6
-- [ ] 5.3 Testperson B simuliert (Auswahl, Zeiger, Name, „simuliert“), nichts gespeichert; Zustand `andere` –
+- [x] 5.3 Testperson B simuliert (Auswahl, Zeiger, Name, „simuliert“), nichts gespeichert; Zustand `andere` –
   Prüfung: `pruefen anwesenheit`; AK-13
-- [ ] 5.4 Vorschau bauen, Klick-Anleitung (Befund finden und beheben; im Chat „Steg 40 mm hoch“; Zustand `andere`
+- [x] 5.4 Vorschau bauen, Klick-Anleitung (Befund finden und beheben; im Chat „Steg 40 mm hoch“; Zustand `andere`
   ansehen) – Prüfung: `bash P/build.sh`
 
 ## 6. Bausteinkatalog, Budget, Leitfaden
