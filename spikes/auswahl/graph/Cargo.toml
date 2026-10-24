@@ -1,0 +1,27 @@
+# Graph-Teil des Auswahl-Spikes (ap-49): Regel über ein Projekt aus `synth::project(10_000)` (ap-01).
+# Kein Produktcode. Eigener Workspace, damit weder `crates/*` noch der Datenmodell-Spike berührt werden.
+[workspace]
+resolver = "2"
+
+[package]
+name = "auswahl-graph"
+version = "0.1.0"
+edition = "2021"
+license = "MPL-2.0"
+publish = false
+
+[[bin]]
+name = "auswahl-graph"
+path = "src/main.rs"
+
+[dependencies]
+datenmodell = { path = "../../datenmodell" }
+serde_json = "1"
+# Dieselbe Linie wie im Datenmodell-Spike; nur für den direkten Durchlauf über das Dokument.
+automerge = "0.12"
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[profile.release]
+debug = false
