@@ -4,7 +4,7 @@
   Ausgabe der Ziele als JSON – Prüfung: `bash spikes/auswahl/run.sh R1-P0`
 - [x] 1.2 Regel-Element in der Form aus ADR-028 und Auswertung von R1 bis R5 ohne Indizes, Option `--element` –
   Prüfung: AK-1, AK-2
-- [ ] 1.3 Option `--shuffle <seed>` (gemischte Reihenfolge von Flächen und Kanten) – Prüfung: AK-3
+- [x] 1.3 Option `--shuffle <seed>` (gemischte Reihenfolge von Flächen und Kanten) – Prüfung: AK-3
 
 ## 2. Befunde
 
