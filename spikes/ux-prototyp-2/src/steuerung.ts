@@ -28,6 +28,16 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
   const struktur = fenster.zonen.struktur;
   let klickUnterdruecken = false;
 
+  /** Doppelklick oder Enter auf eine Zeile: Ansichten werden angewendet, alles andere wird aktiv. */
+  const zeileOeffnen = (id: string): void => {
+    const ansicht = app.find(id)?.type === 'view';
+    app.ausfuehren(
+      ansicht ? 'ansicht.anwenden' : 'element.aktivieren',
+      { element: id },
+      'struktur',
+    );
+  };
+
   const offenesSchliessen = (): boolean => {
     let war = false;
     if (app.menue) {
@@ -132,7 +142,7 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
     const ziel = e.target as HTMLElement;
     const zeile = ziel.closest<HTMLElement>('[role="treeitem"]');
     if (zeile && !ziel.closest('button')) {
-      app.ausfuehren('element.aktivieren', { element: zeile.dataset.id }, 'struktur');
+      zeileOeffnen(zeile.dataset.id as string);
       return;
     }
     const name = ziel.closest<HTMLElement>('[data-name-feld]');
@@ -167,6 +177,22 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
   }
   app.kontextOeffnen = kontextOeffnen;
 
+  let rechtsGedrueckt = false;
+  let ausstehend: { x: number; y: number } | null = null;
+
+  function modellKontext(x: number, y: number): void {
+    const t = app.szene?.trefferBei(x, y);
+    const id = t ? app.zielFuerTreffer(t.elementId) : null;
+    if (id) {
+      const kante = app.kanteBei(id, x, y);
+      // Rechtsklick auf etwas im bereits Gewählten (auch in einer gewählten Baugruppe) behält die Auswahl.
+      const pfad = pfadZu(app.dokument(), t?.elementId ?? id).map((q) => q.id);
+      const schon = app.auswahl.some((a) => pfad.includes(a.element_id));
+      if (!schon || kante) app.waehle(id, 'setzen', kante ?? undefined);
+    } else app.setzeAuswahl([]);
+    kontextOeffnen(x, y);
+  }
+
   wurzel.addEventListener('contextmenu', (e) => {
     const ziel = e.target as HTMLElement;
     const zeile = ziel.closest<HTMLElement>('[role="treeitem"]');
@@ -185,17 +211,13 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
     }
     if (ziel.closest('[data-zone="modell"]') && !ziel.closest('[data-chrome], .popup')) {
       e.preventDefault();
+      // Unter Linux kommt das Ereignis schon beim Drücken: erst beim Loslassen entscheiden, ob es ein Ziehen war.
+      if (rechtsGedrueckt) {
+        ausstehend = { x: e.clientX, y: e.clientY };
+        return;
+      }
       if (nav.bewegt) return;
-      const t = app.szene?.trefferBei(e.clientX, e.clientY);
-      const id = t ? app.zielFuerTreffer(t.elementId) : null;
-      if (id) {
-        const kante = app.kanteBei(id, e.clientX, e.clientY);
-        // Rechtsklick auf etwas im bereits Gewählten (auch in einer gewählten Baugruppe) behält die Auswahl.
-        const pfad = pfadZu(app.dokument(), t?.elementId ?? id).map((x) => x.id);
-        const schon = app.auswahl.some((a) => pfad.includes(a.element_id));
-        if (!schon || kante) app.waehle(id, 'setzen', kante ?? undefined);
-      } else app.setzeAuswahl([]);
-      kontextOeffnen(e.clientX, e.clientY);
+      modellKontext(e.clientX, e.clientY);
       return;
     }
     if (ziel.closest('.popup')) e.preventDefault();
@@ -259,6 +281,7 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
       nav.startY = e.clientY;
       nav.bewegt = false;
       nav.pointerId = e.pointerId;
+      rechtsGedrueckt = e.button === 2;
       if (nav.art && e.button !== 0) e.preventDefault();
     }
   });
@@ -339,6 +362,12 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
   }
 
   window.addEventListener('pointerup', (e) => {
+    if (rechtsGedrueckt && e.pointerType !== 'touch') {
+      rechtsGedrueckt = false;
+      const a = ausstehend;
+      ausstehend = null;
+      if (a && !nav.bewegt) modellKontext(a.x, a.y);
+    }
     if (e.pointerType === 'touch') {
       finger.delete(e.pointerId);
       fingerStand = fingerMasse();
@@ -674,7 +703,7 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
       }
     } else if (e.key === 'Enter') {
       e.preventDefault();
-      app.ausfuehren('element.aktivieren', { element: zeile.dataset.id }, 'struktur');
+      zeileOeffnen(zeile.dataset.id as string);
     } else if (e.key === ' ') {
       e.preventDefault();
       app.waehle(

@@ -52,19 +52,19 @@ einem klickbaren Stand und 3–6 Schritten unter „Klick-Anleitung“ im PR (de
 
 ## 4. Modell: Navigation, Ziehen, Sichtbarkeit
 
-- [ ] 4.1 Navigationsprofile als Daten (`P/src/eingabe/profile.json`), Standard für Maus, Trackpad, Touch, zweites
+- [x] 4.1 Navigationsprofile als Daten (`P/src/eingabe/profile.json`), Standard für Maus, Trackpad, Touch, zweites
   Profil; Ansichtseingabe beibehalten – Prüfung: `pruefen navigation`; AK-8
-- [ ] 4.2 Ansichtsleiste: Einpassen, Auf Auswahl (F), Projektion, Darstellung (W), Isolieren, Alles einblenden;
+- [x] 4.2 Ansichtsleiste: Einpassen, Auf Auswahl (F), Projektion, Darstellung (W), Isolieren, Alles einblenden;
   Zustände `perspektive`, `kanten` – Prüfung: `pruefen navigation`; AK-8
-- [ ] 4.3 Griff im Modell mit Zahl am Zeiger, Tippen, Enter, Esc; Zustand `ziehen` – Prüfung: `pruefen ziehen`;
+- [x] 4.3 Griff im Modell mit Zahl am Zeiger, Tippen, Enter, Esc; Zustand `ziehen` – Prüfung: `pruefen ziehen`;
   AK-9
-- [ ] 4.4 Ziehen & Ablegen in der Struktur mit Zielregeln, `data-ziel`, Grund in der Rückmeldezeile, Esc;
+- [x] 4.4 Ziehen & Ablegen in der Struktur mit Zielregeln, `data-ziel`, Grund in der Rückmeldezeile, Esc;
   Zustände `ablegen`, `ablegen-verboten` – Prüfung: `pruefen ziehen`; AK-9
-- [ ] 4.5 Auge, Ausblenden/Einblenden, Nachfahren, Alles einblenden, `ansicht().ausgeblendet`; Zustände
+- [x] 4.5 Auge, Ausblenden/Einblenden, Nachfahren, Alles einblenden, `ansicht().ausgeblendet`; Zustände
   `ausgeblendet`, `verworfen` – Prüfung: `pruefen sichtbarkeit`; AK-10
-- [ ] 4.6 Drei Schichten: Graph in `localStorage` (`cee-prototyp-graph`), Ansicht nur im Speicher der Seite;
+- [x] 4.6 Drei Schichten: Graph in `localStorage` (`cee-prototyp-graph`), Ansicht nur im Speicher der Seite;
   `ansicht.speichern`/`ansicht.anwenden` mit Element `view` in der Struktur – Prüfung: `pruefen neuladen`; AK-17
-- [ ] 4.7 Vorschau bauen, Klick-Anleitung (drehen, verschieben, zoomen mit Maus und Trackpad; Dicke ziehen und 12
+- [x] 4.7 Vorschau bauen, Klick-Anleitung (drehen, verschieben, zoomen mit Maus und Trackpad; Dicke ziehen und 12
   tippen; Deckel in die Baugruppe ziehen; Steg ausblenden; Seite neu laden; Ansicht speichern und neu laden) – Prüfung: `bash P/build.sh`
 
 ## 5. Rückmeldung, Chat, andere Personen
