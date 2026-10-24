@@ -221,7 +221,10 @@ def test_jeder_beta_befehl_hat_einen_ort():
         assert e["im_register"] is True and e["suche_findet"] is True, (b["id"], e)
         assert e["orte"], (b["id"], "kein Ort")
     for familie in familien:
-        orte = {o for b in beta if b["familie"] == familie for o in nach_id[b["id"]]["orte"]} - ZUSATZWEGE
+        # Zusatzwege zählen nicht als Ort, außer der Ort der Familie ist selbst einer (Hilfe: nur über die Suche)
+        orte = {o for b in beta if b["familie"] == familie for o in nach_id[b["id"]]["orte"]} - (
+            ZUSATZWEGE - {PLATZIERUNG[familie]}
+        )
         assert orte == {PLATZIERUNG[familie]}, (familie, orte)
     for d in r["dropdowns"]:
         for u in d["untergruppen"]:

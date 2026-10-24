@@ -47,7 +47,7 @@ def test_abhaengigkeiten_und_lizenzen():
     bauen()
     modul = P / "node_modules"
     assert modul.is_dir(), "node_modules fehlt (npm ci)"
-    pakete = [p / "package.json" for p in modul.glob("*/package.json")]
+    pakete = list(modul.glob("*/package.json"))
     pakete += [p / "package.json" for p in modul.glob("@*/*") if (p / "package.json").is_file()]
     assert pakete, "keine installierten Pakete gefunden"
     gpl = re.compile(r"(?<![A-Za-z])(?:A|L)?GPL", re.I)
