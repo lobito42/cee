@@ -8,7 +8,7 @@
 
 ## 2. Befunde
 
-- [ ] 2.1 Befunde `kein_ziel` und `mehrdeutig` mit Element-ID und Kandidaten, Fälle K1 und K2 – Prüfung: AK-4, AK-5
+- [x] 2.1 Befunde `kein_ziel` und `mehrdeutig` mit Element-ID und Kandidaten, Fälle K1 und K2 – Prüfung: AK-4, AK-5
 - [ ] 2.2 Zustände `aktuell`, `fehlerhaft`, `pausiert` für Folgeelement und unabhängiges Element, Fall K3 –
   Prüfung: AK-6
 
