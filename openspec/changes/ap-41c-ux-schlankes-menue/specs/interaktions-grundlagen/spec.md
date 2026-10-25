@@ -43,6 +43,40 @@ und 14).
 - **WHEN** das Kernteam im Zustand `halter` Start-Menü, alle Dropdowns und das Kontextmenü der Grundplatte öffnet
 - **THEN** beurteilt es mit Ja/Nein: „Ich sehe nur Funktionen, die schon etwas tun“
 
+### Requirement: Jeder Befehl nur einmal je Menü
+In jedem Menü (Liste in design.md, Abschnitt 10) SHALL jede Befehls-ID, jeder Titel und jede Handlung (Feld
+`handlung`) höchstens einmal erscheinen, nur in der zur Auswahl passenden Variante. In der Menüleiste einer
+Taskleisten-Ansicht MUST jede ID höchstens einmal erscheinen; Befehle mit eigenem Knopf MUST NOT zusätzlich im
+Dropdown stehen.
+
+#### Scenario: [auto] Keine Doppelungen in einem Menü
+- **WHEN** `pruefen doppelt` für „Modellieren“ und „Simulation“ in den Zuständen `halter`, `auswahl`, `mehrfach`,
+  `aktiv` und `ausgeblendet` jedes Menü öffnet und ausliest
+- **THEN** sind `doppelte_ids`, `doppelte_titel` und `doppelte_handlungen` in jedem Menü leer (0 Einträge)
+
+#### Scenario: [auto] Jede ID nur an einem Ort der Menüleiste
+- **WHEN** `pruefen doppelt` für „Modellieren“ im Zustand `halter` Start-Menü, alle Dropdowns und alle Knöpfe der
+  Menüleiste zusammen ausliest
+- **THEN** ist `doppelte_ids_menueleiste` leer, `bearbeiten.rueckgaengig`, `bearbeiten.wiederholen`,
+  `fenster.struktur`, `fenster.panel`, `fenster.rechts` und `suche.oeffnen` stehen nur als Knopf (je 1-mal), und
+  Rückgängig, Wiederholen und Suche zeigen am Knopf ihr Kürzel
+
+#### Scenario: [auto] Ansichtsleiste ohne Wiederholung
+- **WHEN** im Zustand `halter` das Aufklappmenü der Ansichtsleiste geöffnet wird
+- **THEN** enthält es 0 Befehle, die als Knopf in der Ansichtsleiste stehen, und jeder der sechs Knöpfe erscheint in
+  der Ansichtsleiste genau 1-mal
+
+#### Scenario: [auto] Eine Handlung, die passende Variante
+- **WHEN** das Dropdown „Bearbeiten“ und das Menü am Auge einmal im Zustand `auswahl` (ein Element) und einmal im
+  Zustand `mehrfach` (zwei Elemente) geöffnet und darin „Duplizieren“ ausgelöst wird
+- **THEN** zeigt jedes Menü für jede darin vorkommende Handlung (duplizieren, verwerfen, ausblenden) genau 1 Eintrag; bei einem Element ist
+  es die Variante mit `bezug: element`, bei zwei Elementen die mit `bezug: mehrfach`, und `protokoll()` enthält danach
+  `element.duplizieren` bzw. `auswahl.duplizieren`
+
+#### Scenario: [mensch] Menüs ohne Wiederholung
+- **WHEN** das Kernteam im Zustand `halter` alle Dropdowns, die Ansichtsleiste und das Menü am Auge öffnet
+- **THEN** beurteilt es mit Ja/Nein: „Ich sehe keinen Befehl zweimal im selben Menü oder in der Menüleiste“
+
 ## MODIFIED Requirements
 
 ### Requirement: Fensteraufbau nach ADR-065

@@ -5,7 +5,7 @@ Alle Befehle aus dem Wurzelverzeichnis; `P` steht für `spikes/ux-prototyp-2`. P
 
 Voraussetzung: Prototyp aus ap-41b (PR #73) auf `main`; Abnahmetests von ap-41c und der Einspruch zu ap-41b
 (design.md, Abschnitt 9) gemergt. Branch `change/ap-41c-ux-schlankes-menue` von `main`. Ränge im Register nicht
-ändern (design.md, Abschnitt 4). Umfang: eine Nacht.
+ändern (design.md, Abschnitt 4). Umfang: höchstens zwei Nächte.
 
 ## 1. Wirkung im Register und in den Menüs
 
@@ -29,7 +29,7 @@ Voraussetzung: Prototyp aus ap-41b (PR #73) auf `main`; Abnahmetests von ap-41c 
 - [ ] 2.3 Vorschau bauen, Klick-Anleitung im PR (in der Suche „ansicht“ und „baugruppe“ tippen) – Prüfung:
   `bash P/build.sh`
 
-## 3. Kurzes Kontextmenü
+## 3. Kurzes Kontextmenü und keine Doppelungen
 
 - [ ] 3.1 `kontextmenue()` in `P/src/modell/register.ts` nach design.md Abschnitt 3: Kandidaten ohne Platzhalter und
   ohne Befehle mit festem Ort, sichtbar die ersten 8 nach `rang`, Rest in „Mehr …“ nach Familie (≤ 12 je Gruppe);
@@ -40,7 +40,17 @@ Voraussetzung: Prototyp aus ap-41b (PR #73) auf `main`; Abnahmetests von ap-41c 
   kontextmenue` und `pruefen tastatur`; AK-3
 - [ ] 3.3 Bausteinkatalog: Seiten „Kontextmenü“, „Kontextaktionen“, „Dropdown“ und „Suche“ mit der neuen Regel
   (2–6 Sätze, de und en) – Prüfung: `pruefen katalog --out <tmp>` und `pruefen texte`
-- [ ] 3.4 Regression: Pilotabläufe und Reaktionszeit – Prüfung: `pruefen ablauf e` … `pruefen ablauf l` und
+- [ ] 3.4 Doppelungen beheben (design.md, Abschnitt 10): Registerfeld `handlung` für `element.*`/`auswahl.*`
+  (duplizieren, verwerfen, ausblenden), Menüs zeigen je Handlung nur die zur Auswahl passende Variante (D1);
+  Befehle mit eigenem Knopf nicht in Dropdowns „Bearbeiten“ und „Fenster“ (D2); Aufklappmenü der Ansichtsleiste
+  ohne die sechs Knöpfe (D3) – Prüfung: Vitest in `register.test.ts` (eine Handlung je Menü, keine Knopf-IDs im
+  Dropdown) und neuer Prüfbefehl `pruefen doppelt`; AK-5
+- [ ] 3.5 `pruefen tastatur`: Kürzel am Knopf der Menüleiste zählt als Ort im Menü (`im_menue`) – Prüfung:
+  `uv run pytest -q tests/acceptance/ap-41b-ux-bedienkonzept -k kuerzel`
+- [ ] 3.6 Regression: Pilotabläufe und Reaktionszeit – Prüfung: `pruefen ablauf e` … `pruefen ablauf l` und
   `pruefen messen`; `uv run pytest -q tests/acceptance/ap-41b-ux-bedienkonzept`; AK-4
-- [ ] 3.5 Vorschau bauen, Klick-Anleitung im PR (Rechtsklick auf Grundplatte, „Mehr …“ öffnen, Rechtsklick auf zwei
+
+## 4. Abschluss
+
+- [ ] 4.1 Vorschau bauen, Klick-Anleitung im PR (Dropdowns und Ansichtsleiste ohne Doppelungen öffnen, Rechtsklick auf Grundplatte, „Mehr …“ öffnen, Rechtsklick auf zwei
   Elemente) und alle Abnahmetests – Prüfung: `uv run pytest -q tests/acceptance/ap-41c-ux-schlankes-menue`
