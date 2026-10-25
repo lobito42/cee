@@ -65,3 +65,9 @@ changes:
     model: opus    # Agent kern-specialist (Rustler, WASM, PyO3)
     night: true    # vollständig automatisch prüfbar
     depends_on: [ap-05b-abhaengigkeiten]
+
+  - id: ap-41c-ux-schlankes-menue
+    phase: tests
+    model: sonnet
+    night: true    # freigegeben 2026-10-25 (Kernteam): nur Befehle mit Wirkung zeigen, kurzes Kontextmenü, keine doppelten Befehle; Nachbesserung zu ap-41b nach Ausprobieren
+    depends_on: [ap-41b-ux-bedienkonzept]
