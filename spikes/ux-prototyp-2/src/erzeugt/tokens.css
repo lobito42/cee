@@ -1,0 +1,79 @@
+/* Erzeugt aus docs/design/tokens.json – nicht von Hand ändern. */
+:root {
+  --achse-x: #DB423C;
+  --achse-y: #3BA946;
+  --achse-z: #2B7AD6;
+  --schrift-familie-ui: Inter, system-ui, sans-serif;
+  --schrift-familie-mono: "JetBrains Mono", ui-monospace, monospace;
+  --schrift-merkmale: "tnum" 1, "cv05" 1;
+  --schrift-schnitt-normal: 400;
+  --schrift-schnitt-mittel: 500;
+  --schrift-schnitt-halbfett: 600;
+  --schrift-groesse-klein: 12px;
+  --schrift-groesse-basis: 13px;
+  --schrift-groesse-gross: 14px;
+  --schrift-groesse-titel: 16px;
+  --schrift-groesse-ueberschrift: 20px;
+  --schrift-groesse-anzeige: 24px;
+  --schrift-zeilenhoehe: 1.45;
+  --schrift-groesse-tablet-basis: 15px;
+  --abstand-1: 4px;
+  --abstand-2: 8px;
+  --abstand-3: 12px;
+  --abstand-4: 16px;
+  --abstand-5: 24px;
+  --abstand-6: 32px;
+  --radius-klein: 4px;
+  --radius-mittel: 6px;
+  --radius-gross: 8px;
+  --radius-karte: 12px;
+  --linie-breite: 1px;
+  --bedienflaeche-desktop: 28px;
+  --bedienflaeche-tablet: 44px;
+  --bewegung-kurz: 120ms;
+  --bewegung-mittel: 200ms;
+  --bewegung-kurve: cubic-bezier(0.2, 0, 0, 1);
+  --symbol-satz: Lucide;
+}
+[data-thema='hell'] {
+  --farbe-grund: #F5F7F9;
+  --farbe-flaeche: #FDFDFE;
+  --farbe-flaeche-2: #EEF0F3;
+  --farbe-linie: #DDE0E3;
+  --farbe-linie-stark: #C8CBCE;
+  --farbe-text: #1B2025;
+  --farbe-text-2: #595E64;
+  --farbe-text-3: #82878C;
+  --farbe-akzent: #3A69AD;
+  --farbe-akzent-flaeche: #DFECFF;
+  --farbe-auf-akzent: #FFFFFF;
+  --farbe-viewport: #E6E8EA;
+  --farbe-erfolg: #227849;
+  --farbe-erfolg-flaeche: #DAF3E1;
+  --farbe-warnung: #CD9130;
+  --farbe-warnung-text: #7E5403;
+  --farbe-warnung-flaeche: #FAE9CE;
+  --farbe-fehler: #C13C36;
+  --farbe-fehler-flaeche: #FFE0DB;
+}
+[data-thema='dunkel'] {
+  --farbe-grund: #0D1012;
+  --farbe-flaeche: #15171A;
+  --farbe-flaeche-2: #1E2124;
+  --farbe-linie: #2B2E32;
+  --farbe-linie-stark: #3A3D41;
+  --farbe-text: #E6E8EA;
+  --farbe-text-2: #A1A5A9;
+  --farbe-text-3: #777B7F;
+  --farbe-akzent: #79A6E9;
+  --farbe-akzent-flaeche: #1E2E47;
+  --farbe-auf-akzent: #0D1012;
+  --farbe-viewport: #1B1D20;
+  --farbe-erfolg: #60BB83;
+  --farbe-erfolg-flaeche: #12301E;
+  --farbe-warnung: #EBB25F;
+  --farbe-warnung-text: #EBB25F;
+  --farbe-warnung-flaeche: #3C2A0E;
+  --farbe-fehler: #ED756A;
+  --farbe-fehler-flaeche: #3E1F1B;
+}

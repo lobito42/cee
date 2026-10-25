@@ -1,0 +1,1148 @@
+/* Fensteraufbau und Bausteine des Prototyps. Farben, Schrift und Abstände nur über die Tokens. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--farbe-flaeche);
+  color: var(--farbe-text);
+  font: var(--schrift-schnitt-normal) var(--schrift-groesse-basis) / var(--schrift-zeilenhoehe)
+    var(--schrift-familie-ui);
+  font-feature-settings: var(--schrift-merkmale);
+}
+
+#app {
+  height: 100%;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  cursor: pointer;
+  text-align: left;
+}
+
+[aria-disabled='true'] {
+  color: var(--farbe-text-3);
+  cursor: default;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+kbd {
+  font: var(--schrift-schnitt-normal) var(--schrift-groesse-klein) / 1 var(--schrift-familie-mono);
+  color: var(--farbe-text-2);
+  background: var(--farbe-flaeche-2);
+  border-radius: var(--radius-klein);
+  padding: 2px var(--abstand-1);
+  white-space: nowrap;
+}
+
+h2,
+h3 {
+  margin: 0;
+  font-weight: var(--schrift-schnitt-halbfett);
+}
+
+h2 {
+  font: var(--schrift-schnitt-halbfett) var(--schrift-groesse-gross) / var(--schrift-zeilenhoehe)
+    var(--schrift-familie-ui);
+}
+
+h3 {
+  font: var(--schrift-schnitt-normal) var(--schrift-groesse-klein) / var(--schrift-zeilenhoehe)
+    var(--schrift-familie-ui);
+  color: var(--farbe-text-2);
+  font-weight: var(--schrift-schnitt-mittel);
+}
+
+.symbol {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.symbol svg {
+  display: block;
+}
+
+/* --- Rahmen ------------------------------------------------------------------------------------------ */
+
+.fenster {
+  --menue-h: 36px;
+  --task-b: 44px;
+  --struktur-b: 232px;
+  --rechts-b: 272px;
+  --panel-h: 0px;
+  --rueck-h: 24px;
+  display: grid;
+  height: 100%;
+  grid-template-columns: var(--task-b) var(--struktur-b) minmax(0, 1fr) var(--rechts-b);
+  grid-template-rows: var(--menue-h) minmax(0, 1fr) var(--panel-h) var(--rueck-h);
+  grid-template-areas:
+    'menue menue menue menue'
+    'task struktur modell rechts'
+    'task struktur panel rechts'
+    'rueck rueck rueck rueck';
+  background: var(--farbe-flaeche);
+}
+
+.fenster.ohne-struktur {
+  --struktur-b: 0px;
+}
+
+.fenster.ohne-struktur > [data-zone='struktur'] {
+  display: none;
+}
+
+.fenster.ohne-rechts {
+  --rechts-b: 0px;
+}
+
+.fenster.ohne-rechts > .rechts-spalte {
+  display: none;
+}
+
+.fenster.mit-panel {
+  --panel-h: 168px;
+}
+
+[data-zone] {
+  min-width: 0;
+  min-height: 0;
+  outline-offset: -2px;
+}
+
+[data-zone]:focus-visible,
+[data-zone][data-fokus] {
+  outline: 2px solid var(--farbe-akzent);
+}
+
+[data-zone='menueleiste'] {
+  grid-area: menue;
+  display: flex;
+  align-items: center;
+  gap: var(--abstand-1);
+  padding: 0 var(--abstand-2);
+  background: var(--farbe-flaeche);
+  border-bottom: var(--linie-breite) solid var(--farbe-linie);
+  position: relative;
+  z-index: 20;
+}
+
+[data-zone='taskleiste'] {
+  grid-area: task;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--abstand-2) 0;
+  background: var(--farbe-flaeche);
+  border-right: var(--linie-breite) solid var(--farbe-linie);
+}
+
+[data-zone='struktur'] {
+  grid-area: struktur;
+  display: flex;
+  flex-direction: column;
+  background: var(--farbe-flaeche);
+  border-right: var(--linie-breite) solid var(--farbe-linie);
+  overflow: auto;
+  position: relative;
+}
+
+[data-zone='modell'] {
+  grid-area: modell;
+  position: relative;
+  overflow: hidden;
+  background: var(--farbe-viewport);
+}
+
+.rechts-spalte {
+  grid-area: rechts;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--farbe-flaeche);
+  border-left: var(--linie-breite) solid var(--farbe-linie);
+}
+
+[data-zone='eigenschaften'] {
+  flex: 1 1 52%;
+  overflow: auto;
+  border-bottom: var(--linie-breite) solid var(--farbe-linie);
+}
+
+[data-zone='chat'] {
+  flex: 1 1 48%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+[data-zone='panel'] {
+  grid-area: panel;
+  overflow: auto;
+  background: var(--farbe-flaeche);
+  border-top: var(--linie-breite) solid var(--farbe-linie);
+}
+
+.fenster:not(.mit-panel) > [data-zone='panel'] {
+  display: none;
+}
+
+[data-zone='rueckmeldung'] {
+  grid-area: rueck;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--abstand-3);
+  background: var(--farbe-flaeche);
+  border-top: var(--linie-breite) solid var(--farbe-linie);
+  font: var(--schrift-schnitt-normal) var(--schrift-groesse-klein) / var(--schrift-zeilenhoehe)
+    var(--schrift-familie-ui);
+  color: var(--farbe-text-2);
+}
+
+.zonenkopf {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--abstand-2) var(--abstand-3);
+  min-height: 36px;
+}
+
+.ueberlagerung {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.ueberlagerung > * {
+  pointer-events: auto;
+}
+
+/* --- Menüs ---------------------------------------------------------------------------------------------- */
+
+.menue-eintrag {
+  position: relative;
+}
+
+.menue-knopf,
+.schalter,
+.suchfeld,
+.task {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--abstand-1);
+  min-height: var(--bedienflaeche-desktop);
+  padding: 0 var(--abstand-2);
+  border-radius: var(--radius-mittel);
+  color: var(--farbe-text);
+}
+
+.schalter,
+.task {
+  min-width: var(--bedienflaeche-desktop);
+  justify-content: center;
+}
+
+.menue-knopf:hover,
+.schalter:hover,
+.suchfeld:hover,
+.task:hover,
+.eintrag:hover {
+  background: var(--farbe-flaeche-2);
+}
+
+.schalter[aria-pressed='true'],
+.task[aria-pressed='true'] {
+  background: var(--farbe-flaeche-2);
+  color: var(--farbe-text);
+}
+
+.menue-knopf[aria-expanded='true'],
+.suchfeld[aria-expanded='true'] {
+  background: var(--farbe-flaeche-2);
+}
+
+.platz {
+  flex: 1 1 auto;
+}
+
+.suchfeld {
+  min-width: 200px;
+  background: var(--farbe-flaeche-2);
+  border: var(--linie-breite) solid var(--farbe-linie);
+  color: var(--farbe-text-2);
+  justify-content: flex-start;
+}
+
+.suchfeld .platzhalter {
+  flex: 1 1 auto;
+}
+
+.schalter-gruppe {
+  display: inline-flex;
+  gap: 2px;
+  margin-left: var(--abstand-2);
+}
+
+.popup {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  min-width: 240px;
+  max-height: 70vh;
+  overflow: auto;
+  background: var(--farbe-flaeche);
+  border: var(--linie-breite) solid var(--farbe-linie-stark);
+  border-radius: var(--radius-gross);
+  padding: var(--abstand-1);
+  z-index: 40;
+}
+
+.popup.nach-oben {
+  top: auto;
+  bottom: calc(100% + 4px);
+}
+
+.kontextmenue {
+  position: fixed;
+  top: 0;
+  left: 0;
+  max-height: 80vh;
+}
+
+.suche-popup {
+  right: 0;
+  left: auto;
+  width: 320px;
+}
+
+.eintrag {
+  display: flex;
+  align-items: center;
+  gap: var(--abstand-2);
+  width: 100%;
+  min-height: var(--bedienflaeche-desktop);
+  padding: 0 var(--abstand-2);
+  border-radius: var(--radius-mittel);
+}
+
+.eintrag .titel {
+  flex: 1 1 auto;
+}
+
+.eintrag .folgt {
+  font: var(--schrift-schnitt-normal) var(--schrift-groesse-klein) / var(--schrift-zeilenhoehe)
+    var(--schrift-familie-ui);
+  color: var(--farbe-text-3);
+}
+
+.eintrag[aria-selected='true'] {
+  background: var(--farbe-akzent-flaeche);
+}
+
+.eintrag:focus-visible {
+  outline: 2px solid var(--farbe-akzent);
+  outline-offset: -2px;
+}
+
+.gruppenkopf {
+  padding: var(--abstand-1) var(--abstand-2);
+  font: var(--schrift-schnitt-normal) var(--schrift-groesse-klein) / var(--schrift-zeilenhoehe)
+    var(--schrift-familie-ui);
+  color: var(--farbe-text-3);
+}
+
+.untergruppe + .untergruppe {
+  border-top: var(--linie-breite) solid var(--farbe-linie);
+  margin-top: var(--abstand-1);
+  padding-top: var(--abstand-1);
+}
+
+.suche-eingabe {
+  width: 100%;
+  height: var(--bedienflaeche-desktop);
+  padding: 0 var(--abstand-2);
+  border: var(--linie-breite) solid var(--farbe-linie-stark);
+  border-radius: var(--radius-mittel);
+  background: var(--farbe-flaeche-2);
+}
+
+.suche-eingabe:focus-visible,
+.wertfeld:focus-visible,
+.chat-eingabe:focus-visible,
+.titel-eingabe:focus-visible {
+  outline: 2px solid var(--farbe-akzent);
+  outline-offset: -1px;
+}
+
+.suche-popup .leer {
+  padding: var(--abstand-3);
+  color: var(--farbe-text-2);
+}
+
+/* --- Taskleiste ------------------------------------------------------------------------------------------ */
+
+.tasks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--abstand-1);
+}
+
+.task {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+}
+
+/* --- Struktur ------------------------------------------------------------------------------------------- */
+
+.wurzel {
+  display: flex;
+  gap: var(--abstand-2);
+  padding: var(--abstand-1) var(--abstand-3);
+  color: var(--farbe-text-2);
+  font: var(--schrift-schnitt-normal) var(--schrift-groesse-klein) / var(--schrift-zeilenhoehe)
+    var(--schrift-familie-ui);
+  border-radius: var(--radius-mittel);
+}
+
+.wurzel .name {
+  color: var(--farbe-text);
+  font-weight: var(--schrift-schnitt-mittel);
+}
+
+.baum {
+  padding: var(--abstand-1);
+}
+
+.zeile {
+  display: flex;
+  align-items: center;
+  gap: var(--abstand-2);
+  min-height: var(--bedienflaeche-desktop);
+  padding: 0 var(--abstand-2) 0 calc(var(--abstand-2) + var(--ebene, 0) * var(--abstand-4));
+  border-radius: var(--radius-mittel);
+  cursor: default;
+  user-select: none;
+}
+
+.zeile .name {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.zeile[data-zustand~='hover'] {
+  background: var(--farbe-flaeche-2);
+}
+
+.zeile[aria-selected='true'] {
+  background: var(--farbe-akzent-flaeche);
+  color: var(--farbe-text);
+}
+
+.zeile[data-zustand~='andere'] .person {
+  color: var(--farbe-text-2);
+}
+
+.zeile[data-zustand~='gedimmt'] {
+  color: var(--farbe-text-3);
+}
+
+.zeile[data-zustand~='aktiv'] .name {
+  font-weight: var(--schrift-schnitt-halbfett);
+}
+
+.zeile[data-zustand~='ausgeblendet'] {
+  color: var(--farbe-text-3);
+}
+
+.zeile[data-zustand~='verworfen'] .name {
+  text-decoration: line-through;
+  color: var(--farbe-text-3);
+}
+
+.zeile:focus-visible,
+.zeile[data-fokus] {
+  outline: 2px solid var(--farbe-akzent);
+  outline-offset: -2px;
+}
+
+.zeile[data-ziel='erlaubt'],
+.wurzel[data-ziel='erlaubt'] {
+  background: var(--farbe-akzent-flaeche);
+}
+
+.zeile[data-ziel='verboten'],
+.wurzel[data-ziel='verboten'] {
+  background: var(--farbe-fehler-flaeche);
+  cursor: not-allowed;
+}
+
+.auge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-klein);
+  color: var(--farbe-text-2);
+}
+
+.zeile[data-zustand~='ausgeblendet'] .auge {
+  color: var(--farbe-text-3);
+}
+
+.auge:hover {
+  background: var(--farbe-flaeche-2);
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--abstand-1);
+  font: var(--schrift-schnitt-normal) var(--schrift-groesse-klein) / var(--schrift-zeilenhoehe)
+    var(--schrift-familie-ui);
+  color: var(--farbe-text-2);
+}
+
+.status[data-zustand='fehlerhaft'] {
+  color: var(--farbe-fehler);
+}
+
+.status[data-zustand='rechnet'] .symbol svg {
+  animation: drehen 1.2s linear infinite;
+}
+
+@keyframes drehen {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.verworfen-marke {
+  font: var(--schrift-schnitt-normal) var(--schrift-groesse-klein) / var(--schrift-zeilenhoehe)
+    var(--schrift-familie-ui);
+  color: var(--farbe-text-3);
+}
+
+.leer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--abstand-3);
+  padding: var(--abstand-4);
+  color: var(--farbe-text-2);
+}
+
+.leer.mitte {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.leer p {
+  margin: 0;
+}
+
+.knopf {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--bedienflaeche-desktop);
+  padding: 0 var(--abstand-3);
+  border: var(--linie-breite) solid var(--farbe-linie-stark);
+  border-radius: var(--radius-mittel);
+  background: var(--farbe-flaeche);
+}
+
+.knopf:hover {
+  background: var(--farbe-flaeche-2);
+}
+
+.knopf.haupt {
+  background: var(--farbe-akzent);
+  border-color: var(--farbe-akzent);
+  color: var(--farbe-auf-akzent);
+}
+
+.knopf:focus-visible {
+  outline: 2px solid var(--farbe-akzent);
+  outline-offset: 2px;
+}
+
+.befund {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--abstand-2);
+  padding: var(--abstand-2) var(--abstand-3);
+  border-radius: var(--radius-mittel);
+  background: var(--farbe-warnung-flaeche);
+  color: var(--farbe-warnung-text);
+}
+
+.befund[data-schwere='fehler'] {
+  background: var(--farbe-fehler-flaeche);
+  color: var(--farbe-fehler);
+}
+
+.befund .schwere {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--abstand-1);
+  font-weight: var(--schrift-schnitt-mittel);
+}
+
+.befund .ort {
+  font-weight: var(--schrift-schnitt-mittel);
+  color: var(--farbe-text);
+}
+
+.befund .text {
+  flex: 1 1 100%;
+  color: var(--farbe-text);
+}
+
+.befund.am-feld {
+  padding: var(--abstand-1) var(--abstand-2);
+  font: var(--schrift-schnitt-normal) var(--schrift-groesse-klein) / var(--schrift-zeilenhoehe)
+    var(--schrift-familie-ui);
+}
+
+.befunde {
+  display: flex;
+  flex-direction: column;
+  gap: var(--abstand-2);
+  padding: var(--abstand-2) var(--abstand-3);
+}
+
+/* --- Modell --------------------------------------------------------------------------------------------- */
+
+.leinwand {
+  position: absolute;
+  inset: 0;
+  display: block;
+  touch-action: none;
+}
+
+.chrome {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.chrome > *,
+.chrome .popup {
+  pointer-events: auto;
+}
+
+.chrome > .konturen,
+.chrome > .modell-status,
+.chrome > .fremder-zeiger,
+.chrome > .namensschild,
+.chrome > .zeigerzahl {
+  pointer-events: none;
+}
+
+.konturen {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+
+.konturen path,
+.konturen line {
+  fill: none;
+}
+
+.reiterzeile {
+  position: absolute;
+  top: var(--abstand-2);
+  left: var(--abstand-2);
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  background: var(--farbe-flaeche);
+  border: var(--linie-breite) solid var(--farbe-linie);
+  border-radius: var(--radius-gross);
+}
+
+.reiter {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--abstand-1);
+  min-height: 24px;
+  padding: 0 var(--abstand-3);
+  border-radius: var(--radius-mittel);
+  color: var(--farbe-text-2);
+}
+
+.reiter[aria-selected='true'] {
+  background: var(--farbe-flaeche-2);
+  color: var(--farbe-text);
+  font-weight: var(--schrift-schnitt-mittel);
+}
+
+.reiter:hover {
+  background: var(--farbe-flaeche-2);
+}
+
+.person-marke {
+  display: inline-flex;
+  color: var(--farbe-text-2);
+}
+
+.pfad {
+  position: absolute;
+  top: 46px;
+  left: var(--abstand-2);
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--farbe-text-2);
+}
+
+.glied {
+  min-height: 24px;
+  padding: 0 var(--abstand-2);
+  border-radius: var(--radius-mittel);
+  color: var(--farbe-text-2);
+}
+
+.glied:hover,
+.glied[data-zustand~='hover'] {
+  background: var(--farbe-flaeche-2);
+}
+
+.glied[aria-current='location'] {
+  color: var(--farbe-text);
+  font-weight: var(--schrift-schnitt-halbfett);
+}
+
+.glied[data-zustand~='ausgewaehlt'] {
+  background: var(--farbe-akzent-flaeche);
+}
+
+.fertig {
+  position: absolute;
+  top: var(--abstand-2);
+  right: var(--abstand-2);
+}
+
+.ansichtsleiste {
+  position: absolute;
+  bottom: var(--abstand-3);
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  background: var(--farbe-flaeche);
+  border: var(--linie-breite) solid var(--farbe-linie);
+  border-radius: var(--radius-gross);
+}
+
+.ansichtsleiste .popup {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.kontextaktionen {
+  position: absolute;
+  transform: translateX(-50%);
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  background: var(--farbe-flaeche);
+  border: var(--linie-breite) solid var(--farbe-linie-stark);
+  border-radius: var(--radius-gross);
+}
+
+.griff {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  margin: -14px 0 0 -14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--farbe-flaeche);
+  border: 2px solid var(--farbe-akzent);
+  border-radius: 50%;
+  color: var(--farbe-akzent);
+  cursor: ns-resize;
+  touch-action: none;
+}
+
+.zeigerzahl {
+  position: absolute;
+  padding: 2px var(--abstand-2);
+  background: var(--farbe-flaeche);
+  border: var(--linie-breite) solid var(--farbe-linie-stark);
+  border-radius: var(--radius-klein);
+  white-space: nowrap;
+}
+
+.modell-status {
+  position: absolute;
+  padding: 2px var(--abstand-2);
+  background: var(--farbe-flaeche);
+  border: var(--linie-breite) solid var(--farbe-linie);
+  border-radius: var(--radius-klein);
+}
+
+.namensschild {
+  position: absolute;
+  padding: 2px var(--abstand-2);
+  background: var(--farbe-flaeche);
+  border: var(--linie-breite) solid var(--farbe-linie-stark);
+  border-radius: var(--radius-klein);
+  color: var(--farbe-text-2);
+  font: var(--schrift-schnitt-normal) var(--schrift-groesse-klein) / var(--schrift-zeilenhoehe)
+    var(--schrift-familie-ui);
+}
+
+.fremder-zeiger {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--abstand-1);
+  color: var(--farbe-text-2);
+  font: var(--schrift-schnitt-normal) var(--schrift-groesse-klein) / var(--schrift-zeilenhoehe)
+    var(--schrift-familie-ui);
+}
+
+.fremder-zeiger .simuliert {
+  color: var(--farbe-text-3);
+}
+
+.zieh-vorschau {
+  position: fixed;
+  padding: 2px var(--abstand-3);
+  background: var(--farbe-flaeche);
+  border: var(--linie-breite) solid var(--farbe-linie-stark);
+  border-radius: var(--radius-mittel);
+  pointer-events: none !important;
+}
+
+/* --- Eigenschaften ---------------------------------------------------------------------------------------- */
+
+.gruppe {
+  padding: var(--abstand-2) var(--abstand-3);
+}
+
+.feld {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  align-items: center;
+  gap: var(--abstand-2);
+  min-height: var(--bedienflaeche-desktop);
+}
+
+.feld label {
+  color: var(--farbe-text-2);
+}
+
+.wertfeld,
+.titel-eingabe {
+  width: 100%;
+  height: 24px;
+  padding: 0 var(--abstand-2);
+  border: var(--linie-breite) solid var(--farbe-linie);
+  border-radius: var(--radius-klein);
+  background: var(--farbe-flaeche-2);
+  font-feature-settings: var(--schrift-merkmale);
+}
+
+.wertfeld:hover {
+  border-color: var(--farbe-linie-stark);
+}
+
+.titel-eingabe {
+  height: 28px;
+  font-weight: var(--schrift-schnitt-halbfett);
+}
+
+.hinweis {
+  padding: 0 var(--abstand-3);
+  color: var(--farbe-text-3);
+  font: var(--schrift-schnitt-normal) var(--schrift-groesse-klein) / var(--schrift-zeilenhoehe)
+    var(--schrift-familie-ui);
+}
+
+/* --- Chat ------------------------------------------------------------------------------------------------ */
+
+.kontext {
+  display: flex;
+  align-items: center;
+  gap: var(--abstand-1);
+  padding: 0 var(--abstand-3) var(--abstand-2);
+  color: var(--farbe-text-2);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--abstand-2);
+  border-radius: var(--radius-klein);
+  background: var(--farbe-flaeche-2);
+  color: var(--farbe-text);
+}
+
+.chip[data-zustand~='ausgewaehlt'] {
+  background: var(--farbe-akzent-flaeche);
+}
+
+.chip[data-zustand~='ausgeblendet'] {
+  color: var(--farbe-text-3);
+}
+
+.nachrichten {
+  flex: 1 1 auto;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--abstand-2);
+  padding: 0 var(--abstand-3);
+}
+
+.nachricht {
+  padding: var(--abstand-1) var(--abstand-2);
+  border-radius: var(--radius-mittel);
+  background: var(--farbe-flaeche-2);
+  align-self: flex-start;
+  max-width: 90%;
+}
+
+.nachricht.person {
+  align-self: flex-end;
+}
+
+.karte {
+  display: flex;
+  flex-direction: column;
+  gap: var(--abstand-2);
+  padding: var(--abstand-3);
+  border: var(--linie-breite) solid var(--farbe-linie-stark);
+  border-radius: var(--radius-karte);
+  background: var(--farbe-flaeche);
+}
+
+.karte-kopf {
+  display: flex;
+  align-items: center;
+  gap: var(--abstand-1);
+  color: var(--farbe-akzent);
+}
+
+.karte-titel {
+  font-weight: var(--schrift-schnitt-mittel);
+}
+
+.karte-text {
+  color: var(--farbe-text-2);
+}
+
+.karte-wert {
+  display: flex;
+  align-items: center;
+  gap: var(--abstand-2);
+}
+
+.karte-wert .feld {
+  display: inline;
+  color: var(--farbe-text-2);
+}
+
+.karte-knoepfe {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--abstand-2);
+}
+
+.eingabezeile {
+  display: flex;
+  gap: var(--abstand-1);
+  padding: var(--abstand-2) var(--abstand-3);
+  border-top: var(--linie-breite) solid var(--farbe-linie);
+}
+
+.chat-eingabe {
+  flex: 1 1 auto;
+  height: var(--bedienflaeche-desktop);
+  padding: 0 var(--abstand-2);
+  border: var(--linie-breite) solid var(--farbe-linie);
+  border-radius: var(--radius-mittel);
+  background: var(--farbe-flaeche-2);
+}
+
+.simuliert {
+  font: var(--schrift-schnitt-normal) var(--schrift-groesse-klein) / var(--schrift-zeilenhoehe)
+    var(--schrift-familie-ui);
+  color: var(--farbe-text-3);
+}
+
+/* --- Katalog ---------------------------------------------------------------------------------------------- */
+
+.katalog {
+  height: 100%;
+  overflow: auto;
+  padding: var(--abstand-5);
+  background: var(--farbe-flaeche);
+}
+
+.katalog-raster {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--abstand-4);
+}
+
+.katalog-karte {
+  display: block;
+  padding: var(--abstand-4);
+  border: var(--linie-breite) solid var(--farbe-linie);
+  border-radius: var(--radius-karte);
+  background: var(--farbe-flaeche);
+}
+
+.katalog-seite {
+  display: grid;
+  gap: var(--abstand-4);
+  max-width: 960px;
+}
+
+.katalog-bild {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--abstand-3);
+}
+
+.katalog-bild > div {
+  padding: var(--abstand-4);
+  border: var(--linie-breite) solid var(--farbe-linie);
+  border-radius: var(--radius-gross);
+  min-height: 160px;
+}
+
+/* Das Modell liegt unter der Leinwand: der Fokusring wird als Rahmen über die Überlagerung gelegt. */
+[data-zone='modell']:focus-visible,
+[data-zone='modell'][data-fokus] {
+  outline: none;
+}
+
+[data-zone='modell']:focus-visible > .chrome::after,
+[data-zone='modell'][data-fokus] > .chrome::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--farbe-akzent);
+  pointer-events: none;
+}
+
+/* Bausteinkatalog: dieselben Bausteine, aber im Fluss statt über dem Modell */
+.katalog h1 {
+  margin: 0 0 var(--abstand-3);
+  font: var(--schrift-schnitt-halbfett) var(--schrift-groesse-ueberschrift) /
+    var(--schrift-zeilenhoehe) var(--schrift-familie-ui);
+}
+
+.katalog h2 {
+  margin: var(--abstand-4) 0 var(--abstand-2);
+}
+
+.katalog a {
+  color: var(--farbe-text-2);
+}
+
+.katalog .bild {
+  background: var(--farbe-flaeche);
+  color: var(--farbe-text);
+}
+
+.katalog .bild h3 {
+  margin-bottom: var(--abstand-3);
+}
+
+.katalog .beispiel {
+  margin: 0 0 var(--abstand-4);
+}
+
+.katalog figcaption {
+  margin-bottom: var(--abstand-1);
+  color: var(--farbe-text-2);
+  font: var(--schrift-schnitt-normal) var(--schrift-groesse-klein) / var(--schrift-zeilenhoehe)
+    var(--schrift-familie-ui);
+}
+
+.katalog .reiterzeile,
+.katalog .pfad,
+.katalog .ansichtsleiste,
+.katalog .kontextaktionen,
+.katalog .griff,
+.katalog .zeigerzahl,
+.katalog .popup,
+.katalog .kontextmenue,
+.katalog .fertig {
+  position: static;
+  transform: none;
+  margin: 0;
+}
+
+.katalog .griff {
+  flex: none;
+}
+
+.katalog .zeile-bsp {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--abstand-4);
+}
+
+.katalog .kuerzel-liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--abstand-1);
+}
+
+.katalog .kuerzel-liste li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--abstand-3);
+}
+
+.katalog .leise {
+  display: flex;
+  min-height: 24px;
+  align-items: center;
+  padding: 0 var(--abstand-3);
+  border-top: var(--linie-breite) solid var(--farbe-linie);
+  color: var(--farbe-text-2);
+}
