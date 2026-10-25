@@ -147,12 +147,8 @@ def test_kontextmenue_gleich_in_struktur_und_modell():
             sichtbar = [e for e in g["eintraege"] if not e["mehr"]]
             raenge = [reg[e["befehl"]]["rang"] for e in sichtbar]
             assert raenge == sorted(raenge), (a["art"], g["name"], "nicht nach rang geordnet")
-            for e in g["eintraege"]:
-                assert e["mehr"] is (not reg[e["befehl"]]["wesentlich"]), (
-                    a["art"],
-                    e["befehl"],
-                    "Mehr … nur für Unwesentliches",
-                )
+        # Einspruch (ap-41c, design.md Abschnitt 3): „Mehr …“ entscheidet künftig der Rang, nicht `wesentlich`;
+        # die Prüfung dazu (≤ 8 sichtbar, „Mehr …“ nur bei > 8) liegt in tests/acceptance/ap-41c-ux-schlankes-menue.
         reihenfolgen.append([g["name"] for g in gruppen])
     # feste Reihenfolge der Familien: je zwei Auswahlarten dieselbe relative Reihenfolge gemeinsamer Gruppen
     for i, a in enumerate(reihenfolgen):
