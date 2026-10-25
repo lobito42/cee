@@ -140,7 +140,7 @@ reinem Python (Vektorrechnung aus den Parametern) nach.
 | AK-1 | Ebenen `drei_punkte` (3 Fälle) und `punkt_normale` (2 Fälle), entartet; OCP-Objekt ist `Geom_Plane` | Ebenen |
 | AK-2 | Punkt `auf` (Gerade, Strecke, `out_of_range`, Ebene), `mitte`, Folgen nach Änderung des Bezugs | Punkt auf Linie oder Ebene, Mittelpunkt |
 | AK-3 | `schnitt` (schneidend, windschief, parallel, außerhalb); `projektion` auf Gerade und Ebene; Abstand für 4 Paare, Budget | Schnittpunkt; Projektion und Abstand |
-| AK-4 | eine Form: alle neuen Punkte haben Typ `point`, keine weiteren Punkt- oder Ebenentypen in der Typdatei; fehlende Herkunft wie ap-50; `unknown_herkunft`; ap-50-Beispiel bytegleich; Schemas gültig; `crates/` unverändert | Punkt und Ebene mit Herkunft; Protokoll |
+| AK-4 | eine Form: alle neuen Punkte haben Typ `point`, keine weiteren Punkt- oder Ebenentypen in der Typdatei; fehlende Herkunft wie ap-50; `unknown_herkunft`; ap-50-Beispiel bytegleich; Schemas gültig; `crates/` unverändert | Punkt und Ebene mit Herkunft; Verträglichkeit und Erweiterbarkeit |
 | AK-5 | Sieben Befehle im Register ohne `folgt` mit `argumente`; Klick-Weg gleich Argument-Weg; `referenz.abstand` ändert `graph_hash` nicht | Befehle für Klick und Argumente |
 
 Budgets: unverändert aus ap-50 (Worker warm ≤ 1,0 s für das ap-50-Lastprojekt; Vorschau Befehl bis Anzeige

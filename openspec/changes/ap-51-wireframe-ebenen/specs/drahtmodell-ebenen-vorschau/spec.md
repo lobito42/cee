@@ -3,14 +3,14 @@
 ### Requirement: Befehle für Klick und Argumente
 Der Prototyp SHALL die sieben Befehle aus design.md Abschnitt 4 im einen Befehlsregister führen (ADR-045), ohne
 `folgt: true` und mit dem Feld `argumente`. Jeder Befehl MUST per Klick und per `{befehl, args}` ohne Klick
-ausführbar sein; beide Wege MUST denselben Graphen ergeben. Die sechs anlegenden Befehle MUST den Graphen ändern
-und jeden Punkt bzw. jede Ebene mit ausdrücklicher `herkunft` anlegen; `referenz.abstand` MUST NOT den Graphen
-ändern. Die Grenzen für Menü und Kontextmenü aus ap-41b/ap-41c MUST weiter gelten.
+ausführbar sein; beide Wege MUST denselben Graphen ergeben. Anlegende Befehle MUST Punkt bzw. Ebene mit
+ausdrücklicher `herkunft` anlegen; `referenz.abstand` MUST NOT den Graphen ändern.
 
 #### Scenario: [auto] Register
 - **WHEN** der Abnahmetest `pruefen -- drahtmodell befehle --json` aufruft
 - **THEN** stehen alle 7 neuen Befehle mit `folgt` = false, Ort Menü (Dropdown „Referenz“) und Suche im Ergebnis,
-  und jeder hat ein nicht leeres Feld `argumente` (7 von 7)
+  und jeder hat ein nicht leeres Feld `argumente` (7 von 7); die Grenzen für Dropdown und Kontextmenü aus
+  ap-41b/ap-41c sind eingehalten (Ja/Nein, gleiche Prüfung wie dort)
 
 #### Scenario: [auto] Klick-Weg gleich Argument-Weg
 - **WHEN** jeder der 6 anlegenden Befehle im Zustand `drahtmodell-beispiel` einmal per Klick (Auswahl bzw.

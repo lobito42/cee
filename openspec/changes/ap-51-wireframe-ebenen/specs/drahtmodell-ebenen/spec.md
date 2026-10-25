@@ -4,11 +4,8 @@
 Ein Punkt SHALL immer ein Element vom Typ `point` sein und eine Ebene immer ein Element vom Typ `plane`; die Art,
 wie sie bestimmt werden, MUST genau eine Herkunft im Parameter `herkunft` nach design.md Abschnitt 1 sein
 (`point`: `koordinaten`, `relativ`, `auf`, `schnitt`, `projektion`, `mitte`; `plane`: `von`, `drei_punkte`,
-`punkt_normale`). Es MUST NOT weitere Typen für Punkte oder Ebenen geben. Ohne `herkunft` SHALL die Regel aus
-design.md gelten, sodass Punkte und Ebenen aus ap-50 unverändert gerechnet werden. Neue Herkünfte MUST sich als
-Eintrag der Herkunftstabelle ohne Änderung an Typ, Protokoll oder Befehlsform ergänzen lassen. Der Rust-Kern MUST
-NOT geändert werden (ADR-046). Ersetzt beim Archivieren das Requirement „Punkt“ aus `drahtmodell` (ap-50) um die
-Herkunft erweitert.
+`punkt_normale`). Es MUST NOT weitere Typen für Punkte oder Ebenen geben; der Rust-Kern MUST NOT geändert
+werden (ADR-046).
 
 #### Scenario: [auto] Eine Form
 - **WHEN** der Abnahmetest `format/types/drahtmodell.json` mit `cee_sdk.Doc.import_project` registriert und einen
@@ -16,6 +13,12 @@ Herkunft erweitert.
 - **THEN** gibt es 0 Fehler `invalid_type_definition`, die Typdatei enthält keine Typen außer den 7 aus ap-50, jeder
   Punkt im Ergebnis hat Typ `point` und Ausgang `point`, jede Ebene Typ `plane` und Ausgang `plane`, und
   `git diff --name-only origin/main...HEAD` zeigt 0 Dateien unter `crates/`
+
+### Requirement: Verträglichkeit und Erweiterbarkeit der Herkunft
+Ohne `herkunft` SHALL die Regel aus design.md Abschnitt 1 gelten, sodass Punkte und Ebenen aus ap-50 unverändert
+gerechnet werden. Eine unbekannte Herkunft MUST den Befund `unknown_herkunft` ergeben. Neue Herkünfte MUST sich
+als Eintrag der Herkunftstabelle ohne Änderung an Typ, Protokoll oder Befehlsform ergänzen lassen. Beim
+Archivieren wird dieses und das vorige Requirement in `drahtmodell` (ap-50) eingearbeitet.
 
 #### Scenario: [auto] Verträglich mit ap-50
 - **WHEN** der Auftrag aus `format/examples/drahtmodell.json` (Punkte und Ebenen ohne `herkunft`, ohne
