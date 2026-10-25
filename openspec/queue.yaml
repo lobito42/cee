@@ -65,3 +65,15 @@ changes:
     model: opus    # Agent kern-specialist (Rustler, WASM, PyO3)
     night: true    # vollständig automatisch prüfbar
     depends_on: [ap-05b-abhaengigkeiten]
+
+  - id: ap-41c-ux-schlankes-menue
+    phase: tests
+    model: sonnet
+    night: true    # freigegeben 2026-10-25 (Kernteam): nur Befehle mit Wirkung zeigen, kurzes Kontextmenü, keine doppelten Befehle; Nachbesserung zu ap-41b nach Ausprobieren
+    depends_on: [ap-41b-ux-bedienkonzept]
+
+  - id: ap-50-wireframe-basics
+    phase: tests
+    model: opus    # Agent geometry-specialist (Kernel-Schnittstelle, OpenCascade-Worker)
+    night: true    # freigegeben 2026-10-25 (Kernteam): echter Geometriekern, erste kleine Stufe (Koordinatensystem, Punkte, Geraden); ein [mensch]-Scenario „Ausprobieren“
+    depends_on: [ap-40-bindungen-sdk, ap-41b-ux-bedienkonzept, ap-41c-ux-schlankes-menue]
