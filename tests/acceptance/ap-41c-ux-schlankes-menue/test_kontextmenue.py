@@ -122,8 +122,8 @@ def test_befehle_mit_festem_ort_nicht_im_kontextmenue():
     )
     nach_id = {b["id"]: b for b in inv["befehle"]}
     for b in fest_mit_wirkung:
-        if b in nach_id:
-            assert nach_id[b]["suche_findet"] is True, b
+        assert b in nach_id, f"Befehl mit festem Ort fehlt im Inventar: {b}"
+        assert nach_id[b]["suche_findet"] is True, b
 
 
 def test_register_erzeugt_menues_nicht_von_hand():
