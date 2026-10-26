@@ -130,7 +130,7 @@ zeigen – die ersten nach `rang` – und genau einen Eintrag „Mehr …“, we
 Auswahl MUST das Menü in Struktur und Modell gleich sein. Die Kontextaktionen über dem Gewählten MUST die ersten
 höchstens fünf Kandidaten nach `rang` sein (ADR-065 Punkt 3).
 
-#### Scenario: [auto] Kurz und gleich in Struktur und Modell
+#### Scenario: [auto] Gleich in Struktur und Modell
 - **WHEN** `pruefen kontextmenue` für die Auswahlarten Teil, Schritt, Kante, Baugruppe, mehrere Elemente und
   keine Auswahl je einmal in der Struktur und im Modell das Kontextmenü öffnet
 - **THEN** sind sichtbare Ebene und Ebene „Mehr …“ (Einträge und Reihenfolge) je Auswahlart in beiden Zonen
@@ -162,6 +162,14 @@ höchstens fünf Kandidaten nach `rang` sein (ADR-065 Punkt 3).
 - **WHEN** im Zustand `auswahl` die Kontextaktionen über dem Gewählten gelesen werden
 - **THEN** sind es höchstens 5 Einträge, sie sind gleich den ersten Einträgen von `kandidaten_nach_rang`, und alle
   stehen in der sichtbaren Ebene des Kontextmenüs
+
+#### Scenario: [auto] Jeder Beta-Befehl hat einen Ort
+- **WHEN** der Test jeden Befehl mit `beta: true` aus `tests/golden/ap-41b-ux-bedienkonzept/befehlsinventar.json`
+  (Referenzdaten des Kernteams) über seine Familie mit der Platzierungstabelle in design.md von ap-41b abgleicht
+- **THEN** hat jede Familie des Inventars genau einen Ort in der Platzierungstabelle (0 Familien ohne Ort, 0 mit zwei
+  Orten), jeder Beta-Befehl mit Wirkung ist über den Ort seiner Familie und die Suche erreichbar und an keinem
+  weiteren Ort der Platzierungstabelle, jeder Platzhalter (`folgt: true`) ist nur über die Suchgruppe „Folgt später“
+  erreichbar, und kein Dropdown hätte mit den Beta-Befehlen seiner Familie mehr als 12 Einträge in einer Untergruppe
 
 #### Scenario: [auto] „Mehr …“ per Klick und Tastatur, Esc schließt eine Ebene
 - **WHEN** im Zustand `kontextmenue` „Mehr …“ einmal per Klick und einmal per Pfeil runter bis „Mehr …“ und Pfeil
