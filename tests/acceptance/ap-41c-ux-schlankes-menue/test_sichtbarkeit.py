@@ -20,6 +20,7 @@ from menue_helpers import (
     taskleiste,
     titel_de,
 )
+from test_gl_befehle import PLATZIERUNG  # noqa: E402  (Platzierungstabelle von ap-41b; Pfad setzt menue_helpers)
 
 FOLGT_SPAETER = "Folgt später"
 
@@ -186,6 +187,24 @@ def test_jeder_beta_befehl_hat_weiter_einen_ort():
         else:
             assert "suche-folgt" not in e["orte"], (b["id"], e["orte"])
     assert platzhalter >= 1, "kein Beta-Befehl ist Platzhalter: Test ohne Aussage"
+    # Abgleich mit der Platzierungstabelle von ap-41b: jede Familie genau ein Ort, Zusatzwege zählen nicht als Ort
+    familien = {b["familie"] for b in beta}
+    assert familien <= set(PLATZIERUNG), f"Familien ohne Ort: {sorted(familien - set(PLATZIERUNG))}"
+    zusatz = {"kontextmenue", "kontextmenue-mehr", "kontextaktion", "suche", "alle-befehle"}
+    for familie in familien:
+        soll = "dropdown" if PLATZIERUNG[familie].startswith("dropdown") else PLATZIERUNG[familie]
+        orte = set()
+        for b in beta:
+            if b["familie"] != familie or b["id"] in folgt:
+                continue
+            e = nach_id[b["id"]]
+            assert "suche" in e["orte"], (b["id"], "über die Suche nicht erreichbar", e["orte"])
+            orte |= {"dropdown" if o.startswith("dropdown") else o for o in e["orte"]} - (zusatz - {soll})
+        assert orte <= {soll}, (familie, orte, soll)
+        assert orte == {soll} or soll in zusatz, (familie, "Ort der Familie fehlt", orte, soll)
+    for d in r["dropdowns"]:
+        for u in d["untergruppen"]:
+            assert u["anzahl"] <= 12, (d["name"], u["name"], u["anzahl"])
 
 
 def test_keine_leeren_menues():
