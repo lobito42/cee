@@ -10,7 +10,15 @@ name: Vorschau für Spikes und Prototypen
 # Einmalig (Kernteam): Settings → Pages → Source „Deploy from a branch“ → Branch `gh-pages`, Ordner `/ (root)`.
 # Das Repository ist öffentlich; Vorschauen sind es damit auch.
 
+# Werkbank: Bei jedem Merge auf main wird der neueste Stand der Prototypen unter /werkbank/ neu veröffentlicht
+# (feste Adresse https://<owner>.github.io/<repo>/werkbank/<name>/), damit das Kernteam immer denselben Link öffnet.
+
 on:
+  push:
+    branches: [main]
+    paths:
+      - "spikes/**"
+      - ".github/workflows/vorschau.yml"
   pull_request:
     types: [opened, reopened, synchronize, labeled, closed]
     paths:
@@ -30,6 +38,43 @@ env:
   PR: ${{ github.event.pull_request.number }}
 
 jobs:
+  werkbank:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    concurrency:
+      group: werkbank
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .tool-versions
+      - run: rustup toolchain install
+      - name: Prototypen bauen
+        shell: bash
+        run: |
+          mkdir -p site
+          for s in spikes/*/vorschau.sh; do
+            [ -f "$s" ] || continue
+            name=$(basename "$(dirname "$s")")
+            mkdir -p "site/$name"
+            bash "$s" "$PWD/site/$name"
+          done
+      - name: Auf gh-pages veröffentlichen
+        shell: bash
+        run: |
+          remote="https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+          git clone --depth 1 --branch gh-pages "$remote" pages 2>/dev/null || {
+            git init -q pages && git -C pages checkout -q -b gh-pages && git -C pages remote add origin "$remote"
+          }
+          rm -rf pages/werkbank; mkdir -p pages/werkbank
+          cp -r site/. pages/werkbank/
+          touch pages/.nojekyll
+          git -C pages add -A
+          git -C pages -c user.name="cee-vorschau" -c user.email="noreply@github.com" commit -q -m "Werkbank: Stand von main $(git rev-parse --short HEAD)" || exit 0
+          git -C pages push -q origin gh-pages
+
   browser:
     if: github.event.action != 'closed' && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
