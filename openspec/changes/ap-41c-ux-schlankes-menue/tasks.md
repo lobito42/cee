@@ -16,7 +16,7 @@ Voraussetzung: Prototyp aus ap-41b (PR #73) auf `main`; Abnahmetests von ap-41c 
   `pruefen sichtbarkeit-befehle` und `pruefen fenster`; AK-1
 - [x] 1.3 Prüfbefehl `pruefen ausloesen` (jeder sichtbare Eintrag aus frischem Zustand) – Prüfung:
   `pruefen ausloesen` meldet für jeden Eintrag `wirkung: true`; AK-1
-- [ ] 1.4 Vorschau bauen, Klick-Anleitung im PR (Start-Menü und Dropdowns öffnen, Taskleiste auf „Simulation“) –
+- [x] 1.4 Vorschau bauen, Klick-Anleitung im PR (Start-Menü und Dropdowns öffnen, Taskleiste auf „Simulation“) –
   Prüfung: `bash P/build.sh` und `npm --prefix P run preview` startet
 
 ## 2. Suche mit „Folgt später“
@@ -26,31 +26,31 @@ Voraussetzung: Prototyp aus ap-41b (PR #73) auf `main`; Abnahmetests von ap-41c 
   Gruppierung und neuer Prüfbefehl `pruefen suche`; AK-2
 - [x] 2.2 Abgleich mit dem Befehlsinventar: Platzhalter haben `orte` = `["suche-folgt"]` – Prüfung: `pruefen
   inventar --datei tests/golden/ap-41b-ux-bedienkonzept/befehlsinventar.json`; AK-2
-- [ ] 2.3 Vorschau bauen, Klick-Anleitung im PR (in der Suche „ansicht“ und „baugruppe“ tippen) – Prüfung:
+- [x] 2.3 Vorschau bauen, Klick-Anleitung im PR (in der Suche „ansicht“ und „baugruppe“ tippen) – Prüfung:
   `bash P/build.sh`
 
 ## 3. Kurzes Kontextmenü und keine Doppelungen
 
-- [ ] 3.1 `kontextmenue()` in `P/src/modell/register.ts` nach design.md Abschnitt 3: Kandidaten ohne Platzhalter und
+- [x] 3.1 `kontextmenue()` in `P/src/modell/register.ts` nach design.md Abschnitt 3: Kandidaten ohne Platzhalter und
   ohne Befehle mit festem Ort, sichtbar die ersten 8 nach `rang`, Rest in „Mehr …“ nach Familie (≤ 12 je Gruppe);
   `kontextaktionen()` = erste 5 Kandidaten – Prüfung: Vitest in `register.test.ts` (Grenzen, Rang, Ausschlussliste)
-- [ ] 3.2 Darstellung: sichtbare Ebene ohne Gruppenüberschriften mit Trennlinien, „Mehr …“ als Untermenü per Klick,
+- [x] 3.2 Darstellung: sichtbare Ebene ohne Gruppenüberschriften mit Trennlinien, „Mehr …“ als Untermenü per Klick,
   Enter und Pfeil rechts, Esc und Pfeil links schließen nur die zweite Ebene; Ausgabe von `pruefen kontextmenue`
   erweitern (`sichtbar`, `mehr`, `mehr_gruppen`, `hoehe_px`, `kandidaten_nach_rang`) – Prüfung: `pruefen
   kontextmenue` und `pruefen tastatur`; AK-3
-- [ ] 3.3 Bausteinkatalog: Seiten „Kontextmenü“, „Kontextaktionen“, „Dropdown“ und „Suche“ mit der neuen Regel
+- [x] 3.3 Bausteinkatalog: Seiten „Kontextmenü“, „Kontextaktionen“, „Dropdown“ und „Suche“ mit der neuen Regel
   (2–6 Sätze, de und en) – Prüfung: `pruefen katalog --out <tmp>` und `pruefen texte`
-- [ ] 3.4 Doppelungen beheben (design.md, Abschnitt 10): Registerfeld `handlung` für `element.*`/`auswahl.*`
+- [x] 3.4 Doppelungen beheben (design.md, Abschnitt 10): Registerfeld `handlung` für `element.*`/`auswahl.*`
   (duplizieren, verwerfen, ausblenden), Menüs zeigen je Handlung nur die zur Auswahl passende Variante (D1);
   Befehle mit eigenem Knopf nicht in Dropdowns „Bearbeiten“ und „Fenster“ (D2); Aufklappmenü der Ansichtsleiste
   ohne die sechs Knöpfe (D3) – Prüfung: Vitest in `register.test.ts` (eine Handlung je Menü, keine Knopf-IDs im
   Dropdown) und neuer Prüfbefehl `pruefen doppelt`; AK-5
-- [ ] 3.5 `pruefen tastatur`: Kürzel am Knopf der Menüleiste zählt als Ort im Menü (`im_menue`) – Prüfung:
+- [x] 3.5 `pruefen tastatur`: Kürzel am Knopf der Menüleiste zählt als Ort im Menü (`im_menue`) – Prüfung:
   `uv run pytest -q tests/acceptance/ap-41b-ux-bedienkonzept -k kuerzel`
-- [ ] 3.6 Regression: Pilotabläufe und Reaktionszeit – Prüfung: `pruefen ablauf e` … `pruefen ablauf l` und
+- [x] 3.6 Regression: Pilotabläufe und Reaktionszeit – Prüfung: `pruefen ablauf e` … `pruefen ablauf l` und
   `pruefen messen`; `uv run pytest -q tests/acceptance/ap-41b-ux-bedienkonzept`; AK-4
 
 ## 4. Abschluss
 
-- [ ] 4.1 Vorschau bauen, Klick-Anleitung im PR (Dropdowns und Ansichtsleiste ohne Doppelungen öffnen, Rechtsklick auf Grundplatte, „Mehr …“ öffnen, Rechtsklick auf zwei
+- [x] 4.1 Vorschau bauen, Klick-Anleitung im PR (Dropdowns und Ansichtsleiste ohne Doppelungen öffnen, Rechtsklick auf Grundplatte, „Mehr …“ öffnen, Rechtsklick auf zwei
   Elemente) und alle Abnahmetests – Prüfung: `uv run pytest -q tests/acceptance/ap-41c-ux-schlankes-menue`
