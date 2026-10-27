@@ -8,7 +8,7 @@ import { Fenster } from './fenster';
 import { spracheAusAdresse, uebersetzer } from './i18n';
 import { ladeKatalog } from './katalog/katalog';
 import { standardProjekt } from './modell/beispiele';
-import { ladeRegisterDatei, befehleAusDatei, type Befehl } from './modell/register';
+import { ladeRegisterDatei, befehleAusDatei, orte, type Befehl } from './modell/register';
 import { alleElemente, type Element } from './modell/element';
 import { steuerungAnbinden } from './steuerung';
 import { tastenAnbinden } from './tastatur';
@@ -190,7 +190,10 @@ async function start(): Promise<void> {
           titel_text: app.t(b.titel),
           rang: b.rang,
           familie: b.familie,
+          wirkung: b.folgt !== true,
+          orte: orte(b),
         })),
+      ausgeloest: () => app.ausgeloest.map((a) => ({ ...a })),
       teil: () => {
         const e = app.teilErgebnis();
         return {

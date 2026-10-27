@@ -9,7 +9,7 @@ Voraussetzung: Prototyp aus ap-41b (PR #73) auf `main`; Abnahmetests von ap-41c 
 
 ## 1. Wirkung im Register und in den Menüs
 
-- [ ] 1.1 `befehle()` um `wirkung` und `orte` erweitern, `window.__cee.ausgeloest()` einführen (alle ausgelösten
+- [x] 1.1 `befehle()` um `wirkung` und `orte` erweitern, `window.__cee.ausgeloest()` einführen (alle ausgelösten
   Befehle mit `weg` und `wirkung`) – Prüfung: Vitest in `P/src/modell/register.test.ts` und `npm --prefix P test`
 - [ ] 1.2 Start-Menü, Dropdowns, Ansichtsleiste und „Alle Befehle zeigen“ filtern Platzhalter heraus; leere
   Untergruppen und Dropdowns entfallen; „Simulation“ ohne Dropdowns – Prüfung: neuer Prüfbefehl

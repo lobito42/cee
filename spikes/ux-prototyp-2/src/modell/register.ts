@@ -61,6 +61,42 @@ export const FAMILIEN = [
   'Chat',
 ];
 
+export type Ort =
+  | 'start-menue'
+  | 'dropdown'
+  | 'kontextmenue'
+  | 'kontextmenue-mehr'
+  | 'kontextaktion'
+  | 'ansichtsleiste'
+  | 'menueleiste'
+  | 'auge'
+  | 'suche'
+  | 'suche-folgt'
+  | 'alle-befehle';
+
+const FESTER_ORT: Record<string, Ort> = {
+  Datei: 'start-menue',
+  Bearbeiten: 'dropdown',
+  Auswahl: 'dropdown',
+  Baugruppe: 'dropdown',
+  Simulation: 'dropdown',
+  Ansicht: 'ansichtsleiste',
+  'Ansicht speichern': 'ansichtsleiste',
+  Sichtbarkeit: 'auge',
+  Fenster: 'menueleiste',
+};
+
+/** Orte, an denen ein Befehl erscheint: Platzhalter nur in der Suche unter „Folgt später“. */
+export function orte(b: Befehl): Ort[] {
+  if (b.folgt) return ['suche-folgt'];
+  const liste: Ort[] = ['suche', 'alle-befehle'];
+  const fest = FESTER_ORT[b.familie];
+  if (fest) liste.push(fest);
+  if (b.bezug !== 'keine' || b.kontext)
+    liste.push(b.wesentlich ? 'kontextmenue' : 'kontextmenue-mehr');
+  return liste;
+}
+
 export const befehleAusDatei = (daten as { befehle: Befehl[] }).befehle;
 
 export function ladeRegisterDatei(inhalt: unknown): Befehl[] {

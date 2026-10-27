@@ -99,6 +99,8 @@ export class App {
   projekt: Element;
   dok: string;
   protokoll: ProtokollEintrag[] = [];
+  /** Alle ausgelösten Befehle (auch ohne Wirkung am Graphen), nur für die Prüfung. */
+  ausgeloest: { befehl: string; weg: Weg; wirkung: boolean }[] = [];
   private verlaeufe = new Map<string, { zurueck: Element[]; vor: Element[] }>();
   /** Vorschau eines Werts, der gerade getippt wird (noch kein Verlaufseintrag). */
   vorschau: { id: string; name: string; wert: Groesse } | null = null;
@@ -552,11 +554,13 @@ export class App {
     this.menue = null;
     this.kontextMenue = null;
     if (!b || !w || b.folgt) {
+      this.ausgeloest.push({ befehl: id, weg, wirkung: false });
       this.meldung('rueck.folgt', { befehl: b ? this.t(b.titel) : id });
       this.rendern();
       return false;
     }
     const r = w(parameter, weg, quelle);
+    this.ausgeloest.push({ befehl: id, weg, wirkung: r !== false });
     this.rendern();
     return r !== false;
   }

@@ -1,10 +1,29 @@
 import { describe, expect, it } from 'vitest';
-import { befehleAusDatei, kontextaktionen, kontextmenue, nachRang, untergruppen } from './register';
+import {
+  befehleAusDatei,
+  kontextaktionen,
+  kontextmenue,
+  nachRang,
+  orte,
+  untergruppen,
+} from './register';
 import type { Auswahlart } from './register';
 
 const ARTEN: Auswahlart[] = ['teil', 'schritt', 'kante', 'baugruppe', 'mehrfach', 'keine'];
 
 describe('Register', () => {
+  it('Platzhalter haben nur den Ort „suche-folgt“, alle anderen nie', () => {
+    const folgt = befehleAusDatei.filter((b) => b.folgt);
+    expect(folgt.length).toBeGreaterThan(0);
+    for (const b of befehleAusDatei) {
+      if (b.folgt) expect(orte(b)).toEqual(['suche-folgt']);
+      else {
+        expect(orte(b)).toContain('suche');
+        expect(orte(b)).not.toContain('suche-folgt');
+      }
+    }
+  });
+
   it('Befehle haben eindeutige IDs und Ränge, höchstens 15 Kürzel', () => {
     const ids = befehleAusDatei.map((b) => b.id);
     expect(new Set(ids).size).toBe(ids.length);
