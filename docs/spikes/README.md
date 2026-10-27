@@ -8,6 +8,7 @@ Spikes des Meilensteins M0 (ADR-059). Aufbau: `## Fragestellung`, `## Vorgehen`,
 | ap-01-spike-datenmodell | `datenmodell.md` | Trägt eine einheitliche Elementform? Ist Automerge schnell genug? |
 | ap-03-spike-sync | `sync.md` | Zwei Clients live über Phoenix, einer offline, Merge ohne Datenverlust? |
 | ap-04-spike-rendering | `rendering.md` | Echtzeit-PBR und Fotomodus (Path Tracing) in Browser und Tauri auf drei Systemen? |
+| ap-49-spike-auswahl | `auswahl.md` | Trägt Auswahl nach Regel als Element im Graphen über Neuberechnung, mit Befund statt Absturz und schnell genug? |
 
 ## ap-00
 
