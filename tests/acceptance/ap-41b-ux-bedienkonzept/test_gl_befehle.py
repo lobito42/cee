@@ -40,7 +40,8 @@ PLATZIERUNG = {
     "Baugruppe": "dropdown-baugruppe",
     "Hilfe": "suche",
 }
-ZUSATZWEGE = {"kontextmenue", "suche"}
+# Einspruch (ap-41c): Platzhalter stehen nur in der Suche unter „Folgt später“.
+ZUSATZWEGE = {"kontextmenue", "suche", "suche-folgt"}
 BEZUG_PASST = {
     "teil": {"keine", "element", "teil"},
     "schritt": {"keine", "element"},
