@@ -8,16 +8,30 @@ import { h } from '../ui/dom';
 const MAX_OHNE_TEXT = 8;
 const MAX_MIT_TEXT = 12;
 
-export function sucheTreffer(app: App, text: string): Befehl[] {
+const MAX_FOLGT = 3;
+
+function filtere(app: App, text: string, folgt: boolean): Befehl[] {
   const q = text.trim().toLowerCase();
   const titel = (b: Befehl) => app.t(b.titel).toLowerCase();
-  if (!q) return [...app.register].sort((a, b) => a.rang - b.rang);
-  const treffer = app.register.filter((b) => titel(b).includes(q));
-  return treffer.sort((a, b) => {
-    const sa = titel(a).startsWith(q) ? 0 : 1;
-    const sb = titel(b).startsWith(q) ? 0 : 1;
-    return sa - sb || titel(a).length - titel(b).length || a.rang - b.rang;
-  });
+  const liste = app.register.filter((b) => !!b.folgt === folgt);
+  if (!q) return liste.sort((a, b) => a.rang - b.rang);
+  return liste
+    .filter((b) => titel(b).includes(q))
+    .sort((a, b) => {
+      const sa = titel(a).startsWith(q) ? 0 : 1;
+      const sb = titel(b).startsWith(q) ? 0 : 1;
+      return sa - sb || titel(a).length - titel(b).length || a.rang - b.rang;
+    });
+}
+
+/** Befehle mit Wirkung: nur sie sind je ein erster Treffer und mit Enter auslösbar. */
+export function sucheTreffer(app: App, text: string): Befehl[] {
+  return filtere(app, text, false);
+}
+
+/** Platzhalter: erscheinen nur in der letzten Gruppe „Folgt später“, nie ohne Eingabe. */
+export function folgtTreffer(app: App, text: string): Befehl[] {
+  return text.trim() || app.suche.alle ? filtere(app, text, true) : [];
 }
 
 /** Die angezeigten Befehle: ohne Eingabe die häufigsten, sonst die Treffer (mit Eingabe „Alle Befehle“ ohne Grenze). */
@@ -27,8 +41,59 @@ export function sichtbareTreffer(app: App): Befehl[] {
   return alle.slice(0, app.suche.text.trim() ? MAX_MIT_TEXT : MAX_OHNE_TEXT);
 }
 
+function treffer_zeile(app: App, b: Befehl, gewaehlt: boolean): HTMLElement {
+  return h(
+    'button',
+    {
+      type: 'button',
+      role: 'option',
+      class: 'eintrag',
+      'data-befehl': b.id,
+      'data-key': `s-${b.id}`,
+      'aria-selected': gewaehlt ? 'true' : 'false',
+      'data-akzent': gewaehlt ? 'auswahl' : null,
+      'data-folgt': b.folgt ? 'true' : null,
+      tabindex: '-1',
+    },
+    h('span', { class: 'titel' }, app.t(b.titel)),
+    b.folgt ? h('span', { class: 'folgt' }, app.t('menue.folgt')) : null,
+    b.kuerzel ? h('kbd', {}, kuerzelText(b.kuerzel, app.sprache)) : null,
+  );
+}
+
+/** Letzte Gruppe: Platzhalter, höchstens drei sichtbar, „Alle zeigen“; bei „Alle Befehle“ eingeklappt. */
+function folgtGruppe(app: App, folgt: Befehl[]): HTMLElement {
+  const name = app.t('suche.folgt-spaeter');
+  const eingeklappt = app.suche.alle && !app.suche.text.trim();
+  const zeigen = app.sucheFolgtAlle || eingeklappt ? folgt : folgt.slice(0, MAX_FOLGT);
+  const zeilen = zeigen.map((b) => treffer_zeile(app, b, false));
+  const mehr =
+    zeigen.length < folgt.length
+      ? h(
+          'button',
+          { type: 'button', class: 'eintrag', 'data-suche-folgt-alle': '', tabindex: '-1' },
+          h('span', { class: 'titel' }, app.t('suche.alle-zeigen')),
+        )
+      : null;
+  if (eingeklappt)
+    return h(
+      'details',
+      { 'data-gruppe': name, 'data-key': 'g-folgt', 'data-folgt-spaeter': '' },
+      h('summary', { class: 'gruppenkopf' }, name),
+      ...zeilen,
+    );
+  return h(
+    'div',
+    { 'data-gruppe': name, 'data-key': 'g-folgt', 'data-folgt-spaeter': '' },
+    h('div', { class: 'gruppenkopf' }, name),
+    ...zeilen,
+    mehr,
+  );
+}
+
 export function baueSuche(app: App): HTMLElement {
   const treffer = sichtbareTreffer(app);
+  const folgt = folgtTreffer(app, app.suche.text);
   const q = app.suche.text.trim().toLowerCase();
   const inhalte = q
     ? alleElemente(app.dokument())
@@ -59,27 +124,15 @@ export function baueSuche(app: App): HTMLElement {
     h(
       'div',
       { class: 'ergebnisse', 'data-text': app.suche.text },
-      h('div', { class: 'gruppenkopf' }, app.t('suche.befehle')),
-      ...treffer.map((b, i) =>
-        h(
-          'button',
-          {
-            type: 'button',
-            role: 'option',
-            class: 'eintrag',
-            'data-befehl': b.id,
-            'data-key': `s-${b.id}`,
-            'aria-selected': i === index ? 'true' : 'false',
-            'data-akzent': i === index ? 'auswahl' : null,
-            'data-folgt': b.folgt ? 'true' : null,
-            tabindex: '-1',
-          },
-          h('span', { class: 'titel' }, app.t(b.titel)),
-          b.folgt ? h('span', { class: 'folgt' }, app.t('menue.folgt')) : null,
-          b.kuerzel ? h('kbd', {}, kuerzelText(b.kuerzel, app.sprache)) : null,
-        ),
-      ),
-      treffer.length === 0 && inhalte.length === 0
+      treffer.length
+        ? h(
+            'div',
+            { 'data-gruppe': app.t('suche.befehle'), 'data-key': 'g-befehle' },
+            h('div', { class: 'gruppenkopf' }, app.t('suche.befehle')),
+            ...treffer.map((b, i) => treffer_zeile(app, b, i === index)),
+          )
+        : null,
+      treffer.length === 0 && inhalte.length === 0 && folgt.length === 0
         ? h('div', { class: 'leer', 'data-key': 'keine' }, app.t('suche.nichts'))
         : null,
       inhalte.length
@@ -100,6 +153,7 @@ export function baueSuche(app: App): HTMLElement {
           h('span', { class: 'titel' }, e.meta.name),
         ),
       ),
+      folgt.length ? folgtGruppe(app, folgt) : null,
     ),
   );
 }

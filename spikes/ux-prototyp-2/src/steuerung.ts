@@ -82,6 +82,11 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
       app.rendern();
       return;
     }
+    if (ziel.closest('[data-suche-folgt-alle]')) {
+      app.sucheFolgtAlle = true;
+      app.rendern();
+      return;
+    }
     const element = ziel.closest<HTMLElement>('[data-suche-element]');
     if (element) {
       app.suche.offen = false;
@@ -546,6 +551,7 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
       app.suche.text = ziel.value;
       app.suche.index = 0;
       app.suche.alle = false;
+      app.sucheFolgtAlle = false;
       app.rendern();
     } else if (ziel.dataset.chatEingabe !== undefined) {
       app.chat.eingabe = ziel.value;

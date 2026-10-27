@@ -473,6 +473,14 @@ async function inventar({ browser, basis, optionen, wurzel }) {
     const titel = await o.seite.evaluate(() =>
       Object.fromEntries(window.__cee.befehle().map((b) => [b.id, b.titel_text])),
     );
+    const platzhalter = new Set(
+      await o.seite.evaluate(() =>
+        window.__cee
+          .befehle()
+          .filter((b) => !b.wirkung)
+          .map((b) => b.id),
+      ),
+    );
     const befehle = [];
     for (const b of inv.filter((x) => x.beta)) {
       await l.taste(`${MOD}+k`);
@@ -486,7 +494,8 @@ async function inventar({ browser, basis, optionen, wurzel }) {
       befehle.push({
         id: b.id,
         familie: b.familie,
-        orte: [...(orte[b.id] ?? [])],
+        wirkung: !platzhalter.has(b.id),
+        orte: platzhalter.has(b.id) ? ['suche-folgt'] : [...(orte[b.id] ?? [])],
         suche_findet: findet,
         im_register: registerIds.has(b.id),
       });

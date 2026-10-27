@@ -170,7 +170,7 @@ export function wirkungenRegistrieren(app: App): void {
     const id = typeof par.element === 'string' ? par.element : app.auswahlIds()[0];
     if (!id || typeof par.name !== 'string' || !par.wert) {
       app.fokusEigenschaften = true;
-      return false;
+      return;
     }
     return app.wertSetzen(id, par.name, par.wert as { value: number; unit: 'mm' }, weg, quelle);
   });

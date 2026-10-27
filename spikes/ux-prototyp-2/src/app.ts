@@ -99,6 +99,8 @@ export class App {
   projekt: Element;
   dok: string;
   protokoll: ProtokollEintrag[] = [];
+  /** In der Suche alle Platzhalter („Folgt später“) zeigen statt der ersten drei. */
+  sucheFolgtAlle = false;
   /** Alle ausgelösten Befehle (auch ohne Wirkung am Graphen), nur für die Prüfung. */
   ausgeloest: { befehl: string; weg: Weg; wirkung: boolean }[] = [];
   private verlaeufe = new Map<string, { zurueck: Element[]; vor: Element[] }>();

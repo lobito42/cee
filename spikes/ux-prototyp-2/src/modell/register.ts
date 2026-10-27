@@ -169,7 +169,8 @@ export function kontextmenue(
   anwendbar: (b: Befehl) => boolean = () => true,
 ): KontextGruppe[] {
   const passend = reg.filter(
-    (b) => PASST[art].has(b.bezug) && (b.bezug !== 'keine' || b.kontext) && anwendbar(b),
+    (b) =>
+      !b.folgt && PASST[art].has(b.bezug) && (b.bezug !== 'keine' || b.kontext) && anwendbar(b),
   );
   const familien = [...new Set([...FAMILIEN, ...passend.map((b) => b.familie)])];
   const gruppen: KontextGruppe[] = [];

@@ -11,20 +11,20 @@ Voraussetzung: Prototyp aus ap-41b (PR #73) auf `main`; Abnahmetests von ap-41c 
 
 - [x] 1.1 `befehle()` um `wirkung` und `orte` erweitern, `window.__cee.ausgeloest()` einführen (alle ausgelösten
   Befehle mit `weg` und `wirkung`) – Prüfung: Vitest in `P/src/modell/register.test.ts` und `npm --prefix P test`
-- [ ] 1.2 Start-Menü, Dropdowns, Ansichtsleiste und „Alle Befehle zeigen“ filtern Platzhalter heraus; leere
+- [x] 1.2 Start-Menü, Dropdowns, Ansichtsleiste und „Alle Befehle zeigen“ filtern Platzhalter heraus; leere
   Untergruppen und Dropdowns entfallen; „Simulation“ ohne Dropdowns – Prüfung: neuer Prüfbefehl
   `pruefen sichtbarkeit-befehle` und `pruefen fenster`; AK-1
-- [ ] 1.3 Prüfbefehl `pruefen ausloesen` (jeder sichtbare Eintrag aus frischem Zustand) – Prüfung:
+- [x] 1.3 Prüfbefehl `pruefen ausloesen` (jeder sichtbare Eintrag aus frischem Zustand) – Prüfung:
   `pruefen ausloesen` meldet für jeden Eintrag `wirkung: true`; AK-1
 - [ ] 1.4 Vorschau bauen, Klick-Anleitung im PR (Start-Menü und Dropdowns öffnen, Taskleiste auf „Simulation“) –
   Prüfung: `bash P/build.sh` und `npm --prefix P run preview` startet
 
 ## 2. Suche mit „Folgt später“
 
-- [ ] 2.1 Suche: Platzhalter nur in der letzten Gruppe „Folgt später“ (≤ 3 sichtbar, „Alle zeigen“), nie erster
+- [x] 2.1 Suche: Platzhalter nur in der letzten Gruppe „Folgt später“ (≤ 3 sichtbar, „Alle zeigen“), nie erster
   Treffer, Enter löst nie einen Platzhalter aus, Klick zeigt nur die Rückmeldung – Prüfung: Vitest für die
   Gruppierung und neuer Prüfbefehl `pruefen suche`; AK-2
-- [ ] 2.2 Abgleich mit dem Befehlsinventar: Platzhalter haben `orte` = `["suche-folgt"]` – Prüfung: `pruefen
+- [x] 2.2 Abgleich mit dem Befehlsinventar: Platzhalter haben `orte` = `["suche-folgt"]` – Prüfung: `pruefen
   inventar --datei tests/golden/ap-41b-ux-bedienkonzept/befehlsinventar.json`; AK-2
 - [ ] 2.3 Vorschau bauen, Klick-Anleitung im PR (in der Suche „ansicht“ und „baugruppe“ tippen) – Prüfung:
   `bash P/build.sh`

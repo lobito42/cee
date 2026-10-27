@@ -11,6 +11,7 @@ import { basisBefehle } from './basis.mjs';
 import { datenBefehle } from './daten.mjs';
 import { fensterBefehle } from './fenster.mjs';
 import { katalogBefehle } from './katalog.mjs';
+import { menueBefehle } from './menue.mjs';
 import { messBefehle } from './messen.mjs';
 import { modellBefehle } from './modell.mjs';
 import { rueckmeldungBefehle } from './rueckmeldung.mjs';
@@ -20,14 +21,18 @@ const WURZEL = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 function argumente(roh) {
   const [befehl, ...rest] = roh;
   const optionen = {};
+  const alle = {};
   const positionen = [];
   for (let i = 0; i < rest.length; i++) {
     const a = rest[i];
     if (a === '--json') continue;
-    if (a.startsWith('--')) optionen[a.slice(2)] = rest[++i];
-    else positionen.push(a);
+    if (a.startsWith('--')) {
+      const wert = rest[++i];
+      optionen[a.slice(2)] = wert;
+      (alle[a.slice(2)] ??= []).push(wert);
+    } else positionen.push(a);
   }
-  return { befehl, optionen, positionen };
+  return { befehl, optionen, alle, positionen };
 }
 
 const BEFEHLE = {
@@ -40,9 +45,10 @@ const BEFEHLE = {
   ...messBefehle,
   ...ablaufBefehle,
   ...katalogBefehle,
+  ...menueBefehle,
 };
 
-const { befehl, optionen, positionen } = argumente(process.argv.slice(2));
+const { befehl, optionen, alle, positionen } = argumente(process.argv.slice(2));
 if (!befehl || !BEFEHLE[befehl]) {
   process.stderr.write(
     `Unbekannter Befehl: ${befehl ?? '(keiner)'}; bekannt: ${Object.keys(BEFEHLE).join(', ')}\n`,
@@ -60,7 +66,14 @@ const browser = await chromium.launch({
   args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'],
 });
 try {
-  const ergebnis = await BEFEHLE[befehl]({ browser, basis, optionen, positionen, wurzel: WURZEL });
+  const ergebnis = await BEFEHLE[befehl]({
+    browser,
+    basis,
+    optionen,
+    alle,
+    positionen,
+    wurzel: WURZEL,
+  });
   process.stdout.write(`${JSON.stringify(ergebnis)}\n`);
 } finally {
   await browser.close();

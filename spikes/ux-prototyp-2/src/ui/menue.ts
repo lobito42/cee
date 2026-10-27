@@ -32,7 +32,8 @@ export function eintrag(
 
 /** Alle Befehle einer Familie in Untergruppen (höchstens zwölf je Untergruppe). */
 export function familienMenue(app: App, familie: string): HTMLElement[] {
-  return untergruppen(app.register, familie).map((u) =>
+  const mitWirkung = app.register.filter((b) => !b.folgt);
+  return untergruppen(mitWirkung, familie).map((u) =>
     h(
       'div',
       {

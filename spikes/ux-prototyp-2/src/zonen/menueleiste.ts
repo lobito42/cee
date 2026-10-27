@@ -73,14 +73,16 @@ export function baueMenueleiste(app: App): HTMLElement[] {
   const suche = app.befehl('suche.oeffnen');
   return [
     ausloeser(app, 'start', app.t('menue.start'), 'start-menue'),
-    ...DROPDOWNS[app.task].map((familie) =>
-      ausloeser(
-        app,
-        `dropdown:${familie}`,
-        app.t(`familie.${familie}`),
-        familie === 'Fenster' ? 'menueleiste' : `dropdown-${familie.toLowerCase()}`,
+    ...DROPDOWNS[app.task]
+      .filter((familie) => app.register.some((b) => b.familie === familie && !b.folgt))
+      .map((familie) =>
+        ausloeser(
+          app,
+          `dropdown:${familie}`,
+          app.t(`familie.${familie}`),
+          familie === 'Fenster' ? 'menueleiste' : `dropdown-${familie.toLowerCase()}`,
+        ),
       ),
-    ),
     h('div', { class: 'platz' }),
     h(
       'div',
