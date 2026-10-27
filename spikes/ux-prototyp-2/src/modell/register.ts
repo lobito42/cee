@@ -28,6 +28,8 @@ export interface Befehl {
   kontext?: boolean;
   /** Noch ohne Wirkung im Prototyp. */
   folgt?: boolean;
+  /** Gemeinsame Handlung von Varianten (etwa für ein Element und für mehrere): Menüs zeigen eine. */
+  handlung?: string;
 }
 
 export const GRUPPE_MAX = 12;
@@ -92,8 +94,7 @@ export function orte(b: Befehl): Ort[] {
   const liste: Ort[] = ['suche', 'alle-befehle'];
   const fest = FESTER_ORT[b.familie];
   if (fest) liste.push(fest);
-  if (b.bezug !== 'keine' || b.kontext)
-    liste.push(b.wesentlich ? 'kontextmenue' : 'kontextmenue-mehr');
+  if (!hatFestenOrt(b) && (b.bezug !== 'keine' || b.kontext)) liste.push('kontextmenue');
   return liste;
 }
 
@@ -113,6 +114,7 @@ export function ladeRegisterDatei(inhalt: unknown): Befehl[] {
     untergruppe: b.untergruppe,
     kontext: b.kontext,
     folgt: b.folgt,
+    handlung: b.handlung,
   }));
 }
 
@@ -156,50 +158,99 @@ export function untergruppen(reg: Befehl[], familie: string): Untergruppe[] {
 
 export interface KontextGruppe {
   familie: string;
-  eintraege: { befehl: Befehl; mehr: boolean }[];
+  eintraege: Befehl[];
+}
+
+export interface Kontextmenue {
+  /** Alle Kandidaten nach Rang. */
+  kandidaten: Befehl[];
+  /** Sichtbare Ebene: die ersten acht Kandidaten, nach Familie gruppiert (ohne Überschriften). */
+  sichtbar: KontextGruppe[];
+  /** Zweite Ebene „Mehr …“: die übrigen Kandidaten nach Familie, höchstens zwölf je Gruppe. */
+  mehr: KontextGruppe[];
+}
+
+export const SICHTBAR_MAX = 8;
+
+/** Befehle mit eigenem Knopf in der Menüleiste: sie stehen nicht zusätzlich in einem Dropdown. */
+export const MENUELEISTE_KNOEPFE: ReadonlySet<string> = new Set([
+  'bearbeiten.rueckgaengig',
+  'bearbeiten.wiederholen',
+  'fenster.struktur',
+  'fenster.panel',
+  'fenster.rechts',
+  'suche.oeffnen',
+]);
+
+/** Knöpfe der Ansichtsleiste: das Aufklappmenü zeigt sie nicht noch einmal. */
+export const ANSICHTSLEISTE_KNOEPFE: readonly string[] = [
+  'ansicht.einpassen',
+  'ansicht.auf-auswahl',
+  'ansicht.isolieren',
+  'ansicht.alles-einblenden',
+  'ansicht.projektion',
+  'darstellung.wechseln',
+];
+
+const FESTE_FAMILIEN = new Set(['Ansicht', 'Fenster']);
+const FESTE_IDS = new Set(['bearbeiten.rueckgaengig', 'bearbeiten.wiederholen']);
+
+/** Befehle mit dauerndem Ort außerhalb des Kontextmenüs (Ansichtsleiste, Menüleiste). */
+export const hatFestenOrt = (b: Befehl): boolean =>
+  FESTE_FAMILIEN.has(b.familie) || FESTE_IDS.has(b.id);
+
+/** Je Handlung nur die Variante, deren Bezug zur Auswahlart passt (sonst die für ein Element). */
+export function passendeVariante(reg: Befehl[], b: Befehl, art: Auswahlart): boolean {
+  if (!b.handlung) return true;
+  const gleiche = reg.filter((x) => x.handlung === b.handlung && !x.folgt);
+  const passt = gleiche.find((x) => PASST[art].has(x.bezug));
+  return (passt ?? gleiche.find((x) => x.bezug === 'element') ?? b) === b;
+}
+
+function nachFamilie(liste: Befehl[], teilen: boolean): KontextGruppe[] {
+  const familien = [...new Set([...FAMILIEN, ...liste.map((b) => b.familie)])];
+  const gruppen: KontextGruppe[] = [];
+  for (const familie of familien) {
+    const eigene = liste.filter((b) => b.familie === familie);
+    for (let i = 0; i < eigene.length; i += teilen ? GRUPPE_MAX : eigene.length || 1) {
+      gruppen.push({
+        familie,
+        eintraege: eigene.slice(i, i + (teilen ? GRUPPE_MAX : eigene.length)),
+      });
+    }
+  }
+  return gruppen.filter((g) => g.eintraege.length);
 }
 
 /**
- * Kontextmenü aus dem Register: alle Befehle, deren Bezug zur Auswahlart passt (und die anwendbar sind),
- * gruppiert nach Familie, innerhalb nach Rang; höchstens zwölf je Gruppe, Unwesentliches hinter „Mehr …“.
+ * Kontextmenü aus dem Register: Kandidaten sind Befehle mit Wirkung, passendem Bezug, ohne festen Ort und
+ * anwendbar. Die ersten acht nach Rang sind sichtbar, der Rest steht hinter „Mehr …“.
  */
 export function kontextmenue(
   reg: Befehl[],
   art: Auswahlart,
   anwendbar: (b: Befehl) => boolean = () => true,
-): KontextGruppe[] {
-  const passend = reg.filter(
-    (b) =>
-      !b.folgt && PASST[art].has(b.bezug) && (b.bezug !== 'keine' || b.kontext) && anwendbar(b),
-  );
-  const familien = [...new Set([...FAMILIEN, ...passend.map((b) => b.familie)])];
-  const gruppen: KontextGruppe[] = [];
-  for (const familie of familien) {
-    const liste = passend
-      .filter((b) => b.familie === familie)
-      .sort((a, b) => a.rang - b.rang)
-      .slice(0, GRUPPE_MAX);
-    if (!liste.length) continue;
-    const wesentlich = liste.filter((b) => b.wesentlich);
-    const mehr = liste.filter((b) => !b.wesentlich);
-    gruppen.push({
-      familie,
-      eintraege: [
-        ...wesentlich.map((befehl) => ({ befehl, mehr: false })),
-        ...mehr.map((befehl) => ({ befehl, mehr: true })),
-      ],
-    });
-  }
-  return gruppen;
-}
-
-/** Alle Einträge des Kontextmenüs nach Rang (für die Kontextaktionen: die ersten fünf). */
-export function nachRang(gruppen: KontextGruppe[]): Befehl[] {
-  return gruppen.flatMap((g) => g.eintraege.map((e) => e.befehl)).sort((a, b) => a.rang - b.rang);
+): Kontextmenue {
+  const kandidaten = reg
+    .filter(
+      (b) =>
+        !b.folgt &&
+        !hatFestenOrt(b) &&
+        PASST[art].has(b.bezug) &&
+        (b.bezug !== 'keine' || b.kontext) &&
+        anwendbar(b),
+    )
+    .sort((a, b) => a.rang - b.rang);
+  return {
+    kandidaten,
+    sichtbar: nachFamilie(kandidaten.slice(0, SICHTBAR_MAX), false),
+    mehr: nachFamilie(kandidaten.slice(SICHTBAR_MAX), true),
+  };
 }
 
 export const KONTEXTAKTIONEN_MAX = 5;
 
-export function kontextaktionen(gruppen: KontextGruppe[]): Befehl[] {
-  return nachRang(gruppen).slice(0, KONTEXTAKTIONEN_MAX);
+/** Die Kontextaktionen sind die ersten fünf Kandidaten nach Rang. */
+export function kontextaktionen(menue: Kontextmenue): Befehl[] {
+  return menue.kandidaten.slice(0, KONTEXTAKTIONEN_MAX);
 }

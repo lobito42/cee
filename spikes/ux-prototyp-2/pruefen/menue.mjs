@@ -11,9 +11,9 @@ const FOLGT_TEXT = 'folgt in einer späteren Stufe';
 const folgtMap = (seite) =>
   seite.evaluate(() => Object.fromEntries(window.__cee.befehle().map((b) => [b.id, !b.wirkung])));
 
-const eintraegeLesen = (seite, wurzel, folgt) =>
+const eintraegeLesen = (seite, wurzel, folgt, direkt = false) =>
   seite
-    .$$eval(`${wurzel} [data-befehl]`, (l) =>
+    .$$eval(direkt ? wurzel : `${wurzel} [data-befehl]`, (l) =>
       l.map((e) => ({ befehl: e.dataset.befehl, aus: e.getAttribute('aria-disabled') })),
     )
     .then((l) => l.map((e) => ({ befehl: e.befehl, folgt: folgt[e.befehl] === true })));
@@ -63,7 +63,12 @@ async function taskleisteLesen(browser, basis, name) {
   const start = await eintraegeLesen(o.seite, '[data-zone="menueleiste"] .popup', folgt);
   await l.taste('Escape');
   const dropdowns = await dropdownsLesen(o.seite, l, folgt);
-  const leiste = await eintraegeLesen(o.seite, '.ansichtsleiste > button', folgt);
+  const leiste = await eintraegeLesen(
+    o.seite,
+    '.ansichtsleiste > button[data-befehl]',
+    folgt,
+    true,
+  );
   let aufklapp = [];
   if (await o.seite.$('.ansichtsleiste [data-menue-trigger="ansicht"]')) {
     await l.klick('.ansichtsleiste [data-menue-trigger="ansicht"]');
@@ -264,7 +269,156 @@ async function sucheKlick(browser, basis, text) {
   };
 }
 
+// --- doppelt -------------------------------------------------------------------------------------
+
+const DOPPELT_ZUSTAENDE = ['halter', 'auswahl', 'mehrfach', 'aktiv', 'ausgeblendet'];
+
+const zaehleDoppelte = (liste) => {
+  const n = new Map();
+  for (const x of liste) n.set(x, (n.get(x) ?? 0) + 1);
+  return [...n].filter(([, c]) => c > 1).map(([k]) => k);
+};
+
+/** Liest die Einträge unter `wurzel` im Seitenkontext: Befehl, angezeigter Titel, Handlung. */
+const eintraegeMitTitel = (seite, wurzel, handlungen, direkt = false) =>
+  seite
+    .$$eval(direkt ? wurzel : `${wurzel} [data-befehl]`, (l) =>
+      l.map((e) => ({
+        befehl: e.dataset.befehl,
+        titel: (
+          e.querySelector('.titel')?.textContent ??
+          e.getAttribute('aria-label') ??
+          e.textContent
+        ).trim(),
+      })),
+    )
+    .then((l) => l.map((e) => ({ ...e, handlung: handlungen[e.befehl] ?? null })));
+
+const menueEintrag = (menue, eintraege) => ({
+  menue,
+  eintraege,
+  doppelte_ids: zaehleDoppelte(eintraege.map((e) => e.befehl)),
+  doppelte_titel: zaehleDoppelte(eintraege.map((e) => e.titel)),
+  doppelte_handlungen: zaehleDoppelte(eintraege.flatMap((e) => (e.handlung ? [e.handlung] : []))),
+});
+
+async function doppeltFall(browser, basis, taskleiste, zustand) {
+  const o = await oeffnen(browser, adresse(basis, zustand));
+  const l = new Lauf(o.seite);
+  const s = o.seite;
+  if (taskleiste === 'Simulation') await l.klick(TASK('simulation'));
+  const handlungen = await s.evaluate(() =>
+    Object.fromEntries(window.__cee.befehle().map((b) => [b.id, b.handlung])),
+  );
+  const menues = [];
+  const menueleiste = [];
+  const popup = '[data-zone="menueleiste"] .popup';
+  await l.klick('[data-menue-trigger="start"]');
+  const start = await eintraegeMitTitel(s, popup, handlungen);
+  menues.push(menueEintrag('start-menue', start));
+  menueleiste.push(...start.map((e) => e.befehl));
+  await l.taste('Escape');
+  const ausloeser = await s.$$eval(
+    '[data-zone="menueleiste"] [data-menue-trigger^="dropdown:"]',
+    (e) => e.map((x) => x.dataset.menueTrigger),
+  );
+  for (const id of ausloeser) {
+    await l.klick(`[data-menue-trigger="${id}"]`);
+    const eintraege = await eintraegeMitTitel(s, popup, handlungen);
+    menues.push(menueEintrag(id, eintraege));
+    menueleiste.push(...eintraege.map((e) => e.befehl));
+    await l.taste('Escape');
+  }
+  const knoepfe = await s.$$eval('[data-zone="menueleiste"] button[data-befehl]', (x) =>
+    x
+      .filter((e) => !e.closest('.popup'))
+      .map((e) => ({
+        befehl: e.dataset.befehl,
+        kuerzel_text: e.querySelector('kbd')?.textContent?.trim() ?? '',
+      })),
+  );
+  menueleiste.push(...knoepfe.map((k) => k.befehl));
+  if (await s.$('.ansichtsleiste')) {
+    menues.push(
+      menueEintrag(
+        'ansichtsleiste',
+        await eintraegeMitTitel(s, '.ansichtsleiste > button[data-befehl]', handlungen, true),
+      ),
+    );
+    await l.klick('.ansichtsleiste [data-menue-trigger="ansicht"]');
+    menues.push(
+      menueEintrag(
+        'ansichtsleiste-aufklappmenue',
+        await eintraegeMitTitel(s, '.ansichtsleiste .popup', handlungen),
+      ),
+    );
+    await l.taste('Escape');
+  }
+  if (await s.$('[data-menue-trigger="sichtbarkeit"]')) {
+    await l.klick('[data-menue-trigger="sichtbarkeit"]');
+    menues.push(menueEintrag('auge', await eintraegeMitTitel(s, '[data-ort="auge"]', handlungen)));
+    await l.taste('Escape');
+  }
+  const sel = await s.evaluate(() => window.__cee.auswahl().map((a) => a.element_id));
+  const punkt = sel.length ? await trefferPunkt(s, sel[0]).catch(() => null) : null;
+  await l.rechtsklickPunkt(punkt ?? (await leererPunkt(s)));
+  menues.push(
+    menueEintrag(
+      'kontextmenue',
+      await eintraegeMitTitel(s, '.kontextmenue > [role="group"]', handlungen),
+    ),
+  );
+  if (await s.$('.kontextmenue > [data-mehr-toggle]')) {
+    await s.locator('.kontextmenue > [data-mehr-toggle]').dispatchEvent('click');
+    await l.warte();
+    menues.push(
+      menueEintrag(
+        'kontextmenue-mehr',
+        await eintraegeMitTitel(s, '.kontextmenue-mehr', handlungen),
+      ),
+    );
+  }
+  await l.taste('Escape');
+  await l.taste('Escape');
+  await schliessen(o);
+
+  let duplizieren = null;
+  if (zustand === 'auswahl' || zustand === 'mehrfach') {
+    const d = await oeffnen(browser, adresse(basis, zustand));
+    const dl = new Lauf(d.seite);
+    await dl.klick('[data-menue-trigger="dropdown:Bearbeiten"]');
+    const ziel = await d.seite.$$eval('[data-zone="menueleiste"] .popup [data-befehl]', (x) =>
+      x.map((e) => e.dataset.befehl),
+    );
+    const hd = await d.seite.evaluate(() =>
+      Object.fromEntries(window.__cee.befehle().map((b) => [b.id, b.handlung])),
+    );
+    const befehl = ziel.find((b) => hd[b] === 'duplizieren');
+    const vorher = await d.seite.evaluate(() => window.__cee.protokoll().length);
+    if (befehl) await dl.klick(`[data-zone="menueleiste"] .popup [data-befehl="${befehl}"]`);
+    const protokoll = await d.seite.evaluate((v) => window.__cee.protokoll().slice(v), vorher);
+    duplizieren = { menue: 'dropdown:Bearbeiten', protokoll_neu: protokoll.map((p) => p.befehl) };
+    await schliessen(d);
+  }
+  return {
+    taskleiste,
+    zustand,
+    menues,
+    doppelte_ids_menueleiste: zaehleDoppelte(menueleiste),
+    menueleiste_ids: menueleiste,
+    knoepfe,
+    duplizieren,
+  };
+}
+
 export const menueBefehle = {
+  async doppelt({ browser, basis }) {
+    const faelle = [];
+    for (const t of ['Modellieren', 'Simulation'])
+      for (const z of DOPPELT_ZUSTAENDE) faelle.push(await doppeltFall(browser, basis, t, z));
+    return { faelle };
+  },
+
   async 'sichtbarkeit-befehle'({ browser, basis }) {
     const taskleisten = [];
     for (const name of ['Modellieren', 'Simulation'])

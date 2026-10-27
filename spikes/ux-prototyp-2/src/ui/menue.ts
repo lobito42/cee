@@ -1,7 +1,7 @@
 // Bausteine für Menüs: ein Eintrag je Befehl (aus dem Register), Gruppen, Popups.
 import type { App } from '../app';
 import { kuerzelText } from '../i18n';
-import { untergruppen, type Befehl } from '../modell/register';
+import { passendeVariante, untergruppen, type Befehl } from '../modell/register';
 import { h } from './dom';
 
 /** Ein Befehl als Menüeintrag: Titel, bei Bedarf „folgt“ und das Kürzel aus dem Register. */
@@ -31,9 +31,17 @@ export function eintrag(
 }
 
 /** Alle Befehle einer Familie in Untergruppen (höchstens zwölf je Untergruppe). */
-export function familienMenue(app: App, familie: string): HTMLElement[] {
-  const mitWirkung = app.register.filter((b) => !b.folgt);
-  return untergruppen(mitWirkung, familie).map((u) =>
+export function familienMenue(
+  app: App,
+  familie: string,
+  ausser: ReadonlySet<string> = new Set(),
+): HTMLElement[] {
+  const art = app.auswahlart();
+  // Platzhalter, Befehle mit eigenem Knopf und die nicht passende Variante einer Handlung bleiben draußen
+  const sichtbar = app.register.filter(
+    (b) => !b.folgt && !ausser.has(b.id) && passendeVariante(app.register, b, art),
+  );
+  return untergruppen(sichtbar, familie).map((u) =>
     h(
       'div',
       {

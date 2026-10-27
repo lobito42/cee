@@ -28,7 +28,7 @@ import {
   befehleAusDatei,
   type Auswahlart,
   type Befehl,
-  type KontextGruppe,
+  type Kontextmenue,
 } from './modell/register';
 import profile from './eingabe/profile.json';
 import { sichtbareTreffer } from './zonen/suche';
@@ -127,8 +127,11 @@ export class App {
     x: number;
     y: number;
     art: Auswahlart;
-    gruppen: KontextGruppe[];
-    mehr: Set<string>;
+    menue: Kontextmenue;
+    /** Zweite Ebene „Mehr …“ geöffnet. */
+    mehrOffen: boolean;
+    /** Nach dem Zeichnen den Fokus setzen: auf „Mehr …“ oder in die zweite Ebene. */
+    fokus?: 'mehr' | 'zweite-ebene';
   } | null = null;
   suche = { offen: false, text: '', index: 0, alle: false, fokussiert: false };
   umbenennen: { id: string; weg: Weg } | null = null;

@@ -107,6 +107,7 @@
     },
     {
       "id": "element.duplizieren",
+      "handlung": "duplizieren",
       "familie": "Bearbeiten",
       "titel": "befehl.element.duplizieren",
       "parameter": {},
@@ -133,6 +134,7 @@
     },
     {
       "id": "element.verwerfen",
+      "handlung": "verwerfen",
       "familie": "Bearbeiten",
       "titel": "befehl.element.verwerfen",
       "parameter": {},
@@ -144,6 +146,7 @@
     },
     {
       "id": "auswahl.duplizieren",
+      "handlung": "duplizieren",
       "familie": "Bearbeiten",
       "titel": "befehl.auswahl.duplizieren",
       "parameter": {},
@@ -154,6 +157,7 @@
     },
     {
       "id": "auswahl.verwerfen",
+      "handlung": "verwerfen",
       "familie": "Bearbeiten",
       "titel": "befehl.auswahl.verwerfen",
       "parameter": {},
@@ -479,6 +483,7 @@
     },
     {
       "id": "element.ausblenden",
+      "handlung": "ausblenden",
       "familie": "Sichtbarkeit",
       "titel": "befehl.element.ausblenden",
       "parameter": {},
@@ -500,6 +505,7 @@
     },
     {
       "id": "auswahl.ausblenden",
+      "handlung": "ausblenden",
       "familie": "Sichtbarkeit",
       "titel": "befehl.auswahl.ausblenden",
       "parameter": {},

@@ -330,6 +330,22 @@ h3 {
   top: 0;
   left: 0;
   max-height: 80vh;
+  overflow: visible;
+}
+
+.kontextmenue-mehr {
+  top: 0;
+  left: calc(100% + 2px);
+}
+
+.kontextmenue-mehr.nach-links {
+  left: auto;
+  right: calc(100% + 2px);
+}
+
+.kontextmenue [role='separator'] {
+  border-top: var(--linie-breite) solid var(--farbe-linie);
+  margin: var(--abstand-1) 0;
 }
 
 .suche-popup {

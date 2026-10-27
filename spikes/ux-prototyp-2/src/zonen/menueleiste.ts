@@ -2,6 +2,7 @@
 import type { App } from '../app';
 import { kuerzelText } from '../i18n';
 import { h, symbol, type Symbolname } from '../ui/dom';
+import { MENUELEISTE_KNOEPFE } from '../modell/register';
 import { familienMenue, popup } from '../ui/menue';
 import { baueSuche } from './suche';
 
@@ -29,7 +30,14 @@ function ausloeser(app: App, id: string, text: string, ort: string): HTMLElement
       text,
     ),
     offen
-      ? popup(ort, familienMenue(app, id.replace('dropdown:', '').replace('start', 'Datei')))
+      ? popup(
+          ort,
+          familienMenue(
+            app,
+            id.replace('dropdown:', '').replace('start', 'Datei'),
+            MENUELEISTE_KNOEPFE,
+          ),
+        )
       : null,
   );
 }

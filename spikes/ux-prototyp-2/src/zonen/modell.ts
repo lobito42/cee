@@ -3,7 +3,12 @@ import type { App } from '../app';
 import { entlang, huellbox, konvexeHuelle } from '../ansicht/geom';
 import type { Punkt } from '../ansicht/szene';
 import { wert, type Element } from '../modell/element';
-import { kontextaktionen, kontextmenue, type Befehl } from '../modell/register';
+import {
+  ANSICHTSLEISTE_KNOEPFE,
+  kontextaktionen,
+  kontextmenue,
+  type Befehl,
+} from '../modell/register';
 import { h, symbol, type Symbolname } from '../ui/dom';
 import { familienMenue, popup } from '../ui/menue';
 import { statusElement, statusVon } from './struktur';
@@ -232,14 +237,8 @@ export function pfad(app: App): HTMLElement {
   );
 }
 
-const LEISTE: string[] = [
-  'ansicht.einpassen',
-  'ansicht.auf-auswahl',
-  'ansicht.isolieren',
-  'ansicht.alles-einblenden',
-  'ansicht.projektion',
-  'darstellung.wechseln',
-];
+const LEISTE = ANSICHTSLEISTE_KNOEPFE;
+const LEISTE_MENGE = new Set(LEISTE);
 
 export function ansichtsleiste(app: App): HTMLElement {
   const knoepfe = LEISTE.map((id) => app.befehl(id)).filter((b): b is Befehl => !!b);
@@ -289,7 +288,10 @@ export function ansichtsleiste(app: App): HTMLElement {
       app.menue === 'ansicht'
         ? popup(
             'ansichtsleiste',
-            [...familienMenue(app, 'Ansicht'), ...familienMenue(app, 'Ansicht speichern')],
+            [
+              ...familienMenue(app, 'Ansicht', LEISTE_MENGE),
+              ...familienMenue(app, 'Ansicht speichern', LEISTE_MENGE),
+            ],
             'menue',
             'nach-oben',
           )
@@ -301,8 +303,7 @@ export function ansichtsleiste(app: App): HTMLElement {
 function kontextleiste(app: App, ursprung: Punkt, breite: number): HTMLElement | null {
   const art = app.auswahlart();
   if (art === 'keine' || app.dnd || app.griff) return null;
-  const gruppen = kontextmenue(app.register, art, (b) => app.anwendbar(b));
-  const aktionen = kontextaktionen(gruppen);
+  const aktionen = kontextaktionen(kontextmenue(app.register, art, (b) => app.anwendbar(b)));
   if (!aktionen.length) return null;
   const ziele = app
     .auswahlIds()

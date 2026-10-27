@@ -190,6 +190,7 @@ async function start(): Promise<void> {
           titel_text: app.t(b.titel),
           rang: b.rang,
           familie: b.familie,
+          handlung: b.handlung ?? null,
           wirkung: b.folgt !== true,
           orte: orte(b),
         })),
