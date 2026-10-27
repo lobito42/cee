@@ -320,6 +320,22 @@ async function menuLesen(seite) {
     for (const e of mg.eintraege) g.eintraege.push({ befehl: e.befehl, mehr: true });
   }
   const nachRang = [...alle].sort((a, b) => m.raenge[a] - m.raenge[b]);
+  // feste Reihenfolge der Familien (wie FAMILIEN im Register), unabhängig von der Ebene
+  const ordnung = [
+    'Bearbeiten',
+    'Auswahl',
+    'Baugruppe',
+    'Sichtbarkeit',
+    'Ansicht',
+    'Ansicht speichern',
+    'Datei',
+    'Fenster',
+    'Hilfe',
+    'Simulation',
+    'Chat',
+  ];
+  const pos = (n) => (ordnung.includes(n) ? ordnung.indexOf(n) : ordnung.length);
+  gruppen.sort((x, y) => pos(x.name) - pos(y.name));
   return {
     gruppen,
     kontextaktionen: m.kontextaktionen,
@@ -709,7 +725,7 @@ async function tastatur({ browser, basis }) {
       await l0.taste('Escape');
     }
     // Knöpfe der Menüleiste: Kürzel als Taste am Knopf oder im Namen des Knopfs (Schalter)
-    const knoepfe = await o0.seite.$$eval('[data-zone="menueleiste"] button[data-befehl]', (x) =>
+    const knoepfe = await o0.seite.$$eval('[data-zone="menueleiste"] button[data-befehl], .ansichtsleiste button[data-befehl]', (x) =>
       x.map((e) => ({
         befehl: e.dataset.befehl,
         kbd: e.querySelector('kbd')?.textContent?.trim() ?? '',

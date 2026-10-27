@@ -9,6 +9,7 @@ import {
   kontextmenue,
   type Befehl,
 } from '../modell/register';
+import { kuerzelText } from '../i18n';
 import { h, symbol, type Symbolname } from '../ui/dom';
 import { familienMenue, popup } from '../ui/menue';
 import { statusElement, statusVon } from './struktur';
@@ -263,7 +264,7 @@ export function ansichtsleiste(app: App): HTMLElement {
           'data-key': `al-${b.id}`,
           'aria-disabled': app.anwendbar(b) ? null : 'true',
           'aria-pressed': b.id === 'ansicht.isolieren' ? (app.isoliert ? 'true' : 'false') : null,
-          title: app.t(b.titel),
+          title: `${app.t(b.titel)}${b.kuerzel ? ` (${kuerzelText(b.kuerzel, app.sprache)})` : ''}`,
           'aria-label': app.t(b.titel),
         },
         symbol(BEFEHL_SYMBOL[b.id] ?? 'square'),

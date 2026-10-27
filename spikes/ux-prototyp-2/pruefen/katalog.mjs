@@ -85,7 +85,7 @@ async function vergleichZustaende(browser, basis) {
     button: 'right',
   });
   await l.warte();
-  await l.klick('.kontextmenue [data-mehr-toggle="Bearbeiten"]');
+  await l.klick('.kontextmenue > [data-mehr-toggle]');
   await l.klick('.kontextmenue [data-befehl="element.pausieren"]');
   await l.taste('Escape');
   prototyp.push(...(await kanaeleDerSeite(p.seite)));

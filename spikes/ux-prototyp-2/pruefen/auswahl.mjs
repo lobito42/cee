@@ -119,7 +119,7 @@ export const auswahlBefehle = {
       await o.seite.click(ZEILE('steg'), { button: 'right' });
       lauf.eingaben += 1;
       await lauf.warte();
-      await lauf.klick('.kontextmenue [data-mehr-toggle="Bearbeiten"]');
+      await lauf.klick('.kontextmenue > [data-mehr-toggle]');
       await lauf.klick('.kontextmenue [data-befehl="element.pausieren"]');
       const liste = await alleDarstellungen(o.seite);
       elemente.push(
