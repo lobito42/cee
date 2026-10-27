@@ -725,12 +725,14 @@ async function tastatur({ browser, basis }) {
       await l0.taste('Escape');
     }
     // Knöpfe der Menüleiste: Kürzel als Taste am Knopf oder im Namen des Knopfs (Schalter)
-    const knoepfe = await o0.seite.$$eval('[data-zone="menueleiste"] button[data-befehl], .ansichtsleiste button[data-befehl]', (x) =>
-      x.map((e) => ({
-        befehl: e.dataset.befehl,
-        kbd: e.querySelector('kbd')?.textContent?.trim() ?? '',
-        titel: e.getAttribute('title') ?? '',
-      })),
+    const knoepfe = await o0.seite.$$eval(
+      '[data-zone="menueleiste"] button[data-befehl], .ansichtsleiste button[data-befehl]',
+      (x) =>
+        x.map((e) => ({
+          befehl: e.dataset.befehl,
+          kbd: e.querySelector('kbd')?.textContent?.trim() ?? '',
+          titel: e.getAttribute('title') ?? '',
+        })),
     );
     for (const k of knoepfe) if (k.kbd || /\(.+\)/.test(k.titel)) imMenue[k.befehl] = true;
     const titel = await o0.seite.evaluate(() =>
