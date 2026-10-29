@@ -216,7 +216,8 @@
       "zwei-punkte": "Zwei Punkte wählen",
       "zweiter-punkt": "Zweiten Punkt wählen",
       "einen-punkt": "Einen Punkt wählen",
-      "abgebrochen": "Abgebrochen"
+      "abgebrochen": "Abgebrochen",
+      "esc-abbrechen": "zum Abbrechen"
     }
   },
   "dnd": {

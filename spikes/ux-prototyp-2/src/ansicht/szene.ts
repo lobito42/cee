@@ -491,7 +491,7 @@ export class Szene {
     this.melde();
   }
 
-  /** Drahtmodell zeichnen: Punkte als Scheibe 6 px, Linien, Ebenen als Quadrat mit Deckkraft 0,15 und Kontur. */
+  /** Drahtmodell zeichnen: Punkte als Scheibe mit Rand, Linien, Ebenen als Quadrat mit Deckkraft 0,15 und Kontur. */
   zeichneDraht(liste: DrahtZeichnung[]): void {
     for (const k of [...this.draht.children]) {
       this.draht.remove(k);
@@ -517,11 +517,31 @@ export class Szene {
       const g = new THREE.Group();
       g.userData.elementId = z.element;
       if (z.art === 'punkt') {
-        const pts = new THREE.Points(
-          new THREE.BufferGeometry().setFromPoints(v),
-          new THREE.PointsMaterial({ color: farbe(z), size: 6, sizeAttenuation: false }),
+        // Gut sichtbar: heller Rand (Flächenfarbe) unter dem farbigen Kern, runde Scheibe.
+        const geo = new THREE.BufferGeometry().setFromPoints(v);
+        const rand = new THREE.Points(
+          geo,
+          new THREE.PointsMaterial({
+            color: new THREE.Color(tokens[`farbe.${this.thema}.flaeche`]),
+            size: 16,
+            sizeAttenuation: false,
+          }),
         );
-        g.add(pts);
+        const kern = new THREE.Points(
+          geo,
+          new THREE.PointsMaterial({
+            color:
+              z.gewaehlt || z.fehlerhaft
+                ? farbe(z)
+                : new THREE.Color(tokens[`farbe.${this.thema}.akzent`]),
+            size: 10,
+            sizeAttenuation: false,
+          }),
+        );
+        rand.renderOrder = 1;
+        kern.renderOrder = 2;
+        for (const m of [rand, kern]) (m.material as THREE.PointsMaterial).depthTest = false;
+        g.add(rand, kern);
       } else if (z.art === 'ebene') {
         const flaeche = new THREE.Mesh(
           new THREE.BufferGeometry().setFromPoints([

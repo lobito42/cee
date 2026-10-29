@@ -1162,3 +1162,29 @@ h3 {
   border-top: var(--linie-breite) solid var(--farbe-linie);
   color: var(--farbe-text-2);
 }
+
+/* Hinweis im Bild, solange ein Referenz-Befehl auf Klicks wartet (Muster Rückmeldung, nicht modal). */
+.befehls-hinweis {
+  position: absolute;
+  top: var(--abstand-5);
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--abstand-2);
+  padding: var(--abstand-2) var(--abstand-4);
+  background: var(--farbe-akzent);
+  color: var(--farbe-auf-akzent);
+  border-radius: var(--radius-gross);
+  font: var(--schrift-schnitt-mittel) var(--schrift-groesse-gross) / var(--schrift-zeilenhoehe)
+    var(--schrift-familie-ui);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.befehls-hinweis-taste {
+  padding: 0 var(--abstand-2);
+  border: var(--linie-breite) solid var(--farbe-auf-akzent);
+  border-radius: var(--radius-klein);
+  font: inherit;
+}

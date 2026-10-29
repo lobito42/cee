@@ -461,6 +461,30 @@ function zeigerzahl(app: App, ursprung: Punkt): HTMLElement | null {
   );
 }
 
+/** Hinweis im Bild der Arbeitsfläche, solange ein Referenz-Befehl auf Klicks wartet. */
+function befehlsHinweis(app: App): HTMLElement | null {
+  const m = app.draht.modus;
+  if (!m) return null;
+  const schluessel =
+    m.art === 'punkt'
+      ? 'rueck.draht.punkt-klicken'
+      : m.punkte.length === 0
+        ? 'rueck.draht.zwei-punkte'
+        : 'rueck.draht.zweiter-punkt';
+  return h(
+    'div',
+    {
+      class: 'befehls-hinweis',
+      role: 'status',
+      'data-muster': 'Rueckmeldung',
+      'data-key': 'befehls-hinweis',
+    },
+    h('span', { class: 'befehls-hinweis-text' }, app.t(schluessel)),
+    h('kbd', { class: 'befehls-hinweis-taste' }, 'Esc'),
+    h('span', { class: 'befehls-hinweis-abbruch' }, app.t('rueck.draht.esc-abbrechen')),
+  );
+}
+
 export function baueModell(app: App): (HTMLElement | null)[] {
   const szene = app.szene;
   const r = szene?.canvas.getBoundingClientRect();
@@ -494,6 +518,7 @@ export function baueModell(app: App): (HTMLElement | null)[] {
           h('p', {}, app.t('modell.leer')),
         )
       : null,
+    befehlsHinweis(app),
     kontextleiste(app, ursprung, breite),
     griffElement(app, ursprung),
     ...schilder(app, ursprung),

@@ -216,7 +216,8 @@
       "zwei-punkte": "Select two points",
       "zweiter-punkt": "Select the second point",
       "einen-punkt": "Select one point",
-      "abgebrochen": "Cancelled"
+      "abgebrochen": "Cancelled",
+      "esc-abbrechen": "to cancel"
     }
   },
   "dnd": {
