@@ -11,9 +11,14 @@ from __future__ import annotations
 
 import json
 import statistics
+import sys
+from pathlib import Path
 from urllib.parse import urlparse
 
-from menue_helpers import MAX_AKTIONEN, MAX_GRUPPE, dropdown_eintraege, pruefen, register_nach_id, taskleiste
+# Suchpfad für die Hilfen aus ap-41c, damit die Datei auch allein gesammelt werden kann.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "ap-41c-ux-schlankes-menue"))
+
+from menue_helpers import MAX_AKTIONEN, MAX_GRUPPE, dropdown_eintraege, pruefen, register_nach_id, taskleiste  # noqa: E402
 from wf_helpers import (
     Ablauf,  # noqa: F401,I001  (setzt den Suchpfad für menue_helpers)
     alle,
