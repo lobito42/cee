@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "aufgaben": [
+    {
+      "id": "W1",
+      "zustand": "drahtmodell-leer",
+      "satz": "Koordinatensystem bei x 100 mm, um 30° um z gedreht",
+      "pruefer": [
+        {"art": "neu", "anzahl": {"frame": 1}},
+        {"art": "kinder", "typ": "frame", "anzahl": 7},
+        {"art": "frame_ursprung_mm", "lage": [100, 0, 0]},
+        {"art": "frame_x_richtung", "rz_grad": 30},
+        {"art": "keine_befunde"},
+        {"art": "uebrige_unveraendert"}
+      ]
+    },
+    {
+      "id": "W2",
+      "zustand": "drahtmodell-leer",
+      "satz": "Punkt bei 10, 20, 5 mm",
+      "pruefer": [
+        {"art": "neu", "anzahl": {"point": 1}},
+        {"art": "punkt_lage_mm", "lage": [10, 20, 5]},
+        {"art": "keine_befunde"},
+        {"art": "uebrige_unveraendert"}
+      ]
+    },
+    {
+      "id": "W3",
+      "zustand": "drahtmodell-leer",
+      "satz": "Rechteck 100 × 60 mm in der XY-Ebene mit Punkt 40 mm darüber",
+      "pruefer": [
+        {"art": "neu", "anzahl": {"segment": 4, "point": 5}},
+        {"art": "umlauf", "typ": "segment", "ecken": 4},
+        {"art": "laengen_sortiert_mm", "typ": "segment", "werte": [60, 60, 100, 100]},
+        {"art": "benachbart_senkrecht", "typ": "segment"},
+        {"art": "ecken_z_mm", "wert": 0},
+        {"art": "punkt_ueber_mitte", "abstand_mm": 40, "richtung": [0, 0, 1]},
+        {"art": "keine_befunde"},
+        {"art": "uebrige_unveraendert"}
+      ]
+    },
+    {
+      "id": "W4",
+      "zustand": "drahtmodell-beispiel",
+      "satz": "Punkt 25 mm über P2 und eine Halbgerade von P2 durch diesen Punkt",
+      "pruefer": [
+        {"art": "neu", "anzahl": {"point": 1, "ray": 1}},
+        {"art": "punkt_relativ", "ref": "P2.point", "versatz_mm": [0, 0, 25]},
+        {"art": "halbgerade_bezug", "a": "P2.point", "b": "neuer_punkt.point"},
+        {"art": "keine_befunde"},
+        {"art": "uebrige_unveraendert"}
+      ]
+    },
+    {
+      "id": "W5",
+      "zustand": "drahtmodell-beispiel",
+      "satz": "Verwirf die Strecke S1 und blende die Gerade G1 aus",
+      "pruefer": [
+        {"art": "neu", "anzahl": {}},
+        {"art": "verworfen", "namen": ["S1"]},
+        {"art": "ausgeblendet", "namen": ["G1"]},
+        {"art": "keine_befunde"},
+        {"art": "uebrige_unveraendert"}
+      ]
+    }
+  ]
+}
