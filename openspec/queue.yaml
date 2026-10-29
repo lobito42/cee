@@ -77,3 +77,9 @@ changes:
     model: opus    # Agent geometry-specialist (Kernel-Schnittstelle, OpenCascade-Worker)
     night: true    # freigegeben 2026-10-25 (Kernteam): echter Geometriekern, erste kleine Stufe (Koordinatensystem, Punkte, Geraden); ein [mensch]-Scenario „Ausprobieren“
     depends_on: [ap-40-bindungen-sdk, ap-41b-ux-bedienkonzept, ap-41c-ux-schlankes-menue]
+
+  - id: ap-52-ki-konstruktion-wireframe
+    phase: spec
+    model: opus    # Agent geometry-specialist; KI-Anbieter-Schnittstelle, Werkzeuge aus dem Befehlsregister
+    night: true    # freigegeben 2026-10-29 (Kernteam): KI konstruiert Wireframe aus einem Satz; zieht Teil von ap-15 vor (ADR-059, gemeldet); ein [mensch]-Scenario „Ausprobieren“
+    depends_on: [ap-50-wireframe-basics]
