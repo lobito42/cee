@@ -16,8 +16,8 @@ from wf_helpers import (
     AUFTRAG_SCHEMA,
     ERGEBNIS_SCHEMA,
     TYPEN,
+    auftrag_von,
     beispiel,
-    beispiel_berechnet,
     berechne,
     element,
     frame,
@@ -26,6 +26,7 @@ from wf_helpers import (
     nackte_zahlen,
     projekt,
     punkt,
+    rechnen_auftrag,
     typen,
 )
 
@@ -143,14 +144,17 @@ def test_nachrichten_gueltig_nach_schema():
 def test_keine_geometrie_im_graphen():
     """Requirement „Kernel-Schnittstelle cee-kernel/0“, Scenario „Keine Geometrie im Graphen“: Dokument-Hash vor und
     nach der Berechnung gleich, kein Element trägt Ergebnisfelder."""
-    _, e = beispiel_berechnet()
     sdk = need_module("cee_sdk")
     doc = sdk.Document.import_project(beispiel(), typen())
     vorher = doc.hash()
-    assert doc.hash() == vorher
+    # Auftrag aus dem exportierten Dokument bauen und wirklich rechnen
+    export = doc.export()
+    e = rechnen_auftrag(auftrag_von(export))
+    assert e["results"], "Berechnung ohne Ergebnis"
+    assert doc.hash() == vorher, "die Berechnung darf das Dokument nicht verändern"
+    assert sdk.Document.import_project(export, typen()).hash() == vorher
     felder = {k for r in e["results"] for o in r["outputs"].values() for k in o if k != "type"}
     assert {"position", "direction", "length"} <= felder, felder
-    export = doc.export()
     stack = list(export["elements"] if isinstance(export, dict) else export)
     while stack:
         x = stack.pop()

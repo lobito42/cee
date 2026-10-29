@@ -23,6 +23,8 @@ Vorschau (`pruefen -- drahtmodell ablauf --zustand <n> --datei <ablauf.json> [--
   Elements zählen nicht) in Anlegereihenfolge, 1-basiert. `klick` kennt `anker` (`mitte`, `ecke`; Standard: Lage des
   Elements) und `umschalt` (Erweiterung der Auswahl). `args: {"element": <Verweis>}` richtet `element.*`-Befehle auf
   ein Element, ohne zu klicken.
+- Schnappschuss-Feld `ursprung` = Adresse der Vorschau (z. B. `http://127.0.0.1:5173`). Orte im Befehle-Prüfbefehl:
+  `kontextaktion` (ein gewählter Punkt), `kontextaktion-mehrfach` (zwei gewählte Punkte).
 - Zustandsnamen in `struktur[].zustaende`: `ausgewaehlt`, `fehlerhaft`, `verworfen`, `ausgeblendet` (wie ap-41b).
 """
 

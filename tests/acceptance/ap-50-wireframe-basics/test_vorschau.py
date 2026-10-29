@@ -61,7 +61,14 @@ def test_befehle_im_register_mit_ort_und_wirkung():
         b = befehle[id]
         assert b["folgt"] is False and not reg[id].get("folgt"), id
         assert {"dropdown", "suche"} <= set(b["orte"]), (id, b["orte"])
-        assert ("kontextaktion" in b["orte"]) == (bezug == "kontext"), (id, b["orte"])
+        einzeln = "kontextaktion" in b["orte"]
+        mehrfach = "kontextaktion-mehrfach" in b["orte"]
+        if id == "referenz.punkt-relativ":  # ein gewählter Punkt
+            assert einzeln and not mehrfach, (id, b["orte"])
+        elif bezug == "kontext":  # Linien: zwei gewählte Punkte
+            assert mehrfach and not einzeln, (id, b["orte"])
+        else:
+            assert not einzeln and not mehrfach, (id, b["orte"])
 
     t = taskleiste("Modellieren")
     referenz = [d for d in t["dropdowns"] if d["name"] == "Referenz"]
@@ -340,7 +347,10 @@ def test_bruecke_absturz_neustart_und_ohne_bruecke():
     s = b.s("k")
     assert len(wurzeln(s["graph"], "frame")) == 1 and any(z["id"] for z in s["struktur"])
     assert any(x["code"] == "kernel_unavailable" for x in s["befunde"]), s["befunde"]
-    assert "Geometrie-Dienst nicht erreichbar" in json.dumps(s, ensure_ascii=False)
+    neu = wurzeln(s["graph"], "frame")[0]["id"]
+    meldung = [x for x in s["befunde"] if x["code"] == "kernel_unavailable" and x["element"] == neu]
+    assert meldung, s["befunde"]
+    assert "Geometrie-Dienst nicht erreichbar" in json.dumps(meldung, ensure_ascii=False), meldung
     assert s["konsolenfehler"] == [], s["konsolenfehler"]
 
 
@@ -356,8 +366,11 @@ def test_nur_lokal_und_schnell():
                 assert u.hostname == "127.0.0.1", f"Anfrage an fremden Host: {url}"
                 ports.add(u.port)
     assert len(ports) == 1 and None not in ports, ports
+    for lauf in laeufe:
+        for s in lauf.snaps:
+            assert urlparse(s["ursprung"]).port in ports, (s["ursprung"], ports)  # Port der Vorschau
     befehle = [n for n in laeufe[0].idx if laeufe[0].schritte[laeufe[0].idx[n]].get("befehl")]
     assert len(befehle) == 6, befehle
-    for n in befehle:
+    for n in befehle[1:]:  # der erste Befehl wärmt Brücke und Worker auf
         werte = [lauf.s(n)["bereit_ms"] for lauf in laeufe]
         assert statistics.median(werte) <= 500, (n, werte)
