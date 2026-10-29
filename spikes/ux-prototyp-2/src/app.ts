@@ -31,6 +31,7 @@ import {
   type Kontextmenue,
 } from './modell/register';
 import profile from './eingabe/profile.json';
+import { Draht } from './drahtmodell/draht';
 import { sichtbareTreffer } from './zonen/suche';
 import type { Groesse } from './wert/wertfeld';
 
@@ -171,6 +172,8 @@ export class App {
   katalogOffen: string | null = null;
 
   szene: Szene | null = null;
+  /** Wireframe-Basics mit echtem Geometriekern (ap-50). */
+  readonly draht: Draht = new Draht(this);
   private lauscher: (() => void)[] = [];
   private rendernLaeuft = false;
 
@@ -343,12 +346,14 @@ export class App {
   auswahlart(): Auswahlart {
     const ids = this.auswahlIds();
     if (!ids.length) return 'keine';
+    if (ids.length === 2 && this.draht.gewaehltePunkte().length === 2) return 'punkte';
     if (ids.length > 1) return 'mehrfach';
     if (this.auswahl.some((a) => a.teil?.art === 'kante')) return 'kante';
     const e = this.find(ids[0] as string);
     if (!e) return 'keine';
     if (istVerworfen(e)) return 'verworfen';
     if (e.type === 'view') return 'ansicht';
+    if (e.type === 'point') return 'punkt';
     if (e.type === 'teil') return 'teil';
     if (e.type === 'baugruppe') return 'baugruppe';
     return 'schritt';
@@ -363,7 +368,16 @@ export class App {
   // --- Zustände eines Elements --------------------------------------------------------------------
 
   befunde(): Befund[] {
-    return befundeVon(this.dokument());
+    const kern: Befund[] = this.draht.befunde().map((b) => ({
+      elementId: b.elementId,
+      schluessel: b.schluessel,
+      parameter: '',
+      wert: 0,
+      grenze: 0,
+      code: b.code,
+      text: b.text,
+    }));
+    return [...befundeVon(this.dokument()), ...kern];
   }
 
   istFehlerhaft(id: string): boolean {
@@ -803,6 +817,8 @@ export class App {
         return this.kannWiederholen();
       case 'element.umbenennen':
         return sel.length === 1;
+      case 'referenz.punkt-relativ':
+        return this.draht.gewaehltePunkte().length === 1 && sel.length === 1;
       case 'element.duplizieren':
       case 'element.wert-setzen':
       case 'auswahl.duplizieren':
@@ -870,7 +886,10 @@ export class App {
     const k = ergebnisVon(this.angezeigtesDokument()).koerper.filter(
       (x) => !sichtbar.has(x.elementId) && x.art !== 'skizze',
     );
-    return boxVon(k);
+    const draht = this.draht.huelle();
+    const box = boxVon(k);
+    if (!draht) return box;
+    return box ? boxVonBoxen([box, draht]) : draht;
   }
 
   huelleAuswahl(): { min: [number, number, number]; max: [number, number, number] } | null {

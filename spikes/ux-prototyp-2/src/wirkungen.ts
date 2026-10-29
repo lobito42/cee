@@ -415,6 +415,44 @@ export function wirkungenRegistrieren(app: App): void {
   r('dokument.wechseln', (par) => {
     if (typeof par.dok === 'string') app.wechsleDokument(par.dok);
   });
+
+  // --- Wireframe-Basics (ap-50): Graph ändern, Lage rechnet der Geometriekern ---------------------------
+
+  const draht = app.draht;
+  r('referenz.koordinatensystem', (_par, weg) => {
+    draht.modus = null;
+    draht.koordinatensystemAnlegen(weg);
+  });
+  r('referenz.punkt', () => {
+    draht.modus = { art: 'punkt' };
+    app.meldung('rueck.draht.punkt-klicken');
+  });
+  r('referenz.punkt-relativ', (par, weg) => {
+    draht.modus = null;
+    const basis = typeof par.element === 'string' ? par.element : draht.gewaehltePunkte()[0];
+    if (!basis || app.find(basis)?.type !== 'point') {
+      app.meldung('rueck.draht.einen-punkt');
+      return false;
+    }
+    draht.punktAnlegen({ ref: `${basis}.point` }, { x: 0, y: 0, z: 0 }, weg);
+    draht.feldFokus = 'x';
+  });
+  for (const [befehl, typ] of [
+    ['referenz.gerade', 'line'],
+    ['referenz.halbgerade', 'ray'],
+    ['referenz.strecke', 'segment'],
+  ] as const) {
+    r(befehl, (_par, weg) => {
+      const punkte = draht.gewaehltePunkte();
+      if (punkte.length === 2 && app.auswahlIds().length === 2) {
+        draht.modus = null;
+        draht.linieAnlegen(typ, punkte[0] as string, punkte[1] as string, weg);
+        return;
+      }
+      draht.modus = { art: 'linie', typ, punkte: [] };
+      app.meldung('rueck.draht.zwei-punkte');
+    });
+  }
 }
 
 export { nachfahren };

@@ -9,6 +9,7 @@ import { ablaufBefehle } from './ablauf.mjs';
 import { auswahlBefehle } from './auswahl.mjs';
 import { basisBefehle } from './basis.mjs';
 import { datenBefehle } from './daten.mjs';
+import { drahtmodellBefehle } from './drahtmodell.mjs';
 import { fensterBefehle } from './fenster.mjs';
 import { katalogBefehle } from './katalog.mjs';
 import { menueBefehle } from './menue.mjs';
@@ -46,6 +47,7 @@ const BEFEHLE = {
   ...ablaufBefehle,
   ...katalogBefehle,
   ...menueBefehle,
+  ...drahtmodellBefehle,
 };
 
 const { befehl, optionen, alle, positionen } = argumente(process.argv.slice(2));
@@ -55,6 +57,9 @@ if (!befehl || !BEFEHLE[befehl]) {
   );
   process.exit(2);
 }
+
+// Wireframe-Basics (ap-50): Brücke zum Geometrie-Worker nur für `drahtmodell`, außer mit `--ohne-bruecke`.
+if (befehl === 'drahtmodell' && !('ohne-bruecke' in optionen)) process.env.CEE_BRUECKE = 'pruefen';
 
 const server = await preview({
   root: WURZEL,
@@ -74,8 +79,10 @@ try {
     positionen,
     wurzel: WURZEL,
   });
-  process.stdout.write(`${JSON.stringify(ergebnis)}\n`);
+  await new Promise((fertig) => process.stdout.write(`${JSON.stringify(ergebnis)}\n`, fertig));
 } finally {
   await browser.close();
   await server.close();
 }
+// Die Brücke (ap-50) hält einen Worker-Prozess; er endet mit stdin, sobald dieser Prozess endet.
+process.exit(0);

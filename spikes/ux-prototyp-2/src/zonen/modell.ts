@@ -36,6 +36,8 @@ export const BEFEHL_SYMBOL: Record<string, Symbolname> = {
 
 /** Hülle eines Elements in Bildschirmkoordinaten (konvex), oder null. */
 export function huelleBildschirm(app: App, id: string): Punkt[] | null {
+  const draht = app.draht.huelleBildschirm(id);
+  if (draht) return konvexeHuelle(draht);
   const box = app.huelle(id);
   if (!box || !app.szene) return null;
   return konvexeHuelle(app.szene.eckenProjiziert(box));
@@ -314,7 +316,11 @@ function kontextleiste(app: App, ursprung: Punkt, breite: number): HTMLElement |
   if (!alle.length) return null;
   const box = huellbox(alle);
   const mitteX = Math.min(Math.max(box.x + box.breite / 2 - ursprung.x, 110), breite - 110);
-  const oben = Math.max(box.y - ursprung.y - 46, 84);
+  // Drahtmodell: unter die Auswahl, damit Punkte darüber anklickbar bleiben (ap-50)
+  const unten = art === 'punkt' || art === 'punkte' || app.draht.aktiv();
+  const oben = unten
+    ? Math.min(box.y + box.hoehe - ursprung.y + 14, 2000)
+    : Math.max(box.y - ursprung.y - 46, 84);
   return aktionsLeiste(app, aktionen, `left:${Math.round(mitteX)}px;top:${Math.round(oben)}px`);
 }
 

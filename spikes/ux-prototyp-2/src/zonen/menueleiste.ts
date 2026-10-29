@@ -8,7 +8,7 @@ import { baueSuche } from './suche';
 
 /** Dropdowns je Taskleisten-Eintrag; Inhalt kommt aus dem Register nach Familie. */
 export const DROPDOWNS: Record<'modellieren' | 'simulation', string[]> = {
-  modellieren: ['Bearbeiten', 'Auswahl', 'Baugruppe', 'Fenster'],
+  modellieren: ['Bearbeiten', 'Auswahl', 'Baugruppe', 'Referenz', 'Fenster'],
   simulation: ['Simulation'],
 };
 

@@ -33,6 +33,15 @@ def handle(request: Any) -> dict[str, Any]:
     if isinstance(request, dict) and "op" in request and "protocol" not in request:
         if request.get("op") == "ping":
             return {"ok": True, "kernel": KERNEL, "kernel_version": k.kernel_version()}
+        if request.get("op") == "auftrag" and isinstance(request.get("projekt"), dict):
+            # Projekt → Auftrag über den Rust-Kern (wie `cee_worker auftrag --rechnen`), im warmen Prozess
+            from cee_worker import auftrag
+
+            try:
+                a = auftrag.bauen(request["projekt"])
+            except Exception as exc:  # noqa: BLE001 - Projekt ungültig: Befund statt Absturz
+                return _protokollfehler(f"projekt: {exc}")
+            return k.rechnen(a)
         return {"ok": False, "error": f"unbekannte Operation: {request.get('op')!r}"}
     return k.rechnen(request)
 

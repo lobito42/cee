@@ -190,6 +190,7 @@ export class Fenster {
       app.thema,
       geister,
     ]);
+    this.zeichneDraht();
     if (signatur === this.zeichenSignatur) return;
     this.zeichenSignatur = signatur;
     this.szene.zeichne({
@@ -203,6 +204,29 @@ export class Fenster {
     if (app.einpassenNoetig) {
       app.einpassenNoetig = false;
       this.einpassenSofort();
+    }
+  }
+
+  private drahtSignatur = '';
+
+  /** Drahtmodell (ap-50): Ergebnis anfordern und zeichnen, sobald es da ist. */
+  private zeichneDraht(): void {
+    const d = this.app.draht;
+    d.anstossen();
+    const liste = d.zeichnung();
+    const signatur = JSON.stringify([liste, this.app.thema]);
+    if (signatur !== this.drahtSignatur) {
+      this.drahtSignatur = signatur;
+      this.szene.zeichneDraht(liste);
+      if (d.einpassen && liste.length) {
+        d.einpassen = false;
+        this.einpassenSofort();
+      }
+    }
+    if (d.feldFokus) {
+      const f = this.rahmen.querySelector<HTMLInputElement>(`[data-feld-eingabe="${d.feldFokus}"]`);
+      d.feldFokus = null;
+      f?.focus();
     }
   }
 

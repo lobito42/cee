@@ -3,6 +3,7 @@
 import * as THREE from 'three';
 import { tokens } from '../erzeugt/tokens';
 import type { Koerper, V3 } from '../geometrie/teil';
+import type { DrahtZeichnung } from '../drahtmodell/draht';
 
 export type Darstellung = 'koerper' | 'kanten' | 'durchsicht';
 export type Thema = 'hell' | 'dunkel';
@@ -68,6 +69,8 @@ export class Szene {
   private readonly persp = new THREE.PerspectiveCamera(FOV, 1, 10, 20000);
   private readonly ortho = new THREE.OrthographicCamera(-1, 1, 1, -1, -20000, 20000);
   private readonly gruppe = new THREE.Group();
+  /** Drahtmodell (ap-50): Punkte, Linien, Achsen, Ebenen aus dem Ergebnis des Geometriekerns. */
+  private readonly draht = new THREE.Group();
   private readonly licht = {
     umgebung: new THREE.AmbientLight(),
     gerichtet: new THREE.DirectionalLight(),
@@ -104,6 +107,7 @@ export class Szene {
     });
     this.renderer.setPixelRatio(1);
     this.scene.add(this.gruppe);
+    this.scene.add(this.draht);
     this.scene.add(this.licht.umgebung, this.licht.gerichtet, this.licht.gegen);
     this.setThema('hell');
     new ResizeObserver(() => this.groesseAnpassen()).observe(zone);
@@ -485,6 +489,87 @@ export class Szene {
     }
     this.anfordern();
     this.melde();
+  }
+
+  /** Drahtmodell zeichnen: Punkte als Scheibe 6 px, Linien, Ebenen als Quadrat mit Deckkraft 0,15 und Kontur. */
+  zeichneDraht(liste: DrahtZeichnung[]): void {
+    for (const k of [...this.draht.children]) {
+      this.draht.remove(k);
+      k.traverse((o) => {
+        const m = o as THREE.Mesh;
+        m.geometry?.dispose();
+        (m.material as THREE.Material | undefined)?.dispose?.();
+      });
+    }
+    const farbe = (z: DrahtZeichnung) =>
+      new THREE.Color(
+        z.gewaehlt
+          ? tokens[`farbe.${this.thema}.akzent`]
+          : z.fehlerhaft
+            ? tokens[`farbe.${this.thema}.fehler`]
+            : z.token.startsWith('achse.')
+              ? tokens[z.token as 'achse.x']
+              : tokens[`farbe.${this.thema}.text`],
+      );
+    for (const z of liste) {
+      if (z.art === 'koordinatensystem') continue;
+      const v = z.punkte.map((p) => new THREE.Vector3(p[0], p[1], p[2]));
+      const g = new THREE.Group();
+      g.userData.elementId = z.element;
+      if (z.art === 'punkt') {
+        const pts = new THREE.Points(
+          new THREE.BufferGeometry().setFromPoints(v),
+          new THREE.PointsMaterial({ color: farbe(z), size: 6, sizeAttenuation: false }),
+        );
+        g.add(pts);
+      } else if (z.art === 'ebene') {
+        const flaeche = new THREE.Mesh(
+          new THREE.BufferGeometry().setFromPoints([
+            v[0],
+            v[1],
+            v[2],
+            v[0],
+            v[2],
+            v[3],
+          ] as THREE.Vector3[]),
+          new THREE.MeshBasicMaterial({
+            color: farbe(z),
+            transparent: true,
+            opacity: 0.15,
+            depthWrite: false,
+            side: THREE.DoubleSide,
+          }),
+        );
+        const kontur = new THREE.LineLoop(
+          new THREE.BufferGeometry().setFromPoints(v),
+          new THREE.LineBasicMaterial({ color: farbe(z) }),
+        );
+        g.add(flaeche, kontur);
+      } else {
+        g.add(
+          new THREE.Line(
+            new THREE.BufferGeometry().setFromPoints(v),
+            new THREE.LineBasicMaterial({ color: farbe(z), linewidth: 1.5 }),
+          ),
+        );
+      }
+      this.draht.add(g);
+    }
+    this.anfordern();
+    this.melde();
+  }
+
+  /** Schnittpunkt des Zeigerstrahls mit einer Ebene (Ursprung, Normale) in Weltkoordinaten (mm). */
+  aufEbene(clientX: number, clientY: number, ursprung: V3, normale: V3): V3 | null {
+    const cam = this.kameraAnwenden();
+    const ray = new THREE.Raycaster();
+    ray.setFromCamera(this.zuNdc(clientX, clientY), cam);
+    const ebene = new THREE.Plane().setFromNormalAndCoplanarPoint(
+      new THREE.Vector3(normale[0], normale[1], normale[2]).normalize(),
+      new THREE.Vector3(ursprung[0], ursprung[1], ursprung[2]),
+    );
+    const p = ray.ray.intersectPlane(ebene, new THREE.Vector3());
+    return p ? [p.x, p.y, p.z] : null;
   }
 
   // --- Abfragen -----------------------------------------------------------------------------------
