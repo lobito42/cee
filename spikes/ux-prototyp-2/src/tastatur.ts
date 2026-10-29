@@ -75,6 +75,40 @@ export function tastenAnbinden(app: App): void {
         return;
       }
 
+      // Kontextmenü: Pfeile wandern durch die Einträge der aktuellen Ebene; rechts öffnet, links schließt „Mehr …“
+      const km = app.kontextMenue;
+      if (km && ['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft'].includes(e.key)) {
+        const aktiv = document.activeElement as HTMLElement | null;
+        const inZweiter = !!aktiv?.closest('.kontextmenue-mehr');
+        if (e.key === 'ArrowLeft') {
+          if (!inZweiter) return;
+          km.mehrOffen = false;
+          km.fokus = 'mehr';
+        } else if (e.key === 'ArrowRight') {
+          if (!aktiv?.hasAttribute('data-mehr-toggle') || km.mehrOffen) return;
+          km.mehrOffen = true;
+          km.fokus = 'zweite-ebene';
+        } else {
+          const eintraege = [
+            ...document.querySelectorAll<HTMLElement>(
+              inZweiter
+                ? '.kontextmenue-mehr [data-befehl]'
+                : '.kontextmenue > [role="group"] [data-befehl], .kontextmenue > [data-mehr-toggle]',
+            ),
+          ];
+          if (!eintraege.length) return;
+          const i = aktiv ? eintraege.indexOf(aktiv) : -1;
+          const schritt = e.key === 'ArrowDown' ? 1 : -1;
+          const naechste = i < 0 ? (schritt > 0 ? 0 : eintraege.length - 1) : i + schritt;
+          eintraege[(naechste + eintraege.length) % eintraege.length]?.focus();
+          e.preventDefault();
+          return;
+        }
+        e.preventDefault();
+        app.rendern();
+        return;
+      }
+
       if (e.key === 'Escape') {
         // Genau eine Ebene: Menü/Kontextmenü/Suche → Ziehen → Auswahl → aktives Element verlassen
         if (app.offenesSchliessen?.()) {

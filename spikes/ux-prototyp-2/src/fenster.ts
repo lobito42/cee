@@ -161,6 +161,12 @@ export class Fenster {
         f.select();
       }
     } else app.umbenennenFokussiert = false;
+    const km = app.kontextMenue;
+    if (km?.fokus) {
+      const ziel = km.fokus === 'mehr' ? '[data-mehr-toggle]' : '.kontextmenue-mehr [data-befehl]';
+      km.fokus = undefined;
+      document.querySelector<HTMLElement>(`.kontextmenue ${ziel}, ${ziel}`)?.focus();
+    }
     if (app.fokusEigenschaften) {
       app.fokusEigenschaften = false;
       this.rahmen.querySelector<HTMLInputElement>('[data-feld-eingabe]')?.focus();

@@ -197,8 +197,8 @@ function zustandBeispiele(f: Fabrik): HTMLElement[] {
 const ARTEN: Auswahlart[] = ['schritt'];
 
 function menueFuer(a: App, art: Auswahlart): HTMLElement | null {
-  const gruppen = kontextmenue(a.register, art, (b) => a.anwendbar(b));
-  a.kontextMenue = { x: 0, y: 0, art, gruppen, mehr: new Set(['Bearbeiten']) };
+  const menue = kontextmenue(a.register, art, (b) => a.anwendbar(b));
+  a.kontextMenue = { x: 0, y: 0, art, menue, mehrOffen: false };
   return baueKontextmenue(a);
 }
 

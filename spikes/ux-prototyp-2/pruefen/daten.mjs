@@ -1,7 +1,7 @@
 // Prüfbefehle `crud`, `kontextmenue`, `registerprobe`, `inventar`, `tastatur` (Befehle, Menüs, Tastatur).
 import { readFileSync, writeFileSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
-import { MOD, Lauf, adresse, bildPfad, lies, oeffnen, schliessen } from './grundlage.mjs';
+import { MOD, Lauf, adresse, bildPfad, lies, oeffnen, schliessen, zeichnen } from './grundlage.mjs';
 import { leererPunkt, trefferPunkt } from './auswahl.mjs';
 
 const ZEILE = (id) => `[data-zone="struktur"] [role="treeitem"][data-id="${id}"]`;
@@ -263,31 +263,96 @@ async function rueckgaengigAblauf(browser, basis) {
 
 /** Liest ein geöffnetes Kontextmenü und die Kontextaktionen im Modell. */
 async function menuLesen(seite) {
-  const m = await seite.evaluate(() => {
-    const gruppen = [...document.querySelectorAll('.kontextmenue [role="group"]')].map((g) => ({
-      name: g.dataset.gruppe,
-      eintraege: [...g.querySelectorAll('[data-befehl]')].map((e) => ({
-        befehl: e.dataset.befehl,
-        mehr: e.dataset.mehr === 'true',
-      })),
-    }));
-    return {
-      gruppen,
-      kontextaktionen: [
-        ...document.querySelectorAll('[data-muster="Kontextaktionen"] [data-befehl]'),
-      ].map((e) => e.dataset.befehl),
-      raenge: Object.fromEntries(window.__cee.befehle().map((b) => [b.id, b.rang])),
-    };
-  });
-  const alle = m.gruppen.flatMap((g) => g.eintraege.map((e) => e.befehl));
+  const lese = () =>
+    seite.evaluate(() => {
+      const menue = document.querySelector('.kontextmenue');
+      const ebene1 = menue ? [...menue.querySelectorAll(':scope > [role="group"]')] : [];
+      const sichtbar = ebene1.flatMap((g) =>
+        [...g.querySelectorAll('[data-befehl]')].map((e) => ({
+          befehl: e.dataset.befehl,
+          familie: g.dataset.gruppe,
+        })),
+      );
+      const mehrGruppen = [...document.querySelectorAll('.kontextmenue-mehr [role="group"]')].map(
+        (g) => ({
+          name: g.dataset.gruppe,
+          eintraege: [...g.querySelectorAll('[data-befehl]')].map((e) => ({
+            befehl: e.dataset.befehl,
+          })),
+        }),
+      );
+      return {
+        sichtbar,
+        trennlinien: menue ? menue.querySelectorAll(':scope > [role="separator"]').length : 0,
+        ueberschriften: menue
+          ? menue.querySelectorAll(':scope > [role="group"] .gruppenkopf').length
+          : 0,
+        mehr_eintraege: menue ? menue.querySelectorAll(':scope > [data-mehr-toggle]').length : 0,
+        mehr_gruppen: mehrGruppen,
+        hoehe_px: menue ? menue.getBoundingClientRect().height : 0,
+        kontextaktionen: [
+          ...document.querySelectorAll('[data-muster="Kontextaktionen"] [data-befehl]'),
+        ].map((e) => e.dataset.befehl),
+        raenge: Object.fromEntries(window.__cee.befehle().map((b) => [b.id, b.rang])),
+      };
+    });
+  let m = await lese();
+  if (m.mehr_eintraege) {
+    // zweite Ebene öffnen, lesen und wieder schließen
+    await seite.locator('.kontextmenue > [data-mehr-toggle]').dispatchEvent('click');
+    await zeichnen(seite);
+    m = { ...m, mehr_gruppen: (await lese()).mehr_gruppen };
+    await seite.locator('.kontextmenue > [data-mehr-toggle]').dispatchEvent('click');
+    await zeichnen(seite);
+  }
+  const imMehr = m.mehr_gruppen.flatMap((g) => g.eintraege.map((e) => e.befehl));
+  const alle = [...m.sichtbar.map((e) => e.befehl), ...imMehr];
+  // gleiche Gruppen wie in ap-41b: je Familie Einträge, `mehr` für die zweite Ebene
+  const gruppen = [];
+  for (const e of m.sichtbar) {
+    let g = gruppen.find((x) => x.name === e.familie);
+    if (!g) gruppen.push((g = { name: e.familie, eintraege: [] }));
+    g.eintraege.push({ befehl: e.befehl, mehr: false });
+  }
+  for (const mg of m.mehr_gruppen) {
+    let g = gruppen.find((x) => x.name === mg.name);
+    if (!g) gruppen.push((g = { name: mg.name, eintraege: [] }));
+    for (const e of mg.eintraege) g.eintraege.push({ befehl: e.befehl, mehr: true });
+  }
+  const nachRang = [...alle].sort((a, b) => m.raenge[a] - m.raenge[b]);
+  // feste Reihenfolge der Familien (wie FAMILIEN im Register), unabhängig von der Ebene
+  const ordnung = [
+    'Bearbeiten',
+    'Auswahl',
+    'Baugruppe',
+    'Sichtbarkeit',
+    'Ansicht',
+    'Ansicht speichern',
+    'Datei',
+    'Fenster',
+    'Hilfe',
+    'Simulation',
+    'Chat',
+  ];
+  const pos = (n) => (ordnung.includes(n) ? ordnung.indexOf(n) : ordnung.length);
+  gruppen.sort((x, y) => pos(x.name) - pos(y.name));
   return {
-    gruppen: m.gruppen,
+    gruppen,
     kontextaktionen: m.kontextaktionen,
-    menue_nach_rang: [...alle].sort((a, b) => m.raenge[a] - m.raenge[b]),
+    menue_nach_rang: nachRang,
+    sichtbar: m.sichtbar,
+    trennlinien: m.trennlinien,
+    ueberschriften: m.ueberschriften,
+    mehr: m.mehr_eintraege > 0,
+    mehr_eintraege: m.mehr_eintraege,
+    mehr_gruppen: m.mehr_gruppen,
+    hoehe_px: m.hoehe_px,
+    kandidaten_nach_rang: nachRang,
   };
 }
 
-async function kontextmenue({ browser, basis }) {
+async function kontextmenue({ browser, basis, optionen }) {
+  const zustand = optionen.zustand ?? 'halter';
   const arten = [];
   const lesen = async (seite, lauf) => {
     const m = await menuLesen(seite);
@@ -337,8 +402,19 @@ async function kontextmenue({ browser, basis }) {
   for (const p of plan) {
     const eintrag = { art: p.art };
     for (const weg of ['struktur', 'modell']) {
-      const o = await oeffnen(browser, adresse(basis, 'halter'));
+      const o = await oeffnen(browser, adresse(basis, zustand));
       const l = new Lauf(o.seite);
+      if (!['halter', 'auswahl', 'mehrfach'].includes(zustand)) {
+        // Elementzustände (aktiv, ausgeblendet …) haben andere Zeilen: Menü der ersten sichtbaren Zeile
+        await o.seite
+          .locator('[data-zone="struktur"] [role="treeitem"]')
+          .first()
+          .click({ button: 'right' });
+        await l.warte();
+        eintrag[weg] = await lesen(o.seite, l);
+        await schliessen(o);
+        continue;
+      }
       if (p.tab) await l.klick(`[role="tab"]:has-text("${p.tab}")`);
       if (p.kante) {
         const info = await o.seite.evaluate(() =>
@@ -367,7 +443,14 @@ async function kontextmenue({ browser, basis }) {
           l.eingaben += 1;
           await l.warte();
         } else {
-          await l.rechtsklickPunkt(await p.modell(o.seite));
+          // Im Zustand „aktiv“ o. Ä. ist das Ziel im Modell evtl. nicht sichtbar: dann gilt das Menü der Struktur
+          const punkt = await p.modell(o.seite).catch(() => null);
+          if (!punkt && eintrag.struktur) {
+            eintrag[weg] = eintrag.struktur;
+            await schliessen(o);
+            continue;
+          }
+          await l.rechtsklickPunkt(punkt ?? (await p.modell(o.seite)));
         }
       }
       eintrag[weg] = await lesen(o.seite, l);
@@ -391,10 +474,16 @@ async function registerprobe({ browser, basis, optionen, wurzel }) {
   await l.klick(ZEILE('steg'));
   await o.seite.click(ZEILE('steg'), { button: 'right' });
   await l.warte();
-  const kontextmenue_element = (await menuLesen(o.seite)).gruppen.map((g) => ({
+  const menue = await menuLesen(o.seite);
+  const kontextmenue_element = menue.gruppen.map((g) => ({
     name: g.name,
     eintraege: g.eintraege.map((e) => ({ befehl: e.befehl })),
   }));
+  const kontextmenue_element_sichtbar = menue.sichtbar.map((e) => ({ befehl: e.befehl }));
+  const kontextmenue_element_mehr = menue.mehr_gruppen.flatMap((g) =>
+    g.eintraege.map((e) => ({ befehl: e.befehl })),
+  );
+  const kontextaktionen_element = menue.kontextaktionen;
   await l.taste('Escape');
   await l.klick('[data-menue-trigger="dropdown:Bearbeiten"]');
   const dropdown_bearbeiten = await o.seite.$$eval('.popup [data-befehl]', (l2) =>
@@ -404,11 +493,22 @@ async function registerprobe({ browser, basis, optionen, wurzel }) {
   await l.taste(`${MOD}+k`);
   await l.text(optionen.suche ?? '');
   const suche_treffer = await o.seite.$$eval('.suche-popup [role="option"][data-befehl]', (l2) =>
-    l2.map((e) => ({ befehl: e.dataset.befehl })),
+    l2.map((e) => ({
+      befehl: e.dataset.befehl,
+      folgt: e.dataset.folgt === 'true',
+      gruppe: e.closest('[data-gruppe]')?.dataset.gruppe ?? null,
+    })),
   );
   await schliessen(o);
   void wurzel;
-  return { kontextmenue_element, dropdown_bearbeiten, suche_treffer };
+  return {
+    kontextmenue_element,
+    kontextmenue_element_sichtbar,
+    kontextmenue_element_mehr,
+    kontextaktionen_element,
+    dropdown_bearbeiten,
+    suche_treffer,
+  };
 }
 
 async function inventar({ browser, basis, optionen, wurzel }) {
@@ -473,8 +573,21 @@ async function inventar({ browser, basis, optionen, wurzel }) {
     const titel = await o.seite.evaluate(() =>
       Object.fromEntries(window.__cee.befehle().map((b) => [b.id, b.titel_text])),
     );
+    const platzhalter = new Set(
+      await o.seite.evaluate(() =>
+        window.__cee
+          .befehle()
+          .filter((b) => !b.wirkung)
+          .map((b) => b.id),
+      ),
+    );
     const befehle = [];
-    for (const b of inv.filter((x) => x.beta)) {
+    // Beta-Befehle aus dem Inventar, danach die übrigen Befehle des Registers (etwa mit festem Ort)
+    const beta = inv.filter((x) => x.beta);
+    const uebrige = eigene
+      .filter((e) => !beta.some((x) => x.id === e.id))
+      .map((e) => ({ id: e.id, familie: e.familie, titel: e.titel }));
+    for (const b of [...beta, ...uebrige]) {
       await l.taste(`${MOD}+k`);
       await l.text(titel[b.id] ?? b.titel);
       const treffer = await o.seite.$$eval('.suche-popup [role="option"][data-befehl]', (x) =>
@@ -486,7 +599,8 @@ async function inventar({ browser, basis, optionen, wurzel }) {
       befehle.push({
         id: b.id,
         familie: b.familie,
-        orte: [...(orte[b.id] ?? [])],
+        wirkung: !platzhalter.has(b.id),
+        orte: platzhalter.has(b.id) ? ['suche-folgt'] : [...(orte[b.id] ?? [])],
         suche_findet: findet,
         im_register: registerIds.has(b.id),
       });
@@ -610,6 +724,17 @@ async function tastatur({ browser, basis }) {
       for (const p of paare) if (p.kbd) imMenue[p.befehl] = true;
       await l0.taste('Escape');
     }
+    // Knöpfe der Menüleiste: Kürzel als Taste am Knopf oder im Namen des Knopfs (Schalter)
+    const knoepfe = await o0.seite.$$eval(
+      '[data-zone="menueleiste"] button[data-befehl], .ansichtsleiste button[data-befehl]',
+      (x) =>
+        x.map((e) => ({
+          befehl: e.dataset.befehl,
+          kbd: e.querySelector('kbd')?.textContent?.trim() ?? '',
+          titel: e.getAttribute('title') ?? '',
+        })),
+    );
+    for (const k of knoepfe) if (k.kbd || /\(.+\)/.test(k.titel)) imMenue[k.befehl] = true;
     const titel = await o0.seite.evaluate(() =>
       Object.fromEntries(window.__cee.befehle().map((b) => [b.id, b.titel_text])),
     );
@@ -667,7 +792,41 @@ async function tastatur({ browser, basis }) {
       await schliessen(o);
     }
   }
-  return { f6, esc, kuerzel };
+  // „Mehr …“: zweite Ebene per Klick und per Tastatur, Esc schließt eine Ebene
+  const mehr = { wege: [] };
+  for (const weg of ['klick', 'tastatur']) {
+    const o = await oeffnen(browser, adresse(basis, 'auswahl'));
+    const l = new Lauf(o.seite);
+    await l.rechtsklickPunkt(await trefferPunkt(o.seite, 'grundplatte'));
+    const stand = () =>
+      o.seite.evaluate(() => ({
+        kontextmenue_offen: !!document.querySelector('.kontextmenue'),
+        zweite_ebene_offen: !!document.querySelector('.kontextmenue-mehr'),
+        fokus_auf_mehr: document.activeElement?.hasAttribute('data-mehr-toggle') === true,
+      }));
+    const vorher = await stand();
+    if (weg === 'klick') {
+      const k = await lies.rechteck(o.seite, '.kontextmenue > [data-mehr-toggle]');
+      await l.klickPunkt({ x: k.x + k.breite / 2, y: k.y + k.hoehe / 2 });
+    } else {
+      await l.taste('ArrowUp');
+      await l.taste('Enter');
+    }
+    const offen = await stand();
+    await l.taste('Escape');
+    const nach_esc1 = await stand();
+    await l.taste('Escape');
+    const nach_esc2 = await stand();
+    mehr.wege.push({
+      weg,
+      zweite_ebene_offen: offen.zweite_ebene_offen,
+      ohne_ueberfahren: !vorher.zweite_ebene_offen && offen.zweite_ebene_offen,
+      nach_esc1,
+      nach_esc2,
+    });
+    await schliessen(o);
+  }
+  return { f6, esc, kuerzel, mehr };
 }
 
 export const datenBefehle = {

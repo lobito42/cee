@@ -28,7 +28,7 @@ import {
   befehleAusDatei,
   type Auswahlart,
   type Befehl,
-  type KontextGruppe,
+  type Kontextmenue,
 } from './modell/register';
 import profile from './eingabe/profile.json';
 import { sichtbareTreffer } from './zonen/suche';
@@ -99,6 +99,10 @@ export class App {
   projekt: Element;
   dok: string;
   protokoll: ProtokollEintrag[] = [];
+  /** In der Suche alle Platzhalter („Folgt später“) zeigen statt der ersten drei. */
+  sucheFolgtAlle = false;
+  /** Alle ausgelösten Befehle (auch ohne Wirkung am Graphen), nur für die Prüfung. */
+  ausgeloest: { befehl: string; weg: Weg; wirkung: boolean }[] = [];
   private verlaeufe = new Map<string, { zurueck: Element[]; vor: Element[] }>();
   /** Vorschau eines Werts, der gerade getippt wird (noch kein Verlaufseintrag). */
   vorschau: { id: string; name: string; wert: Groesse } | null = null;
@@ -123,8 +127,11 @@ export class App {
     x: number;
     y: number;
     art: Auswahlart;
-    gruppen: KontextGruppe[];
-    mehr: Set<string>;
+    menue: Kontextmenue;
+    /** Zweite Ebene „Mehr …“ geöffnet. */
+    mehrOffen: boolean;
+    /** Nach dem Zeichnen den Fokus setzen: auf „Mehr …“ oder in die zweite Ebene. */
+    fokus?: 'mehr' | 'zweite-ebene';
   } | null = null;
   suche = { offen: false, text: '', index: 0, alle: false, fokussiert: false };
   umbenennen: { id: string; weg: Weg } | null = null;
@@ -552,11 +559,13 @@ export class App {
     this.menue = null;
     this.kontextMenue = null;
     if (!b || !w || b.folgt) {
+      this.ausgeloest.push({ befehl: id, weg, wirkung: false });
       this.meldung('rueck.folgt', { befehl: b ? this.t(b.titel) : id });
       this.rendern();
       return false;
     }
     const r = w(parameter, weg, quelle);
+    this.ausgeloest.push({ befehl: id, weg, wirkung: r !== false });
     this.rendern();
     return r !== false;
   }

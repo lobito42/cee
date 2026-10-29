@@ -40,6 +40,13 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
 
   const offenesSchliessen = (): boolean => {
     let war = false;
+    if (app.kontextMenue?.mehrOffen) {
+      // Erster Esc schließt nur die zweite Ebene, der Fokus kehrt zu „Mehr …“ zurück
+      app.kontextMenue.mehrOffen = false;
+      app.kontextMenue.fokus = 'mehr';
+      app.rendern();
+      return true;
+    }
     if (app.menue) {
       app.menue = null;
       war = true;
@@ -76,9 +83,13 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
     }
     const mehr = ziel.closest<HTMLElement>('[data-mehr-toggle]');
     if (mehr && app.kontextMenue) {
-      const f = mehr.dataset.mehrToggle as string;
-      if (app.kontextMenue.mehr.has(f)) app.kontextMenue.mehr.delete(f);
-      else app.kontextMenue.mehr.add(f);
+      app.kontextMenue.mehrOffen = !app.kontextMenue.mehrOffen;
+      app.kontextMenue.fokus = app.kontextMenue.mehrOffen ? 'zweite-ebene' : 'mehr';
+      app.rendern();
+      return;
+    }
+    if (ziel.closest('[data-suche-folgt-alle]')) {
+      app.sucheFolgtAlle = true;
       app.rendern();
       return;
     }
@@ -161,7 +172,7 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
 
   function kontextOeffnen(x: number, y: number): void {
     const art: Auswahlart = app.auswahlart();
-    const gruppen = kontextmenue(app.register, art, (b) => app.anwendbar(b));
+    const menue = kontextmenue(app.register, art, (b) => app.anwendbar(b));
     app.menue = null;
     app.suche.offen = false;
     const breite = 260;
@@ -170,8 +181,8 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
       x: Math.max(4, Math.min(x, window.innerWidth - breite - 4)),
       y: Math.max(4, Math.min(y, window.innerHeight - hoehe - 4)),
       art,
-      gruppen,
-      mehr: new Set(),
+      menue,
+      mehrOffen: false,
     };
     app.rendern();
   }
@@ -546,6 +557,7 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
       app.suche.text = ziel.value;
       app.suche.index = 0;
       app.suche.alle = false;
+      app.sucheFolgtAlle = false;
       app.rendern();
     } else if (ziel.dataset.chatEingabe !== undefined) {
       app.chat.eingabe = ziel.value;
