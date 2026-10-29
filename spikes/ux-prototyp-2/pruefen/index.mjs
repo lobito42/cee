@@ -61,9 +61,15 @@ if (!befehl || !BEFEHLE[befehl]) {
 // Wireframe-Basics (ap-50): Brücke zum Geometrie-Worker nur für `drahtmodell`, außer mit `--ohne-bruecke`.
 if (befehl === 'drahtmodell' && !('ohne-bruecke' in optionen)) process.env.CEE_BRUECKE = 'pruefen';
 
+const PORT_DRAHT = Number(process.env.CEE_PORT_DRAHT ?? 41750);
+
 const server = await preview({
   root: WURZEL,
-  preview: { port: 0, host: '127.0.0.1', open: false },
+  // Drahtmodell: fester Port, damit Vorschau und Brücke in jedem Lauf denselben Ursprung haben (ap-50)
+  preview:
+    befehl === 'drahtmodell'
+      ? { port: PORT_DRAHT, strictPort: true, host: '127.0.0.1', open: false }
+      : { port: 0, host: '127.0.0.1', open: false },
 });
 const adr = server.httpServer.address();
 const basis = `http://127.0.0.1:${typeof adr === 'object' && adr ? adr.port : 4173}`;
