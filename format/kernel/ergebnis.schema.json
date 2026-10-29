@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cee.dev/format/kernel/ergebnis.schema.json",
+  "title": "Ergebnis des Geometrie-Workers (cee-kernel/0)",
+  "description": "Je berechnetem Element id, state, hash, outputs, befunde. Verworfene Elemente fehlen. Jede Zahl ist eine Größe {value, unit} (ADR-057); Längen in mm, Richtungen in 1.",
+  "type": "object",
+  "required": ["protocol", "kernel", "results", "befunde"],
+  "properties": {
+    "protocol": { "const": "cee-kernel/0" },
+    "kernel": {
+      "type": "object",
+      "required": ["name", "version", "worker"],
+      "properties": {
+        "name": { "const": "occt" },
+        "version": { "type": "string" },
+        "worker": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "results": { "type": "array", "items": { "$ref": "#/$defs/result" } },
+    "befunde": { "type": "array", "items": { "$ref": "#/$defs/befund" } }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "laenge": {
+      "type": "object",
+      "required": ["value", "unit"],
+      "properties": { "value": { "type": "number" }, "unit": { "const": "mm" } },
+      "additionalProperties": false
+    },
+    "zahl1": {
+      "type": "object",
+      "required": ["value", "unit"],
+      "properties": { "value": { "type": "number" }, "unit": { "const": "1" } },
+      "additionalProperties": false
+    },
+    "lage": { "type": "array", "items": { "$ref": "#/$defs/laenge" }, "minItems": 3, "maxItems": 3 },
+    "richtung": { "type": "array", "items": { "$ref": "#/$defs/zahl1" }, "minItems": 3, "maxItems": 3 },
+    "ausgang": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["type", "position"],
+          "properties": { "type": { "const": "point" }, "position": { "$ref": "#/$defs/lage" } },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["type", "origin", "direction"],
+          "properties": {
+            "type": { "enum": ["line", "ray"] },
+            "origin": { "$ref": "#/$defs/lage" },
+            "direction": { "$ref": "#/$defs/richtung" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["type", "start", "end", "length"],
+          "properties": {
+            "type": { "const": "segment" },
+            "start": { "$ref": "#/$defs/lage" },
+            "end": { "$ref": "#/$defs/lage" },
+            "length": { "$ref": "#/$defs/laenge" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["type", "origin", "normal", "x_direction"],
+          "properties": {
+            "type": { "const": "plane" },
+            "origin": { "$ref": "#/$defs/lage" },
+            "normal": { "$ref": "#/$defs/richtung" },
+            "x_direction": { "$ref": "#/$defs/richtung" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["type", "origin", "x", "y", "z"],
+          "properties": {
+            "type": { "const": "frame" },
+            "origin": { "$ref": "#/$defs/lage" },
+            "x": { "$ref": "#/$defs/richtung" },
+            "y": { "$ref": "#/$defs/richtung" },
+            "z": { "$ref": "#/$defs/richtung" }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "result": {
+      "type": "object",
+      "required": ["id", "state", "hash", "outputs", "befunde"],
+      "properties": {
+        "id": { "type": "string" },
+        "state": { "enum": ["aktuell", "fehlerhaft"] },
+        "hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "outputs": { "type": "object", "additionalProperties": { "$ref": "#/$defs/ausgang" } },
+        "befunde": { "type": "array", "items": { "$ref": "#/$defs/befund" } }
+      },
+      "additionalProperties": false
+    },
+    "befund": {
+      "type": "object",
+      "required": ["code", "element", "hinweis"],
+      "properties": {
+        "code": {
+          "enum": [
+            "input_missing",
+            "input_discarded",
+            "input_type",
+            "input_failed",
+            "degenerate",
+            "unit",
+            "unknown_type",
+            "kernel_error",
+            "protocol",
+            "unit_assumed"
+          ]
+        },
+        "element": { "type": ["string", "null"] },
+        "input": { "type": "string" },
+        "param": { "type": "string" },
+        "bezug": { "type": "string", "description": "Element-ID, auf die der Eingang zeigt" },
+        "text": { "type": "string", "description": "Text der OCP-Ausnahme bei kernel_error" },
+        "hinweis": { "type": "string", "minLength": 1, "description": "Übersetzungsschlüssel mit Korrekturvorschlag" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

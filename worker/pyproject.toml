@@ -4,7 +4,11 @@ version = "0.0.1"
 description = "Geometrie-Worker (OpenCascade über build123d/OCP), spricht das Kernel-Protokoll über stdio (ADR-032)"
 requires-python = ">=3.11,<3.14"
 license = "MPL-2.0"
-dependencies = ["build123d>=0.9"]
+# cee-sdk (Arbeitsbereich, Apache-2.0): Auftrag aus dem Graphen über den Rust-Kern (ap-50)
+dependencies = ["build123d>=0.9", "cee-sdk"]
+
+[tool.uv.sources]
+cee-sdk = { workspace = true }
 
 [build-system]
 requires = ["hatchling"]

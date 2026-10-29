@@ -90,6 +90,14 @@ class Quantity:
         """In `unit` umrechnen (gleiche Dimension, sonst `CeeError` mit `dimension_mismatch`)."""
         return Quantity(_graph.convert(float(self.value), self.unit, unit), unit)
 
+    def __getitem__(self, key: str) -> float | str:
+        """Lesen wie die Größe im Element-JSON: `q["value"]`, `q["unit"]`."""
+        if key == "value":
+            return self.value
+        if key == "unit":
+            return self.unit
+        raise KeyError(key)
+
 
 def _param(value: Json) -> Json:
     """Parameterwert für Script-Elemente: Größen als `Quantity`, alles andere (z. B. Geld) unverändert."""
