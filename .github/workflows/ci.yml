@@ -109,10 +109,14 @@ jobs:
       - run: uv run ruff format --check .
       - run: uv run pytest -q tests/unit
 
-  abnahme:
-    name: Fällige Abnahmetests
+  abnahme-teil:
+    name: Abnahmetests Teil ${{ matrix.teil }}
     runs-on: ubuntu-latest
     needs: [rust, elixir, python]
+    strategy:
+      fail-fast: false
+      matrix:
+        teil: [0, 1, 2, 3]  # Testdateien reihum auf vier Läufe verteilt (gleiche Gesamtmenge wie vorher)
     services:
       postgres:
         image: postgres:16
@@ -156,22 +160,26 @@ jobs:
           fi
           targets=$(CEE_ROOT="$PWD" uv run python "$sel")
           echo "Abnahmetests: ${targets:-keine}"
-          # Zuerst der Change dieses Branches (schnelle erste Rückmeldung), danach die übrigen fälligen Tests.
-          head="${{ github.head_ref }}"
-          first=""
-          if [[ "$head" =~ ^(claude/)?(spec|change)/([a-z0-9][a-z0-9-]*)$ ]]; then
-            first="tests/acceptance/${BASH_REMATCH[3]}"
-          fi
-          if [ -n "$first" ] && [[ " $targets " == *" $first "* ]]; then
-            uv run pytest -q "$first"
-            targets=$(printf '%s\n' $targets | grep -vx "$first" | tr '\n' ' ')
-          fi
-          if [ -n "${targets// /}" ]; then uv run pytest -q $targets; fi
+          # Testdateien aller fälligen Verzeichnisse sortiert; dieser Lauf nimmt jede vierte (Teil ${{ matrix.teil }}).
+          files=$(for t in $targets; do find "$t" -name 'test_*.py'; done | sort | awk -v n=4 -v k=${{ matrix.teil }} 'NR % n == k')
+          echo "Dateien in diesem Teil: $(echo "$files" | grep -c . || true)"
+          if [ -n "${files// /}" ]; then uv run pytest -q $files; fi
           # Auf tests/<id>: neue Abnahmetests sind absichtlich rot – nur prüfen, dass sie sich sammeln lassen.
           head="${{ github.head_ref }}"
-          if [[ "$head" =~ ^(claude/)?(tests|neu)/([a-z0-9][a-z0-9-]*)$ ]]; then
+          if [ "${{ matrix.teil }}" = "0" ] && [[ "$head" =~ ^(claude/)?(tests|neu)/([a-z0-9][a-z0-9-]*)$ ]]; then
             own="tests/acceptance/${BASH_REMATCH[3]}"
             if [ -d "$own" ]; then uv run pytest -q --collect-only "$own"; fi
+          fi
+
+  abnahme:
+    name: Fällige Abnahmetests
+    runs-on: ubuntu-latest
+    needs: [abnahme-teil]
+    if: always()
+    steps:
+      - run: |
+          if [ "${{ needs.abnahme-teil.result }}" != "success" ]; then
+            echo "Ein Teil der Abnahmetests ist rot oder wurde nicht ausgeführt: ${{ needs.abnahme-teil.result }}"; exit 1
           fi
 
   client:
