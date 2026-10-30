@@ -1,5 +1,15 @@
 ## ADDED Requirements
 
+### Requirement: Typdefinition Hochziehen als Daten
+Der Elementtyp `extrude` SHALL als Typdefinition in `format/types/skizze.json` liegen (ADR-046), mit Eingang
+`skizze` und den Längen-Parametern `punkt_u`, `punkt_v`, `hoehe` (Dimension `length`, Standard-Einheit `mm`). Der
+Code unter `crates/graph` MUST NOT die Zeichenkette `extrude` als Typnamen enthalten.
+
+#### Scenario: [auto] Registrieren ohne Kern-Code
+- **WHEN** der Abnahmetest `format/types/skizze.json` über das Python-SDK registriert
+- **THEN** hat `extrude` genau den Eingang `skizze` und die 3 Parameter mit `dimension` = `length` und
+  `default_unit` = `mm`, und `"extrude"` kommt in `crates/graph/src/**/*.rs` nicht vor
+
 ### Requirement: Hochziehen eines Bereichs zum Körper
 Ein `extrude` SHALL den innersten Bereich seiner Skizze, der den Punkt (`punkt_u`, `punkt_v`) enthält, um `hoehe`
 entlang der Normale der Ebene zu einem eigenen OCP-Solid hochziehen (negative Höhe gegen die Normale). Die Kennwerte
@@ -45,7 +55,9 @@ sein.
 ### Requirement: Erweiterung von cee-kernel/0
 Die Schemas unter `format/kernel/` SHALL um die Ausgabetypen `sketch` und `solid` nach design.md Abschnitte 3 und 4
 ergänzt werden; `protocol` MUST `cee-kernel/0` bleiben, und Ergebnisse aus ap-50 MUST weiter gültig sein. Jede Zahl
-MUST als Größe `{"value", "unit"}` erscheinen (Netz-Koordinaten als Liste in mm mit Einheit am Netz).
+MUST als Größe `{"value", "unit"}` erscheinen; einzige Ausnahme sind die Anzeige-Listen `netz.positionen` und
+`kantenzuege`, deren Zahlen in mm stehen und deren Einheit einmal als `"unit": "mm"` am Netz bzw. an den
+Kantenzügen steht.
 
 #### Scenario: [auto] Schemas gültig und additiv
 - **WHEN** der Test die Ergebnisse aller Scenarios dieses Changes und das Ergebnis von `format/examples/drahtmodell.json`

@@ -1,15 +1,16 @@
 ## ADDED Requirements
 
 ### Requirement: Typdefinitionen der Skizze als Daten
-Die Elementtypen `sketch`, `sketch_line`, `sketch_rectangle`, `sketch_circle` und `extrude` SHALL als
-Typdefinitionen in `format/types/skizze.json` liegen (ADR-046), jeder Längen-Parameter mit Dimension `length` und
-Standard-Einheit `mm` (ADR-057). Der Code unter `crates/graph` MUST NOT einen dieser Typnamen enthalten.
+Die Elementtypen `sketch`, `sketch_line`, `sketch_rectangle` und `sketch_circle` SHALL als Typdefinitionen in
+`format/types/skizze.json` liegen (ADR-046), jeder Längen-Parameter mit Dimension `length` und Standard-Einheit
+`mm` (ADR-057). Der Code unter `crates/graph` MUST NOT einen dieser Typnamen enthalten. (`extrude` liegt in
+derselben Datei, gehört aber zur Fähigkeit `hochziehen`.)
 
 #### Scenario: [auto] Registrieren ohne Kern-Code
 - **WHEN** der Abnahmetest `format/types/skizze.json` zusammen mit `format/types/drahtmodell.json` über das
   Python-SDK registriert und `format/examples/skizze.json` mit `validate()` prüft
-- **THEN** gibt es 0 Befunde der Schwere Fehler, jeder Längen-Parameter der 5 Typen hat `dimension` = `length` und
-  `default_unit` = `mm`, und keine der 5 Typ-Zeichenketten kommt in `crates/graph/src/**/*.rs` vor
+- **THEN** gibt es 0 Befunde der Schwere Fehler, jeder Längen-Parameter der 4 Typen hat `dimension` = `length` und
+  `default_unit` = `mm`, und keine der 4 Typ-Zeichenketten kommt in `crates/graph/src/**/*.rs` vor
 
 ### Requirement: Skizzenelemente auf einer Ebene
 Linie, Rechteck und Kreis SHALL im `content` genau einer Skizze liegen, keine Eingänge haben und ihre Lage in
@@ -22,8 +23,9 @@ Worker MUST sie als OCP-Kanten in Weltkoordinaten bilden. Entartete Elemente (L�
 - **WHEN** eine Skizze auf der XY-Ebene eines Koordinatensystems mit x = 100 mm, rz = 30 deg, rx = 90 deg liegt und
   je eine Linie (0, 0)–(50, 0) mm, ein Rechteck (−10, −5)–(10, 5) mm und ein Kreis bei (20, 0) mm mit d = 10 mm
   enthält
-- **THEN** stimmen Endpunkte, Ecken, Mittelpunkt und Radius der OCP-Kanten aus `formen()` mit der vom Test aus der
-  Ebene nachgerechneten Lage auf 10⁻⁶ mm überein (4 von 4 Prüfungen)
+- **THEN** stimmen alle 8 Prüfwerte der OCP-Kanten aus `formen()` mit der vom Test aus der Ebene nachgerechneten
+  Lage auf 10⁻⁶ mm überein (8 von 8): 2 Endpunkte der Linie, 4 Ecken des Rechtecks, Mittelpunkt und Radius des
+  Kreises
 
 #### Scenario: [auto] Entartet und außerhalb
 - **WHEN** eine Skizze eine Linie der Länge 0 mm, ein Rechteck der Breite 0 mm, einen Kreis mit d = 0 mm und ein

@@ -9,6 +9,9 @@
 - [ ] 1.4 Hochziehen nach Abschnitt 4 (Punkt-Selektor, Prisma, Kennwerte, Netz, Kantenzüge, `region_missing`),
   Schema-Ergänzung `sketch`/`solid` in `format/kernel/`, Inhalts-Hash der Skizze über ihre Kinder – Prüfung: AK-4,
   AK-5, AK-6; `uv run pytest -q -x tests/acceptance/ap-53-skizze-hochziehen -k "worker"`
+- [ ] 1.5 Befehle aus design.md Abschnitt 6 als Daten in `spikes/ux-prototyp-2/src/befehle.json` (ID, Familie,
+  Untergruppe, Kürzel, Parameter-Schema, `ki`), Übersetzungen de/en, Prüfbefehl `skizze befehle` mit IDs, Kürzeln
+  und `ki` (Orte folgen in 2.2) – Prüfung: `npm --prefix spikes/ux-prototyp-2 test`, Teil „Kürzel“ von AK-7
 
 ## 2. Ansicht und Skizzieren im Prototyp (Nacht 2)
 
@@ -16,10 +19,10 @@
   hinzufügen; Picking mit BVH, Kontur (Überfahren dünn, Auswahl Akzent), Kanten als Line2, Kamera über
   camera-controls mit den bestehenden Navigationsprofilen, Ansichtswürfel mit Weltachsen; Prüfbefehle
   `skizze messen` und `skizze lizenzen` – Prüfung: AK-13; Abnahmetests ap-41b/ap-41c/ap-50 bleiben grün
-  (`uv run pytest -q tests/acceptance/ap-41b-ux-bedienkonzept tests/acceptance/ap-41c-ux-schlankes-menue`)
-- [ ] 2.2 Befehle aus design.md Abschnitt 6 in `src/befehle.json` (Kürzel, Familie, Parameter, `ki`), Kontextleiste
-  und Skizzier-Werkzeugleiste nach Abschnitt 1, Dropdowns „Skizze“ und „Körper“, Übersetzungen de/en, Prüfbefehl
-  `skizze befehle` – Prüfung: AK-7
+  (`uv run pytest -q tests/acceptance/ap-41b-ux-bedienkonzept tests/acceptance/ap-41c-ux-schlankes-menue
+  tests/acceptance/ap-50-wireframe-basics`)
+- [ ] 2.2 Kontextleiste und Skizzier-Werkzeugleiste nach design.md Abschnitt 1 aus den Befehlen von Task 1.5,
+  Dropdowns „Skizze“ und „Körper“, Orte im Prüfbefehl `skizze befehle` – Prüfung: AK-7
 - [ ] 2.3 Skizze anlegen, öffnen, schließen (Kamera senkrecht, Ausschnitt, zurück, Doppelklick), Testzustände
   `skizze-leer`, `skizze-halter`, `skizze-last` – Prüfung: AK-8
 - [ ] 2.4 Zeichnen von Linie (Kette), Rechteck, Kreis mit Gummiband, Fangen mit Anzeige, Wertfeld am Zeiger,

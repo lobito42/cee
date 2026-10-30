@@ -91,9 +91,9 @@ Keine. (`kernel-protokoll` und `drahtmodell` aus ap-50 sind noch nicht archivier
 - **Referenzdaten:** keine Dateien unter `tests/golden/`. Alle Sollwerte rechnet der Test nach: Rechtecke, Kreise
   und Prismen analytisch; der Abnahmefall Halter leitet seine Maße aus `Params()` in `parts/examples/halter.py`
   ab und baut die Vergleichsform selbst mit build123d.
-- **Abhängigkeiten (Vorschlag für die Warteschlange):** `depends_on: [ap-50-wireframe-basics]` (Brücke, Worker,
-  Ebenen, Befehle, Testzustände). Die KI-Scenarios brauchen zusätzlich die Werkzeugliste und den Änderungssatz
-  aus ap-52 – siehe Open Question 1.
+- **Abhängigkeiten (Entscheidung, Eintrag in die Warteschlange später durch das Kernteam):** `depends_on:
+  [ap-50-wireframe-basics, ap-52-ki-konstruktion-wireframe]` – ap-50 für Brücke, Worker, Ebenen, Befehle und
+  Testzustände, ap-52 für Werkzeugliste, Änderungssatz und Testmodell der KI-Scenarios (design.md Open Question 1).
 - **Abhängigkeiten im Code (Prototyp, ADR-034):** `three-mesh-bvh` (MIT), `camera-controls` (MIT),
   `three-viewport-gizmo` (MIT), optional `postprocessing` (Zlib); OutlinePass, Line2 und TransformControls kommen
   aus `three/examples/jsm` (MIT, schon vorhanden). Worker: keine neuen Pakete.

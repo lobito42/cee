@@ -44,8 +44,9 @@ Skizze MUST sie wieder öffnen.
 
 ### Requirement: Zeichnen mit Fangen und getipptem Maß
 In einer offenen Skizze SHALL der Mensch Linien (als Kette), Rechtecke und Kreise per Klick oder Ziehen zeichnen.
-Fangen MUST mit Fangradius 8 px an Endpunkten, dann Mittelpunkten, dann am Raster von 10 mm einrasten und den
-Zielwert exakt übernehmen; Richtungen innerhalb 3° von waagerecht bzw. senkrecht MUST exakt einrasten; jede
+Fangen MUST mit Fangradius 8 px an Endpunkten, dann Mittelpunkten, dann am festen Raster von 10 mm einrasten und den
+Zielwert exakt übernehmen; beim Öffnen einer Skizze MUST der Maßstab 5 px je mm betragen (Fangradius damit 1,6 mm),
+in allen Testzuständen und Abläufen dieses Changes ohne Zoom dazwischen; Richtungen innerhalb 3° von waagerecht bzw. senkrecht MUST exakt einrasten; jede
 Fangart MUST am Zeiger angezeigt werden. Ab der ersten getippten Ziffer MUST das Wertfeld am Zeiger Länge, Breite,
 Höhe oder Durchmesser mit Einheit und einfachen Formeln annehmen (ADR-057), `Tab` wechselt das Feld, `Enter` legt
 das Element an, ein ungültiger Wert MUST einen Befund am Feld zeigen und nichts anlegen. Jedes angelegte Element
@@ -59,10 +60,12 @@ MUST genau ein Rückgängig-Schritt sein.
 
 #### Scenario: [auto] Fangen an Endpunkt, Mittelpunkt und Richtung
 - **WHEN** in der Skizze mit dem Rechteck (0, 0)–(60, 40) mm `L` gedrückt, bei (60,6; 39,5) mm geklickt, der Zeiger
-  nach (97; 41,3) mm bewegt und geklickt, dann Esc; danach `K`, Klick bei (30,4; 0,3) mm, „6,6“, `Enter`
+  nach (97; 41,3) mm bewegt und geklickt, dann Esc; danach `K`, Klick bei (78,9; 40,4) mm, „6,6“, `Enter` (Maßstab
+  5 px je mm: Endpunkt 0,78 mm = 3,9 px entfernt, Rasterpunkt (100, 40) 3,3 mm = 16 px, also außerhalb; beim Kreis
+  liegt der Linien-Mittelpunkt (78,5; 40) 2,8 px und der Rasterpunkt (80, 40) 5,9 px entfernt)
 - **THEN** beginnt die Linie exakt bei (60, 40) mm (`fang.art` = `endpunkt`), endet exakt bei v = 40 mm
-  (`fang.richtung` = `waagerecht`, Anzeige „H“), und der Kreis hat Mittelpunkt exakt (30, 0) mm
-  (`fang.art` = `mittelpunkt`) und d = 6,6 mm
+  (`fang.richtung` = `waagerecht`, Anzeige „H“), und der Kreis hat Mittelpunkt exakt (78,5; 40) mm,
+  also nicht auf dem Raster (`fang.art` = `mittelpunkt`, Vorrang vor Raster), und d = 6,6 mm
 
 #### Scenario: [auto] Ungültiger Wert, Abbruch, Rückgängig
 - **WHEN** beim Kreis „5 kg“ und `Enter` getippt, dann Esc gedrückt, dann ein gültiger Kreis angelegt und
@@ -106,11 +109,15 @@ ausgeblendet, ohne den Graphen zu ändern.
 ### Requirement: Abnahmefall Halter in der Vorschau
 Der Halter nach design.md Abschnitt 8 SHALL im Prototyp nur über Klicks, Kürzel, Fangen, getippte Maße und Griff
 gebaut werden können, ohne Menü und ohne Eigenschaftenfeld, und dasselbe Ergebnis liefern wie direkt im Worker.
+Erlaubte Vorbereitung, nicht Teil der Direktbedienung: Das Koordinatensystem K1 wird wie in ap-50 mit
+„Koordinatensystem setzen“ und dem Eigenschaftenfeld z angelegt, weil Koordinatensysteme in dieser Stufe keinen
+Griff haben.
 
 #### Scenario: [auto] Halter per Direktbedienung
 - **WHEN** der Abnahmetest im Zustand `skizze-leer` per `ablauf` S1 mit Rechteck und zwei Kreisen (Werte aus
   `Params()` getippt), Hochziehen um `dicke`, K1 mit z = `dicke`, S2 mit Rechteck und Hochziehen um `steg_hoehe`
-  baut, wobei kein Schritt einen Menüeintrag oder ein Eigenschaftenfeld benutzt (Ausnahme: K1 mit „Koordinatensystem setzen“ aus ap-50 und dem Feld z)
+  baut; als Vorbereitung vor S2 wird K1 mit „Koordinatensystem setzen“ und dem Feld z = `dicke` angelegt
+  (erlaubt, siehe Requirement); alle übrigen Schritte benutzen keinen Menüeintrag und kein Eigenschaftenfeld
 - **THEN** stimmen Volumen und Hülle beider Körper aus `ergebnis` relativ 10⁻⁶ mit dem direkten Worker-Fall überein,
   jede Lage in `szene` stimmt auf 10⁻³ mm mit `ergebnis` überein, und `konsolenfehler` ist leer
 
@@ -146,10 +153,12 @@ höchstens 4 ms (Median) auf 200 000 Dreiecken brauchen. Neue Abhängigkeiten MU
 `three-cad-viewer` und PlaneGCS MUST NOT eingebunden werden.
 
 #### Scenario: [auto] Ansichtswürfel
-- **WHEN** per `ablauf` auf die Seite „Vorne“ und dann auf „Oben“ des Ansichtswürfels geklickt wird
-- **THEN** ist jeweils `verlauf` bzw. das Befehlsprotokoll um `ansicht.vorne` bzw. `ansicht.oben` ergänzt,
-  `kamera.richtung` entspricht der Ansicht nach ISO auf 0,1°, und die drei Weltachsen sind in jedem Schnappschuss
-  sichtbar
+- **WHEN** per `ablauf` auf die Seite „Vorne“, dann „Oben“, dann die Ecke vorne rechts oben des Ansichtswürfels
+  geklickt wird
+- **THEN** endet das Aktionsprotokoll (`protokoll` aus ap-41b) jeweils mit `ansicht.vorne`, `ansicht.oben` bzw.
+  `ansicht.isometrisch`; `kamera.azimut_deg` und `kamera.elevation_deg` sind (0, 0), (0, 89) bzw. (−35, 28) auf
+  0,1° – die Werte der vorhandenen Befehle in `src/wirkungen.ts` –, und die drei Weltachsen sind in jedem
+  Schnappschuss sichtbar
 
 #### Scenario: [auto] Picking-Budget
 - **WHEN** der Test `pruefen -- skizze messen --dreiecke 200000 --json` aufruft

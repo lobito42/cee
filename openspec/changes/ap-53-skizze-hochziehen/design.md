@@ -105,7 +105,8 @@ Dimension `length`, Standard-Einheit `mm`.
   {min, max} [mm ×3], "flaechen": Anzahl, "kanten": Anzahl, "netz": {"positionen": [mm …], "dreiecke": [int …]},
   "kantenzuege": [[[x, y, z] …] …]}`. Kennwerte aus der exakten Form (`BRepGProp`, `TopExp`), nicht aus dem Netz.
   Netz mit `BRepMesh_IncrementalMesh`, Sehnenfehler 0,05 mm, Winkel 0,25 rad – nur Anzeige. Größen als
-  `{"value", "unit"}` wie in ap-50.
+  `{"value", "unit"}` wie in ap-50; einzige Ausnahme sind die Anzeige-Listen `netz.positionen` und `kantenzuege`
+  (Zahlen in mm, Einheit einmal als `"unit": "mm"` am Netz bzw. an den Kantenzügen).
 - **Schema:** `format/kernel/ergebnis.schema.json` wird um `sketch` und `solid` ergänzt; `protocol` bleibt
   `cee-kernel/0`; Ergebnisse aus ap-50 bleiben gültig (additiv).
 - **Toleranzen der Abnahme:** Lagen 10⁻⁶ mm; Volumen, Oberfläche, Fläche relativ 10⁻⁶; Schwerpunkt 10⁻⁶ mm;
@@ -119,8 +120,9 @@ Dimension `length`, Standard-Einheit `mm`.
 **Ebene wählen und Skizze anlegen:** Ebenen aus ap-50 sind wählbar. „Skizze anlegen“ (`skizze.anlegen`) auf einer
 gewählten Ebene legt ein `sketch` an, öffnet es (Ort „Skizze“ im Pfad, ADR-063 Punkt 4) und dreht die Kamera in
 ≤ 400 ms senkrecht auf die Ebene (Blickrichtung −`normal`, `x_direction` zeigt nach rechts, Parallelprojektion).
-Beim Öffnen zeigt die Kamera einen Ausschnitt von 200 mm Breite um den Ursprung der Ebene bzw. passt vorhandene
-Skizzenelemente mit 10 % Rand ein (bei 1440 × 900 px etwa 5 px je mm; die Fang-Scenarios setzen das voraus).
+Beim Öffnen steht die Kamera im Maßstab 5 px je mm, zentriert auf den Ursprung der Ebene (bei 1440 × 900 px rund
+200 mm sichtbar). Der Fangradius von 8 px entspricht damit 1,6 mm; alle Testzustände und Abläufe dieses Changes
+zoomen nicht, die Fang-Scenarios rechnen mit diesem Maßstab. Einpassen bleibt ein eigener Befehl.
 Ohne gewählte Ebene fordert die Rückmeldezeile „Ebene wählen“ an, der nächste Klick auf eine Ebene schließt ab.
 „Fertig“ (`skizze.fertig`) oder `Esc` ohne aktives Werkzeug schließen die Skizze; die Kamera kehrt in die Lage vor
 dem Öffnen zurück. Doppelklick auf eine Skizze bzw. „Skizze bearbeiten“ öffnet sie wieder.
@@ -131,7 +133,8 @@ Ziehen). Kreis (`K`): Klick Mittelpunkt, Klick auf den Rand. Während des Zeichn
 die Form; erst der abschließende Klick legt das Element an (ein Rückgängig-Schritt je Element).
 
 **Fangen:** Fangradius 8 px. Vorrang: Endpunkt (Linien-Enden, Rechteck-Ecken) > Mittelpunkt (Linien- und
-Rechteckseiten-Mitte, Kreismittelpunkt) > Raster. Rasterweite 10 mm in Skizzenkoordinaten (Open Question 6).
+Rechteckseiten-Mitte, Kreismittelpunkt) > Raster. Rasterweite fest 10 mm in Skizzenkoordinaten (Entscheidung,
+siehe Open Question 6).
 Waagerecht bzw. senkrecht: weicht die Richtung vom ersten Punkt um ≤ 3° von u bzw. v ab, rastet sie genau ein.
 Anzeige: kleines Symbol am Fangpunkt (Endpunkt Quadrat, Mittelpunkt Dreieck, Raster Kreuz) und für waagerecht
 bzw. senkrecht ein Kürzel „H“ bzw. „V“ neben dem Zeiger, gestrichelte Hilfslinie; Farbe aus Tokens (`akzent`).
@@ -208,7 +211,8 @@ Brücke selbst, Playwright, Chromium, 1440 × 900 px):
   `{zeiger: {skizze_mm: [u, v] | modell_mm: [x, y, z] | element, aktion: "bewegen" | "klicken" | "doppelklick" |
   "druecken" | "loslassen"}}`, `{tippen: "<Text>"}`, `{griff: {element, ziehen_mm}}`; Schnappschuss zusätzlich
   `skizze_offen` (ID oder null), `werkzeug`, `fang: {art, lage_mm, richtung}`, `wertfeld: {sichtbar, feld, text}`,
-  `kamera: {richtung, oben, projektion, ms_bis_ruhe}`, `kontur: [{element, art: "hover" | "auswahl", farbe}]`,
+  `kamera: {richtung, oben, azimut_deg, elevation_deg, projektion, ms_bis_ruhe}` (Azimut und Elevation wie
+  `blick()` in `src/wirkungen.ts`), `kontur: [{element, art: "hover" | "auswahl", farbe}]`,
   `linienbreiten: {<element>: px}`, `geister: [{element, art, huelle_mm}]`, `bereiche: [{skizze, punkt, flaeche}]`,
   `dialoge` (Anzahl offener Dialoge), `werkzeugleiste: [id]`, `kontextleiste: [id]`, `hover_ms`, `bild_ms`
   (Bildzeiten während des letzten Schritts), `long_tasks` (Anzahl ≥ 50 ms).
@@ -252,7 +256,7 @@ Pfad `tests/acceptance/ap-53-skizze-hochziehen/`. Voraussetzungen wie ap-50.
 
 | AK | Prüft | Requirement |
 | --- | --- | --- |
-| AK-1 | Typdefinitionen registrieren; kein neuer Typ im Code von `crates/graph`; Schemas gültig, ap-50-Ergebnisse weiter gültig | Typdefinitionen, Protokoll-Erweiterung |
+| AK-1 | Typdefinitionen registrieren (Skizze und `extrude`); kein neuer Typ im Code von `crates/graph`; Schemas gültig, ap-50-Ergebnisse weiter gültig | Typdefinitionen (beide Fähigkeiten), Protokoll-Erweiterung |
 | AK-2 | Linie, Rechteck, Kreis: Lage in Weltkoordinaten auf gedrehter Ebene, entartete Fälle | Skizzenelemente |
 | AK-3 | Bereiche: einfach, Loch, Linienzug, offene Linie, Schnitt → Befund | Bereiche |
 | AK-4 | Hochziehen: Quader, Zylinder, negative Höhe, Kennwerte, Netz, Befund `region_missing` | Hochziehen |
@@ -293,6 +297,9 @@ Pfad `tests/acceptance/ap-53-skizze-hochziehen/`. Voraussetzungen wie ap-50.
 - **camera-controls statt eigener Navigation** → Die Navigationsprofile aus ap-41b müssen erhalten bleiben; die
   Abnahmetests von ap-41b/ap-41c laufen weiter (Task 2.1 prüft sie).
 - **Wegwerf-Prototyp** → Bedienung entsteht in `spikes/`, dauerhaft sind Typdefinitionen, Protokoll und Worker.
+- **Nacht 2 ist die schwerste** (Ansichtsbausteine, Skizze öffnen, Zeichnen mit Fangen). Entlastet: Die Befehle im
+  Register (reine Daten) sind nach Nacht 1 vorgezogen (Task 1.5). Reicht die Nacht nicht, bleibt 2.4 für den Beginn
+  von Nacht 3; mehr als drei Gruppen gibt es nicht.
 - **Bildzeiten im kopflosen Chromium** schwanken; Budgets gelten als Median, Messung wie ap-50 warm.
 
 ## Migration Plan
@@ -303,10 +310,9 @@ die Schema-Ergänzung ist optional und stört ap-50 nicht.
 
 ## Open Questions
 
-1. **Abhängigkeit von ap-52.** Die KI-Scenarios (AK-12) brauchen Werkzeugliste, Änderungssatz und Testmodell aus
-   ap-52; beauftragt ist `depends_on: [ap-50-wireframe-basics]`. Vorschlag: in der Warteschlange
-   `depends_on: [ap-50-wireframe-basics, ap-52-ki-konstruktion-wireframe]` eintragen. Bei Nein: AK-12 prüft nur
-   `ki: true` und die Parameter-Schemas im Register, der Chat-Fall wandert in eine Folgestufe.
+1. **Abhängigkeit von ap-52 – entschieden.** Die KI-Scenarios (AK-12) brauchen Werkzeugliste, Änderungssatz und
+   Testmodell aus ap-52. Entscheidung: `depends_on` enthält `ap-50-wireframe-basics` und
+   `ap-52-ki-konstruktion-wireframe`; den Eintrag in `openspec/queue.yaml` macht das Kernteam später.
 2. **Nachtrag Bedienaufteilung (Kernteam, eigener Branch `adr/…`, nicht in diesem Change).** Die Entscheidung des
    Nutzers vom 2026-10-30 (Abschnitt 1) widerspricht `docs/rules/client.md` („keine Menüleisten“, „keine
    Werkzeugleiste“, „Zahlen stehen nur im Inspektor“) und passt nicht ganz zu ADR-065 (Menüleiste als Hauptweg,
@@ -322,8 +328,10 @@ die Schema-Ergänzung ist optional und stört ap-50 nicht.
 5. **Wie ein Bereich adressiert wird.** Vorschlag: über einen Punkt in Skizzenkoordinaten (einfach, für Mensch und
    KI gleich, bei Unklarheit ein Befund). Alternative: über die Element-IDs der begrenzenden Kurven (robuster bei
    Änderungen, braucht Listen-Eingänge im Format und gehört dann zu ap-12).
-6. **Raster.** Vorschlag: feste Rasterweite 10 mm. Alternative: Rasterweite folgt dem Zoom (1, 5, 10, 50 mm …);
-   kann nach dem Ausprobieren nachgezogen werden.
+6. **Raster – entschieden.** Feste Rasterweite 10 mm. Begründung: Sie ist für Abnahmetests, KI-Aufrufe und
+   Ausprobieren gleich und nachvollziehbar; bei 5 px je mm liegen die Rasterpunkte 50 px auseinander und sind gut zu
+   treffen; die Halter-Maße liegen auf dem Raster oder werden getippt. Ein Raster, das dem Zoom folgt (1, 5, 10,
+   50 mm …), kann nach dem Ausprobieren als eigener kleiner Change folgen.
 7. **Halter als zwei Körper ohne Verrundung.** Ohne boolesche Operationen und Verrundung (ap-45) entsteht der Halter
    als Grundplatte mit Bohrungen und Steg nebeneinander. Vorschlag: so lassen; Vereinigen und Verrunden folgen mit
    ap-45. Bei Nein: „Hinzufügen“ als Modus des Hochziehens in diese Stufe aufnehmen (größerer Umfang).
