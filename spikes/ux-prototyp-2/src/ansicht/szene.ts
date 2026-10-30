@@ -108,6 +108,7 @@ export class Szene {
     this.renderer.setPixelRatio(1);
     this.scene.add(this.gruppe);
     this.scene.add(this.draht);
+    this.scene.add(this.globaleAchsen());
     this.scene.add(this.licht.umgebung, this.licht.gerichtet, this.licht.gegen);
     this.setThema('hell');
     new ResizeObserver(() => this.groesseAnpassen()).observe(zone);
@@ -491,6 +492,34 @@ export class Szene {
     this.melde();
   }
 
+  /** Globales Koordinatensystem: immer sichtbare, dünne Achsen im Ursprung (X rot, Y grün, Z blau). */
+  private globaleAchsen(): THREE.Group {
+    const g = new THREE.Group();
+    const laenge = 80;
+    const enden: Array<['achse.x' | 'achse.y' | 'achse.z', [number, number, number]]> = [
+      ['achse.x', [laenge, 0, 0]],
+      ['achse.y', [0, laenge, 0]],
+      ['achse.z', [0, 0, laenge]],
+    ];
+    for (const [token, ende] of enden) {
+      const linie = new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector3(0, 0, 0),
+          new THREE.Vector3(...ende),
+        ]),
+        new THREE.LineBasicMaterial({
+          color: new THREE.Color(tokens[token]),
+          transparent: true,
+          opacity: 0.55,
+          depthTest: false,
+        }),
+      );
+      linie.renderOrder = 0;
+      g.add(linie);
+    }
+    return g;
+  }
+
   /** Drahtmodell zeichnen: Punkte als Scheibe mit Rand, Linien, Ebenen als Quadrat mit Deckkraft 0,15 und Kontur. */
   zeichneDraht(liste: DrahtZeichnung[]): void {
     for (const k of [...this.draht.children]) {
@@ -523,18 +552,16 @@ export class Szene {
           geo,
           new THREE.PointsMaterial({
             color: new THREE.Color(tokens[`farbe.${this.thema}.flaeche`]),
-            size: 16,
+            size: 9,
             sizeAttenuation: false,
           }),
         );
         const kern = new THREE.Points(
           geo,
           new THREE.PointsMaterial({
-            color:
-              z.gewaehlt || z.fehlerhaft
-                ? farbe(z)
-                : new THREE.Color(tokens[`farbe.${this.thema}.akzent`]),
-            size: 10,
+            // Auswahl nur über die Farbe (Akzent), nie über die Größe.
+            color: farbe(z),
+            size: 6,
             sizeAttenuation: false,
           }),
         );
