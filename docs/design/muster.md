@@ -23,8 +23,9 @@ iPad und später Vision Pro gleich aufgebaut sind (ADR-060). Entwurf: gilt erst 
 | Menüleiste (Datei, Bearbeiten …) | **Start-Menü** und **Dropdown-Menüs** (Skizze, Körper, Ändern, Prüfen) in einer schmalen Zeile | Start = Öffnen/Wurzel wählen, Neu, Teilen, Exportieren, Einstellungen; Dropdowns zeigen alle Befehle des Bereichs mit Kürzel; auf dem Mac in der Desktop-App als System-Menüleiste |
 | Symbolleiste mit Suchfeld | **Suche** (Strg/Cmd+K) rechts in der Menüzeile, daneben Rückgängig | Befehle kommen immer aus dem einen Befehlsregister |
 
-Offen: Ob und wie eine schwebende Werkzeugleiste im Modell die Kontextaktionen ergänzt (Lowfi-Entwurf G1);
-Detailtiefe je Feature („Mehr zu …“, merkt sich pro Person und Feature). Die Zeilen „Kontextaktionen“ und
+Entschieden 2026-10-30: Bedient wird im Bild (Kontextleiste an der Auswahl, im Skizziermodus eine schmale
+Werkzeugleiste mit den Skizzierwerkzeugen, Ansichtswürfel mit Weltachsen); Menüs dienen zum Nachschlagen.
+Offen: Detailtiefe je Feature („Mehr zu …“, merkt sich pro Person und Feature). Die Zeilen „Kontextaktionen“ und
 „Arbeitsbereiche“ unten bleiben bis dahin unverändert.
 
 ## Entscheiden und ändern

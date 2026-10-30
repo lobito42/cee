@@ -1,9 +1,11 @@
 # Regeln für den Client (TypeScript, Web und Tauri)
 
-- Bedienkonzept nach Figma (ADR-022): keine Menüleisten, keine modalen Dialoge, kein Ribbon. Neue
-  Funktionen kommen in die Befehlssuche (Strg/Cmd+K), ins Eigenschaften-Panel oder an die Auswahl.
-- Fünf Zonen, erst wählen, dann tun (ADR-063): keine Werkzeugleiste; Aktionen erscheinen über dem Gewählten
-  und in der Suche. Zahlen stehen nur im Inspektor, am Modell gibt es Griffe.
+- Bedienkonzept nach Figma (ADR-022): keine modalen Dialoge, kein Ribbon. Bedient wird im Bild (Kontextleiste an
+  der Auswahl, Griffe, Ziehen, Tastenkürzel); die Dropdown-Menüs und die Befehlssuche (Strg/Cmd+K) dienen nur
+  zum Nachschlagen. Entscheidung des Kernteams 2026-10-30; löst den Widerspruch zu `docs/design/muster.md`.
+- Fünf Zonen, erst wählen, dann tun (ADR-063): Aktionen erscheinen über dem Gewählten und in der Suche. Im
+  Skizziermodus zeigt eine schmale Werkzeugleiste im Bild nur die Skizzierwerkzeuge (Linie, Rechteck, Kreis).
+  Zahlen stehen im Inspektor und im Wertfeld am Griff, am Modell gibt es Griffe.
 - Ein Muster je Aufgabe (ADR-061): vor jedem neuen Bedienelement `docs/design/muster.md` lesen und das
   vorhandene Muster benutzen. Neue Muster oder Abweichungen nur per ADR. Bausteine nur in `client/src/ui/`;
   außerhalb davon keine rohen Bedienelemente, keine Farbwerte, keine Schriftangaben (Lint).

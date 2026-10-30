@@ -83,3 +83,9 @@ changes:
     model: opus    # Agent geometry-specialist; KI-Anbieter-Schnittstelle, Werkzeuge aus dem Befehlsregister
     night: true    # freigegeben 2026-10-29 (Kernteam): KI konstruiert Wireframe aus einem Satz; zieht Teil von ap-15 vor (ADR-059, gemeldet); ein [mensch]-Scenario „Ausprobieren“
     depends_on: [ap-50-wireframe-basics]
+
+  - id: ap-53-skizze-hochziehen
+    phase: spec
+    model: opus    # Agent geometry-specialist; Skizze, Hochziehen, Picking, Kamera (fertige Bausteine nach ADR-034)
+    night: true    # freigegeben 2026-10-30 (Kernteam): Ebene wählen, Skizze, Hochziehen, Halter als Prüfauftrag; Bedienung im Bild; zwei [mensch]-Scenarios
+    depends_on: [ap-50-wireframe-basics, ap-52-ki-konstruktion-wireframe]
