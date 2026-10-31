@@ -37,6 +37,9 @@ export interface Befund {
   parameter: string;
   wert: number;
   grenze: number;
+  /** Befund des Geometriekerns (ap-50): Code und fertiger Text, ohne Korrekturwert. */
+  code?: string;
+  text?: string;
 }
 
 export interface TeilErgebnis {

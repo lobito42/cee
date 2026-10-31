@@ -39,7 +39,8 @@
     "Hilfe": "Hilfe",
     "Baugruppe": "Baugruppe",
     "Simulation": "Simulation",
-    "Chat": "Chat"
+    "Chat": "Chat",
+    "Referenz": "Referenz"
   },
   "untergruppe": {
     "Neu": "Neu",
@@ -66,7 +67,10 @@
     "Gespeichert": "Gespeichert",
     "Hilfe": "Hilfe",
     "Chat": "Chat",
-    "Weitere": "Weitere"
+    "Weitere": "Weitere",
+    "Koordinatensystem": "Koordinatensystem",
+    "Punkt": "Punkt",
+    "Linie": "Linie"
   },
   "struktur": {
     "titel": "Struktur",
@@ -123,7 +127,8 @@
     "masse": "Maße",
     "material": "Material",
     "ergebnis": "Ergebnis",
-    "ansicht": "Ansicht"
+    "ansicht": "Ansicht",
+    "lage": "Lage"
   },
   "feld": {
     "laenge": "Länge",
@@ -139,7 +144,13 @@
     "volumen": "Volumen",
     "masse-wert": "Masse",
     "projektion": "Projektion",
-    "darstellung": "Darstellung"
+    "darstellung": "Darstellung",
+    "x": "x",
+    "y": "y",
+    "z": "z",
+    "rx": "Drehung x",
+    "ry": "Drehung y",
+    "rz": "Drehung z"
   },
   "projektion": {
     "orthogonal": "orthogonal",
@@ -199,7 +210,15 @@
     "befund": "Befund bei {name}; die anderen Elemente bleiben bedienbar",
     "ziel-waehlen": "Wähle in der Struktur das Ziel.",
     "auswahl-ziel": "Wähle Elemente im Modell oder in der Struktur.",
-    "isolieren-ziel": "Wähle zuerst, was du isolieren willst."
+    "isolieren-ziel": "Wähle zuerst, was du isolieren willst.",
+    "draht": {
+      "punkt-klicken": "Ins Modell klicken, um den Punkt zu setzen",
+      "zwei-punkte": "Zwei Punkte wählen",
+      "zweiter-punkt": "Zweiten Punkt wählen",
+      "einen-punkt": "Einen Punkt wählen",
+      "abgebrochen": "Abgebrochen",
+      "esc-abbrechen": "zum Abbrechen"
+    }
   },
   "dnd": {
     "kein-ziel": "Hier kann nichts abgelegt werden.",
@@ -424,6 +443,47 @@
     },
     "task": {
       "wechseln": "Aufgabe wechseln"
+    },
+    "referenz": {
+      "koordinatensystem": "Koordinatensystem setzen",
+      "punkt": "Punkt setzen",
+      "punkt-relativ": "Punkt relativ setzen",
+      "gerade": "Gerade durch zwei Punkte",
+      "halbgerade": "Halbgerade durch zwei Punkte",
+      "strecke": "Strecke durch zwei Punkte"
+    }
+  },
+  "draht": {
+    "kind": {
+      "ursprung": "Ursprung",
+      "x": "X-Achse",
+      "y": "Y-Achse",
+      "z": "Z-Achse",
+      "xy": "XY-Ebene",
+      "yz": "YZ-Ebene",
+      "zx": "ZX-Ebene"
+    },
+    "name": {
+      "koordinatensystem": "Koordinatensystem {n}",
+      "punkt": "Punkt {n}",
+      "line": "Gerade {n}",
+      "ray": "Halbgerade {n}",
+      "segment": "Strecke {n}"
+    },
+    "keine-lage": "Lage aus dem Geometriekern"
+  },
+  "kernel": {
+    "befund": {
+      "input_missing": "Bezug fehlt: Eingang auf ein vorhandenes Element setzen",
+      "input_discarded": "Bezug {bezug} ist verworfen: zurückholen oder neuen Bezug wählen",
+      "input_type": "Bezug hat den falschen Typ: passendes Element wählen",
+      "input_failed": "Bezug {bezug} ist fehlerhaft: zuerst {bezug} reparieren",
+      "degenerate": "Die beiden Punkte liegen aufeinander: Punkte auseinanderziehen",
+      "unit": "Falsche Einheit: Länge in mm, Winkel in Grad eingeben",
+      "unknown_type": "Unbekannter Elementtyp",
+      "kernel_error": "Fehler im Geometriekern",
+      "protocol": "Nachricht an den Geometriekern ungültig",
+      "kernel_unavailable": "Geometrie-Dienst nicht erreichbar"
     }
   }
 }

@@ -4,12 +4,15 @@ import { istVerworfen, pfadZu, type Element } from '../modell/element';
 import { abmessungenText, groesseText, masseText, volumenText } from '../ui/format';
 import { ergebnisVon } from '../geometrie/teil';
 import { h } from '../ui/dom';
+import { PARAMETER, groesseAnzeige, istDrahtTyp } from '../drahtmodell/draht';
 
 export interface Feld {
   key: string;
   param: string | null;
   text: string;
   editierbar: boolean;
+  /** Drahtmodell (ap-50): Dimension des Felds (`length`, `angle`). */
+  dim?: string;
 }
 
 export interface Gruppe {
@@ -89,6 +92,16 @@ export function gruppenVon(app: App, e: Element): Gruppe[] {
       },
     ];
   }
+  if (istDrahtTyp(e.type)) {
+    const lage: Feld[] = Object.entries(PARAMETER[e.type] ?? {}).map(([p, dim]) => ({
+      key: p,
+      param: p,
+      text: groesseAnzeige(e.params[p], sp),
+      editierbar: true,
+      dim,
+    }));
+    return lage.length ? [{ key: 'lage', felder: lage }] : [];
+  }
   const felder: Feld[] = [];
   for (const p of MASSE_PARAMS[e.type] ?? []) {
     if (e.params[p] === undefined) continue;
@@ -141,6 +154,7 @@ export function feldElement(app: App, f: Feld, ids: string[], gemischt: boolean)
           'data-muster': 'Wertfeld',
           'data-feld-eingabe': f.key,
           'data-param': f.param,
+          'data-dim': f.dim ?? null,
           'data-elemente': ids.join(','),
           'data-gemischt': gemischt ? 'true' : null,
           'aria-label': app.t(`feld.${f.key}`),

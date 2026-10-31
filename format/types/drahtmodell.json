@@ -1,0 +1,68 @@
+[
+  {
+    "type": "frame",
+    "params": {
+      "x": {
+        "dimension": "length",
+        "default_unit": "mm"
+      },
+      "y": {
+        "dimension": "length",
+        "default_unit": "mm"
+      },
+      "z": {
+        "dimension": "length",
+        "default_unit": "mm"
+      },
+      "rx": {
+        "dimension": "angle",
+        "default_unit": "deg"
+      },
+      "ry": {
+        "dimension": "angle",
+        "default_unit": "deg"
+      },
+      "rz": {
+        "dimension": "angle",
+        "default_unit": "deg"
+      }
+    }
+  },
+  {
+    "type": "point",
+    "params": {
+      "x": {
+        "dimension": "length",
+        "default_unit": "mm"
+      },
+      "y": {
+        "dimension": "length",
+        "default_unit": "mm"
+      },
+      "z": {
+        "dimension": "length",
+        "default_unit": "mm"
+      }
+    }
+  },
+  {
+    "type": "axis",
+    "params": {}
+  },
+  {
+    "type": "plane",
+    "params": {}
+  },
+  {
+    "type": "line",
+    "params": {}
+  },
+  {
+    "type": "ray",
+    "params": {}
+  },
+  {
+    "type": "segment",
+    "params": {}
+  }
+]

@@ -39,7 +39,8 @@
     "Hilfe": "Help",
     "Baugruppe": "Assembly",
     "Simulation": "Simulation",
-    "Chat": "Chat"
+    "Chat": "Chat",
+    "Referenz": "Reference"
   },
   "untergruppe": {
     "Neu": "New",
@@ -66,7 +67,10 @@
     "Gespeichert": "Saved",
     "Hilfe": "Help",
     "Chat": "Chat",
-    "Weitere": "More"
+    "Weitere": "More",
+    "Koordinatensystem": "Coordinate system",
+    "Punkt": "Point",
+    "Linie": "Line"
   },
   "struktur": {
     "titel": "Structure",
@@ -123,7 +127,8 @@
     "masse": "Dimensions",
     "material": "Material",
     "ergebnis": "Result",
-    "ansicht": "View"
+    "ansicht": "View",
+    "lage": "Position"
   },
   "feld": {
     "laenge": "Length",
@@ -139,7 +144,13 @@
     "volumen": "Volume",
     "masse-wert": "Mass",
     "projektion": "Projection",
-    "darstellung": "Display"
+    "darstellung": "Display",
+    "x": "x",
+    "y": "y",
+    "z": "z",
+    "rx": "Rotation x",
+    "ry": "Rotation y",
+    "rz": "Rotation z"
   },
   "projektion": {
     "orthogonal": "orthographic",
@@ -199,7 +210,15 @@
     "befund": "Finding at {name}; the other elements stay usable",
     "ziel-waehlen": "Choose the target in the structure.",
     "auswahl-ziel": "Pick elements in the model or the structure.",
-    "isolieren-ziel": "Select what you want to isolate first."
+    "isolieren-ziel": "Select what you want to isolate first.",
+    "draht": {
+      "punkt-klicken": "Click into the model to set the point",
+      "zwei-punkte": "Select two points",
+      "zweiter-punkt": "Select the second point",
+      "einen-punkt": "Select one point",
+      "abgebrochen": "Cancelled",
+      "esc-abbrechen": "to cancel"
+    }
   },
   "dnd": {
     "kein-ziel": "Nothing can be dropped here.",
@@ -424,6 +443,47 @@
     },
     "task": {
       "wechseln": "Switch task"
+    },
+    "referenz": {
+      "koordinatensystem": "Set coordinate system",
+      "punkt": "Set point",
+      "punkt-relativ": "Set point relative",
+      "gerade": "Line through two points",
+      "halbgerade": "Ray through two points",
+      "strecke": "Segment through two points"
+    }
+  },
+  "draht": {
+    "kind": {
+      "ursprung": "Origin",
+      "x": "X axis",
+      "y": "Y axis",
+      "z": "Z axis",
+      "xy": "XY plane",
+      "yz": "YZ plane",
+      "zx": "ZX plane"
+    },
+    "name": {
+      "koordinatensystem": "Coordinate system {n}",
+      "punkt": "Point {n}",
+      "line": "Line {n}",
+      "ray": "Ray {n}",
+      "segment": "Segment {n}"
+    },
+    "keine-lage": "Position from the geometry kernel"
+  },
+  "kernel": {
+    "befund": {
+      "input_missing": "Reference missing: point the input to an existing element",
+      "input_discarded": "Reference {bezug} is discarded: restore it or choose another",
+      "input_type": "Reference has the wrong type: choose a matching element",
+      "input_failed": "Reference {bezug} has an error: fix {bezug} first",
+      "degenerate": "Both points coincide: move them apart",
+      "unit": "Wrong unit: enter lengths in mm, angles in degrees",
+      "unknown_type": "Unknown element type",
+      "kernel_error": "Error in the geometry kernel",
+      "protocol": "Invalid message to the geometry kernel",
+      "kernel_unavailable": "Geometry service unavailable"
     }
   }
 }

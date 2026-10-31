@@ -6,6 +6,7 @@ import { lesen } from './wert/wertfeld';
 import { kontextmenue, type Auswahlart } from './modell/register';
 import { pfadZu, wert } from './modell/element';
 import { griffRichtung } from './griffe';
+import { leseGroesse, type Dimension } from './drahtmodell/draht';
 
 const SCHWELLE_PX = 4;
 
@@ -133,8 +134,13 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
 
   function modellKlick(e: MouseEvent): void {
     offenesSchliessen();
-    const t = app.szene?.trefferBei(e.clientX, e.clientY);
     const modus = e.shiftKey ? 'hinzufuegen' : e.ctrlKey || e.metaKey ? 'umschalten' : 'setzen';
+    if (app.draht.klick(e.clientX, e.clientY, modus)) {
+      modell.focus({ preventScroll: true });
+      app.rendern();
+      return;
+    }
+    const t = app.szene?.trefferBei(e.clientX, e.clientY);
     if (!t) {
       if (modus === 'setzen') app.setzeAuswahl([]);
       return;
@@ -192,6 +198,10 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
   let ausstehend: { x: number; y: number } | null = null;
 
   function modellKontext(x: number, y: number): void {
+    if (app.draht.kontext(x, y)) {
+      kontextOeffnen(x, y);
+      return;
+    }
     const t = app.szene?.trefferBei(x, y);
     const id = t ? app.zielFuerTreffer(t.elementId) : null;
     if (id) {
@@ -564,9 +574,21 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
     }
   });
 
+  /** Drahtmodell-Felder (ap-50): Länge oder Winkel mit Einheit; umgerechnet wird nur im Kern. */
+  function drahtWert(ziel: HTMLInputElement): ReturnType<typeof leseGroesse> {
+    return leseGroesse(ziel.value, ziel.dataset.dim as Dimension);
+  }
+
   function feldLive(ziel: HTMLInputElement): void {
     const ids = (ziel.dataset.elemente ?? '').split(',').filter(Boolean);
     const name = ziel.dataset.param as string;
+    if (ziel.dataset.dim) {
+      app.feldBefund = drahtWert(ziel)
+        ? null
+        : { feld: ziel.dataset.feldEingabe as string, schluessel: 'wert.fehler.nicht-lesbar' };
+      app.rendern();
+      return;
+    }
     const r = lesen(ziel.value);
     if (!r.ok) {
       app.feldBefund = { feld: ziel.dataset.feldEingabe as string, schluessel: r.fehler };
@@ -582,6 +604,23 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
   function feldUebernehmen(ziel: HTMLInputElement, taste: boolean): void {
     const ids = (ziel.dataset.elemente ?? '').split(',').filter(Boolean);
     const name = ziel.dataset.param as string;
+    if (ziel.dataset.dim) {
+      const g = drahtWert(ziel);
+      if (!g) {
+        app.feldBefund = taste
+          ? { feld: ziel.dataset.feldEingabe as string, schluessel: 'wert.fehler.nicht-lesbar' }
+          : null;
+        app.rendern();
+        return;
+      }
+      app.feldBefund = null;
+      app.ausfuehren(
+        'element.wert-setzen',
+        ids.length === 1 ? { element: ids[0], name, wert: g } : { elemente: ids, name, wert: g },
+        'eigenschaften',
+      );
+      return;
+    }
     const r = lesen(ziel.value);
     if (!r.ok) {
       app.feldBefund = { feld: ziel.dataset.feldEingabe as string, schluessel: r.fehler };

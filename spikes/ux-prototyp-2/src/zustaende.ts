@@ -4,6 +4,29 @@ import { leeresProjekt, standardProjekt } from './modell/beispiele';
 import { finde, mm } from './modell/element';
 import { kontextmenue } from './modell/register';
 import { vorschlagWert } from './ki';
+import beispielDraht from '../../../format/examples/drahtmodell.json';
+import type { Element } from './modell/element';
+
+/** Testzustände der Wireframe-Basics (ap-50): leeres Teil und das Beispiel aus `format/examples`. */
+export const DRAHT_ZUSTAENDE = ['drahtmodell-leer', 'drahtmodell-beispiel'] as const;
+
+function drahtProjekt(inhalt: Element[]): Element {
+  return {
+    id: 'projekt',
+    type: 'projekt',
+    params: {},
+    content: [
+      {
+        id: 'drahtmodell',
+        type: 'teil',
+        params: {},
+        content: inhalt,
+        meta: { name: 'Drahtmodell' },
+      },
+    ],
+    meta: { name: 'Projekt' },
+  };
+}
 
 export const ZUSTAENDE = [
   'leer',
@@ -43,6 +66,16 @@ function bohrungenKaputt(app: App): void {
 
 /** Setzt den Zustand; liefert den gezeigten Namen und optional eine Funktion für nach dem ersten Zeichnen. */
 export function anwenden(name: string, app: App): { gezeigt: string; danach?: () => void } {
+  if ((DRAHT_ZUSTAENDE as readonly string[]).includes(name)) {
+    const inhalt =
+      name === 'drahtmodell-beispiel'
+        ? (JSON.parse(JSON.stringify(beispielDraht.elements)) as Element[])
+        : [];
+    app.projekt = drahtProjekt(inhalt);
+    app.dok = 'drahtmodell';
+    app.draht.einpassen = inhalt.length > 0;
+    return { gezeigt: name };
+  }
   const bekannt = (ZUSTAENDE as readonly string[]).includes(name);
   if (!bekannt) {
     app.projekt = leeresProjekt();

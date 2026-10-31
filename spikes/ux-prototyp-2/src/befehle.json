@@ -898,6 +898,66 @@
       "rang": 179,
       "wesentlich": false,
       "untergruppe": "Zonen"
+    },
+    {
+      "id": "referenz.koordinatensystem",
+      "familie": "Referenz",
+      "titel": "befehl.referenz.koordinatensystem",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 0.5,
+      "wesentlich": true,
+      "untergruppe": "Koordinatensystem"
+    },
+    {
+      "id": "referenz.punkt",
+      "familie": "Referenz",
+      "titel": "befehl.referenz.punkt",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 0.6,
+      "wesentlich": true,
+      "untergruppe": "Punkt"
+    },
+    {
+      "id": "referenz.punkt-relativ",
+      "familie": "Referenz",
+      "titel": "befehl.referenz.punkt-relativ",
+      "parameter": {},
+      "bezug": "punkt",
+      "rang": 0.1,
+      "wesentlich": true,
+      "untergruppe": "Punkt"
+    },
+    {
+      "id": "referenz.gerade",
+      "familie": "Referenz",
+      "titel": "befehl.referenz.gerade",
+      "parameter": {},
+      "bezug": "punkte",
+      "rang": 0.2,
+      "wesentlich": true,
+      "untergruppe": "Linie"
+    },
+    {
+      "id": "referenz.halbgerade",
+      "familie": "Referenz",
+      "titel": "befehl.referenz.halbgerade",
+      "parameter": {},
+      "bezug": "punkte",
+      "rang": 0.3,
+      "wesentlich": false,
+      "untergruppe": "Linie"
+    },
+    {
+      "id": "referenz.strecke",
+      "familie": "Referenz",
+      "titel": "befehl.referenz.strecke",
+      "parameter": {},
+      "bezug": "punkte",
+      "rang": 0.4,
+      "wesentlich": true,
+      "untergruppe": "Linie"
     }
   ]
 }

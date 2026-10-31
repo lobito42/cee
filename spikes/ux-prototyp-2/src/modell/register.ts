@@ -10,7 +10,9 @@ export type Bezug =
   | 'flaeche'
   | 'mehrfach'
   | 'verworfen'
-  | 'ansicht';
+  | 'ansicht'
+  | 'punkt'
+  | 'punkte';
 
 export interface Befehl {
   id: string;
@@ -46,6 +48,7 @@ export const ORT_DER_FAMILIE: Record<string, string> = {
   Fenster: 'menueleiste',
   Hilfe: 'suche',
   Simulation: 'dropdown-simulation',
+  Referenz: 'dropdown-referenz',
 };
 
 /** Feste Reihenfolge der Familien im Kontextmenü. */
@@ -61,6 +64,7 @@ export const FAMILIEN = [
   'Hilfe',
   'Simulation',
   'Chat',
+  'Referenz',
 ];
 
 export type Ort =
@@ -82,6 +86,7 @@ const FESTER_ORT: Record<string, Ort> = {
   Auswahl: 'dropdown',
   Baugruppe: 'dropdown',
   Simulation: 'dropdown',
+  Referenz: 'dropdown',
   Ansicht: 'ansichtsleiste',
   'Ansicht speichern': 'ansichtsleiste',
   Sichtbarkeit: 'auge',
@@ -119,7 +124,16 @@ export function ladeRegisterDatei(inhalt: unknown): Befehl[] {
 }
 
 export type Auswahlart =
-  'keine' | 'teil' | 'schritt' | 'kante' | 'baugruppe' | 'mehrfach' | 'verworfen' | 'ansicht';
+  | 'keine'
+  | 'teil'
+  | 'schritt'
+  | 'kante'
+  | 'baugruppe'
+  | 'mehrfach'
+  | 'verworfen'
+  | 'ansicht'
+  | 'punkt'
+  | 'punkte';
 
 const PASST: Record<Auswahlart, Set<Bezug>> = {
   keine: new Set<Bezug>(['keine']),
@@ -130,6 +144,8 @@ const PASST: Record<Auswahlart, Set<Bezug>> = {
   mehrfach: new Set<Bezug>(['keine', 'mehrfach']),
   verworfen: new Set<Bezug>(['keine', 'element', 'verworfen']),
   ansicht: new Set<Bezug>(['keine', 'element', 'ansicht']),
+  punkt: new Set<Bezug>(['keine', 'element', 'punkt']),
+  punkte: new Set<Bezug>(['keine', 'mehrfach', 'punkte']),
 };
 
 export interface Untergruppe {
