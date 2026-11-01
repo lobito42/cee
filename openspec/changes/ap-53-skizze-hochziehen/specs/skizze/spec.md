@@ -35,7 +35,8 @@ Worker MUST sie als OCP-Kanten in Weltkoordinaten bilden. Entartete Elemente (L�
 
 #### Scenario: [auto] Einheiten
 - **WHEN** ein Kreis mit `d` = „0,05 m“ und ein zweiter mit `d` = „50“ (ohne Einheit) angelegt werden
-- **THEN** haben beide Radius 25 mm auf 10⁻⁶ mm, der zweite mit genau 1 Warnung „Standard-Einheit“ aus dem Kern;
+- **THEN** haben beide Radius 25 mm auf 10⁻⁶ mm, der zweite mit genau 1 Warnung „Standard-Einheit“ aus dem Kern
+  (Befund `unit_assumed` am Kreis, beide `state` = `aktuell`);
   ein Kreis mit `d` = „5 kg“ ergibt Befund `unit`
 
 ### Requirement: Bereiche aus geschlossenen Konturen
@@ -43,7 +44,7 @@ Der Worker SHALL für jede Skizze die Bereiche nach design.md Abschnitt 3 bilden
 Linienzüge sind Konturen, direkt enthaltene Konturen sind Löcher, jede innere Kontur ist selbst ein Bereich. Jeder
 Bereich MUST mit innerem Punkt, Fläche (mm²), Element-IDs von Außenkontur und Löchern und einem Rand zur Anzeige im
 Ausgang `sketch` stehen. Schneiden sich Konturen, MUST die Skizze den Befund `curves_intersect` mit beiden IDs
-erhalten, und diese Konturen MUST NOT einen Bereich bilden; Bereiche MUST NOT über ihre Position in der Liste
+im Feld `beteiligt` erhalten (design.md Abschnitt 7a), und diese Konturen MUST NOT einen Bereich bilden; Bereiche MUST NOT über ihre Position in der Liste
 adressiert werden (ADR-016).
 
 #### Scenario: [auto] Rechteck mit zwei Löchern
@@ -61,5 +62,5 @@ adressiert werden (ADR-016).
 #### Scenario: [auto] Schneidende Konturen
 - **WHEN** eine Skizze zwei Rechtecke (0, 0)–(20, 20) mm und (10, 10)–(30, 30) mm sowie einen Kreis bei (100, 0) mm
   mit d = 10 mm enthält
-- **THEN** gibt es genau 1 Befund `curves_intersect` mit beiden Rechteck-IDs, genau 1 Bereich (der Kreis), und der
+- **THEN** gibt es genau 1 Befund `curves_intersect`, und zwar an der Skizze mit `beteiligt` = beide Rechteck-IDs, genau 1 Bereich (der Kreis), und der
   Auftrag endet ohne Absturz
