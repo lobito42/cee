@@ -14,6 +14,8 @@ import { steuerungAnbinden } from './steuerung';
 import { tastenAnbinden } from './tastatur';
 import { wirkungenRegistrieren } from './wirkungen';
 import { wirkungenRegistrieren as kiRegistrieren } from './ki';
+import { kiVerbinden, kopfText } from './ki/konstruktion';
+import { werkzeuge as kiWerkzeuge } from './ki/werkzeuge';
 import { anwenden } from './zustaende';
 import { konturPunkte, huelleBildschirm } from './zonen/modell';
 import { ergebnisVon } from './geometrie/teil';
@@ -92,6 +94,8 @@ async function start(): Promise<void> {
     gezeigt = r.gezeigt;
     danach = r.danach;
   }
+  // KI über das Befehlsregister (ap-52): Anbieter der Brücke, nur im Drahtmodell
+  if (app.dok === 'drahtmodell') await kiVerbinden(app);
   const fenster = new Fenster(wurzel, app);
   fenster.szene.setThema(thema);
   steuerungAnbinden(app, fenster);
@@ -247,6 +251,51 @@ async function start(): Promise<void> {
       /** Befehl mit Parametern auslösen (Prüfschritt `{befehl, args}`), wie aus dem Menü. */
       draht_befehl: (id: string, par: Record<string, unknown>) => app.ausfuehren(id, par, 'menue'),
       draht_projiziere: (p: [number, number, number]) => app.szene?.projiziere(p) ?? null,
+      // KI über das Befehlsregister (ap-52): Rohdaten für `pruefen -- ki …`
+      ki_werkzeuge: () => kiWerkzeuge(app.register),
+      ki: () => ({
+        bruecke: app.ki.bruecke,
+        beschaeftigt: app.ki.beschaeftigt,
+        aktiv: app.ki.aktiv,
+        bereit_ms: app.ki.bereitMs,
+        kopf: app.ki.bruecke ? kopfText(app) : app.t('simuliert'),
+        nachrichten: app.chat.nachrichten.map((n) => ({
+          rolle: n.von === 'person' ? 'mensch' : 'ki',
+          text: n.schluessel ? app.t(n.schluessel, n.werte) : n.text,
+          ...(n.karte ? { karte: n.karte } : {}),
+        })),
+        karten: app.ki.karten.map((k) => ({
+          nr: k.nr,
+          titel: k.titel,
+          begruendung: k.begruendung,
+          anbieter: k.anbieter,
+          aufrufe: k.aufrufe,
+          neu: k.neu,
+          verworfen: k.verworfen,
+          ausgeblendet: k.ausgeblendet,
+          befunde: k.befunde,
+          offen: k.offen,
+          status: k.status,
+          aktionen: k.offen
+            ? [
+                { befehl: 'chat.uebernehmen', haupt: true },
+                { befehl: 'chat.verwerfen', haupt: false },
+              ]
+            : [],
+        })),
+        geister: app.draht.geister.map((g) => ({
+          element: g.element,
+          art: g.art,
+          lage_mm: Array.isArray(g.lage_mm)
+            ? g.lage_mm
+            : { start: g.lage_mm.start, end: g.lage_mm.end, ...g.lage_mm },
+        })),
+        verlauf: app.protokoll.map((p) => ({
+          befehl: p.befehl,
+          urheber: p.quelle,
+          ...(p.anbieter ? { anbieter: p.anbieter, ausgeloest_von: p.ausgeloest_von } : {}),
+        })),
+      }),
       /** Ansicht so einpassen, dass das Drahtmodell und `p` (mm) sichtbar sind (wie Zoomen von Hand). */
       draht_einpassen: (p?: [number, number, number]) => {
         const box = app.huelleAlle();

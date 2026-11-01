@@ -597,7 +597,7 @@ export class Szene {
     }
     const farbe = (z: DrahtZeichnung) =>
       new THREE.Color(
-        z.gewaehlt
+        z.gewaehlt || z.geist
           ? tokens[`farbe.${this.thema}.akzent`]
           : z.fehlerhaft
             ? tokens[`farbe.${this.thema}.fehler`]
@@ -664,6 +664,16 @@ export class Szene {
             new THREE.LineBasicMaterial({ color: farbe(z), linewidth: 1.5 }),
           ),
         );
+      }
+      if (z.geist) {
+        // Vorschau eines Änderungssatzes (ap-52): blass, gezeichnet über allem, nicht wählbar
+        g.traverse((o) => {
+          const m = (o as THREE.Mesh).material as THREE.Material | undefined;
+          if (m) {
+            m.transparent = true;
+            m.opacity = 0.55;
+          }
+        });
       }
       this.draht.add(g);
     }

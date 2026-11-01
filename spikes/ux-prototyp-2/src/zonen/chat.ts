@@ -1,5 +1,6 @@
 // Chat (ADR-065): Kontext „zu: …“, Eingabe und Entscheidungskarten. Die KI ist simuliert (ADR-037, ADR-021).
 import type { App } from '../app';
+import { kopfText, type Karte } from '../ki/konstruktion';
 import { h, symbol } from '../ui/dom';
 
 export function kontext(app: App): HTMLElement {
@@ -88,27 +89,105 @@ export function karte(app: App): HTMLElement | null {
   );
 }
 
+/** Entscheidungskarte eines Änderungssatzes der KI (ap-52, Muster „Entscheidungskarte“, ADR-021). */
+export function kiKarte(app: App, k: Karte): HTMLElement {
+  const zeile = (art: string, ids: string[]) =>
+    ids.length
+      ? h(
+          'div',
+          { class: 'karte-wert', 'data-key': `${art}`, 'data-ki-aenderung': art },
+          h('span', { class: 'feld' }, app.t(`ki.karte.${art}`, { n: ids.length })),
+          h('span', { class: 'nachher' }, ids.map((i) => k.namen[i] ?? i).join(', ')),
+        )
+      : null;
+  return h(
+    'div',
+    {
+      class: `karte${k.offen ? '' : ' erledigt'}`,
+      'data-muster': 'Entscheidungskarte',
+      'data-quelle': 'ki',
+      'data-akzent': k.offen ? 'ki' : null,
+      'data-key': `ki-karte-${k.nr}`,
+      'data-ki-karte': String(k.nr),
+      'data-status': k.status,
+    },
+    h(
+      'div',
+      { class: 'karte-kopf' },
+      symbol('sparkles', 14),
+      h('span', { class: 'simuliert' }, app.t(`ki.status.${k.status}`)),
+    ),
+    h('div', { class: 'karte-titel' }, k.titel),
+    h('div', { class: 'karte-text' }, k.begruendung),
+    zeile('neu', k.neu),
+    zeile('verworfen', k.verworfen),
+    zeile('ausgeblendet', k.ausgeblendet),
+    ...k.befunde.map((b, i) =>
+      h(
+        'div',
+        { class: 'karte-text befund', 'data-key': `b-${i}`, 'data-muster': 'Befund' },
+        b.message,
+      ),
+    ),
+    k.offen
+      ? h(
+          'div',
+          { class: 'karte-knoepfe' },
+          h(
+            'button',
+            { type: 'button', class: 'knopf', 'data-befehl': 'chat.verwerfen' },
+            app.t('chat.verwerfen'),
+          ),
+          h(
+            'button',
+            {
+              type: 'button',
+              class: 'knopf haupt',
+              'data-befehl': 'chat.uebernehmen',
+              'data-hauptaktion': '',
+              'data-akzent': 'hauptaktion',
+            },
+            app.t('chat.uebernehmen'),
+          ),
+        )
+      : null,
+  );
+}
+
 export function baueChat(app: App): HTMLElement[] {
   return [
     h(
       'div',
       { class: 'zonenkopf', 'data-key': 'kopf' },
       h('h2', {}, app.t('chat.titel')),
-      h('span', { class: 'simuliert' }, app.t('simuliert')),
+      app.ki.bruecke
+        ? h('span', { class: 'simuliert', 'data-ki-kopf': '' }, kopfText(app))
+        : h('span', { class: 'simuliert' }, app.t('simuliert')),
     ),
     kontext(app),
     h(
       'div',
       { class: 'nachrichten', role: 'log', 'data-key': 'nachrichten' },
       ...(app.chat.nachrichten.length
-        ? app.chat.nachrichten.map((n, i) =>
-            h(
+        ? app.chat.nachrichten.flatMap((n, i) => {
+            const k = n.karte ? app.ki.karten.find((x) => x.nr === n.karte) : undefined;
+            const blase = h(
               'div',
               { class: `nachricht ${n.von}`, 'data-key': `n-${i}` },
               n.schluessel ? app.t(n.schluessel, n.werte) : n.text,
+            );
+            return k ? [blase, kiKarte(app, k)] : [blase];
+          })
+        : [
+            h(
+              'p',
+              { class: 'hinweis', 'data-key': 'hinweis' },
+              app.t(app.ki.bruecke ? 'ki.hinweis' : 'chat.hinweis'),
             ),
-          )
-        : [h('p', { class: 'hinweis', 'data-key': 'hinweis' }, app.t('chat.hinweis'))]),
+          ]),
+      app.ki.beschaeftigt
+        ? h('p', { class: 'hinweis', 'data-key': 'denkt', 'data-ki-denkt': '' }, app.t('ki.denkt'))
+        : null,
       karte(app),
     ),
     h(

@@ -122,7 +122,7 @@ export async function befehlAusloesen(o, l, schritt) {
   await l.warte();
 }
 
-async function schrittAusfuehren(o, l, schritt, basis) {
+export async function schrittAusfuehren(o, l, schritt, basis) {
   const s = o.seite;
   if ('warten_ms' in schritt) {
     if (schritt.warten_ms > 0) await s.waitForTimeout(schritt.warten_ms);

@@ -466,6 +466,9 @@
       "halbgerade": "Halbgerade durch zwei Punkte",
       "strecke": "Strecke durch zwei Punkte"
     },
+    "ki": {
+      "anbieter-waehlen": "KI-Anbieter wählen"
+    },
     "skizze": {
       "anlegen": "Skizze anlegen",
       "linie": "Linie",
@@ -513,6 +516,18 @@
   },
   "ki": {
     "werkzeug": {
+      "referenz": {
+        "koordinatensystem": "Koordinatensystem anlegen: Ursprung x, y, z und Drehung rx, ry, rz (um die Achsen), optional in einem anderen Koordinatensystem (parent). Beispiel: {\"x\": \"100 mm\", \"rz\": \"30 deg\"}",
+        "punkt": "Punkt auf Koordinaten setzen (fehlende Werte sind 0 mm), optional im Koordinatensystem frame. Beispiel: {\"x\": \"10 mm\", \"y\": \"20 mm\", \"z\": \"0 mm\"}",
+        "punkt-relativ": "Punkt mit Versatz x, y, z zu einem vorhandenen Punkt ref setzen; er folgt diesem Punkt. Beispiel: {\"ref\": \"P1.point\", \"z\": \"25 mm\"}",
+        "gerade": "Unendliche Gerade durch zwei verschiedene Punkte a und b. Beispiel: {\"a\": \"P1.point\", \"b\": \"P2.point\"}",
+        "halbgerade": "Halbgerade, die in Punkt a beginnt und durch Punkt b läuft. Beispiel: {\"a\": \"P1.point\", \"b\": \"P2.point\"}",
+        "strecke": "Strecke von Punkt a nach Punkt b. Beispiel: {\"a\": \"P1.point\", \"b\": \"P2.point\"}"
+      },
+      "element": {
+        "ausblenden": "Element im Modell ausblenden (bleibt erhalten). Beispiel: {\"element\": \"G1\"}",
+        "verwerfen": "Element verwerfen (Rückgängig holt es zurück, nichts wird gelöscht). Beispiel: {\"element\": \"S1\"}"
+      },
       "skizze": {
         "anlegen": "Legt eine Skizze auf einer Ebene an",
         "linie": "Zeichnet eine Linie in einer Skizze (u1, v1, u2, v2)",
@@ -522,7 +537,37 @@
       "koerper": {
         "hochziehen": "Zieht den Bereich einer Skizze am Punkt (punkt_u, punkt_v) um hoehe hoch"
       }
-    }
+    },
+    "kopf": {
+      "regel": "Satzerkennung – ohne Modell, bleibt auf diesem Rechner",
+      "lokal": "{modell} – bleibt auf diesem Rechner",
+      "extern": "{modell} – geht an {host}"
+    },
+    "uebersicht": {
+      "kopf": "Modellübersicht (je Zeile: ID Typ \"ID\" (Name) Parameter Bezüge):",
+      "leer": "(noch keine Elemente)"
+    },
+    "antwort": {
+      "vorschlag": "Hier ist mein Vorschlag. Im Modell siehst du die Vorschau; erst Übernehmen ändert etwas.",
+      "unklar": "Das habe ich nicht verstanden. Versuche zum Beispiel: „Punkt bei 10, 20, 5 mm“, „Rechteck 100 × 60 mm in der XY-Ebene mit Punkt 40 mm darüber“, „Koordinatensystem bei x 100 mm, um 30° um z gedreht“ oder „Strecke von Punkt 1 nach Punkt 2“.",
+      "zeitlimit": "Es kam keine Antwort vom Modell (Zeitlimit). Nichts wurde geändert.",
+      "fehler": "Das Modell ist gerade nicht erreichbar ({fehler}). Nichts wurde geändert.",
+      "grenze": "Ich habe nach 20 Schritten aufgehört; die Karte zeigt das Bisherige.",
+      "teilweise": "Übernommen; {n} Schritte ließen sich nicht mehr ausführen.",
+      "nicht-verfuegbar": "Dieser Anbieter ist nicht eingerichtet ({befund}); es bleibt bei der Satzerkennung."
+    },
+    "karte": {
+      "neu": "{n} neu",
+      "verworfen": "{n} verworfen",
+      "ausgeblendet": "{n} ausgeblendet"
+    },
+    "status": {
+      "offen": "Vorschlag",
+      "uebernommen": "übernommen",
+      "verworfen": "verworfen"
+    },
+    "hinweis": "Zum Beispiel: Punkt bei 10, 20, 5 mm",
+    "denkt": "Ich arbeite daran …"
   },
   "skizze": {
     "ebene_waehlen": "Ebene wählen",

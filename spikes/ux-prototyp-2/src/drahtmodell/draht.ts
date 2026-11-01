@@ -98,6 +98,16 @@ export interface DrahtZeichnung {
   token: string;
   gewaehlt: boolean;
   fehlerhaft: boolean;
+  /** Vorschau eines Änderungssatzes der KI (ap-52): blass in Akzentfarbe, nicht wählbar. */
+  geist?: boolean;
+}
+
+/** Geist eines neuen Elements aus dem Entwurf der KI (ap-52): Elementtyp und Lage aus dem Worker. */
+export interface Geist {
+  element: string;
+  art: string;
+  lage_mm: V3 | Record<string, V3>;
+  punkte: V3[];
 }
 
 export type Modus = { art: 'punkt' } | { art: 'linie'; typ: string; punkte: string[] };
@@ -133,7 +143,7 @@ export const kanon = (x: unknown): string =>
   );
 
 /** Element in Elementform für den Kern: nur Drahtmodell-Typen, Kinder verschachtelt (ADR-028). */
-function elementform(e: Element): Record<string, unknown> {
+export function elementform(e: Element): Record<string, unknown> {
   return {
     id: e.id,
     type: e.type,
@@ -158,8 +168,49 @@ export function drahtGraph(dok: Element): Element[] {
   return aus;
 }
 
+/** Schlüssel eines Drahtgraphen (kanonische Elementform), wie ihn der Worker bekommt. */
+export const graphSchluessel = (graph: Element[]): string => kanon(graph.map(elementform));
+
+/** Graph über die Brücke vom Worker rechnen lassen; `null`, wenn der Dienst nicht erreichbar ist. */
+export async function kernRechnen(schluessel: string): Promise<Ergebnis | null> {
+  const projekt = { schema_version: 1, elements: JSON.parse(schluessel) as unknown[] };
+  try {
+    const r = await fetch('kernel', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(projekt),
+    });
+    const j = (await r.json()) as Ergebnis;
+    if (j.befunde?.some((b) => b.code === 'kernel_unavailable')) return null;
+    return j;
+  } catch {
+    return null;
+  }
+}
+
+/** Lage eines Ausgangs als mm-Zahlen (Punkt: [x, y, z], sonst Felder) – auch für den Entwurf der KI. */
+export function lageVon(o: Ausgang | undefined): V3 | Record<string, V3> | null {
+  if (!o) return null;
+  if (o.type === 'point') return vec(o.position);
+  const felder: Record<string, V3> = {};
+  for (const f of ['origin', 'direction', 'start', 'end', 'normal', 'x_direction']) {
+    const v = vec(o[f]);
+    if (v) felder[f] = v;
+  }
+  return felder;
+}
+
 export class Draht {
   ergebnis: Ergebnis | null = null;
+  /** Geister des offenen Änderungssatzes der KI (ap-52). */
+  geister: Geist[] = [];
+  /** Schon gerechnete Ergebnisse (Entwurf der KI), damit Übernehmen ohne Wartezeit zeigt. */
+  private vorrat = new Map<string, Ergebnis>();
+
+  vormerken(schluessel: string, e: Ergebnis): void {
+    this.vorrat.set(schluessel, e);
+    if (this.vorrat.size > 8) this.vorrat.delete(this.vorrat.keys().next().value as string);
+  }
   /** Schlüssel (kanonischer Graph) des angezeigten Ergebnisses. */
   ergebnisSchluessel = '';
   /** Schlüssel, für den gerade gerechnet wird. */
@@ -207,6 +258,16 @@ export class Draht {
       this.nichtErreichbar?.schluessel === s
     )
       return;
+    const fertig = this.vorrat.get(s);
+    if (fertig) {
+      this.nummer += 1;
+      this.laeuft = '';
+      this.ergebnis = fertig;
+      this.ergebnisSchluessel = s;
+      this.nichtErreichbar = null;
+      this.app.rendern();
+      return;
+    }
     this.laeuft = s;
     const nr = (this.nummer += 1);
     void this.rechnen(s, nr);
@@ -219,7 +280,7 @@ export class Draht {
     return s === this.ergebnisSchluessel || this.nichtErreichbar?.schluessel === s;
   }
 
-  private brueckeDa(): Promise<boolean> {
+  brueckeDa(): Promise<boolean> {
     if (this.bruecke !== null) return Promise.resolve(this.bruecke);
     this.brueckeFrage ??= fetch('kernel-status.json', { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : { bruecke: false }))
@@ -229,23 +290,12 @@ export class Draht {
   }
 
   private async rechnen(schluessel: string, nr: number): Promise<void> {
-    const projekt = { schema_version: 1, elements: JSON.parse(schluessel) as unknown[] };
     let ergebnis: Ergebnis | null = null;
     let fehler = '';
     if (!(await this.brueckeDa())) fehler = 'keine Brücke';
     else {
-      try {
-        const r = await fetch('kernel', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(projekt),
-        });
-        const j = (await r.json()) as Ergebnis;
-        if (j.befunde?.some((b) => b.code === 'kernel_unavailable')) fehler = 'Worker';
-        else ergebnis = j;
-      } catch (e) {
-        fehler = String(e);
-      }
+      ergebnis = await kernRechnen(schluessel);
+      if (!ergebnis) fehler = 'Worker';
     }
     if (nr !== this.nummer) return; // überholt
     this.laeuft = '';
@@ -423,6 +473,19 @@ export class Draht {
       });
     }
     return aus;
+  }
+
+  /** Geister des offenen Änderungssatzes (ap-52) zum Zeichnen. */
+  geisterZeichnung(): DrahtZeichnung[] {
+    return this.geister.map((g) => ({
+      element: `${g.element}~geist`,
+      art: (g.punkte.length === 1 ? 'punkt' : 'linie') as Art,
+      punkte: g.punkte,
+      token: 'akzent',
+      gewaehlt: false,
+      fehlerhaft: false,
+      geist: true,
+    }));
   }
 
   private token(e: Element): string {
@@ -709,10 +772,18 @@ export class Draht {
     return { id, type, inputs, params, content, meta: { name } };
   }
 
-  koordinatensystemAnlegen(weg: 'menue' | 'kontextmenue' | 'suche' | string): string {
+  koordinatensystemAnlegen(
+    weg: 'menue' | 'kontextmenue' | 'suche' | string,
+    quelle: 'mensch' | 'ki' = 'mensch',
+    vorgabe?: { params: Record<string, Groesse>; parent?: string; name?: string },
+  ): string {
     const t = this.app.t;
     const sel = this.app.gewaehlteElemente();
-    const eltern = sel.length === 1 && sel[0]?.type === 'frame' ? sel[0].id : null;
+    const eltern = vorgabe
+      ? (vorgabe.parent?.split('.')[0] ?? null)
+      : sel.length === 1 && sel[0]?.type === 'frame'
+        ? sel[0].id
+        : null;
     const id = this.freieId('K');
     const nr = id.slice(1);
     const mm = (v: number): Groesse => ({ value: v, unit: 'mm' });
@@ -737,17 +808,25 @@ export class Draht {
     const k = this.neu(
       id,
       'frame',
-      t('draht.name.koordinatensystem', { n: nr }),
-      { x: mm(0), y: mm(0), z: mm(0), rx: grad(0), ry: grad(0), rz: grad(0) },
+      vorgabe?.name || t('draht.name.koordinatensystem', { n: nr }),
+      {
+        x: mm(0),
+        y: mm(0),
+        z: mm(0),
+        rx: grad(0),
+        ry: grad(0),
+        rz: grad(0),
+        ...(vorgabe?.params ?? {}),
+      },
       eltern ? { parent: `${eltern}.frame` } : {},
       kinder,
     );
     this.app.aendern((dok) => this.einfuegeStelle(dok).content.push(k));
     this.app.protokolliere(
       'referenz.koordinatensystem',
-      eltern ? { parent: eltern } : {},
+      { element: id, ...(eltern ? { parent: eltern } : {}) },
       weg as never,
-      'mensch',
+      quelle,
     );
     this.app.auswahl = [{ element_id: id }];
     this.app.meldung('rueck.angelegt', { name: k.meta.name });
@@ -756,44 +835,57 @@ export class Draht {
 
   punktAnlegen(
     inputs: Record<string, string>,
-    xyz: { x: number; y: number; z: number },
+    xyz: { x: number | Groesse; y: number | Groesse; z: number | Groesse },
     weg: string,
+    quelle: 'mensch' | 'ki' = 'mensch',
+    name?: string,
+    befehl = 'referenz.punkt',
   ): string {
     const id = this.freieId('P');
-    const mm = (v: number): Groesse => ({ value: v, unit: 'mm' });
+    const mm = (v: number | Groesse): Groesse =>
+      typeof v === 'number' ? { value: v, unit: 'mm' } : v;
     const p = this.neu(
       id,
       'point',
-      this.app.t('draht.name.punkt', { n: id.slice(1) }),
+      name || this.app.t('draht.name.punkt', { n: id.slice(1) }),
       { x: mm(xyz.x), y: mm(xyz.y), z: mm(xyz.z) },
       inputs,
     );
     this.app.aendern((dok) => this.einfuegeStelle(dok).content.push(p));
-    this.app.protokolliere('referenz.punkt', { element: id, ...inputs }, weg as never, 'mensch');
+    this.app.protokolliere(befehl, { element: id, ...inputs }, weg as never, quelle);
     this.app.auswahl = [{ element_id: id }];
     this.app.meldung('rueck.angelegt', { name: p.meta.name });
     return id;
   }
 
-  linieAnlegen(typ: string, a: string, b: string, weg: string): string {
+  /** Linie zwischen zwei Punkten; `a`/`b` als Punkt-ID oder als Bezug `<id>.<ausgang>`. */
+  linieAnlegen(
+    typ: string,
+    a: string,
+    b: string,
+    weg: string,
+    quelle: 'mensch' | 'ki' = 'mensch',
+    name?: string,
+  ): string {
     const praefix = { line: 'G', ray: 'H', segment: 'S' }[typ] ?? 'L';
     const id = this.freieId(praefix);
+    const bezug = (x: string) => (x.includes('.') ? x : `${x}.point`);
     const e = this.neu(
       id,
       typ,
-      this.app.t(`draht.name.${typ}`, { n: id.slice(1) }),
+      name || this.app.t(`draht.name.${typ}`, { n: id.slice(1) }),
       {},
       {
-        a: `${a}.point`,
-        b: `${b}.point`,
+        a: bezug(a),
+        b: bezug(b),
       },
     );
     this.app.aendern((dok) => this.einfuegeStelle(dok).content.push(e));
     this.app.protokolliere(
       `referenz.${{ line: 'gerade', ray: 'halbgerade', segment: 'strecke' }[typ]}`,
-      { a, b },
+      { element: id, a: a.split('.')[0], b: b.split('.')[0] },
       weg as never,
-      'mensch',
+      quelle,
     );
     this.app.meldung('rueck.angelegt', { name: e.meta.name });
     return id;

@@ -133,6 +133,7 @@ export class Fenster {
     this.zone('struktur', baueStruktur(app));
     this.zone('eigenschaften', baueEigenschaften(app));
     this.zone('chat', baueChat(app));
+    this.chatAnsEnde();
     this.zone('panel', z.panel ? bauePanel(app) : []);
     this.zone('rueckmeldung', baueRueckmeldung(app));
 
@@ -207,6 +208,18 @@ export class Fenster {
     }
   }
 
+  private chatStand = '';
+
+  /** Neue Nachricht oder Karte im Chat: ans Ende rollen, damit Übernehmen und Verwerfen sichtbar sind (ap-52). */
+  private chatAnsEnde(): void {
+    const k = this.app.ki;
+    const stand = `${this.app.chat.nachrichten.length}/${k.karten.length}/${k.beschaeftigt}`;
+    if (stand === this.chatStand) return;
+    this.chatStand = stand;
+    const liste = this.rahmen.querySelector<HTMLElement>('[data-zone="chat"] .nachrichten');
+    if (liste) liste.scrollTop = liste.scrollHeight;
+  }
+
   private drahtSignatur = '';
   private skizzenSignatur = '';
 
@@ -239,10 +252,11 @@ export class Fenster {
     const g = sk.griffLage();
     this.szene.zeigeGriff(g ? g.ort : null, g?.n);
     const liste = d.zeichnung();
-    const signatur = JSON.stringify([liste, this.app.thema]);
+    const geister = d.geisterZeichnung();
+    const signatur = JSON.stringify([liste, geister, this.app.thema]);
     if (signatur !== this.drahtSignatur) {
       this.drahtSignatur = signatur;
-      this.szene.zeichneDraht(liste);
+      this.szene.zeichneDraht([...liste, ...geister]);
       if (d.einpassen && liste.length) {
         d.einpassen = false;
         this.einpassenSofort();

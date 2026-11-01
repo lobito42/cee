@@ -1,5 +1,6 @@
 // Wirkung der Befehle: Änderungen am Graphen (mit Verlauf und Protokoll) und an der Ansicht (ohne beides).
 import { App, PROFILE, type Weg } from './app';
+import { leseGroesse, type Groesse } from './drahtmodell/draht';
 import {
   alleElemente,
   elternVon,
@@ -419,22 +420,77 @@ export function wirkungenRegistrieren(app: App): void {
   // --- Wireframe-Basics (ap-50): Graph ändern, Lage rechnet der Geometriekern ---------------------------
 
   const draht = app.draht;
-  r('referenz.koordinatensystem', (_par, weg) => {
+  // Mit Parametern (KI-Werkzeug, ap-52) wirken die Befehle ohne Klick; ohne Parameter bleibt der Klickweg.
+  const hat = (par: Record<string, unknown>, ...namen: string[]) =>
+    namen.some((n) => par[n] !== undefined);
+  const groesse = (v: unknown, dim: 'length' | 'angle'): Groesse => {
+    if (v && typeof v === 'object' && 'value' in v) return v as Groesse;
+    return (
+      (typeof v === 'string' ? leseGroesse(v, dim) : null) ?? {
+        value: 0,
+        unit: dim === 'length' ? 'mm' : 'deg',
+      }
+    );
+  };
+  const text = (v: unknown) => (typeof v === 'string' && v.trim() ? v.trim() : undefined);
+  r('referenz.koordinatensystem', (par, weg, quelle) => {
     draht.modus = null;
-    draht.koordinatensystemAnlegen(weg);
+    if (hat(par, 'x', 'y', 'z', 'rx', 'ry', 'rz', 'parent', 'name')) {
+      const params: Record<string, Groesse> = {};
+      for (const n of ['x', 'y', 'z'] as const) params[n] = groesse(par[n], 'length');
+      for (const n of ['rx', 'ry', 'rz'] as const) params[n] = groesse(par[n], 'angle');
+      draht.koordinatensystemAnlegen(weg, quelle, {
+        params,
+        parent: text(par.parent),
+        name: text(par.name),
+      });
+      return;
+    }
+    draht.koordinatensystemAnlegen(weg, quelle);
   });
-  r('referenz.punkt', () => {
+  r('referenz.punkt', (par, weg, quelle) => {
+    if (hat(par, 'x', 'y', 'z', 'frame', 'name')) {
+      draht.modus = null;
+      const frame = text(par.frame);
+      draht.punktAnlegen(
+        frame ? { frame } : {},
+        {
+          x: groesse(par.x, 'length'),
+          y: groesse(par.y, 'length'),
+          z: groesse(par.z, 'length'),
+        },
+        weg,
+        quelle,
+        text(par.name),
+      );
+      return;
+    }
     draht.modus = { art: 'punkt' };
     app.meldung('rueck.draht.punkt-klicken');
   });
-  r('referenz.punkt-relativ', (par, weg) => {
+  r('referenz.punkt-relativ', (par, weg, quelle) => {
     draht.modus = null;
+    if (typeof par.ref === 'string') {
+      draht.punktAnlegen(
+        { ref: par.ref.includes('.') ? par.ref : `${par.ref}.point` },
+        {
+          x: groesse(par.x, 'length'),
+          y: groesse(par.y, 'length'),
+          z: groesse(par.z, 'length'),
+        },
+        weg,
+        quelle,
+        text(par.name),
+        'referenz.punkt-relativ',
+      );
+      return;
+    }
     const basis = typeof par.element === 'string' ? par.element : draht.gewaehltePunkte()[0];
     if (!basis || app.find(basis)?.type !== 'point') {
       app.meldung('rueck.draht.einen-punkt');
       return false;
     }
-    draht.punktAnlegen({ ref: `${basis}.point` }, { x: 0, y: 0, z: 0 }, weg);
+    draht.punktAnlegen({ ref: `${basis}.point` }, { x: 0, y: 0, z: 0 }, weg, quelle);
     draht.feldFokus = 'x';
   });
   for (const [befehl, typ] of [
@@ -442,11 +498,16 @@ export function wirkungenRegistrieren(app: App): void {
     ['referenz.halbgerade', 'ray'],
     ['referenz.strecke', 'segment'],
   ] as const) {
-    r(befehl, (_par, weg) => {
+    r(befehl, (par, weg, quelle) => {
+      if (typeof par.a === 'string' && typeof par.b === 'string') {
+        draht.modus = null;
+        draht.linieAnlegen(typ, par.a, par.b, weg, quelle, text(par.name));
+        return;
+      }
       const punkte = draht.gewaehltePunkte();
       if (punkte.length === 2 && app.auswahlIds().length === 2) {
         draht.modus = null;
-        draht.linieAnlegen(typ, punkte[0] as string, punkte[1] as string, weg);
+        draht.linieAnlegen(typ, punkte[0] as string, punkte[1] as string, weg, quelle);
         return;
       }
       draht.modus = { art: 'linie', typ, punkte: [] };

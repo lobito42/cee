@@ -36,7 +36,7 @@ export interface Befehl {
   folgt?: boolean;
   /** Gemeinsame Handlung von Varianten (etwa für ein Element und für mehrere): Menüs zeigen eine. */
   handlung?: string;
-  /** Auch als Werkzeug der KI angeboten (ap-52). */
+  /** Auch Werkzeug für die KI (ap-52): dieselbe Wirkung, Parameter aus `parameter`. */
   ki?: boolean;
 }
 
