@@ -142,9 +142,19 @@ Skizze MUST ihre Bereiche mit Punkt und Fläche nennen.
 #### Scenario: [auto] Halter über den KI-Chat
 - **WHEN** das Testmodell aus ap-52 auf einen Satz die Werkzeugaufrufe für den Halter nach design.md Abschnitt 8
   liefert, dann `chat.uebernehmen` und danach `bearbeiten.rueckgaengig` ausgelöst werden
-- **THEN** zeigt die Entscheidungskarte vor dem Übernehmen alle neuen Elemente als Geister bei unverändertem
-  `graph_hash`; nach Übernehmen stimmen Volumen beider Körper relativ 10⁻⁶ mit dem direkten Worker-Fall überein und
+- **THEN** nennt die Entscheidungskarte vor dem Übernehmen genau 9 neue Elemente (je Aufruf eines; K1 entsteht über
+  `referenz_koordinatensystem` mit `z` und zählt mit seinen Kindern als eines, design.md Abschnitt 7a), `geister`
+  hat genau 9 Einträge mit 9 verschiedenen Elementen, und `graph_hash` ist unverändert; nach Übernehmen stimmen Volumen beider Körper relativ 10⁻⁶ mit dem direkten Worker-Fall überein und
   der Verlauf nennt `urheber` = `ki`; nach einem Rückgängig-Schritt ist `graph_hash` wieder der Ausgangswert
+
+#### Scenario: [auto] KI-Skizzenwerkzeug wirkt wie der Klickweg
+- **WHEN** das Testmodell aus ap-52 die Aufrufe `skizze_anlegen` (`ebene` = `<XY-Ebene von K0>.plane`, wie der Klick sie speichert) und `skizze_rechteck`
+  (`u1` „0 mm“, `v1` „0 mm“, `u2` „60 mm“, `v2` „40 mm“) liefert und `chat.uebernehmen` ausgelöst wird, und in einem
+  zweiten Lauf dasselbe Rechteck nach dem Scenario „Rechteck mit getipptem Maß“ per Klick und Tippen entsteht
+- **THEN** nennt das Werkzeugergebnis von `skizze_rechteck` in der Karte genau 1 Bereich mit `punkt` „30 mm“,
+  „20 mm“ (± 10⁻⁶ mm) und `flaeche` „2400 mm2“ (relativ 10⁻⁶); die neuen `sketch` und `sketch_rectangle` beider Läufe
+  stimmen in `type`, `params` und `inputs` überein (bis auf Element-IDs), und das Aktionsprotokoll nennt in beiden
+  Läufen dieselben Befehle `skizze.anlegen` und `skizze.rechteck`
 
 ### Requirement: Ansichtsbausteine
 Das Modell SHALL einen Ansichtswürfel mit stets sichtbaren Weltachsen (X rot, Y grün, Z blau aus den Tokens
@@ -166,8 +176,9 @@ höchstens 4 ms (Median) auf 200 000 Dreiecken brauchen. Neue Abhängigkeiten MU
 
 #### Scenario: [auto] Lizenzen
 - **WHEN** der Test `pruefen -- skizze lizenzen --json` aufruft
-- **THEN** hat jedes direkte Paket eine Lizenz aus der Liste von ADR-034 (MPL, Apache, MIT, BSD, ISC, Zlib und
-  gleichwertige), `three-mesh-bvh`, `camera-controls` und `three-viewport-gizmo` sind enthalten, und weder
+- **THEN** ist der Lizenzausdruck jedes direkten Pakets erlaubt nach der Liste in design.md Abschnitt 7 (ADR-034 mit
+  ADR-061: `MPL-2.0`, `Apache-2.0`, `MIT`, `BSD-2-Clause`, `BSD-3-Clause`, `ISC`, `Zlib`, `CC0-1.0`, `Unicode-3.0`,
+  `Unicode-DFS-2016`, `0BSD`, `BSL-1.0`, `PSF-2.0`, `OFL-1.1`), `three-mesh-bvh`, `camera-controls` und `three-viewport-gizmo` sind enthalten, und weder
   `three-cad-viewer` noch ein Paket mit „planegcs“ im Namen kommt in `package-lock.json` vor
 
 ### Requirement: Ausprobieren durch den Menschen

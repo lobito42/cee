@@ -87,7 +87,8 @@ Dimension `length`, Standard-Einheit `mm`.
 - Verschachtelung: Ein Bereich ist eine Kontur minus die direkt in ihr liegenden Konturen (Löcher); jede innere
   Kontur ist selbst wieder ein Bereich.
 - Ausgang `sketch`: `{"type": "sketch", "plane": {origin, normal, x_direction}, "bereiche": [{"punkt": [u, v],
-  "flaeche": Größe mm², "aussen": Element-ID-Liste, "loecher": Element-ID-Liste, "rand": [[[u, v] …] …]}]}`.
+  "flaeche": Größe mm2, "aussen": Element-ID-Liste, "loecher": Element-ID-Liste, "rand": {"unit": "mm", "zuege":
+  [[[u, v] …] …]}}]}`. Genaue Gestalt der Felder: Abschnitt 7a.
   `punkt` ist ein innerer Punkt (Schwerpunkt der Fläche, falls innen; sonst Mitte des längsten Schnitts der
   Geraden v = v_Schwerpunkt mit der Fläche). `rand` sind Polylinien zur Anzeige (Kreise mit Sehnenfehler
   ≤ 0,01 mm). Reihenfolge: absteigende Fläche, dann `punkt` lexikographisch – nur zur Anzeige, nie zur Adressierung.
@@ -101,12 +102,12 @@ Dimension `length`, Standard-Einheit `mm`.
   Befund `region_missing` mit Hinweis, nie geraten. Begründung und Alternative: Open Question 5.
 - Körper = Prisma des Bereichs entlang `normal · hoehe` (`BRepPrimAPI_MakePrism`), negative Höhe gegen die Normale;
   `|hoehe|` < `TOL_LINEAR` → `degenerate`. Jedes Hochziehen erzeugt einen eigenen Körper; nichts wird vereinigt.
-- Ausgang `koerper`: `{"type": "solid", "volumen" (mm³), "oberflaeche" (mm²), "schwerpunkt" [mm ×3], "huelle"
-  {min, max} [mm ×3], "flaechen": Anzahl, "kanten": Anzahl, "netz": {"positionen": [mm …], "dreiecke": [int …]},
-  "kantenzuege": [[[x, y, z] …] …]}`. Kennwerte aus der exakten Form (`BRepGProp`, `TopExp`), nicht aus dem Netz.
+- Ausgang `koerper`: `{"type": "solid", "volumen" (mm3), "oberflaeche" (mm2), "schwerpunkt" [mm ×3], "huelle"
+  {min, max} [mm ×3], "flaechen": Anzahl, "kanten": Anzahl, "netz": {"unit": "mm", "positionen": [Zahl …],
+  "dreiecke": [Ganzzahl …]}, "kantenzuege": {"unit": "mm", "zuege": [[[x, y, z] …] …]}}` (Abschnitt 7a). Kennwerte aus der exakten Form (`BRepGProp`, `TopExp`), nicht aus dem Netz.
   Netz mit `BRepMesh_IncrementalMesh`, Sehnenfehler 0,05 mm, Winkel 0,25 rad – nur Anzeige. Größen als
-  `{"value", "unit"}` wie in ap-50; einzige Ausnahme sind die Anzeige-Listen `netz.positionen` und `kantenzuege`
-  (Zahlen in mm, Einheit einmal als `"unit": "mm"` am Netz bzw. an den Kantenzügen).
+  `{"value", "unit"}` wie in ap-50; einzige Ausnahme sind die Anzeige-Listen `netz`, `kantenzuege` und `rand`
+  (Zahlen in mm, Einheit einmal als `"unit": "mm"` am Objekt; `netz.dreiecke` sind Indizes ohne Einheit).
 - **Schema:** `format/kernel/ergebnis.schema.json` wird um `sketch` und `solid` ergänzt; `protocol` bleibt
   `cee-kernel/0`; Ergebnisse aus ap-50 bleiben gültig (additiv).
 - **Toleranzen der Abnahme:** Lagen 10⁻⁶ mm; Volumen, Oberfläche, Fläche relativ 10⁻⁶; Schwerpunkt 10⁻⁶ mm;
@@ -208,17 +209,99 @@ Brücke selbst, Playwright, Chromium, 1440 × 900 px):
 - `befehle` → `{befehle: [{id, familie, untergruppe, kuerzel, ki, folgt, orte: [Ort]}]}` für die 7 Befehle; Orte
   wie bei ap-50, zusätzlich `werkzeugleiste`.
 - `ablauf --zustand <name> --datei <ablauf.json>` → wie `drahtmodell ablauf` aus ap-50 mit zusätzlichen Schritten
-  `{zeiger: {skizze_mm: [u, v] | modell_mm: [x, y, z] | element, aktion: "bewegen" | "klicken" | "doppelklick" |
-  "druecken" | "loslassen"}}`, `{tippen: "<Text>"}`, `{griff: {element, ziehen_mm}}`; Schnappschuss zusätzlich
-  `skizze_offen` (ID oder null), `werkzeug`, `fang: {art, lage_mm, richtung}`, `wertfeld: {sichtbar, feld, text}`,
-  `kamera: {richtung, oben, azimut_deg, elevation_deg, projektion, ms_bis_ruhe}` (Azimut und Elevation wie
-  `blick()` in `src/wirkungen.ts`), `kontur: [{element, art: "hover" | "auswahl", farbe}]`,
-  `linienbreiten: {<element>: px}`, `geister: [{element, art, huelle_mm}]`, `bereiche: [{skizze, punkt, flaeche}]`,
-  `dialoge` (Anzahl offener Dialoge), `werkzeugleiste: [id]`, `kontextleiste: [id]`, `hover_ms`, `bild_ms`
-  (Bildzeiten während des letzten Schritts), `long_tasks` (Anzahl ≥ 50 ms).
+  und Schnappschuss-Feldern nach Abschnitt 7a.
 - `messen --dreiecke <n>` → `{raycast_ms: [..], median_ms}` auf einem Testnetz mit n Dreiecken (Zustand
   `skizze-last`, 200 Zeiger-Positionen).
-- `lizenzen` → `{pakete: [{name, version, lizenz}]}` aller direkten Abhängigkeiten aus `package-lock.json`.
+- `lizenzen` → `{pakete: [{name, version, lizenz}]}` aller direkten Abhängigkeiten aus `package-lock.json`;
+  `lizenz` ist der SPDX-Ausdruck aus der Sperrdatei. Erlaubt ist ein Ausdruck, wenn jeder Name (bei `OR`: mindestens
+  einer) in dieser Liste steht. Quelle ist ADR-034 („Erlaubte Abhängigkeiten“) mit ADR-061 (Schriften): `MPL-2.0`,
+  `Apache-2.0`, `MIT`, `BSD-2-Clause`, `BSD-3-Clause`, `ISC`, `Zlib`, `CC0-1.0`, `Unicode-3.0`, `Unicode-DFS-2016`,
+  `0BSD`, `BSL-1.0`, `PSF-2.0` und `OFL-1.1` (die Schriftpakete `@fontsource…` des Prototyps). `deny.toml` ist die
+  Fassung für Rust (ohne `PSF-2.0`, dafür `Apache-2.0 WITH LLVM-exception`) und gilt hier nicht. Nicht auf der Liste
+  und damit nicht erlaubt ist z. B. `MIT-0`; ein Nachtrag dazu wäre Sache des Kernteams.
+
+### 7a. Formate der Ergebnisse und der Prüfbefehle (festgelegt nach dem Test-Review)
+
+Grundsatz: Wo ap-50 (`cee-kernel/0`, `drahtmodell ablauf`) oder ap-52 (`ki ablauf`, Werkzeugergebnis) ein Format
+hat, gilt es unverändert; hier steht nur, was neu ist.
+
+**Worker-Ergebnis (Ausgänge, Befunde):**
+
+| Feld | Gestalt |
+| --- | --- |
+| Eingang `ebene` der Skizze | Bezug `<id>.<ausgang>` auf einen Ausgang vom Typ `plane`: `<frame>.xy`, `<frame>.yz`, `<frame>.zx` (Ausgänge des Koordinatensystems, ap-50) oder `<ebene>.plane` (Kind-Element „XY-Ebene“ usw.). Beide sind gleichwertig. Klickt man in der Vorschau ein Ebenen-Element an, speichert sie `<ebene>.plane`; Beispiele und Tests schreiben `K0.xy`. |
+| Eingang `skizze` des Hochziehens | `<skizze>.sketch` |
+| `bereiche[].punkt` | zwei Größen `[{"value", "unit": "mm"}, …]` (u, v) |
+| `bereiche[].flaeche`, `oberflaeche` | Größe mit Einheit `mm2` (UCUM) |
+| `volumen` | Größe mit Einheit `mm3` (UCUM) |
+| `schwerpunkt`, `huelle.min`, `huelle.max` | je drei Größen in `mm` |
+| `flaechen`, `kanten` | Größe mit Einheit `1` (dimensionslos wie Richtungen in ap-50), Wert ganzzahlig |
+| `netz` | `{"unit": "mm", "positionen": [x, y, z, x, y, z, …], "dreiecke": [i, j, k, …]}`; beide Listen flach, Indizes ab 0, drei je Dreieck |
+| `kantenzuege`, `rand` | `{"unit": "mm", "zuege": [[[x, y, z] …] …]}` bzw. `[[[u, v] …] …]`; beim Rand ist der erste Zug außen, dann die Löcher |
+| Befund | wie ap-50 `{"code", "element", "input"?, "hinweis"}` in `results[i].befunde` des betroffenen Elements, ergänzt um das optionale Feld `beteiligt` (Liste von Element-IDs, nach ID sortiert) |
+| `curves_intersect` | steht an der **Skizze** (`element` = Skizzen-ID), `beteiligt` = die beiden Kurven-IDs; die Skizze bleibt `aktuell` und liefert die übrigen Bereiche |
+| `degenerate`, `not_in_sketch` an Skizzenelementen | am Skizzenelement, `state` = `fehlerhaft`, kein Ausgang |
+| `region_missing`, `degenerate` am Hochziehen | am `extrude`, `state` = `fehlerhaft`, kein Ausgang `koerper` |
+| Zahl ohne Einheit | Warnung des Kerns `unit_assumed` (Code aus `crates/graph/src/validate.rs`) als Befund am Element; es bleibt `aktuell` |
+| falsche Dimension, unbekannte Einheit | Befund `unit` (wie ap-50), Code des Kerns (`dimension_mismatch`, `unknown_unit`) im `hinweis`; `state` = `fehlerhaft` |
+| verworfen, Name | `meta.verworfen = true` bzw. `meta.name` (wie ap-50); beide gehen nicht in den Inhalts-Hash ein |
+
+**Verweise auf Elemente in Ablauf-Schritten und Befehlsargumenten:** eine Element-ID; oder `<typ>#<n>` (n-tes
+Wurzelelement dieses Typs in Graph-Reihenfolge, ab 1); oder `<typ>#<n>><kindtyp>#<m>` (m-tes Kind dieses Typs
+des n-ten Wurzelelements, ab 1). Die Kinder eines Koordinatensystems stehen in der Reihenfolge aus ap-50: Ursprung,
+X-, Y-, Z-Achse, XY-, YZ-, ZX-Ebene; `frame#1>plane#1` ist also die XY-Ebene, `frame#1>plane#3` die ZX-Ebene.
+Bezug-Parameter von Befehlen und KI-Werkzeugen nehmen `<id>.<ausgang>` (wie ap-52) oder ein Element ohne Ausgang; ohne
+Ausgang wird der einzige passende Ausgang ergänzt (Ebenen-Element → `.plane`, Skizze → `.sketch`). Ist das nicht
+eindeutig (ein `frame` als `ebene`), ist das ein Fehler `input_type`. Im Graphen steht immer `<id>.<ausgang>`.
+
+**Zusätzliche Ablauf-Schritte** (neben denen aus ap-50 – `befehl`, `klick: {element}`, `klick: {modell_mm}`,
+`eigenschaft: {element, feld, eingabe}`, `taste`, `warten_ms` – und ap-52 – `chat`):
+
+| Schritt | Bedeutung |
+| --- | --- |
+| `{zeiger: {skizze_mm: [u, v], aktion}}` | Zeiger auf Skizzenkoordinaten der offenen Skizze |
+| `{zeiger: {element, skizze_mm: [u, v], aktion}}` | Zeiger auf Koordinaten einer bestimmten Skizze, auch wenn sie geschlossen ist (z. B. Bereich wählen) |
+| `{zeiger: {element, aktion}}` | Zeiger auf ein Element (z. B. Doppelklick auf eine Skizze) |
+| `{zeiger: {modell_mm: [x, y, z], aktion}}` | Zeiger auf einen Weltpunkt |
+| `aktion` | `bewegen`, `klicken`, `doppelklick`, `druecken`, `loslassen` |
+| `{tippen: "<Text>"}` | Zeichen nacheinander tippen (Wertfeld) |
+| `{taste: "<Name>"}` | Tastennamen wie Playwright: `S`, `L`, `R`, `K`, `E`, `Escape`, `Tab`, `Enter` |
+| `{griff: {element?, ziehen_mm, dauer_ms?, halten?}}` | am Höhengriff ziehen: ohne `element` am gerade aktiven Griff (nach `E`), mit `element` am Griff des gewählten bzw. genannten Hochziehens; `ziehen_mm` entlang der Normale; `dauer_ms` Dauer des Ziehens (Standard 300 ms); `halten: true` lässt nicht los |
+| `{klick: {wuerfel: "vorne" \| "oben" \| "vorne-rechts-oben"}}` | Klick auf Seite bzw. Ecke des Ansichtswürfels |
+
+**Schnappschuss** (neben den Feldern aus ap-50 – `graph`, `graph_hash`, `ergebnis`, `szene`, `auswahl`, `struktur`,
+`befunde`, `rueckmeldung`, `bereit_ms`, `anfragen`, `konsolenfehler` –, ap-41b – `protokoll` (Aktionsprotokoll,
+Einträge mit `befehl`) – und ap-52 – `chat` mit `karten`, `geister`, `verlauf` mit `urheber`):
+
+| Feld | Gestalt |
+| --- | --- |
+| `skizze_offen` | ID der offenen Skizze oder `null` |
+| `werkzeug` | aktiver Befehl (`skizze.linie` …) oder `null` |
+| `fang` | `{art: "endpunkt" \| "mittelpunkt" \| "raster" \| null, lage_mm: [u, v] \| null, richtung: "waagerecht" \| "senkrecht" \| null, anzeige: "H" \| "V" \| null}` – `anzeige` ist das Kürzel am Zeiger |
+| `wertfeld` | `{sichtbar, feld: "laenge" \| "winkel" \| "breite" \| "hoehe" \| "durchmesser" \| null, text, befund: Text \| null}` |
+| `kamera` | `{richtung: [x, y, z], oben: [x, y, z], azimut_deg, elevation_deg, projektion: "parallel" \| "perspektivisch", ms_bis_ruhe}`; Azimut und Elevation wie `blick()` in `src/wirkungen.ts` |
+| `ansichtswuerfel` | `{achsen: [{achse: "x" \| "y" \| "z", farbe, sichtbar}]}` |
+| `bereiche` | Bereiche aller sichtbaren Skizzen: `[{element, skizze, punkt: [u, v], flaeche}]`, Zahlen in mm bzw. mm² (Rohdaten der Vorschau, wie `lage_mm` in ap-50); `punkt` = `punkt` aus dem Worker |
+| Schlüssel eines Bereichs | `element` = `<Skizzen-ID>@<u>;<v>` mit dem `punkt` des Bereichs in mm (Kurzdarstellung wie JavaScript `String(zahl)`); dieselbe Schreibweise steht in `kontur[].element`, `auswahl` und `linienbreiten`. Sie dient nur der Anzeige im Prüfbefehl; adressiert wird ein Bereich im Graphen nur über `punkt_u`, `punkt_v` (Abschnitt 4) |
+| `kontur` | `[{element, art: "hover" \| "auswahl", farbe}]`; `farbe` als Hex-Wert des Tokens |
+| `linienbreiten` | `{<element>: px}` aller sichtbaren Kurven, Kanten und Bereichsränder |
+| `szene[].lage_mm` | wie ap-50; bei Körpern `{schwerpunkt: [x, y, z], min: [x, y, z], max: [x, y, z]}` |
+| `geister` | wie ap-52 `[{element, art, …}]`, bei Körpern zusätzlich `huelle_mm: {min: [x, y, z], max: [x, y, z]}`; **ein Eintrag je neuem Element des Änderungssatzes** bzw. je Vorschau beim Ziehen |
+| `eigenschaften` | angezeigte Eigenschaften der Auswahl als `{<gruppe>: {<feld>: "<angezeigter Text>"}}` |
+| `werkzeugleiste`, `kontextleiste` | IDs der angezeigten Befehle; die Kontextleiste erscheint, sobald etwas gewählt ist (Klick, `auswahl.*`), und zeigt die Befehle zur Auswahl; ohne Auswahl leer |
+| `dialoge` | Anzahl offener Elemente mit `role="dialog"` oder `<dialog open>` |
+| `hover_ms` | Zeigerbewegung bis Kontur im Bild |
+| `bild_ms` | Liste der Bildzeiten (ms) während des Schritts |
+| `long_tasks` | Anzahl Long Tasks ≥ 50 ms während des Schritts |
+| `bereit_ms` | wie ap-50; nach `griff` ohne `halten`: Loslassen bis exakter Körper angezeigt |
+
+**Änderungssatz der KI (ap-52):** `neu` nennt je erfolgreichem Werkzeugaufruf genau das angelegte Element; die
+sieben Kinder eines Koordinatensystems zählen nicht extra (sie entstehen mit dem `frame`). `geister` hat einen Eintrag
+je Element in `neu`. Der Halter über den Chat (Abschnitt 8) hat damit 9 Aufrufe und 9 neue Elemente: S1, Rechteck,
+2 Kreise, Hochziehen, K1 (über `referenz_koordinatensystem` mit `z`, Werkzeug aus ap-52), S2, Rechteck, Hochziehen.
+**Werkzeugergebnis** wie ap-52 (Größen als Strings); bei `skizze_*`-Aufrufen zusätzlich `bereiche: [{punkt: ["<u> mm",
+"<v> mm"], flaeche: "<a> mm2"}]` der betroffenen Skizze (höchstens 10 Einträge, dann `bereiche_anzahl`, damit das
+Ergebnis ≤ 600 Zeichen bleibt), bei `koerper_hochziehen` `volumen` und `huelle`.
 
 | Messung | Budget | Wie gemessen |
 | --- | --- | --- |
@@ -267,7 +350,7 @@ Pfad `tests/acceptance/ap-53-skizze-hochziehen/`. Voraussetzungen wie ap-50.
 | AK-9 | Zeichnen, Fangen (Endpunkt, Mittelpunkt, Raster, waagerecht/senkrecht), Maß tippen | Zeichnen |
 | AK-10 | Bereich wählen, Kontur nur über Farbe, Hochziehen mit Griff und Wert, kein Dialog | Bereich und Griff |
 | AK-11 | Halter in der Vorschau per `ablauf` | Abnahmefall Halter |
-| AK-12 | KI-Werkzeuge im Register, Halter per Testmodell als Änderungssatz | KI-Werkzeuge |
+| AK-12 | KI-Werkzeuge im Register, KI-Skizzenwerkzeug wie Klickweg mit Bereichen im Ergebnis, Halter per Testmodell als Änderungssatz (9 neue Elemente) | KI-Werkzeuge |
 | AK-13 | Ansichtswürfel, Picking-Budget, Hover-Budget, Bildzeiten, Lizenzen | Ansichtsbausteine |
 
 ### 10. Klick-Anleitung „Ausprobieren“ (für die Scenarios `[mensch]` und den PR)
