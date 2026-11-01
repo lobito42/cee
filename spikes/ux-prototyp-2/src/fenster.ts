@@ -208,12 +208,29 @@ export class Fenster {
   }
 
   private drahtSignatur = '';
+  private skizzenSignatur = '';
 
   /** Drahtmodell (ap-50): Ergebnis anfordern und zeichnen, sobald es da ist. */
   private zeichneDraht(): void {
     const d = this.app.draht;
-    this.szene.zeigeWeltachsen(this.app.dok === 'drahtmodell');
+    this.szene.zeigeWeltachsen(this.app.dok === 'drahtmodell' || this.app.dok === 'skizze');
     d.anstossen();
+    // Skizze und Hochziehen (ap-53)
+    const sk = this.app.skizze;
+    const zeichnung = sk.zeichnung();
+    const sig = JSON.stringify([zeichnung, this.app.thema]);
+    if (sig !== this.skizzenSignatur) {
+      this.skizzenSignatur = sig;
+      this.szene.zeichneSkizze(zeichnung);
+      if (sk.hoverSeit !== null && sk.hover) {
+        const seit = sk.hoverSeit;
+        requestAnimationFrame(() => {
+          if (sk.hoverSeit === seit) sk.hoverMs = performance.now() - seit;
+        });
+      }
+    }
+    const g = sk.griffLage();
+    this.szene.zeigeGriff(g ? g.ort : null, g?.n);
     const liste = d.zeichnung();
     const signatur = JSON.stringify([liste, this.app.thema]);
     if (signatur !== this.drahtSignatur) {

@@ -135,6 +135,11 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
   function modellKlick(e: MouseEvent): void {
     offenesSchliessen();
     const modus = e.shiftKey ? 'hinzufuegen' : e.ctrlKey || e.metaKey ? 'umschalten' : 'setzen';
+    if (app.skizze.klick(e.clientX, e.clientY, e.altKey)) {
+      modell.focus({ preventScroll: true });
+      app.rendern();
+      return;
+    }
     if (app.draht.klick(e.clientX, e.clientY, modus)) {
       modell.focus({ preventScroll: true });
       app.rendern();
@@ -168,6 +173,7 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
       return;
     }
     if (ziel.closest('[data-zone="modell"]') && !ziel.closest('[data-chrome], .griff, .popup')) {
+      if (app.skizze.doppelklick(e.clientX, e.clientY)) return;
       const t = app.szene?.trefferBei(e.clientX, e.clientY);
       const id = t ? app.zielFuerTreffer(t.elementId) : null;
       if (id) app.ausfuehren('element.aktivieren', { element: id }, 'menue');
@@ -279,6 +285,9 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
       return;
     }
     if (ziel.closest('[data-zone="modell"]') && !ziel.closest('[data-chrome], .popup')) {
+      // Höhengriff (TransformControls) oder Zeichnen mit der linken Taste: keine Navigation
+      if (app.szene?.griff?.dragging || app.szene?.griff?.axis) return;
+      if (app.skizze.werkzeug && e.button === 0) return;
       if (e.pointerType === 'touch') {
         finger.set(e.pointerId, { x: e.clientX, y: e.clientY });
         fingerStand = fingerMasse();
@@ -316,6 +325,7 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
 
   window.addEventListener('pointermove', (e) => {
     app.zeigerPos = { x: e.clientX, y: e.clientY };
+    if (app.szene?.griff?.dragging) return;
     if (app.griff?.aktiv) {
       griffBewegen(e);
       return;
@@ -354,6 +364,7 @@ export function steuerungAnbinden(app: App, fenster: Fenster): void {
       const zeile = ziel.closest<HTMLElement>('[role="treeitem"]');
       if (zeile) return setzeHover(zeile.dataset.id as string);
       if (ziel.closest('[data-zone="modell"]') && !ziel.closest('[data-chrome], .popup')) {
+        if (app.skizze.zeiger(e.clientX, e.clientY, e.altKey)) return;
         const t = app.szene?.trefferBei(e.clientX, e.clientY);
         return setzeHover(t ? app.zielFuerTreffer(t.elementId) : null);
       }

@@ -51,6 +51,13 @@ export function tastenAnbinden(app: App): void {
         ziel?.isContentEditable === true;
       app.tastenfokus = true;
 
+      // Skizze (ap-53): Wertfeld am Zeiger, Tab, Enter, Esc; Buchstaben gehen ins Feld, sobald es tippt
+      if (!tippt && !app.suche.offen && !app.menue && !app.kontextMenue && app.skizze.taste(e)) {
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+
       // Ziehen am Griff: Ziffern setzen den genauen Wert, Enter übernimmt, Esc bricht ab
       if (app.griff?.aktiv) {
         if (/^\d$/.test(e.key)) {

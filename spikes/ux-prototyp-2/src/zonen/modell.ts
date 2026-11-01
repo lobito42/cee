@@ -15,6 +15,9 @@ import { familienMenue, popup } from '../ui/menue';
 import { statusElement, statusVon } from './struktur';
 
 export const BEFEHL_SYMBOL: Record<string, Symbolname> = {
+  'skizze.anlegen': 'pen-tool',
+  'skizze.bearbeiten': 'pencil',
+  'koerper.hochziehen': 'arrow-up',
   'element.duplizieren': 'copy',
   'auswahl.duplizieren': 'copy',
   'element.umbenennen': 'pencil',
@@ -36,6 +39,17 @@ export const BEFEHL_SYMBOL: Record<string, Symbolname> = {
 
 /** Hülle eines Elements in Bildschirmkoordinaten (konvex), oder null. */
 export function huelleBildschirm(app: App, id: string): Punkt[] | null {
+  const e = app.find(id);
+  if (e?.type === 'extrude' || e?.type === 'sketch') {
+    const s = app.draht.szene().find((x) => x.element === id);
+    const l = s?.lage_mm as {
+      min?: [number, number, number];
+      max?: [number, number, number];
+    } | null;
+    if (l?.min && l.max && app.szene)
+      return konvexeHuelle(app.szene.eckenProjiziert({ min: l.min, max: l.max }));
+    return null;
+  }
   const draht = app.draht.huelleBildschirm(id);
   if (draht) return konvexeHuelle(draht);
   const box = app.huelle(id);
@@ -308,10 +322,13 @@ function kontextleiste(app: App, ursprung: Punkt, breite: number): HTMLElement |
   if (art === 'keine' || app.dnd || app.griff) return null;
   const aktionen = kontextaktionen(kontextmenue(app.register, art, (b) => app.anwendbar(b)));
   if (!aktionen.length) return null;
-  const ziele = app
-    .auswahlIds()
-    .map((i) => huelleBildschirm(app, i))
-    .filter((x): x is Punkt[] => !!x);
+  const ziele =
+    art === 'bereich'
+      ? [app.skizze.bereichBildschirm()].filter((x): x is Punkt[] => !!x)
+      : app
+          .auswahlIds()
+          .map((i) => huelleBildschirm(app, i))
+          .filter((x): x is Punkt[] => !!x);
   const alle = ziele.flat();
   if (!alle.length) return null;
   const box = huellbox(alle);
@@ -485,6 +502,94 @@ function befehlsHinweis(app: App): HTMLElement | null {
   );
 }
 
+/** Skizzier-Werkzeugleiste (ap-53): nur solange eine Skizze offen ist, schwebend am oberen Rand. */
+export const WERKZEUGLEISTE = ['skizze.linie', 'skizze.rechteck', 'skizze.kreis', 'skizze.fertig'];
+const WERKZEUG_SYMBOL: Record<string, Symbolname> = {
+  'skizze.linie': 'minus',
+  'skizze.rechteck': 'square',
+  'skizze.kreis': 'circle',
+  'skizze.fertig': 'check',
+};
+
+function werkzeugleiste(app: App): HTMLElement | null {
+  if (!app.skizze.offen) return null;
+  return h(
+    'div',
+    {
+      class: 'werkzeugleiste',
+      role: 'toolbar',
+      'data-muster-kandidat': 'Werkzeugleiste in der Skizze',
+      'data-werkzeugleiste': '',
+      'data-chrome': '',
+      'data-weg': 'werkzeugleiste',
+      'data-key': 'werkzeugleiste',
+    },
+    ...WERKZEUGLEISTE.map((id) => {
+      const b = app.befehl(id);
+      const fertig = id === 'skizze.fertig';
+      return h(
+        'button',
+        {
+          type: 'button',
+          class: `schalter mit-kuerzel${fertig ? ' haupt' : ''}`,
+          'data-befehl': id,
+          'data-key': `wz-${id}`,
+          'aria-pressed': app.skizze.werkzeug === id ? 'true' : 'false',
+          title: b ? app.t(b.titel) : id,
+          'aria-label': b ? app.t(b.titel) : id,
+        },
+        symbol(WERKZEUG_SYMBOL[id] ?? 'square'),
+        h('span', { class: 'wz-text' }, b ? app.t(b.titel) : id),
+        b?.kuerzel ? h('kbd', {}, b.kuerzel) : null,
+      );
+    }),
+  );
+}
+
+/** Wertfeld am Zeiger und Kürzel H/V der Richtung (ap-53). */
+function skizzenZeiger(app: App, ursprung: Punkt): (HTMLElement | null)[] {
+  const s = app.skizze;
+  const z = app.zeigerPos;
+  const lage = `left:${Math.round(z.x - ursprung.x + 16)}px;top:${Math.round(z.y - ursprung.y + 14)}px`;
+  const aus: (HTMLElement | null)[] = [];
+  if (s.fang.anzeige && s.werkzeug)
+    aus.push(
+      h(
+        'div',
+        {
+          class: 'fang-anzeige',
+          'data-chrome': '',
+          'data-fang-anzeige': s.fang.anzeige,
+          'data-key': 'fang-anzeige',
+          style: `left:${Math.round(z.x - ursprung.x + 14)}px;top:${Math.round(z.y - ursprung.y - 22)}px`,
+        },
+        s.fang.anzeige,
+      ),
+    );
+  const wf = s.wertfeld;
+  const hoch = s.hoch;
+  if (wf.sichtbar || hoch) {
+    const text = wf.sichtbar ? wf.text : `${Math.round((hoch?.hoehe ?? 0) * 100) / 100} mm`;
+    aus.push(
+      h(
+        'div',
+        {
+          class: `wertfeld-zeiger${wf.befund ? ' mit-befund' : ''}`,
+          'data-muster': 'Wertfeld',
+          'data-wertfeld': wf.feld ?? 'hoehe',
+          'data-chrome': '',
+          'data-key': 'wertfeld-zeiger',
+          style: lage,
+        },
+        h('span', { class: 'wf-feld' }, app.t(`skizze.feld.${wf.feld ?? 'hoehe'}`)),
+        h('span', { class: 'wf-text' }, text || '…'),
+        wf.befund ? h('span', { class: 'wf-befund', role: 'alert' }, wf.befund) : null,
+      ),
+    );
+  }
+  return aus;
+}
+
 export function baueModell(app: App): (HTMLElement | null)[] {
   const szene = app.szene;
   const r = szene?.canvas.getBoundingClientRect();
@@ -519,6 +624,8 @@ export function baueModell(app: App): (HTMLElement | null)[] {
         )
       : null,
     befehlsHinweis(app),
+    werkzeugleiste(app),
+    ...skizzenZeiger(app, ursprung),
     kontextleiste(app, ursprung, breite),
     griffElement(app, ursprung),
     ...schilder(app, ursprung),

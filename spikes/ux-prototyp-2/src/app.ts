@@ -32,6 +32,7 @@ import {
 } from './modell/register';
 import profile from './eingabe/profile.json';
 import { Draht } from './drahtmodell/draht';
+import { Skizze } from './skizze/skizze';
 import { sichtbareTreffer } from './zonen/suche';
 import type { Groesse } from './wert/wertfeld';
 
@@ -174,6 +175,8 @@ export class App {
   szene: Szene | null = null;
   /** Wireframe-Basics mit echtem Geometriekern (ap-50). */
   readonly draht: Draht = new Draht(this);
+  /** Skizze und Hochziehen (ap-53). */
+  readonly skizze: Skizze = new Skizze(this);
   private lauscher: (() => void)[] = [];
   private rendernLaeuft = false;
 
@@ -345,7 +348,7 @@ export class App {
 
   auswahlart(): Auswahlart {
     const ids = this.auswahlIds();
-    if (!ids.length) return 'keine';
+    if (!ids.length) return this.skizze.bereichWahl ? 'bereich' : 'keine';
     if (ids.length === 2 && this.draht.gewaehltePunkte().length === 2) return 'punkte';
     if (ids.length > 1) return 'mehrfach';
     if (this.auswahl.some((a) => a.teil?.art === 'kante')) return 'kante';
@@ -354,6 +357,9 @@ export class App {
     if (istVerworfen(e)) return 'verworfen';
     if (e.type === 'view') return 'ansicht';
     if (e.type === 'point') return 'punkt';
+    if (e.type === 'plane') return 'ebene';
+    if (e.type === 'sketch') return 'skizze';
+    if (e.type === 'extrude') return 'hochziehen';
     if (e.type === 'teil') return 'teil';
     if (e.type === 'baugruppe') return 'baugruppe';
     return 'schritt';
@@ -849,6 +855,17 @@ export class App {
         return sel.length === 1 && sel[0]?.type === 'view';
       case 'auswahl.aufheben':
         return sel.length > 0;
+      case 'skizze.anlegen':
+        return this.skizze.offen === null;
+      case 'skizze.linie':
+      case 'skizze.rechteck':
+      case 'skizze.kreis':
+      case 'skizze.fertig':
+        return this.skizze.offen !== null;
+      case 'skizze.bearbeiten':
+        return sel.length === 1 && sel[0]?.type === 'sketch';
+      case 'koerper.hochziehen':
+        return this.skizze.bereichWahl !== null;
       default:
         return true;
     }

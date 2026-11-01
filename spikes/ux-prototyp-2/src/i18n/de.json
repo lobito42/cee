@@ -40,7 +40,9 @@
     "Baugruppe": "Baugruppe",
     "Simulation": "Simulation",
     "Chat": "Chat",
-    "Referenz": "Referenz"
+    "Referenz": "Referenz",
+    "Skizze": "Skizze",
+    "Körper": "Körper"
   },
   "untergruppe": {
     "Neu": "Neu",
@@ -70,7 +72,10 @@
     "Weitere": "Weitere",
     "Koordinatensystem": "Koordinatensystem",
     "Punkt": "Punkt",
-    "Linie": "Linie"
+    "Linie": "Linie",
+    "Skizze": "Skizze",
+    "Zeichnen": "Zeichnen",
+    "Körper": "Körper"
   },
   "struktur": {
     "titel": "Struktur",
@@ -451,6 +456,17 @@
       "gerade": "Gerade durch zwei Punkte",
       "halbgerade": "Halbgerade durch zwei Punkte",
       "strecke": "Strecke durch zwei Punkte"
+    },
+    "skizze": {
+      "anlegen": "Skizze anlegen",
+      "linie": "Linie",
+      "rechteck": "Rechteck",
+      "kreis": "Kreis",
+      "fertig": "Fertig",
+      "bearbeiten": "Skizze bearbeiten"
+    },
+    "koerper": {
+      "hochziehen": "Hochziehen"
     }
   },
   "draht": {
@@ -485,5 +501,43 @@
       "protocol": "Nachricht an den Geometriekern ungültig",
       "kernel_unavailable": "Geometrie-Dienst nicht erreichbar"
     }
+  },
+  "ki": {
+    "werkzeug": {
+      "skizze.anlegen": "Legt eine Skizze auf einer Ebene an",
+      "skizze.linie": "Zeichnet eine Linie in einer Skizze (u1, v1, u2, v2)",
+      "skizze.rechteck": "Zeichnet ein Rechteck in einer Skizze (zwei Ecken)",
+      "skizze.kreis": "Zeichnet einen Kreis in einer Skizze (Mittelpunkt u, v, Durchmesser d)",
+      "koerper.hochziehen": "Zieht den Bereich einer Skizze am Punkt (punkt_u, punkt_v) um hoehe hoch"
+    }
+  },
+  "skizze": {
+    "ebene_waehlen": "Ebene wählen",
+    "name": "Skizze {n}",
+    "linie": "Linie {n}",
+    "rechteck": "Rechteck {n}",
+    "kreis": "Kreis {n}",
+    "hochziehen": "Hochziehen {n}",
+    "offen": "Skizze {name}: zeichnen mit L, R, K – Esc schließt",
+    "werkzeug": {
+      "linie": "Linie: Startpunkt klicken",
+      "rechteck": "Rechteck: erste Ecke klicken",
+      "kreis": "Kreis: Mittelpunkt klicken"
+    },
+    "zweiter": {
+      "linie": "Endpunkt klicken oder Länge tippen",
+      "rechteck": "Gegenüberliegende Ecke klicken oder Breite tippen",
+      "kreis": "Rand klicken oder Durchmesser tippen"
+    },
+    "feld": {
+      "laenge": "Länge",
+      "winkel": "Winkel",
+      "breite": "Breite",
+      "hoehe": "Höhe",
+      "durchmesser": "Durchmesser"
+    },
+    "bereich_waehlen": "Bereich in einer Skizze wählen",
+    "hochziehen_hinweis": "Am Pfeil ziehen oder Höhe tippen – Enter übernimmt, Esc bricht ab",
+    "kein_bereich": "Kein Bereich an dieser Stelle"
   }
 }

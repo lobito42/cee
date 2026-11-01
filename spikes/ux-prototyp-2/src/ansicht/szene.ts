@@ -1,7 +1,35 @@
 // three.js-Szene des Modells: Licht, flach schattierte Flächen, Kanten, Navigation, Treffer per Strahl.
 // Die Szene zeichnet nur das Modell; Konturen, Griffe und Schilder liegen als DOM-Überlagerung darüber.
 import * as THREE from 'three';
+import { Line2 } from 'three/examples/jsm/lines/Line2.js';
+import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry.js';
+import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js';
+import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
+import { acceleratedRaycast, computeBoundsTree, disposeBoundsTree } from 'three-mesh-bvh';
 import { tokens } from '../erzeugt/tokens';
+
+// Strahltests über eine BVH (three-mesh-bvh, MIT): Körpernetze der Skizzen-Körper (ap-53)
+THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
+THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
+THREE.Mesh.prototype.raycast = acceleratedRaycast;
+
+/** Was die Skizzen-Ansicht zeichnet (ap-53): alles in Weltkoordinaten (mm), Farben als Rolle. */
+export interface SkizzenZeichnung {
+  kurven: { element: string; zuege: V3[][]; rolle: 'normal' | 'akzent' | 'fehler' | 'leise' }[];
+  bereiche: { key: string; rand: V3[][]; dreiecke: V3[]; art: 'hover' | 'auswahl' }[];
+  koerper: {
+    element: string;
+    positionen: number[];
+    dreiecke: number[];
+    kanten: V3[][];
+    gewaehlt: boolean;
+  }[];
+  vorschau: V3[][];
+  hilfslinien: V3[][];
+  geist: { positionen: number[]; dreiecke: number[] } | null;
+}
+
+export const KANTE_PX = 1.5;
 import type { Koerper, V3 } from '../geometrie/teil';
 import type { DrahtZeichnung } from '../drahtmodell/draht';
 
@@ -83,6 +111,15 @@ export class Szene {
   private tween: { start: number; ende: number; von: Kamera; nach: Kamera } | null = null;
   private lausche: (() => void)[] = [];
   private bboxCache = new Map<string, { min: V3; max: V3 }>();
+  /** Skizzen, Bereiche und Körper aus dem Geometriekern (ap-53). */
+  private readonly skizzen = new THREE.Group();
+  private koerperNetze: THREE.Mesh[] = [];
+  private linienMaterialien: LineMaterial[] = [];
+  /** Höhengriff (TransformControls, nur eine Achse). */
+  griff: TransformControls | null = null;
+  readonly griffObjekt = new THREE.Object3D();
+  /** Zeit der letzten Kamerabewegung bis zur Ruhe (ms). */
+  bewegung = { start: 0, ende: 0 };
 
   kamera: Kamera = {
     azimut: -35,
@@ -108,6 +145,8 @@ export class Szene {
     this.renderer.setPixelRatio(1);
     this.scene.add(this.gruppe);
     this.scene.add(this.draht);
+    this.scene.add(this.skizzen);
+    this.scene.add(this.griffObjekt);
     this.weltAchsen = this.globaleAchsen();
     this.weltAchsen.visible = false;
     this.scene.add(this.weltAchsen);
@@ -269,12 +308,14 @@ export class Szene {
       abstand: ziel.abstand ?? von.abstand,
       ziel: ziel.ziel ? ziel.ziel.clone() : von.ziel.clone(),
     };
+    this.bewegung = { start: performance.now(), ende: performance.now() };
     if (dauerMs <= 0 || this.tempo === 0) {
       this.kamera = bis;
       this.tween = null;
       this.geaendert();
       return;
     }
+    this.bewegung.ende = 0;
     this.tween = { start: performance.now(), ende: performance.now() + dauerMs, von, nach: bis };
     this.anfordern();
   }
@@ -742,8 +783,10 @@ export class Szene {
         abstand: t.von.abstand + (t.nach.abstand - t.von.abstand) * e,
         ziel: t.von.ziel.clone().lerp(t.nach.ziel, e),
       };
-      if (u >= 1) this.tween = null;
-      else this.anfordern();
+      if (u >= 1) {
+        this.tween = null;
+        this.bewegung.ende = jetzt;
+      } else this.anfordern();
       this.melde();
     }
     this.jetztRendern();
@@ -751,7 +794,251 @@ export class Szene {
 
   jetztRendern(): void {
     const cam = this.kameraAnwenden();
+    if (this.griff) this.griff.camera = cam;
+    const b = this.flaecheBreite();
+    const h = this.flaecheHoehe();
+    for (const m of this.linienMaterialien) m.resolution.set(b, h);
     this.renderer.render(this.scene, cam);
+  }
+
+  // --- Skizze und Körper (ap-53) ------------------------------------------------------------------
+
+  /** Blick senkrecht auf eine Ebene (Blickrichtung −normal, `x` nach rechts), Maßstab `pxProMm`. */
+  blickAufEbene(ursprung: V3, normale: V3, x: V3, pxProMm: number, dauerMs: number): void {
+    const [nx, ny, nz] = normale;
+    const hoehe = (Math.asin(Math.max(-1, Math.min(1, nz))) * 180) / Math.PI;
+    let azimut: number;
+    if (Math.abs(nz) > 0.9999) {
+      // senkrecht von oben/unten: `oben` = normal × x
+      const y: V3 = [ny * x[2] - nz * x[1], nz * x[0] - nx * x[2], nx * x[1] - ny * x[0]];
+      azimut = (Math.atan2(-y[0], y[1]) * 180) / Math.PI;
+    } else azimut = (Math.atan2(nx, -ny) * 180) / Math.PI;
+    const abstand = this.flaecheHoehe() / (2 * pxProMm * Math.tan((FOV * Math.PI) / 360));
+    this.projektion = 'orthogonal';
+    this.nach(
+      {
+        azimut,
+        hoehe: Math.abs(nz) > 0.9999 ? Math.sign(nz) * 90 : hoehe,
+        abstand,
+        ziel: new THREE.Vector3(...ursprung),
+      },
+      dauerMs,
+    );
+  }
+
+  /** Kameralage für das Prüfwerkzeug: Blickrichtung, oben, Projektion, Dauer bis zur Ruhe. */
+  kameraLage(): { richtung: V3; oben: V3; projektion: string; ms_bis_ruhe: number } {
+    const cam = this.kameraAnwenden();
+    const d = new THREE.Vector3();
+    cam.getWorldDirection(d);
+    const o = new THREE.Vector3().setFromMatrixColumn(cam.matrixWorld, 1);
+    const b = this.bewegung;
+    return {
+      richtung: [d.x, d.y, d.z],
+      oben: [o.x, o.y, o.z],
+      projektion: this.projektion === 'orthogonal' ? 'parallel' : 'perspektivisch',
+      ms_bis_ruhe: b.ende ? Math.max(0, b.ende - b.start) : this.tween ? Infinity : 0,
+    };
+  }
+
+  private linie(zuege: V3[][], farbe: THREE.Color, breite: number, gestrichelt = false): Line2[] {
+    return zuege
+      .filter((z) => z.length >= 2)
+      .map((z) => {
+        const geo = new LineGeometry();
+        geo.setPositions(z.flat());
+        const m = new LineMaterial({
+          color: farbe.getHex(),
+          linewidth: breite,
+          dashed: gestrichelt,
+          dashSize: 2,
+          gapSize: 1.5,
+          depthTest: false,
+          transparent: true,
+        });
+        m.resolution.set(this.flaecheBreite(), this.flaecheHoehe());
+        this.linienMaterialien.push(m);
+        const l = new Line2(geo, m);
+        if (gestrichelt) l.computeLineDistances();
+        l.renderOrder = 5;
+        return l;
+      });
+  }
+
+  private farbe(rolle: string): THREE.Color {
+    const t = this.thema;
+    const schluessel =
+      rolle === 'akzent'
+        ? `farbe.${t}.akzent`
+        : rolle === 'fehler'
+          ? `farbe.${t}.fehler`
+          : rolle === 'leise'
+            ? `farbe.${t}.text-3`
+            : `farbe.${t}.text`;
+    return new THREE.Color(tokens[schluessel as 'farbe.hell.text']);
+  }
+
+  zeichneSkizze(z: SkizzenZeichnung): void {
+    for (const k of [...this.skizzen.children]) {
+      this.skizzen.remove(k);
+      k.traverse((o) => {
+        const m = o as THREE.Mesh;
+        m.geometry?.dispose();
+        (m.material as THREE.Material | undefined)?.dispose?.();
+      });
+    }
+    this.linienMaterialien = [];
+    this.koerperNetze = [];
+    const akzent = this.farbe('akzent');
+    for (const k of z.koerper) {
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(k.positionen, 3));
+      geo.setIndex(k.dreiecke);
+      geo.computeVertexNormals();
+      geo.computeBoundsTree();
+      const mesh = new THREE.Mesh(
+        geo,
+        new THREE.MeshLambertMaterial({
+          color: this.koerperFarbe(),
+          polygonOffset: true,
+          polygonOffsetFactor: 1,
+          polygonOffsetUnits: 1,
+        }),
+      );
+      mesh.userData.elementId = k.element;
+      this.koerperNetze.push(mesh);
+      this.skizzen.add(mesh);
+      // Auswahl nur über die Farbe: gleiche Kantenbreite, Akzent statt Text
+      for (const l of this.linie(k.kanten, k.gewaehlt ? akzent : this.farbe('normal'), KANTE_PX)) {
+        l.material.depthTest = true;
+        l.userData.elementId = k.element;
+        this.skizzen.add(l);
+      }
+    }
+    for (const b of z.bereiche) {
+      if (b.dreiecke.length) {
+        const geo = new THREE.BufferGeometry().setFromPoints(
+          b.dreiecke.map((p) => new THREE.Vector3(...p)),
+        );
+        const flaeche = new THREE.Mesh(
+          geo,
+          new THREE.MeshBasicMaterial({
+            color: akzent,
+            transparent: true,
+            opacity: b.art === 'auswahl' ? 0.18 : 0.08,
+            depthWrite: false,
+            depthTest: false,
+            side: THREE.DoubleSide,
+          }),
+        );
+        flaeche.renderOrder = 4;
+        this.skizzen.add(flaeche);
+      }
+      for (const l of this.linie(b.rand, akzent, KANTE_PX)) this.skizzen.add(l);
+    }
+    for (const k of z.kurven)
+      for (const l of this.linie(k.zuege, this.farbe(k.rolle), KANTE_PX)) {
+        l.userData.elementId = k.element;
+        this.skizzen.add(l);
+      }
+    for (const l of this.linie(z.vorschau, akzent, KANTE_PX)) this.skizzen.add(l);
+    for (const l of this.linie(z.hilfslinien, akzent, 1, true)) this.skizzen.add(l);
+    if (z.geist) {
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(z.geist.positionen, 3));
+      geo.setIndex(z.geist.dreiecke);
+      const m = new THREE.Mesh(
+        geo,
+        new THREE.MeshBasicMaterial({
+          color: akzent,
+          transparent: true,
+          opacity: 0.35,
+          depthWrite: false,
+          side: THREE.DoubleSide,
+        }),
+      );
+      m.renderOrder = 3;
+      this.skizzen.add(m);
+    }
+    this.anfordern();
+  }
+
+  /** Weltachsen des Ansichtswürfels (Farben aus Tokens `achse.*`). */
+  ansichtswuerfel(): { achsen: { achse: string; farbe: string; sichtbar: boolean }[] } {
+    return {
+      achsen: (['x', 'y', 'z'] as const).map((a) => ({
+        achse: a,
+        farbe: tokens[`achse.${a}`],
+        sichtbar: this.weltAchsen.visible,
+      })),
+    };
+  }
+
+  /** Körper (Skizzen-Körper) unter dem Zeiger, über die BVH. */
+  koerperBei(clientX: number, clientY: number): string | null {
+    if (!this.koerperNetze.length) return null;
+    const cam = this.kameraAnwenden();
+    const ray = new THREE.Raycaster();
+    ray.firstHitOnly = true;
+    ray.setFromCamera(this.zuNdc(clientX, clientY), cam);
+    const t = ray.intersectObjects(this.koerperNetze, false)[0];
+    return t ? String(t.object.userData.elementId) : null;
+  }
+
+  /** Strahltest-Messung (ms je Strahl) auf einem Testnetz mit `n` Dreiecken. */
+  messeStrahl(n: number, positionen: [number, number][]): number[] {
+    const seg = Math.max(2, Math.round(Math.sqrt(n / 2)));
+    const geo = new THREE.PlaneGeometry(400, 400, seg, seg);
+    geo.computeBoundsTree();
+    const mesh = new THREE.Mesh(geo, new THREE.MeshBasicMaterial());
+    mesh.updateMatrixWorld(true);
+    const cam = this.kameraAnwenden();
+    const ray = new THREE.Raycaster();
+    ray.firstHitOnly = true;
+    const zeiten: number[] = [];
+    for (const [x, y] of positionen) {
+      const t0 = performance.now();
+      ray.setFromCamera(new THREE.Vector2(x, y), cam);
+      ray.intersectObject(mesh, false);
+      zeiten.push(performance.now() - t0);
+    }
+    geo.disposeBoundsTree();
+    geo.dispose();
+    return zeiten;
+  }
+
+  /** Höhengriff an `ort` entlang `normale` zeigen (TransformControls, nur die lokale Z-Achse). */
+  griffErzeugen(): TransformControls {
+    if (!this.griff) {
+      this.griff = new TransformControls(this.kameraAnwenden(), this.canvas);
+      this.griff.setMode('translate');
+      this.griff.setSpace('local');
+      this.griff.showX = false;
+      this.griff.showY = false;
+      this.griff.setSize(1.1);
+      this.scene.add(this.griff.getHelper());
+      this.griff.addEventListener('change', () => this.anfordern());
+    }
+    return this.griff;
+  }
+
+  zeigeGriff(ort: V3 | null, normale: V3 = [0, 0, 1]): void {
+    if (!ort) {
+      if (this.griff?.object) this.griff.detach();
+      this.anfordern();
+      return;
+    }
+    if (!this.griff) this.griffErzeugen();
+    if (!this.griff) return;
+    if (this.griff.dragging) return;
+    this.griffObjekt.position.set(...ort);
+    this.griffObjekt.quaternion.setFromUnitVectors(
+      new THREE.Vector3(0, 0, 1),
+      new THREE.Vector3(...normale).normalize(),
+    );
+    this.griffObjekt.updateMatrixWorld(true);
+    if (this.griff.object !== this.griffObjekt) this.griff.attach(this.griffObjekt);
+    this.anfordern();
   }
 
   setProjektion(p: Projektionsart): void {

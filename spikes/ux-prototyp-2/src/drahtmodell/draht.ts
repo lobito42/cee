@@ -25,6 +25,12 @@ export const AUSGAENGE: Record<string, Record<string, string>> = {
   line: { line: 'line' },
   ray: { ray: 'ray', start: 'point' },
   segment: { segment: 'segment', start: 'point', end: 'point' },
+  // Skizze und Hochziehen (ap-53, format/types/skizze.json)
+  sketch: { sketch: 'sketch' },
+  sketch_line: { kurve: 'curve' },
+  sketch_rectangle: { kurve: 'curve' },
+  sketch_circle: { kurve: 'curve' },
+  extrude: { koerper: 'solid' },
 };
 
 export type Dimension = 'length' | 'angle';
@@ -33,6 +39,10 @@ export type Dimension = 'length' | 'angle';
 export const PARAMETER: Record<string, Record<string, Dimension>> = {
   frame: { x: 'length', y: 'length', z: 'length', rx: 'angle', ry: 'angle', rz: 'angle' },
   point: { x: 'length', y: 'length', z: 'length' },
+  sketch_line: { u1: 'length', v1: 'length', u2: 'length', v2: 'length' },
+  sketch_rectangle: { u1: 'length', v1: 'length', u2: 'length', v2: 'length' },
+  sketch_circle: { u: 'length', v: 'length', d: 'length' },
+  extrude: { hoehe: 'length', punkt_u: 'length', punkt_v: 'length' },
 };
 
 export const istDrahtTyp = (typ: string): boolean => typ in AUSGAENGE;
@@ -70,7 +80,8 @@ export interface Ergebnis {
   befunde: KernBefund[];
 }
 
-export type Art = 'koordinatensystem' | 'punkt' | 'achse' | 'ebene' | 'linie';
+export type Art =
+  'koordinatensystem' | 'punkt' | 'achse' | 'ebene' | 'linie' | 'skizze' | 'kurve' | 'koerper';
 
 export interface SzenenObjekt {
   element: string;
@@ -298,14 +309,33 @@ export class Draht {
 
   private artVon(e: Element): Art {
     return (
-      ({ frame: 'koordinatensystem', point: 'punkt', axis: 'achse', plane: 'ebene' } as const)[
-        e.type as 'frame'
-      ] ?? 'linie'
+      (
+        {
+          frame: 'koordinatensystem',
+          point: 'punkt',
+          axis: 'achse',
+          plane: 'ebene',
+          sketch: 'skizze',
+          sketch_line: 'kurve',
+          sketch_rectangle: 'kurve',
+          sketch_circle: 'kurve',
+          extrude: 'koerper',
+        } as const
+      )[e.type as 'frame'] ?? 'linie'
     );
   }
 
   /** Lage aus dem Ergebnis: Punkte als [x, y, z], sonst die Felder des Ausgangs als mm-Zahlen. */
   private lage(e: Element): V3 | Record<string, V3> | null {
+    if (e.type === 'extrude') {
+      const k = this.resultat(e.id)?.outputs.koerper;
+      if (!k) return null;
+      const h = k.huelle as { min: unknown; max: unknown };
+      const s = vec(k.schwerpunkt);
+      const lo = vec(h.min);
+      const hi = vec(h.max);
+      return s && lo && hi ? { schwerpunkt: s, min: lo, max: hi } : null;
+    }
     const o = this.haupt(e);
     if (!o) return null;
     if (o.type === 'point') return vec(o.position);

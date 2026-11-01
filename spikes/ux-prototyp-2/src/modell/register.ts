@@ -12,7 +12,11 @@ export type Bezug =
   | 'verworfen'
   | 'ansicht'
   | 'punkt'
-  | 'punkte';
+  | 'punkte'
+  | 'ebene'
+  | 'bereich'
+  | 'skizze'
+  | 'hochziehen';
 
 export interface Befehl {
   id: string;
@@ -32,6 +36,8 @@ export interface Befehl {
   folgt?: boolean;
   /** Gemeinsame Handlung von Varianten (etwa für ein Element und für mehrere): Menüs zeigen eine. */
   handlung?: string;
+  /** Auch als Werkzeug der KI angeboten (ap-52). */
+  ki?: boolean;
 }
 
 export const GRUPPE_MAX = 12;
@@ -49,6 +55,8 @@ export const ORT_DER_FAMILIE: Record<string, string> = {
   Hilfe: 'suche',
   Simulation: 'dropdown-simulation',
   Referenz: 'dropdown-referenz',
+  Skizze: 'dropdown-skizze',
+  Körper: 'dropdown-körper',
 };
 
 /** Feste Reihenfolge der Familien im Kontextmenü. */
@@ -65,6 +73,8 @@ export const FAMILIEN = [
   'Simulation',
   'Chat',
   'Referenz',
+  'Skizze',
+  'Körper',
 ];
 
 export type Ort =
@@ -87,6 +97,8 @@ const FESTER_ORT: Record<string, Ort> = {
   Baugruppe: 'dropdown',
   Simulation: 'dropdown',
   Referenz: 'dropdown',
+  Skizze: 'dropdown',
+  Körper: 'dropdown',
   Ansicht: 'ansichtsleiste',
   'Ansicht speichern': 'ansichtsleiste',
   Sichtbarkeit: 'auge',
@@ -120,6 +132,7 @@ export function ladeRegisterDatei(inhalt: unknown): Befehl[] {
     kontext: b.kontext,
     folgt: b.folgt,
     handlung: b.handlung,
+    ki: b.ki,
   }));
 }
 
@@ -133,7 +146,11 @@ export type Auswahlart =
   | 'verworfen'
   | 'ansicht'
   | 'punkt'
-  | 'punkte';
+  | 'punkte'
+  | 'ebene'
+  | 'skizze'
+  | 'hochziehen'
+  | 'bereich';
 
 const PASST: Record<Auswahlart, Set<Bezug>> = {
   keine: new Set<Bezug>(['keine']),
@@ -146,6 +163,10 @@ const PASST: Record<Auswahlart, Set<Bezug>> = {
   ansicht: new Set<Bezug>(['keine', 'element', 'ansicht']),
   punkt: new Set<Bezug>(['keine', 'element', 'punkt']),
   punkte: new Set<Bezug>(['keine', 'mehrfach', 'punkte']),
+  ebene: new Set<Bezug>(['keine', 'element', 'ebene']),
+  skizze: new Set<Bezug>(['keine', 'element', 'skizze']),
+  hochziehen: new Set<Bezug>(['keine', 'element', 'hochziehen']),
+  bereich: new Set<Bezug>(['keine', 'bereich']),
 };
 
 export interface Untergruppe {

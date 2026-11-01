@@ -27,12 +27,12 @@ describe('Register', () => {
     }
   });
 
-  it('Befehle haben eindeutige IDs und Ränge, höchstens 15 Kürzel', () => {
+  it('Befehle haben eindeutige IDs und Ränge, höchstens 20 Kürzel', () => {
     const ids = befehleAusDatei.map((b) => b.id);
     expect(new Set(ids).size).toBe(ids.length);
     const raenge = befehleAusDatei.map((b) => b.rang);
     expect(new Set(raenge).size).toBe(raenge.length);
-    expect(befehleAusDatei.filter((b) => b.kuerzel).length).toBeLessThanOrEqual(15);
+    expect(befehleAusDatei.filter((b) => b.kuerzel).length).toBeLessThanOrEqual(20); // ap-53: S, L, R, K, E für Skizze und Hochziehen (design.md Abschnitt 1)
   });
 
   it('Untergruppen haben höchstens zwölf Einträge', () => {

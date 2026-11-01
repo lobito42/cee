@@ -958,6 +958,197 @@
       "rang": 0.4,
       "wesentlich": true,
       "untergruppe": "Linie"
+    },
+    {
+      "id": "skizze.anlegen",
+      "familie": "Skizze",
+      "titel": "befehl.skizze.anlegen",
+      "parameter": {
+        "ebene": {
+          "typ": "bezug",
+          "ausgang": "plane",
+          "pflicht": true
+        },
+        "name": {
+          "typ": "text"
+        }
+      },
+      "bezug": "ebene",
+      "rang": 0.05,
+      "wesentlich": true,
+      "untergruppe": "Skizze",
+      "kuerzel": "S",
+      "ki": true
+    },
+    {
+      "id": "skizze.linie",
+      "familie": "Skizze",
+      "titel": "befehl.skizze.linie",
+      "parameter": {
+        "skizze": {
+          "typ": "bezug",
+          "ausgang": "sketch",
+          "pflicht": true
+        },
+        "u1": {
+          "typ": "groesse",
+          "dimension": "length",
+          "pflicht": true
+        },
+        "v1": {
+          "typ": "groesse",
+          "dimension": "length",
+          "pflicht": true
+        },
+        "u2": {
+          "typ": "groesse",
+          "dimension": "length",
+          "pflicht": true
+        },
+        "v2": {
+          "typ": "groesse",
+          "dimension": "length",
+          "pflicht": true
+        }
+      },
+      "bezug": "keine",
+      "rang": 0.101,
+      "wesentlich": true,
+      "untergruppe": "Zeichnen",
+      "kuerzel": "L",
+      "ki": true
+    },
+    {
+      "id": "skizze.rechteck",
+      "familie": "Skizze",
+      "titel": "befehl.skizze.rechteck",
+      "parameter": {
+        "skizze": {
+          "typ": "bezug",
+          "ausgang": "sketch",
+          "pflicht": true
+        },
+        "u1": {
+          "typ": "groesse",
+          "dimension": "length",
+          "pflicht": true
+        },
+        "v1": {
+          "typ": "groesse",
+          "dimension": "length",
+          "pflicht": true
+        },
+        "u2": {
+          "typ": "groesse",
+          "dimension": "length",
+          "pflicht": true
+        },
+        "v2": {
+          "typ": "groesse",
+          "dimension": "length",
+          "pflicht": true
+        }
+      },
+      "bezug": "keine",
+      "rang": 0.11,
+      "wesentlich": true,
+      "untergruppe": "Zeichnen",
+      "kuerzel": "R",
+      "ki": true
+    },
+    {
+      "id": "skizze.kreis",
+      "familie": "Skizze",
+      "titel": "befehl.skizze.kreis",
+      "parameter": {
+        "skizze": {
+          "typ": "bezug",
+          "ausgang": "sketch",
+          "pflicht": true
+        },
+        "u": {
+          "typ": "groesse",
+          "dimension": "length",
+          "pflicht": true
+        },
+        "v": {
+          "typ": "groesse",
+          "dimension": "length",
+          "pflicht": true
+        },
+        "d": {
+          "typ": "groesse",
+          "dimension": "length",
+          "pflicht": true
+        }
+      },
+      "bezug": "keine",
+      "rang": 0.12,
+      "wesentlich": true,
+      "untergruppe": "Zeichnen",
+      "kuerzel": "K",
+      "ki": true
+    },
+    {
+      "id": "skizze.fertig",
+      "familie": "Skizze",
+      "titel": "befehl.skizze.fertig",
+      "parameter": {},
+      "bezug": "keine",
+      "rang": 0.13,
+      "wesentlich": true,
+      "untergruppe": "Skizze",
+
+      "ki": false
+    },
+    {
+      "id": "skizze.bearbeiten",
+      "familie": "Skizze",
+      "titel": "befehl.skizze.bearbeiten",
+      "parameter": {
+        "skizze": {
+          "typ": "bezug",
+          "ausgang": "sketch"
+        }
+      },
+      "bezug": "skizze",
+      "rang": 0.06,
+      "wesentlich": true,
+      "untergruppe": "Skizze",
+      "ki": false
+    },
+    {
+      "id": "koerper.hochziehen",
+      "familie": "Körper",
+      "titel": "befehl.koerper.hochziehen",
+      "parameter": {
+        "skizze": {
+          "typ": "bezug",
+          "ausgang": "sketch",
+          "pflicht": true
+        },
+        "punkt_u": {
+          "typ": "groesse",
+          "dimension": "length",
+          "pflicht": true
+        },
+        "punkt_v": {
+          "typ": "groesse",
+          "dimension": "length",
+          "pflicht": true
+        },
+        "hoehe": {
+          "typ": "groesse",
+          "dimension": "length",
+          "pflicht": true
+        }
+      },
+      "bezug": "bereich",
+      "rang": 0.07,
+      "wesentlich": true,
+      "untergruppe": "Körper",
+      "kuerzel": "E",
+      "ki": true
     }
   ]
 }

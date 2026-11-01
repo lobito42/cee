@@ -17,6 +17,7 @@ import { wirkungenRegistrieren as kiRegistrieren } from './ki';
 import { anwenden } from './zustaende';
 import { konturPunkte, huelleBildschirm } from './zonen/modell';
 import { ergebnisVon } from './geometrie/teil';
+import { tokens } from './erzeugt/tokens';
 
 const adresse = new URLSearchParams(window.location.search);
 const thema = adresse.get('thema') === 'dunkel' ? 'dunkel' : 'hell';
@@ -83,6 +84,7 @@ async function start(): Promise<void> {
   app.rechenzeitMs = Number(adresse.get('rechenzeit') ?? 0) || 0;
   wirkungenRegistrieren(app);
   kiRegistrieren(app);
+  app.skizze.registrieren();
   let gezeigt = 'halter';
   let danach: (() => void) | undefined;
   if (zustandName !== null) {
@@ -93,6 +95,7 @@ async function start(): Promise<void> {
   const fenster = new Fenster(wurzel, app);
   fenster.szene.setThema(thema);
   steuerungAnbinden(app, fenster);
+  app.skizze.griffAnbinden();
   tastenAnbinden(app);
   app.rendernSofort();
   fenster.einpassenSofort();
@@ -262,6 +265,57 @@ async function start(): Promise<void> {
         app.szene?.passeEin({ min, max }, 0);
         app.rendernSofort();
       },
+      // Skizze und Hochziehen (ap-53): Rohdaten für `pruefen -- skizze …`
+      skizze: () => {
+        const s = app.skizze;
+        const sz = app.szene;
+        const lage = sz?.kameraLage();
+        const bereiche = s.bereiche();
+        const kontur: { element: string; art: string; farbe: string }[] = [];
+        const akzent = tokens[`farbe.${app.thema}.akzent`];
+        if (s.hover && s.hover !== s.bereichWahl?.element)
+          kontur.push({ element: s.hover, art: 'hover', farbe: akzent });
+        if (s.bereichWahl)
+          kontur.push({ element: s.bereichWahl.element, art: 'auswahl', farbe: akzent });
+        const gh = s.geistHuelle();
+        return {
+          skizze_offen: s.offen,
+          werkzeug: s.werkzeug,
+          fang: { ...s.fang },
+          wertfeld: { ...s.wertfeld },
+          kamera: lage
+            ? {
+                ...lage,
+                azimut_deg: sz?.kamera.azimut ?? 0,
+                elevation_deg: sz?.kamera.hoehe ?? 0,
+              }
+            : null,
+          ansichtswuerfel: sz?.ansichtswuerfel() ?? { achsen: [] },
+          bereiche: bereiche.map((b) => ({
+            element: b.element,
+            skizze: b.skizze,
+            punkt: b.punkt,
+            flaeche: b.flaeche,
+          })),
+          bereich_wahl: s.bereichWahl,
+          kontur,
+          linienbreiten: { ...s.linienbreiten },
+          geister: gh
+            ? [
+                {
+                  element: s.hoch?.extrude ?? 'neu',
+                  art: 'koerper',
+                  huelle_mm: gh,
+                  hoehe_mm: s.hoch?.hoehe,
+                },
+              ]
+            : [],
+          griff: s.griffBildschirm(),
+          hover_seit: s.hoverSeit,
+        };
+      },
+      skizze_bildschirm: (id: string, uv: [number, number]) => app.skizze.bildschirm(id, uv),
+      skizze_messen: (n: number, pos: [number, number][]) => app.szene?.messeStrahl(n, pos) ?? [],
     }),
   });
 

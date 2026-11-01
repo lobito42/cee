@@ -40,7 +40,9 @@
     "Baugruppe": "Assembly",
     "Simulation": "Simulation",
     "Chat": "Chat",
-    "Referenz": "Reference"
+    "Referenz": "Reference",
+    "Skizze": "Sketch",
+    "Körper": "Solid"
   },
   "untergruppe": {
     "Neu": "New",
@@ -70,7 +72,10 @@
     "Weitere": "More",
     "Koordinatensystem": "Coordinate system",
     "Punkt": "Point",
-    "Linie": "Line"
+    "Linie": "Line",
+    "Skizze": "Sketch",
+    "Zeichnen": "Draw",
+    "Körper": "Solid"
   },
   "struktur": {
     "titel": "Structure",
@@ -451,6 +456,17 @@
       "gerade": "Line through two points",
       "halbgerade": "Ray through two points",
       "strecke": "Segment through two points"
+    },
+    "skizze": {
+      "anlegen": "New sketch",
+      "linie": "Line",
+      "rechteck": "Rectangle",
+      "kreis": "Circle",
+      "fertig": "Finish",
+      "bearbeiten": "Edit sketch"
+    },
+    "koerper": {
+      "hochziehen": "Extrude"
     }
   },
   "draht": {
@@ -485,5 +501,43 @@
       "protocol": "Invalid message to the geometry kernel",
       "kernel_unavailable": "Geometry service unavailable"
     }
+  },
+  "ki": {
+    "werkzeug": {
+      "skizze.anlegen": "Creates a sketch on a plane",
+      "skizze.linie": "Draws a line in a sketch (u1, v1, u2, v2)",
+      "skizze.rechteck": "Draws a rectangle in a sketch (two corners)",
+      "skizze.kreis": "Draws a circle in a sketch (centre u, v, diameter d)",
+      "koerper.hochziehen": "Extrudes the sketch region at (punkt_u, punkt_v) by hoehe"
+    }
+  },
+  "skizze": {
+    "ebene_waehlen": "Select a plane",
+    "name": "Sketch {n}",
+    "linie": "Line {n}",
+    "rechteck": "Rectangle {n}",
+    "kreis": "Circle {n}",
+    "hochziehen": "Extrude {n}",
+    "offen": "Sketch {name}: draw with L, R, K – Esc closes",
+    "werkzeug": {
+      "linie": "Line: click the start point",
+      "rechteck": "Rectangle: click the first corner",
+      "kreis": "Circle: click the centre"
+    },
+    "zweiter": {
+      "linie": "Click the end point or type a length",
+      "rechteck": "Click the opposite corner or type a width",
+      "kreis": "Click the rim or type a diameter"
+    },
+    "feld": {
+      "laenge": "Length",
+      "winkel": "Angle",
+      "breite": "Width",
+      "hoehe": "Height",
+      "durchmesser": "Diameter"
+    },
+    "bereich_waehlen": "Select a region in a sketch",
+    "hochziehen_hinweis": "Drag the arrow or type a height – Enter applies, Esc cancels",
+    "kein_bereich": "No region here"
   }
 }

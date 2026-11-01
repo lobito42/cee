@@ -1188,3 +1188,72 @@ h3 {
   border-radius: var(--radius-klein);
   font: inherit;
 }
+
+/* Skizze (ap-53): Werkzeugleiste in der Skizze, Wertfeld am Zeiger, Kürzel der Richtung */
+.werkzeugleiste {
+  position: absolute;
+  top: var(--abstand-3);
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  background: var(--farbe-flaeche);
+  border: var(--linie-breite) solid var(--farbe-linie-stark);
+  border-radius: var(--radius-gross);
+  z-index: 3;
+}
+
+.werkzeugleiste .schalter {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--abstand-1);
+  width: auto;
+  padding: 0 var(--abstand-2);
+}
+
+.werkzeugleiste .schalter[aria-pressed='true'] {
+  background: var(--farbe-akzent-flaeche);
+  color: var(--farbe-akzent);
+}
+
+.werkzeugleiste kbd {
+  color: var(--farbe-text-3);
+  font-size: var(--schrift-groesse-klein);
+}
+
+.wertfeld-zeiger,
+.fang-anzeige {
+  position: absolute;
+  pointer-events: none;
+  padding: 2px var(--abstand-2);
+  background: var(--farbe-flaeche);
+  border: var(--linie-breite) solid var(--farbe-akzent);
+  border-radius: var(--radius-klein);
+  white-space: nowrap;
+  font-size: var(--schrift-groesse-klein);
+}
+
+.wertfeld-zeiger {
+  display: inline-flex;
+  gap: var(--abstand-2);
+}
+
+.wertfeld-zeiger .wf-feld {
+  color: var(--farbe-text-3);
+}
+
+.wertfeld-zeiger.mit-befund {
+  border-color: var(--farbe-fehler);
+}
+
+.wertfeld-zeiger .wf-befund {
+  color: var(--farbe-fehler);
+}
+
+.fang-anzeige {
+  color: var(--farbe-akzent);
+  border: none;
+  background: transparent;
+  font-weight: var(--schrift-schnitt-halbfett);
+}

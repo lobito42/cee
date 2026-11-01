@@ -302,7 +302,8 @@ def _skizze_bauen(lauf: _Lauf, el: dict[str, Any], ax):
         aussen, loecher = sk.bereich_ids(b)
         aus.append(
             {
-                "punkt": _uv(*b.punkt),
+                # auf 1e-9 mm gerundet: Kurzdarstellung ohne Rauschen (Schlüssel `<Skizze>@<u>;<v>`)
+                "punkt": _uv(*(round(c, 9) + 0.0 for c in b.punkt)),
                 "flaeche": _q(b.flaeche, "mm2"),
                 "aussen": aussen,
                 "loecher": loecher,
