@@ -26,7 +26,8 @@ Anbieters MUST der Graph unverändert bleiben und der Chat eine verständliche A
 #### Scenario: [auto] Schleife mit Fehler und Korrektur gegen das Testmodell
 - **WHEN** das Testmodell auf den Satz aus W3 zuerst einen Aufruf `referenz_punkt` mit `x: "100"` (ohne Einheit)
   und nach der Fehlermeldung die richtigen Aufrufe für W3 liefert
-- **THEN** enthält jede Anfrage an das Testmodell genau die 8 Werkzeuge aus der Werkzeugliste, `temperature` = 0
+- **THEN** enthält jede Anfrage an das Testmodell genau die Werkzeuge der Werkzeugliste aus
+  `pruefen -- ki werkzeuge` (darunter alle 8 Pflichtwerkzeuge), `temperature` = 0
   und eine Systemnachricht ≤ 8 000 Zeichen; die zweite Anfrage enthält das Fehlerergebnis mit Code `unit`; die Karte
   besteht nach Übernehmen die Prüfer von W3
 

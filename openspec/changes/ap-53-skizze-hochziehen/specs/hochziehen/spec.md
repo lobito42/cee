@@ -34,7 +34,8 @@ NOT stattfinden.
 #### Scenario: [auto] Punkt außerhalb und Höhe null
 - **WHEN** ein `extrude` den Punkt (500, 500) mm außerhalb jedes Bereichs nennt, ein zweites `hoehe` = 0 mm hat und
   ein drittes gültig ist
-- **THEN** gibt es genau 1 Befund `region_missing` und 1 Befund `degenerate` mit den richtigen Element-IDs, und das
+- **THEN** gibt es genau 1 Befund `region_missing` und 1 Befund `degenerate` mit den richtigen Element-IDs, beide
+  `extrude` haben `state` = `fehlerhaft` und keinen Ausgang `koerper`, und das
   dritte hat `state` = `aktuell`
 
 #### Scenario: [auto] Bereich verschwindet nach Änderung
@@ -55,9 +56,10 @@ sein.
 ### Requirement: Erweiterung von cee-kernel/0
 Die Schemas unter `format/kernel/` SHALL um die Ausgabetypen `sketch` und `solid` nach design.md Abschnitte 3 und 4
 ergänzt werden; `protocol` MUST `cee-kernel/0` bleiben, und Ergebnisse aus ap-50 MUST weiter gültig sein. Jede Zahl
-MUST als Größe `{"value", "unit"}` erscheinen; einzige Ausnahme sind die Anzeige-Listen `netz.positionen` und
-`kantenzuege`, deren Zahlen in mm stehen und deren Einheit einmal als `"unit": "mm"` am Netz bzw. an den
-Kantenzügen steht.
+MUST als Größe `{"value", "unit"}` erscheinen; einzige Ausnahme sind die Anzeige-Listen `netz`, `kantenzuege`
+und `rand`, deren Zahlen in mm stehen und deren Einheit einmal als `"unit": "mm"` am jeweiligen Objekt steht
+(`netz.dreiecke` sind Indizes ohne Einheit). Flächen tragen die Einheit `mm2`, Volumen `mm3`, Anzahlen `1`
+(design.md Abschnitt 7a).
 
 #### Scenario: [auto] Schemas gültig und additiv
 - **WHEN** der Test die Ergebnisse aller Scenarios dieses Changes und das Ergebnis von `format/examples/drahtmodell.json`

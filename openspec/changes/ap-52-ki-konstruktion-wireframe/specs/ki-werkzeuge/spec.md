@@ -6,12 +6,14 @@ mit `"ki": true` erzeugt werden, im Format von MCP `tools/list` (`name`, `descri
 design.md Abschnitt 2 (ADR-045, ADR-037, Regel MCP). Es MUST NOT ein Werkzeug ohne Befehl des Menschen oder
 aus der Familie Freigabe geben. Jedes `inputSchema` MUST flach sein, Größen als String mit Einheit.
 
-#### Scenario: [auto] Genau die acht Werkzeuge
+#### Scenario: [auto] Die acht Pflichtwerkzeuge und nur freigegebene weitere
 - **WHEN** der Abnahmetest `pruefen -- ki werkzeuge --json` aufruft
-- **THEN** enthält die Liste genau 8 Werkzeuge: `referenz_koordinatensystem`, `referenz_punkt`,
+- **THEN** enthält die Liste alle 8 Pflichtwerkzeuge dieser Stufe: `referenz_koordinatensystem`, `referenz_punkt`,
   `referenz_punkt_relativ`, `referenz_gerade`, `referenz_halbgerade`, `referenz_strecke`, `element_ausblenden`,
-  `element_verwerfen`; zu jedem gibt es in `src/befehle.json` genau einen Befehl mit `ki: true` und passender ID;
-  kein anderer Befehl hat `ki: true`
+  `element_verwerfen`; jedes weitere Werkzeug ist eines der 5 Werkzeuge, die die spätere freigegebene Stufe ap-53 in
+  ihrer design.md nennt (`skizze_anlegen`, `skizze_linie`, `skizze_rechteck`, `skizze_kreis`, `koerper_hochziehen`),
+  sonst keines; die Zahl der Befehle mit `ki: true` in `src/befehle.json` ist gleich der Zahl der Werkzeuge, und zu
+  jedem Werkzeug gibt es genau einen Befehl mit `ki: true` und passender ID; keiner gehört zur Familie Freigabe
 
 #### Scenario: [auto] Schema und Beschreibung für kleine Modelle
 - **WHEN** der Abnahmetest jedes `inputSchema` mit einem JSON-Schema-Validator (2020-12) lädt und die
