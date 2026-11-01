@@ -31,6 +31,14 @@ from ki_helpers import (  # noqa: E402
     werkzeugnachrichten,
 )
 
+# Spätere Stufen (ap-53, design.md) dürfen weitere KI-Werkzeuge anmelden, aber nur diese fünf (wie test_werkzeuge.py).
+SPAETERE_WERKZEUGE = {
+    "skizze_anlegen",
+    "skizze_linie",
+    "skizze_rechteck",
+    "skizze_kreis",
+    "koerper_hochziehen",
+}
 WAEHLEN = {"befehl": "ki.anbieter-waehlen", "args": {"id": "openai-kompatibel"}}
 
 
@@ -74,12 +82,15 @@ def test_mit_einrichtung_erst_nach_wahl_aktiv():
 
 def test_schleife_mit_fehler_und_korrektur():
     """Requirement „Echter Anbieter OpenAI-kompatibel“, Scenario „Schleife mit Fehler und Korrektur gegen das
-    Testmodell“: jede Anfrage enthält genau die 8 Werkzeuge der Werkzeugliste, `temperature` = 0, `tool_choice` =
+    Testmodell“: jede Anfrage enthält genau die Werkzeuge der Werkzeugliste (darunter alle 8), `temperature` = 0, `tool_choice` =
     auto, Systemnachricht ≤ 8 000 Zeichen; die zweite Anfrage enthält das Fehlerergebnis mit Code `unit`; nach
     Übernehmen bestehen die Prüfer von W3."""
     w3 = aufgaben()["W3"]
     liste = {w["name"]: w for w in ki_pruefen(["werkzeuge"])["werkzeuge"]}
-    assert sorted(liste) == sorted(WERKZEUGE)
+    assert set(WERKZEUGE) <= set(liste), sorted(set(WERKZEUGE) - set(liste))
+    assert set(liste) - set(WERKZEUGE) <= SPAETERE_WERKZEUGE, sorted(
+        set(liste) - set(WERKZEUGE) - SPAETERE_WERKZEUGE
+    )
     with Testmodell(loesung(fehler_zuerst=True)) as tm:
         a = KiAblauf()
         a.add("waehlen", **WAEHLEN)
@@ -92,7 +103,9 @@ def test_schleife_mit_fehler_und_korrektur():
         assert q["pfad"].endswith("/chat/completions"), q["pfad"]
         body = q["body"]
         tools = body["tools"]
-        assert len(tools) == 8 and {t["function"]["name"] for t in tools} == set(WERKZEUGE)
+        namen = [t["function"]["name"] for t in tools]
+        assert len(namen) == len(set(namen)) and set(namen) == set(liste), sorted(set(namen) ^ set(liste))
+        assert set(WERKZEUGE) <= set(namen)
         for t in tools:
             assert t["type"] == "function"
             soll = liste[t["function"]["name"]]
