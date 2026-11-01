@@ -7,6 +7,7 @@ Koordinatensystem `gp_Trsf`, Strecke `(gp_Pnt, gp_Pnt)`.
 
 from __future__ import annotations
 
+import OCP.TopTools as _TopTools
 from OCP.BRep import BRep_Builder, BRep_Tool
 from OCP.BRepAdaptor import BRepAdaptor_Curve, BRepAdaptor_Surface
 from OCP.BRepBuilderAPI import (
@@ -31,6 +32,13 @@ from OCP.TopoDS import (
 for _name in ("Vertex", "Edge", "Wire", "Face", "Shell", "Solid", "CompSolid", "Compound"):
     if not hasattr(TopoDS, f"{_name}_s") and hasattr(TopoDS, _name):
         setattr(TopoDS, f"{_name}_s", getattr(TopoDS, _name))
+
+# OCP 8 führt `TopTools_IndexedMapOfShape` nur noch als `OCP.collections.IndexedMap_…`; der alte Name bleibt
+# als Alias erhalten (wie oben nur ergänzt).
+if not hasattr(_TopTools, "TopTools_IndexedMapOfShape"):
+    from OCP.collections import IndexedMap_TopoDS_Shape_TopTools_ShapeMapHasher as _Karte
+
+    _TopTools.TopTools_IndexedMapOfShape = _Karte
 
 Vec3 = tuple[float, float, float]
 

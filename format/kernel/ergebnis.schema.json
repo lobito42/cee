@@ -87,8 +87,124 @@
             "z": { "$ref": "#/$defs/richtung" }
           },
           "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "description": "Skizzenkurve (ap-53): Art und Polylinie in Weltlage zur Anzeige.",
+          "required": ["type", "art", "kantenzuege"],
+          "properties": {
+            "type": { "const": "curve" },
+            "art": { "enum": ["line", "rectangle", "circle"] },
+            "kantenzuege": { "$ref": "#/$defs/zuege3" }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "description": "Skizze (ap-53): Ebene und Bereiche; Reihenfolge nur zur Anzeige.",
+          "required": ["type", "plane", "bereiche"],
+          "properties": {
+            "type": { "const": "sketch" },
+            "plane": {
+              "type": "object",
+              "required": ["origin", "normal", "x_direction"],
+              "properties": {
+                "origin": { "$ref": "#/$defs/lage" },
+                "normal": { "$ref": "#/$defs/richtung" },
+                "x_direction": { "$ref": "#/$defs/richtung" }
+              },
+              "additionalProperties": false
+            },
+            "bereiche": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["punkt", "flaeche", "aussen", "loecher", "rand"],
+                "properties": {
+                  "punkt": { "type": "array", "items": { "$ref": "#/$defs/laenge" }, "minItems": 2, "maxItems": 2 },
+                  "flaeche": { "$ref": "#/$defs/flaeche" },
+                  "aussen": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+                  "loecher": { "type": "array", "items": { "type": "string" } },
+                  "rand": {
+                    "type": "object",
+                    "required": ["unit", "zuege"],
+                    "properties": {
+                      "unit": { "const": "mm" },
+                      "zuege": {
+                        "type": "array",
+                        "items": {
+                          "type": "array",
+                          "items": { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2 }
+                        }
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "description": "Körper (ap-53): Kennwerte aus der exakten Form, Netz und Kantenzüge nur zur Anzeige.",
+          "required": ["type", "volumen", "oberflaeche", "schwerpunkt", "huelle", "flaechen", "kanten", "netz", "kantenzuege"],
+          "properties": {
+            "type": { "const": "solid" },
+            "volumen": {
+              "type": "object",
+              "required": ["value", "unit"],
+              "properties": { "value": { "type": "number" }, "unit": { "const": "mm3" } },
+              "additionalProperties": false
+            },
+            "oberflaeche": { "$ref": "#/$defs/flaeche" },
+            "schwerpunkt": { "$ref": "#/$defs/lage" },
+            "huelle": {
+              "type": "object",
+              "required": ["min", "max"],
+              "properties": { "min": { "$ref": "#/$defs/lage" }, "max": { "$ref": "#/$defs/lage" } },
+              "additionalProperties": false
+            },
+            "flaechen": { "$ref": "#/$defs/zahl1" },
+            "kanten": { "$ref": "#/$defs/zahl1" },
+            "netz": {
+              "type": "object",
+              "required": ["unit", "positionen", "dreiecke"],
+              "properties": {
+                "unit": { "const": "mm" },
+                "positionen": { "type": "array", "items": { "type": "number" } },
+                "dreiecke": { "type": "array", "items": { "type": "integer", "minimum": 0 } }
+              },
+              "additionalProperties": false
+            },
+            "kantenzuege": { "$ref": "#/$defs/zuege3" }
+          },
+          "additionalProperties": false
         }
       ]
+    },
+    "flaeche": {
+      "type": "object",
+      "required": ["value", "unit"],
+      "properties": { "value": { "type": "number" }, "unit": { "const": "mm2" } },
+      "additionalProperties": false
+    },
+    "zuege3": {
+      "type": "object",
+      "required": ["unit", "zuege"],
+      "properties": {
+        "unit": { "const": "mm" },
+        "zuege": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": { "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 3 }
+          }
+        }
+      },
+      "additionalProperties": false
     },
     "result": {
       "type": "object",
@@ -117,8 +233,16 @@
             "unknown_type",
             "kernel_error",
             "protocol",
-            "unit_assumed"
+            "unit_assumed",
+            "not_in_sketch",
+            "curves_intersect",
+            "region_missing"
           ]
+        },
+        "beteiligt": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Beteiligte Element-IDs, nach ID sortiert (z. B. die beiden Kurven bei curves_intersect)"
         },
         "element": { "type": ["string", "null"] },
         "input": { "type": "string" },

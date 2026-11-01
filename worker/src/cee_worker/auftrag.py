@@ -18,6 +18,7 @@ from cee_sdk import Document
 
 PROTOCOL = "cee-kernel/0"
 TYPEN = Path(__file__).resolve().parents[3] / "format" / "types" / "drahtmodell.json"
+TYPEN_SKIZZE = TYPEN.with_name("skizze.json")
 
 
 @functools.cache
@@ -26,7 +27,11 @@ def _typen_text(pfad: str) -> str:
 
 
 def typen(pfad: Path = TYPEN) -> list[dict[str, Any]]:
-    return json.loads(_typen_text(str(pfad)))
+    """Typdefinitionen; zur Standarddatei kommen die Skizzentypen aus `skizze.json` (ap-53)."""
+    aus = json.loads(_typen_text(str(pfad)))
+    if pfad == TYPEN and TYPEN_SKIZZE.is_file():
+        aus = aus + json.loads(_typen_text(str(TYPEN_SKIZZE)))
+    return aus
 
 
 def _flach(elemente: list[Any]) -> dict[str, dict[str, Any]]:

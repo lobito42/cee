@@ -1,0 +1,295 @@
+{
+  "schema_version": 1,
+  "elements": [
+    {
+      "id": "K0",
+      "type": "frame",
+      "inputs": {},
+      "params": {
+        "x": {
+          "value": 0,
+          "unit": "mm"
+        },
+        "y": {
+          "value": 0,
+          "unit": "mm"
+        },
+        "z": {
+          "value": 0.0,
+          "unit": "mm"
+        },
+        "rx": {
+          "value": 0,
+          "unit": "deg"
+        },
+        "ry": {
+          "value": 0,
+          "unit": "deg"
+        },
+        "rz": {
+          "value": 0,
+          "unit": "deg"
+        }
+      },
+      "outputs": {
+        "frame": "frame",
+        "origin": "point",
+        "x": "line",
+        "y": "line",
+        "z": "line",
+        "xy": "plane",
+        "yz": "plane",
+        "zx": "plane"
+      },
+      "content": [],
+      "meta": {
+        "name": "Ursprung"
+      }
+    },
+    {
+      "id": "S1",
+      "type": "sketch",
+      "inputs": {
+        "ebene": "K0.xy"
+      },
+      "params": {},
+      "outputs": {
+        "sketch": "sketch"
+      },
+      "content": [
+        {
+          "id": "R1",
+          "type": "sketch_rectangle",
+          "inputs": {},
+          "params": {
+            "u1": {
+              "value": -30.0,
+              "unit": "mm"
+            },
+            "v1": {
+              "value": -20.0,
+              "unit": "mm"
+            },
+            "u2": {
+              "value": 30.0,
+              "unit": "mm"
+            },
+            "v2": {
+              "value": 20.0,
+              "unit": "mm"
+            }
+          },
+          "outputs": {
+            "kurve": "curve"
+          },
+          "content": [],
+          "meta": {
+            "name": "Grundplatte"
+          }
+        },
+        {
+          "id": "C1",
+          "type": "sketch_circle",
+          "inputs": {},
+          "params": {
+            "u": {
+              "value": -20.0,
+              "unit": "mm"
+            },
+            "v": {
+              "value": 4.0,
+              "unit": "mm"
+            },
+            "d": {
+              "value": 6.6,
+              "unit": "mm"
+            }
+          },
+          "outputs": {
+            "kurve": "curve"
+          },
+          "content": [],
+          "meta": {
+            "name": "Bohrung links"
+          }
+        },
+        {
+          "id": "C2",
+          "type": "sketch_circle",
+          "inputs": {},
+          "params": {
+            "u": {
+              "value": 20.0,
+              "unit": "mm"
+            },
+            "v": {
+              "value": 4.0,
+              "unit": "mm"
+            },
+            "d": {
+              "value": 6.6,
+              "unit": "mm"
+            }
+          },
+          "outputs": {
+            "kurve": "curve"
+          },
+          "content": [],
+          "meta": {
+            "name": "Bohrung rechts"
+          }
+        }
+      ],
+      "meta": {
+        "name": "Skizze Grundplatte"
+      }
+    },
+    {
+      "id": "X1",
+      "type": "extrude",
+      "inputs": {
+        "skizze": "S1.sketch"
+      },
+      "params": {
+        "punkt_u": {
+          "value": 0,
+          "unit": "mm"
+        },
+        "punkt_v": {
+          "value": -10.0,
+          "unit": "mm"
+        },
+        "hoehe": {
+          "value": 8.0,
+          "unit": "mm"
+        }
+      },
+      "outputs": {
+        "koerper": "solid"
+      },
+      "content": [],
+      "meta": {
+        "name": "Grundplatte"
+      }
+    },
+    {
+      "id": "K1",
+      "type": "frame",
+      "inputs": {},
+      "params": {
+        "x": {
+          "value": 0,
+          "unit": "mm"
+        },
+        "y": {
+          "value": 0,
+          "unit": "mm"
+        },
+        "z": {
+          "value": 8.0,
+          "unit": "mm"
+        },
+        "rx": {
+          "value": 0,
+          "unit": "deg"
+        },
+        "ry": {
+          "value": 0,
+          "unit": "deg"
+        },
+        "rz": {
+          "value": 0,
+          "unit": "deg"
+        }
+      },
+      "outputs": {
+        "frame": "frame",
+        "origin": "point",
+        "x": "line",
+        "y": "line",
+        "z": "line",
+        "xy": "plane",
+        "yz": "plane",
+        "zx": "plane"
+      },
+      "content": [],
+      "meta": {
+        "name": "Oberseite Platte"
+      }
+    },
+    {
+      "id": "S2",
+      "type": "sketch",
+      "inputs": {
+        "ebene": "K1.xy"
+      },
+      "params": {},
+      "outputs": {
+        "sketch": "sketch"
+      },
+      "content": [
+        {
+          "id": "R2",
+          "type": "sketch_rectangle",
+          "inputs": {},
+          "params": {
+            "u1": {
+              "value": -30.0,
+              "unit": "mm"
+            },
+            "v1": {
+              "value": -20.0,
+              "unit": "mm"
+            },
+            "u2": {
+              "value": 30.0,
+              "unit": "mm"
+            },
+            "v2": {
+              "value": -12.0,
+              "unit": "mm"
+            }
+          },
+          "outputs": {
+            "kurve": "curve"
+          },
+          "content": [],
+          "meta": {
+            "name": "Steg"
+          }
+        }
+      ],
+      "meta": {
+        "name": "Skizze Steg"
+      }
+    },
+    {
+      "id": "X2",
+      "type": "extrude",
+      "inputs": {
+        "skizze": "S2.sketch"
+      },
+      "params": {
+        "punkt_u": {
+          "value": 0,
+          "unit": "mm"
+        },
+        "punkt_v": {
+          "value": -16.0,
+          "unit": "mm"
+        },
+        "hoehe": {
+          "value": 50.0,
+          "unit": "mm"
+        }
+      },
+      "outputs": {
+        "koerper": "solid"
+      },
+      "content": [],
+      "meta": {
+        "name": "Steg"
+      }
+    }
+  ]
+}

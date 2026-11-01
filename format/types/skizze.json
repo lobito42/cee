@@ -1,0 +1,50 @@
+[
+  {
+    "type": "sketch",
+    "inputs": [{ "name": "ebene", "type": "plane" }],
+    "params": {},
+    "outputs": [{ "name": "sketch", "type": "sketch" }]
+  },
+  {
+    "type": "sketch_line",
+    "inputs": [],
+    "params": {
+      "u1": { "dimension": "length", "default_unit": "mm" },
+      "v1": { "dimension": "length", "default_unit": "mm" },
+      "u2": { "dimension": "length", "default_unit": "mm" },
+      "v2": { "dimension": "length", "default_unit": "mm" }
+    },
+    "outputs": [{ "name": "kurve", "type": "curve" }]
+  },
+  {
+    "type": "sketch_rectangle",
+    "inputs": [],
+    "params": {
+      "u1": { "dimension": "length", "default_unit": "mm" },
+      "v1": { "dimension": "length", "default_unit": "mm" },
+      "u2": { "dimension": "length", "default_unit": "mm" },
+      "v2": { "dimension": "length", "default_unit": "mm" }
+    },
+    "outputs": [{ "name": "kurve", "type": "curve" }]
+  },
+  {
+    "type": "sketch_circle",
+    "inputs": [],
+    "params": {
+      "u": { "dimension": "length", "default_unit": "mm" },
+      "v": { "dimension": "length", "default_unit": "mm" },
+      "d": { "dimension": "length", "default_unit": "mm" }
+    },
+    "outputs": [{ "name": "kurve", "type": "curve" }]
+  },
+  {
+    "type": "extrude",
+    "inputs": [{ "name": "skizze", "type": "sketch" }],
+    "params": {
+      "punkt_u": { "dimension": "length", "default_unit": "mm" },
+      "punkt_v": { "dimension": "length", "default_unit": "mm" },
+      "hoehe": { "dimension": "length", "default_unit": "mm" }
+    },
+    "outputs": [{ "name": "koerper", "type": "solid" }]
+  }
+]

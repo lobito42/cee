@@ -20,7 +20,8 @@ from typing import Any
 from cee_sdk import CeeError, Quantity
 
 from . import geometrie as geo
-from .typen import KANONISCH, STANDARD, TOL_LINEAR, TYPEN
+from . import skizze as sk
+from .typen import KANONISCH, SKIZZEN_KURVEN, STANDARD, TOL_LINEAR, TYPEN
 
 PROTOCOL = "cee-kernel/0"
 KERNEL_NAME = "occt"
@@ -84,6 +85,12 @@ class _Lauf:
     verworfen: set[str] = field(default_factory=set)
     werte: dict[tuple[str, str], tuple[str, Any]] = field(default_factory=dict)
     formen: dict[str, Any] = field(default_factory=dict)
+    # Skizze in Arbeit: (Skizzen-ID, Ebene oder None, falls die Ebene fehlt); Kurven je Skizze; Hinweise
+    # (Befunde an Elementen, die aktuell bleiben); Hash-Teile der Kinder je Skizze
+    ebene: tuple[str, Any] | None = None
+    kurven_von: dict[str, list[sk.Kurve]] = field(default_factory=dict)
+    hinweise: dict[str, list[dict[str, Any]]] = field(default_factory=dict)
+    inhalt: dict[str, list[str]] = field(default_factory=dict)
 
 
 def _param(el: dict[str, Any], name: str, dim: str) -> float:
@@ -221,6 +228,12 @@ def _bauen(lauf: _Lauf, el: dict[str, Any], p: dict[str, float], ein: dict[str, 
         form = geo.ebene_form(ein["of"][1])
         ebene_aus("plane", form)
         return outputs, intern, form
+    if typ in SKIZZEN_KURVEN:
+        return _kurve_bauen(lauf, el, p)
+    if typ == "sketch":
+        return _skizze_bauen(lauf, el, ein["ebene"][1])
+    if typ == "extrude":
+        return _hochziehen_bauen(el, p, ein["skizze"][1])
     # line, ray, segment
     a, b = ein["a"][1], ein["b"][1]
     if a.Distance(b) < TOL_LINEAR:
@@ -248,6 +261,115 @@ def _bauen(lauf: _Lauf, el: dict[str, Any], p: dict[str, float], ein: dict[str, 
         outputs["start"] = {"type": "point", "position": o}
         intern["start"] = ("point", geo.pnt_aus(tuple(g["value"] for g in o)))
     return outputs, intern, form
+
+
+def _uv(u: float, v: float) -> list[dict[str, Any]]:
+    return [_q(u, "mm"), _q(v, "mm")]
+
+
+def _kurve_bauen(lauf: _Lauf, el: dict[str, Any], p: dict[str, float]):
+    eid, typ = el["id"], el["type"]
+    if lauf.ebene is None:
+        raise _Fehler(befund("not_in_sketch", eid, _hinweis("not_in_sketch")))
+    sid, ax = lauf.ebene
+    art = SKIZZEN_KURVEN[typ]
+    if art == "circle":
+        k = sk.Kurve(eid, art, (p["u"], p["v"], p["d"] / 2))
+    else:
+        k = sk.Kurve(eid, art, (p["u1"], p["v1"], p["u2"], p["v2"]))
+    fehler = sk.kurve_pruefen(k)
+    if fehler:
+        raise _Fehler(befund("degenerate", eid, _hinweis("degenerate", fehler)))
+    if ax is None:
+        raise _Fehler(befund("input_failed", eid, _hinweis("input_failed", "ebene"), bezug=sid))
+    form = sk.kurve_form(ax, k)
+    lauf.kurven_von.setdefault(sid, []).append(k)
+    out = {"type": "curve", "art": art, "kantenzuege": {"unit": "mm", "zuege": sk.kurve_zuege(ax, k)}}
+    return {"kurve": out}, {"kurve": ("curve", k)}, form
+
+
+def _skizze_bauen(lauf: _Lauf, el: dict[str, Any], ax):
+    eid = el["id"]
+    liste, paare = sk.bereiche(lauf.kurven_von.get(eid, []))
+    wert = sk.SkizzenWert(ebene=ax, bereiche=liste)
+    hinweise = [
+        befund("curves_intersect", eid, _hinweis("curves_intersect"), beteiligt=list(paar)) for paar in paare
+    ]
+    if hinweise:
+        lauf.hinweise[eid] = hinweise
+    aus = []
+    for i, b in enumerate(liste):
+        aussen, loecher = sk.bereich_ids(b)
+        aus.append(
+            {
+                "punkt": _uv(*b.punkt),
+                "flaeche": _q(b.flaeche, "mm2"),
+                "aussen": aussen,
+                "loecher": loecher,
+                "rand": {"unit": "mm", "zuege": sk.bereich_rand(b)},
+            }
+        )
+        lauf.formen[f"{eid}#{i}"] = sk.flaeche_welt(wert, b)
+    o, n, x = geo.lesen_ebene(geo.ebene_form(ax))
+    out = {
+        "type": "sketch",
+        "plane": {"origin": _lage(o), "normal": _dir(n), "x_direction": _dir(x)},
+        "bereiche": aus,
+    }
+    return {"sketch": out}, {"sketch": ("sketch", wert)}, geo.ebene_form(ax)
+
+
+def _hochziehen_bauen(el: dict[str, Any], p: dict[str, float], wert: sk.SkizzenWert):
+    eid = el["id"]
+    h = p["hoehe"]
+    if abs(h) < TOL_LINEAR:
+        raise _Fehler(befund("degenerate", eid, _hinweis("degenerate", "hoehe_null")))
+    b = sk.bereich_zum_punkt(wert, (p["punkt_u"], p["punkt_v"]))
+    if b is None:
+        raise _Fehler(befund("region_missing", eid, _hinweis("region_missing")))
+    form = sk.prisma(wert, b, h)
+    kw = sk.kennwerte(form)
+    positionen, dreiecke = sk.netz(form)
+    out = {
+        "type": "solid",
+        "volumen": _q(kw["volumen"], "mm3"),
+        "oberflaeche": _q(kw["oberflaeche"], "mm2"),
+        "schwerpunkt": _lage(kw["schwerpunkt"]),
+        "huelle": {"min": _lage(kw["min"]), "max": _lage(kw["max"])},
+        "flaechen": _q(kw["flaechen"], "1"),
+        "kanten": _q(kw["kanten"], "1"),
+        "netz": {"unit": "mm", "positionen": positionen, "dreiecke": dreiecke},
+        "kantenzuege": {"unit": "mm", "zuege": sk.kantenzuege(form)},
+    }
+    return {"koerper": out}, {"koerper": ("solid", form)}, form
+
+
+def _skizze_mit_kindern(
+    lauf: _Lauf, el: dict[str, Any], nach_id: dict[str, dict[str, Any]], vorab: dict[str, list]
+) -> list[dict[str, Any]]:
+    """Kinder einer Skizze (nach ID sortiert) vor der Skizze berechnen; liefert ihre Ergebnisse."""
+    sid = el["id"]
+    kinder = sorted(k for k in (el.get("content") or []) if k in nach_id)
+    if (el.get("meta") or {}).get("verworfen") is True:
+        for k in kinder:
+            lauf.typ[k] = nach_id[k].get("type")
+            lauf.verworfen.add(k)
+        return []
+    ax = None
+    if not vorab.get(sid):
+        with contextlib.suppress(_Fehler):
+            ax = _eingaenge(lauf, el)[0]["ebene"][1]
+    lauf.ebene = (sid, ax)
+    aus = []
+    try:
+        for k in kinder:
+            r = _element(lauf, nach_id[k], vorab.get(k, []))
+            if r is not None:
+                aus.append(r)
+    finally:
+        lauf.ebene = None
+    lauf.inhalt[sid] = [lauf.hashes[k] for k in kinder if k not in lauf.verworfen and k in lauf.hashes]
+    return aus
 
 
 def _element(lauf: _Lauf, el: dict[str, Any], vorab: list[dict[str, Any]]) -> dict[str, Any] | None:
@@ -289,6 +411,7 @@ def _element(lauf: _Lauf, el: dict[str, Any], vorab: list[dict[str, Any]]) -> di
         for name, wert in intern.items():
             lauf.werte[(eid, name)] = wert
         lauf.formen[eid] = form
+        befunde = lauf.hinweise.pop(eid, [])
     except _Fehler as f:
         mehr = f.__cause__.liste if isinstance(f.__cause__, _Mehr) else [f.befund]
         befunde = mehr
@@ -308,6 +431,9 @@ def _element(lauf: _Lauf, el: dict[str, Any], vorab: list[dict[str, Any]]) -> di
         "params": _hash_params(el, params),
         "inputs": hash_ein,
     }
+    if typname == "sketch":
+        # Inhalts-Hash über die nach ID sortierten Hashes der nicht verworfenen Kinder (design.md Abschnitt 2)
+        rezept["content"] = lauf.inhalt.get(eid, [])
     h = hashlib.sha256(kanonisch(rezept).encode()).hexdigest()
     lauf.hashes[eid] = h
     return {
@@ -361,8 +487,16 @@ def berechnen(auftrag: Any) -> tuple[dict[str, Any], dict[str, Any]]:
             vorab.setdefault(b["element"], []).append(b)
         else:
             allgemein.append(b)
+    nach_id = {e["id"]: e for e in elemente}
+    in_skizze = {
+        k for e in elemente if e.get("type") == "sketch" for k in (e.get("content") or []) if k in nach_id
+    }
     results = []
     for el in elemente:
+        if el["id"] in in_skizze:
+            continue  # wird mit seiner Skizze berechnet (Kinder vor Skizze)
+        if el.get("type") == "sketch":
+            results.extend(_skizze_mit_kindern(lauf, el, nach_id, vorab))
         r = _element(lauf, el, vorab.get(el["id"], []))
         if r is not None:
             results.append(r)

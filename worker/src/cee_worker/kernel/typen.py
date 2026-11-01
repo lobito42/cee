@@ -69,4 +69,28 @@ TYPEN: dict[str, Typ] = {
         eingaenge={"a": Eingang("point", True), "b": Eingang("point", True)},
         ausgaenge={"segment": "segment", "start": "point", "end": "point"},
     ),
+    # Skizze und Hochziehen (ap-53, design.md Abschnitt 2; Daten in `format/types/skizze.json`)
+    "sketch": Typ(params={}, eingaenge={"ebene": Eingang("plane", True)}, ausgaenge={"sketch": "sketch"}),
+    "sketch_line": Typ(
+        params={"u1": "length", "v1": "length", "u2": "length", "v2": "length"},
+        eingaenge={},
+        ausgaenge={"kurve": "curve"},
+    ),
+    "sketch_rectangle": Typ(
+        params={"u1": "length", "v1": "length", "u2": "length", "v2": "length"},
+        eingaenge={},
+        ausgaenge={"kurve": "curve"},
+    ),
+    "sketch_circle": Typ(
+        params={"u": "length", "v": "length", "d": "length"},
+        eingaenge={},
+        ausgaenge={"kurve": "curve"},
+    ),
+    "extrude": Typ(
+        params={"punkt_u": "length", "punkt_v": "length", "hoehe": "length"},
+        eingaenge={"skizze": Eingang("sketch", True)},
+        ausgaenge={"koerper": "solid"},
+    ),
 }
+
+SKIZZEN_KURVEN = {"sketch_line": "line", "sketch_rectangle": "rectangle", "sketch_circle": "circle"}
