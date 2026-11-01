@@ -32,6 +32,8 @@ export interface Befehl {
   folgt?: boolean;
   /** Gemeinsame Handlung von Varianten (etwa für ein Element und für mehrere): Menüs zeigen eine. */
   handlung?: string;
+  /** Auch Werkzeug für die KI (ap-52): dieselbe Wirkung, Parameter aus `parameter`. */
+  ki?: boolean;
 }
 
 export const GRUPPE_MAX = 12;
@@ -120,6 +122,7 @@ export function ladeRegisterDatei(inhalt: unknown): Befehl[] {
     kontext: b.kontext,
     folgt: b.folgt,
     handlung: b.handlung,
+    ki: b.ki,
   }));
 }
 

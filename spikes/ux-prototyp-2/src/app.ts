@@ -32,6 +32,7 @@ import {
 } from './modell/register';
 import profile from './eingabe/profile.json';
 import { Draht } from './drahtmodell/draht';
+import { neuerKiZustand, type KiZustand } from './ki/konstruktion';
 import { sichtbareTreffer } from './zonen/suche';
 import type { Groesse } from './wert/wertfeld';
 
@@ -53,6 +54,9 @@ export interface ProtokollEintrag {
   parameter: Record<string, unknown>;
   quelle: Quelle;
   weg: Weg;
+  /** Bei Quelle `ki` (ap-52): Anbieter und wer den Satz geschickt hat (Dienstkonto-Gedanke, ADR-055). */
+  anbieter?: string;
+  ausgeloest_von?: Quelle;
 }
 
 export interface Kanal {
@@ -83,6 +87,8 @@ export interface Nachricht {
   text: string;
   schluessel?: string;
   werte?: Werte;
+  /** Nummer der Entscheidungskarte der KI, die zu dieser Nachricht gehört (ap-52). */
+  karte?: number;
 }
 
 export const PROFILE = Object.keys(profile as Record<string, unknown>);
@@ -169,6 +175,8 @@ export class App {
   rechenzeitMs = 0;
   andere = { aktiv: false, dok: 'halter', element: 'steg' };
   chat = { nachrichten: [] as Nachricht[], eingabe: '', vorschlag: null as Vorschlag | null };
+  /** KI über das Befehlsregister (ap-52): Anbieter, Änderungssätze, Zustand der Schleife. */
+  ki: KiZustand = neuerKiZustand();
   katalogOffen: string | null = null;
 
   szene: Szene | null = null;
@@ -257,7 +265,69 @@ export class App {
   kannRueckgaengig = (): boolean => this.verlauf().zurueck.length > 0;
   kannWiederholen = (): boolean => this.verlauf().vor.length > 0;
 
+  /** Läuft gerade ein Befehl im Entwurf der KI (ap-52): nichts speichern, nichts bleibt. */
+  private imEntwurfLauf = false;
+  /** Anbieter, dessen Änderungssatz gerade übernommen wird (Verlaufseintrag, ap-52). */
+  kiAnbieter: string | null = null;
+
+  /**
+   * Führt `fn` gegen einen Entwurf des aktiven Dokuments aus (ap-52, ADR-021): Graph, Verlauf, Protokoll,
+   * Auswahl und Ansicht sind danach wie vorher. Liefert den Entwurf und die im Entwurf ausgeblendeten IDs.
+   */
+  imEntwurf<T>(entwurf: Element, fn: () => T): { dok: Element; ausgeblendet: string[]; wert: T } {
+    const inhalt = this.projekt.content;
+    const verlauf = this.verlaeufe.get(this.dok);
+    const gesichert = {
+      protokoll: this.protokoll.length,
+      ausgeloest: this.ausgeloest.length,
+      auswahl: this.auswahl,
+      ausgeblendet: new Set(this.ausgeblendet),
+      rueckmeldung: this.rueckmeldung,
+      aktiv: this.aktiv,
+      modus: this.draht.modus,
+      feldFokus: this.draht.feldFokus,
+      menue: this.menue,
+      kontextMenue: this.kontextMenue,
+    };
+    const id = this.dokument().id;
+    this.projekt.content = inhalt.map((d) => (d.id === id ? kopie(entwurf) : d));
+    this.verlaeufe.set(this.dok, { zurueck: [], vor: [] });
+    this.imEntwurfLauf = true;
+    try {
+      const wert = fn();
+      const ausgeblendet = [...this.ausgeblendet].filter((x) => !gesichert.ausgeblendet.has(x));
+      return { dok: kopie(this.dokument()), ausgeblendet, wert };
+    } finally {
+      this.imEntwurfLauf = false;
+      this.projekt.content = inhalt;
+      if (verlauf) this.verlaeufe.set(this.dok, verlauf);
+      else this.verlaeufe.delete(this.dok);
+      this.protokoll.length = gesichert.protokoll;
+      this.ausgeloest.length = gesichert.ausgeloest;
+      this.auswahl = gesichert.auswahl;
+      this.ausgeblendet = gesichert.ausgeblendet;
+      this.rueckmeldung = gesichert.rueckmeldung;
+      this.aktiv = gesichert.aktiv;
+      this.draht.modus = gesichert.modus;
+      this.draht.feldFokus = gesichert.feldFokus;
+      this.menue = gesichert.menue;
+      this.kontextMenue = gesichert.kontextMenue;
+    }
+  }
+
+  /** Alle Änderungen in `fn` werden ein einziger Verlaufseintrag (ein Rückgängig-Schritt, ap-52). */
+  einSchritt(fn: () => void): void {
+    const v = this.verlauf();
+    const vorher = v.zurueck.length;
+    try {
+      fn();
+    } finally {
+      if (v.zurueck.length > vorher + 1) v.zurueck.splice(vorher + 1);
+    }
+  }
+
   private speichern(): void {
+    if (this.imEntwurfLauf) return;
     try {
       window.localStorage.setItem(SPEICHER_SCHLUESSEL, JSON.stringify(this.projekt));
     } catch {
@@ -591,7 +661,12 @@ export class App {
     weg: Weg,
     quelle: Quelle,
   ): void {
-    this.protokoll.push({ befehl, parameter, quelle, weg });
+    const e: ProtokollEintrag = { befehl, parameter, quelle, weg };
+    if (quelle === 'ki' && this.kiAnbieter) {
+      e.anbieter = this.kiAnbieter;
+      e.ausgeloest_von = 'mensch';
+    }
+    this.protokoll.push(e);
   }
 
   meldung(schluessel: string, werte?: Werte): void {

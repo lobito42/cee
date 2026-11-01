@@ -141,7 +141,7 @@ export function kernelBruecke(o: Optionen): Plugin {
   const middleware = (req: IncomingMessage, res: ServerResponse, weiter: () => void): void => {
     const pfad = (req.url ?? '').split('?')[0];
     if (req.method === 'GET' && pfad?.endsWith('/kernel-status.json')) {
-      senden(res, JSON.stringify({ bruecke: true }));
+      senden(res, JSON.stringify({ bruecke: true, ki: true }));
       return;
     }
     if (req.method === 'POST' && pfad === '/kernel/test-beenden' && o.pruefmodus) {
