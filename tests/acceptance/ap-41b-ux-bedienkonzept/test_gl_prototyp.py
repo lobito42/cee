@@ -22,7 +22,16 @@ from grundlagen_helpers import (
     pruefen,
 )
 
-ERLAUBT = {"three", "lucide", "@fontsource-variable/inter", "@fontsource/jetbrains-mono"}
+ERLAUBT = {
+    "three",
+    "lucide",
+    "@fontsource-variable/inter",
+    "@fontsource/jetbrains-mono",
+    # ap-53 (design.md, ADR-034, alle MIT): Picking, Kamera, Ansichtswürfel
+    "three-mesh-bvh",
+    "camera-controls",
+    "three-viewport-gizmo",
+}
 
 
 def test_bauen_lint_und_unit_tests():
@@ -41,7 +50,7 @@ def test_keine_anfrage_an_fremde_hosts():
 
 
 def test_abhaengigkeiten_und_lizenzen():
-    """Requirement Eigenständiger Prototyp – Scenario „Abhängigkeiten und Lizenzen“: nur vier Pakete, 0 GPL/AGPL/LGPL."""
+    """Requirement Eigenständiger Prototyp – Scenario „Abhängigkeiten und Lizenzen“: nur die vier Pakete plus die drei aus ap-53, 0 GPL/AGPL/LGPL."""
     paket = json.loads((P / "package.json").read_text("utf-8"))
     assert set(paket.get("dependencies", {})) == ERLAUBT, paket.get("dependencies")
     bauen()

@@ -167,6 +167,7 @@ KUERZEL = [
     "Mod+K", "Mod+Z", "Mod+Umschalt+Z", "Mod+B", "Mod+J", "Mod+Alt+B", "F2", "Mod+D", "Entf", "Mod+A", "F", "H",
     "Alt+H", "W", "F6",
 ]  # fmt: skip
+KUERZEL_AP53 = ["S", "L", "R", "K", "E"]  # ap-53 design.md, Tastenkürzel für Skizze und Hochziehen
 
 
 def test_reihenfolge_und_fokus_sichtbar():
@@ -211,14 +212,19 @@ def test_esc_kette():
 
 def test_kuerzel_aus_dem_register():
     """Scenario „Kürzel aus dem Register“: jedes Kürzel führt seinen Befehl aus, steht neben dem Befehl in Menü und
-    Suche, es gibt keine Kürzel außerhalb des Registers, genau die 15 aus design.md (≤ 15)."""
+    Suche, es gibt keine Kürzel außerhalb des Registers, die 15 aus design.md unverändert, dazu höchstens die fünf aus ap-53 (≤ 20)."""
     k = pruefen("tastatur")["kuerzel"]
     datei = {b["id"]: kuerzel_norm(b["kuerzel"]) for b in register() if b.get("kuerzel")}
     fenster = {b["befehl"]: kuerzel_norm(b["kuerzel"]) for b in k["register"] if b.get("kuerzel")}
     assert fenster == datei, "befehle() und befehle.json stimmen nicht überein"
-    assert len(datei) <= 15 and len(set(datei.values())) == 15, sorted(datei.values())
+    # Die 15 bisherigen Kürzel bleiben exakt; zusätzlich erlaubt: genau die fünf aus ap-53 (S, L, R, K, E),
+    # insgesamt höchstens 20, alle eindeutig.
+    assert len(datei) <= 20 and len(set(datei.values())) == len(datei), sorted(datei.values())
     erwartet = {kuerzel_norm(x) for x in KUERZEL}
-    assert set(datei.values()) == erwartet, set(datei.values()) ^ erwartet
+    assert len(erwartet) == 15
+    assert erwartet <= set(datei.values()), erwartet - set(datei.values())
+    zusaetzlich = set(datei.values()) - erwartet
+    assert zusaetzlich <= {kuerzel_norm(x) for x in KUERZEL_AP53}, zusaetzlich
     assert {a["befehl"] for a in k["ausgeloest"]} == set(datei), "nicht jedes Kürzel ausgelöst"
     for a in k["ausgeloest"]:
         assert kuerzel_norm(a["kuerzel"]) == datei[a["befehl"]], a
