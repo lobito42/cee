@@ -3,7 +3,7 @@
 // Die Vorschau rechnet keine Geometrie: Kurven, Bereiche und Körper kommen aus dem Worker-Ergebnis; einzige
 // Ausnahme sind Gummiband und Geister-Vorschau während des Zeichnens bzw. Ziehens.
 import * as THREE from 'three';
-import type { App } from '../app';
+import type { App, Quelle } from '../app';
 import type { SkizzenZeichnung } from '../ansicht/szene';
 import type { V3 } from '../geometrie/teil';
 import { alleElemente, finde, istVerworfen, type Element } from '../modell/element';
@@ -76,6 +76,11 @@ const mm = (v: number): Groesse => ({ value: rund(v), unit: 'mm' });
 function inMm(g: unknown): number {
   const x = g as Groesse | number | undefined;
   if (typeof x === 'number') return x;
+  if (typeof x === 'string') {
+    // Größe als Text („15 mm“, wie in Befehlsargumenten und KI-Werkzeugen)
+    const r = lesen(x, 'mm', 'laenge');
+    return r.ok ? r.groesse.value : NaN;
+  }
   if (!x) return 0;
   const f = ({ mm: 1, cm: 10, m: 1000 } as Record<string, number>)[x.unit] ?? 1;
   return x.value * f;
@@ -129,6 +134,8 @@ export class Skizze {
     basis: number;
   } | null = null;
   zieht = false;
+  /** Urheber des laufenden Befehls (Mensch oder KI) für Protokoll und Verlauf. */
+  private quelle: Quelle = 'mensch';
   private ziehStart: THREE.Vector3 | null = null;
   unterdrueckeKlick = false;
   /** Sichtbare Zeichnung (für Prüfungen): Element → Linienbreite in px. */
@@ -221,7 +228,7 @@ export class Skizze {
       meta: { name },
     };
     this.app.aendern((dok) => dok.content.push(el));
-    this.app.protokolliere('skizze.anlegen', { ebene: bezug }, weg as never, 'mensch');
+    this.app.protokolliere('skizze.anlegen', { ebene: bezug }, weg as never, this.quelle);
     if (par.oeffnen !== false) this.oeffnen(id, bezug);
     return true;
   }
@@ -274,7 +281,11 @@ export class Skizze {
 
   registrieren(): void {
     const app = this.app;
-    app.registriere('skizze.anlegen', (par, weg) => this.anlegen(par, weg));
+    app.registriere('skizze.anlegen', (par, weg, quelle) => {
+      this.quelle = quelle;
+      // KI-Aufrufe brauchen keine offene Skizze: anlegen, nicht öffnen (design.md Abschnitt 6)
+      return this.anlegen(quelle === 'ki' ? { ...par, oeffnen: false } : par, weg);
+    });
     app.registriere('skizze.fertig', () => {
       if (!this.offen) return false;
       this.schliessen();
@@ -290,8 +301,14 @@ export class Skizze {
       return true;
     });
     for (const w of Object.keys(FELDER) as Werkzeug[])
-      app.registriere(w, (par, weg) => this.werkzeugBefehl(w, par, weg));
-    app.registriere('koerper.hochziehen', (par, weg) => this.hochziehenBefehl(par, weg));
+      app.registriere(w, (par, weg, quelle) => {
+        this.quelle = quelle;
+        return this.werkzeugBefehl(w, par, weg);
+      });
+    app.registriere('koerper.hochziehen', (par, weg, quelle) => {
+      this.quelle = quelle;
+      return this.hochziehenBefehl(par, weg);
+    });
   }
 
   private skizzeAusPar(par: Record<string, unknown>): string | null {
@@ -305,6 +322,7 @@ export class Skizze {
       const sk = this.skizzeAusPar(par);
       if (!sk) return false;
       const werte = Object.fromEntries(felder.map((f) => [f, inMm(par[f])]));
+      if (Object.values(werte).some((v) => !Number.isFinite(v))) return false;
       return this.kurveAnlegen(sk, w, werte, weg) !== null;
     }
     if (!this.offen) {
@@ -337,7 +355,7 @@ export class Skizze {
       if (s) s.content.push(el);
     });
     if (!ok) return null;
-    this.app.protokolliere(w, { skizze: sk, ...werte }, weg as never, 'mensch');
+    this.app.protokolliere(w, { skizze: sk, ...werte }, weg as never, this.quelle);
     return id;
   }
 
@@ -827,7 +845,7 @@ export class Skizze {
       'koerper.hochziehen',
       { skizze: sk, punkt_u: punkt[0], punkt_v: punkt[1], hoehe },
       weg as never,
-      'mensch',
+      this.quelle,
     );
     return id;
   }
@@ -862,7 +880,7 @@ export class Skizze {
         'element.wert-setzen',
         { element: id, hoehe: h.hoehe },
         'griff' as never,
-        'mensch',
+        this.quelle,
       );
       this.app.auswahl = [{ element_id: id }];
     } else {

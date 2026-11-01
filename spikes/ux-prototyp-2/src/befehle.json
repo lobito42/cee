@@ -1112,7 +1112,7 @@
       "titel": "befehl.skizze.anlegen",
       "parameter": {
         "ebene": {
-          "typ": "bezug",
+          "typ": "referenz",
           "ausgang": "plane",
           "pflicht": true
         },
@@ -1133,27 +1133,23 @@
       "titel": "befehl.skizze.linie",
       "parameter": {
         "skizze": {
-          "typ": "bezug",
+          "typ": "referenz",
           "ausgang": "sketch",
           "pflicht": true
         },
         "u1": {
-          "typ": "groesse",
           "dimension": "length",
           "pflicht": true
         },
         "v1": {
-          "typ": "groesse",
           "dimension": "length",
           "pflicht": true
         },
         "u2": {
-          "typ": "groesse",
           "dimension": "length",
           "pflicht": true
         },
         "v2": {
-          "typ": "groesse",
           "dimension": "length",
           "pflicht": true
         }
@@ -1171,27 +1167,23 @@
       "titel": "befehl.skizze.rechteck",
       "parameter": {
         "skizze": {
-          "typ": "bezug",
+          "typ": "referenz",
           "ausgang": "sketch",
           "pflicht": true
         },
         "u1": {
-          "typ": "groesse",
           "dimension": "length",
           "pflicht": true
         },
         "v1": {
-          "typ": "groesse",
           "dimension": "length",
           "pflicht": true
         },
         "u2": {
-          "typ": "groesse",
           "dimension": "length",
           "pflicht": true
         },
         "v2": {
-          "typ": "groesse",
           "dimension": "length",
           "pflicht": true
         }
@@ -1209,22 +1201,19 @@
       "titel": "befehl.skizze.kreis",
       "parameter": {
         "skizze": {
-          "typ": "bezug",
+          "typ": "referenz",
           "ausgang": "sketch",
           "pflicht": true
         },
         "u": {
-          "typ": "groesse",
           "dimension": "length",
           "pflicht": true
         },
         "v": {
-          "typ": "groesse",
           "dimension": "length",
           "pflicht": true
         },
         "d": {
-          "typ": "groesse",
           "dimension": "length",
           "pflicht": true
         }
@@ -1245,7 +1234,6 @@
       "rang": 0.13,
       "wesentlich": true,
       "untergruppe": "Skizze",
-
       "ki": false
     },
     {
@@ -1254,7 +1242,7 @@
       "titel": "befehl.skizze.bearbeiten",
       "parameter": {
         "skizze": {
-          "typ": "bezug",
+          "typ": "referenz",
           "ausgang": "sketch"
         }
       },
@@ -1270,22 +1258,19 @@
       "titel": "befehl.koerper.hochziehen",
       "parameter": {
         "skizze": {
-          "typ": "bezug",
+          "typ": "referenz",
           "ausgang": "sketch",
           "pflicht": true
         },
         "punkt_u": {
-          "typ": "groesse",
           "dimension": "length",
           "pflicht": true
         },
         "punkt_v": {
-          "typ": "groesse",
           "dimension": "length",
           "pflicht": true
         },
         "hoehe": {
-          "typ": "groesse",
           "dimension": "length",
           "pflicht": true
         }

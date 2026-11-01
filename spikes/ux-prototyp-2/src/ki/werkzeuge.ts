@@ -114,6 +114,11 @@ export interface Erfolg {
   ausgaenge?: Record<string, Record<string, string | string[]>>;
   verworfen?: boolean;
   ausgeblendet?: boolean;
+  /** ap-53: Bereiche der betroffenen Skizze (höchstens 10) bzw. Volumen und Hülle eines Körpers. */
+  bereiche?: { punkt: string[]; flaeche: string }[];
+  bereiche_anzahl?: number;
+  volumen?: string;
+  huelle?: { min: string[] | null; max: string[] | null };
 }
 
 export type Werkzeugergebnis = Erfolg | Fehler;
@@ -322,7 +327,50 @@ export function argumenteLesen(
 const istFehler = (x: unknown): x is Fehler =>
   !!x && typeof x === 'object' && (x as { ok?: unknown }).ok === false && 'code' in x;
 
-const wurzelIds = (dok: Element) => new Set(drahtGraph(dok).map((e) => e.id));
+/** Angelegte Elemente: Wurzeln des Drahtmodells und Kurven in Skizzen (ap-53); Kinder eines `frame` zählen nicht. */
+const wurzelIds = (dok: Element) =>
+  new Set([
+    ...drahtGraph(dok).map((e) => e.id),
+    ...drahtGraph(dok)
+      .filter((e) => e.type === 'sketch')
+      .flatMap((s) => s.content.map((k) => k.id)),
+  ]);
+
+/** Zusätze im Ergebnis (ap-53, design.md 7a): Bereiche der Skizze bzw. Volumen und Hülle des Körpers. */
+function skizzenZusatz(
+  b: Befehl,
+  dok: Element,
+  e: Element,
+  ergebnis: Ergebnis | null,
+): Partial<Erfolg> {
+  const mm = (g: unknown) => `${zahl(Number((g as Groesse).value))} mm`;
+  if (['skizze.linie', 'skizze.rechteck', 'skizze.kreis'].includes(b.id)) {
+    const sk =
+      e.type === 'sketch'
+        ? e
+        : drahtGraph(dok).find((s) => s.type === 'sketch' && s.content.some((k) => k.id === e.id));
+    const o = sk ? ergebnis?.results.find((r) => r.id === sk.id)?.outputs.sketch : undefined;
+    const liste = (o?.bereiche ?? []) as { punkt: unknown[]; flaeche: Groesse }[];
+    const aus: Partial<Erfolg> = {
+      bereiche: liste.slice(0, 10).map((x) => ({
+        punkt: x.punkt.map(mm),
+        flaeche: `${zahl(x.flaeche.value)} mm2`,
+      })),
+    };
+    if (liste.length > 10) aus.bereiche_anzahl = liste.length;
+    return aus;
+  }
+  if (b.id === 'koerper.hochziehen') {
+    const k = ergebnis?.results.find((r) => r.id === e.id)?.outputs.koerper;
+    if (!k) return {};
+    const h = k.huelle as { min: unknown; max: unknown };
+    return {
+      volumen: `${zahl(Number((k.volumen as Groesse).value))} mm3`,
+      huelle: { min: groessen(h.min, 'mm'), max: groessen(h.max, 'mm') },
+    };
+  }
+  return {};
+}
 
 /**
  * Führt einen Werkzeugaufruf im Entwurf aus: dieselbe Wirkung wie der Befehl, danach rechnet der Worker den
@@ -396,7 +444,7 @@ export async function imEntwurfAusfuehren(
       entwurf,
       ergebnis: fehler('invalid_arguments', `${werkzeug}: kein Ergebnis.`, 'Prüfe die Argumente.'),
     };
-  const ok = erfolg(e, ergebnis);
+  const ok: Erfolg = { ...erfolg(e, ergebnis), ...skizzenZusatz(b, dok, e, ergebnis) };
   if (b.id === 'element.verwerfen') {
     delete ok.ausgaenge;
     ok.verworfen = true;

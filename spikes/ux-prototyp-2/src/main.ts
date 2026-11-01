@@ -95,7 +95,7 @@ async function start(): Promise<void> {
     danach = r.danach;
   }
   // KI über das Befehlsregister (ap-52): Anbieter der Brücke, nur im Drahtmodell
-  if (app.dok === 'drahtmodell') await kiVerbinden(app);
+  if (app.dok === 'drahtmodell' || app.dok === 'skizze') await kiVerbinden(app);
   const fenster = new Fenster(wurzel, app);
   fenster.szene.setThema(thema);
   steuerungAnbinden(app, fenster);

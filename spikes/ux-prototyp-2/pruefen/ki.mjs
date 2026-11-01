@@ -77,6 +77,13 @@ async function kiSchnappschuss(seite, basis, extra) {
     chat: { kopf: k.kopf, nachrichten: k.nachrichten, karten: k.karten },
     geister: k.geister,
     verlauf: k.verlauf,
+    // Aktionsprotokoll (ap-41b, design.md 7a von ap-53): ausgelöste Befehle mit Wirkung
+    protokoll: await seite.evaluate(() =>
+      window.__cee
+        .ausgeloest()
+        .filter((a) => a.wirkung)
+        .map((a) => ({ befehl: a.befehl, weg: a.weg })),
+    ),
     ki_anfragen: await kiAnfragen(basis),
     ...extra,
   });

@@ -214,6 +214,40 @@ const geistPunkte = (art: string, lage: V3 | Record<string, V3>): V3[] => {
   return [];
 };
 
+/** Geister für Skizze, Skizzenkurven und Körper (ap-53): Lage aus dem Worker-Ergebnis. */
+function skizzenGeistVon(
+  e: Element,
+  outputs: Ergebnis['results'][number]['outputs'],
+): Geist | null {
+  const v = (x: unknown): V3 | null =>
+    Array.isArray(x) && x.length === 3 ? (x.map((g) => Number((g as Groesse).value)) as V3) : null;
+  if (e.type === 'sketch') {
+    const p = v((outputs.sketch?.plane as { origin?: unknown } | undefined)?.origin);
+    return p ? { element: e.id, art: e.type, lage_mm: p, punkte: [p] } : null;
+  }
+  if (e.type.startsWith('sketch_')) {
+    const z = (outputs.kurve?.kantenzuege as { zuege?: V3[][] } | undefined)?.zuege?.[0];
+    return z?.length ? { element: e.id, art: e.type, lage_mm: z[0] as V3, punkte: z } : null;
+  }
+  if (e.type === 'extrude') {
+    const k = outputs.koerper;
+    const h = k?.huelle as { min?: unknown; max?: unknown } | undefined;
+    const s = v(k?.schwerpunkt);
+    const lo = v(h?.min);
+    const hi = v(h?.max);
+    if (!s || !lo || !hi) return null;
+    const g: Geist & { huelle_mm: { min: V3; max: V3 } } = {
+      element: e.id,
+      art: e.type,
+      lage_mm: s,
+      punkte: [lo, hi],
+      huelle_mm: { min: lo, max: hi },
+    };
+    return g;
+  }
+  return null;
+}
+
 function geisterVon(dok: Element, ergebnis: Ergebnis | null, neu: string[]): Geist[] {
   const aus: Geist[] = [];
   const nachId = new Map(alleElemente(dok).map((e) => [e.id, e]));
@@ -221,6 +255,11 @@ function geisterVon(dok: Element, ergebnis: Ergebnis | null, neu: string[]): Gei
     const e = nachId.get(id);
     const r = ergebnis?.results.find((x) => x.id === id);
     if (!e || !r || r.state !== 'aktuell') continue;
+    const skizzenGeist = skizzenGeistVon(e, r.outputs);
+    if (skizzenGeist) {
+      aus.push(skizzenGeist);
+      continue;
+    }
     const haupt = { frame: 'frame' }[e.type] ?? e.type;
     const o = r.outputs[haupt];
     const lage = e.type === 'frame' ? lageVon(r.outputs.frame) : lageVon(o);

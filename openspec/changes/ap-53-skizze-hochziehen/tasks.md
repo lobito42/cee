@@ -35,7 +35,7 @@
   Geister-Vorschau, TransformControls als Höhengriff, Wertfeld, Esc, Griff am gewählten Hochziehen, Skizze danach
   ausblenden, kein Dialog – Prüfung: AK-10
 - [x] 3.2 Halter per Direktbedienung im Ablauf – Prüfung: AK-11
-- [ ] 3.3 KI-Werkzeuge: Parameterweg der 5 Befehle, Werkzeugergebnis mit Bereichen bzw. Volumen, Halter über das
+- [x] 3.3 KI-Werkzeuge: Parameterweg der 5 Befehle, Werkzeugergebnis mit Bereichen bzw. Volumen, Halter über das
   Testmodell aus ap-52 als Änderungssatz – Prüfung: AK-12
 - [ ] 3.4 Klick-Anleitung aus design.md Abschnitt 10 in die PR-Beschreibung, Lint im Prototyp und Worker, zum
   Schluss alle Abnahmetests – Prüfung: `npm --prefix spikes/ux-prototyp-2 run lint`, `uv run ruff check worker`,

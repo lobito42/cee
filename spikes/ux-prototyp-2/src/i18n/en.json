@@ -529,13 +529,13 @@
         "verwerfen": "Discard an element (undo brings it back). Example: {\"element\": \"S1\"}"
       },
       "skizze": {
-        "anlegen": "Creates a sketch on a plane",
-        "linie": "Draws a line in a sketch (u1, v1, u2, v2)",
-        "rechteck": "Draws a rectangle in a sketch (two corners)",
-        "kreis": "Draws a circle in a sketch (centre u, v, diameter d)"
+        "anlegen": "Skizze auf einer Ebene anlegen (Ebene eines Koordinatensystems <ID>.xy/.yz/.zx oder Ebenen-Element <ID>.plane); Skizzenkoordinaten u entlang x_direction, v quer dazu. Beispiel: {\"ebene\": \"K0.xy\"}",
+        "linie": "Linie in einer Skizze von (u1, v1) nach (u2, v2); gleiche Endpunkte schließen einen Linienzug zum Bereich. Beispiel: {\"skizze\": \"SK1.sketch\", \"u1\": \"0 mm\", \"v1\": \"0 mm\", \"u2\": \"40 mm\", \"v2\": \"0 mm\"}",
+        "rechteck": "Rechteck in einer Skizze über zwei gegenüberliegende Ecken (u1, v1) und (u2, v2); das Ergebnis nennt die Bereiche der Skizze. Beispiel: {\"skizze\": \"SK1.sketch\", \"u1\": \"-30 mm\", \"v1\": \"-20 mm\", \"u2\": \"30 mm\", \"v2\": \"20 mm\"}",
+        "kreis": "Kreis in einer Skizze mit Mittelpunkt (u, v) und Durchmesser d; liegt er in einem Rechteck, wird er dort zum Loch. Beispiel: {\"skizze\": \"SK1.sketch\", \"u\": \"20 mm\", \"v\": \"4 mm\", \"d\": \"6.6 mm\"}"
       },
       "koerper": {
-        "hochziehen": "Extrudes the sketch region at (punkt_u, punkt_v) by hoehe"
+        "hochziehen": "Bereich einer Skizze, der den Punkt (punkt_u, punkt_v) enthält, um hoehe entlang der Ebenen-Normale zum Körper hochziehen (negativ: Gegenrichtung); den Punkt aus `bereiche` des Skizzen-Ergebnisses nehmen. Beispiel: {\"skizze\": \"SK1.sketch\", \"punkt_u\": \"0 mm\", \"punkt_v\": \"-10 mm\", \"hoehe\": \"8 mm\"}"
       }
     },
     "kopf": {
