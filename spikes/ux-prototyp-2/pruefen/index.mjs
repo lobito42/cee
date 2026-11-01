@@ -12,6 +12,7 @@ import { datenBefehle } from './daten.mjs';
 import { drahtmodellBefehle } from './drahtmodell.mjs';
 import { fensterBefehle } from './fenster.mjs';
 import { katalogBefehle } from './katalog.mjs';
+import { kiBefehle } from './ki.mjs';
 import { menueBefehle } from './menue.mjs';
 import { messBefehle } from './messen.mjs';
 import { modellBefehle } from './modell.mjs';
@@ -48,6 +49,7 @@ const BEFEHLE = {
   ...katalogBefehle,
   ...menueBefehle,
   ...drahtmodellBefehle,
+  ...kiBefehle,
 };
 
 const { befehl, optionen, alle, positionen } = argumente(process.argv.slice(2));
@@ -60,6 +62,8 @@ if (!befehl || !BEFEHLE[befehl]) {
 
 // Wireframe-Basics (ap-50): Brücke zum Geometrie-Worker nur für `drahtmodell`, außer mit `--ohne-bruecke`.
 if (befehl === 'drahtmodell' && !('ohne-bruecke' in optionen)) process.env.CEE_BRUECKE = 'pruefen';
+// KI-Konstruktion (ap-52): Brücke mit Worker und KI-Anbietern; Umgebungsvariablen CEE_KI_* gehen durch.
+if (befehl === 'ki') process.env.CEE_BRUECKE = 'pruefen';
 
 const PORT_DRAHT = Number(process.env.CEE_PORT_DRAHT ?? 41750);
 
