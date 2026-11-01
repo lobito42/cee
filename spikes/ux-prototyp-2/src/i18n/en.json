@@ -155,7 +155,16 @@
     "z": "z",
     "rx": "Rotation x",
     "ry": "Rotation y",
-    "rz": "Rotation z"
+    "rz": "Rotation z",
+    "u1": "u start",
+    "v1": "v start",
+    "u2": "u end",
+    "v2": "v end",
+    "u": "u centre",
+    "v": "v centre",
+    "d": "Diameter",
+    "punkt_u": "Region u",
+    "punkt_v": "Region v"
   },
   "projektion": {
     "orthogonal": "orthographic",
@@ -504,11 +513,15 @@
   },
   "ki": {
     "werkzeug": {
-      "skizze.anlegen": "Creates a sketch on a plane",
-      "skizze.linie": "Draws a line in a sketch (u1, v1, u2, v2)",
-      "skizze.rechteck": "Draws a rectangle in a sketch (two corners)",
-      "skizze.kreis": "Draws a circle in a sketch (centre u, v, diameter d)",
-      "koerper.hochziehen": "Extrudes the sketch region at (punkt_u, punkt_v) by hoehe"
+      "skizze": {
+        "anlegen": "Creates a sketch on a plane",
+        "linie": "Draws a line in a sketch (u1, v1, u2, v2)",
+        "rechteck": "Draws a rectangle in a sketch (two corners)",
+        "kreis": "Draws a circle in a sketch (centre u, v, diameter d)"
+      },
+      "koerper": {
+        "hochziehen": "Extrudes the sketch region at (punkt_u, punkt_v) by hoehe"
+      }
     }
   },
   "skizze": {

@@ -22,27 +22,34 @@ const kanon = (x) =>
   );
 const hash = (x) => createHash('sha256').update(kanon(x)).digest('hex');
 
-async function warteBereit(seite, ms = 15000) {
+export async function warteBereit(seite, ms = 15000) {
   await seite
-    .waitForFunction(() => window.__cee.draht().bereit, null, { polling: 10, timeout: ms })
+    .waitForFunction(
+      () => (window.__cee.draht_bereit ? window.__cee.draht_bereit() : window.__cee.draht().bereit),
+      null,
+      { polling: 10, timeout: ms },
+    )
     .catch(() => undefined);
   await zeichnen(seite);
 }
 
 /** Elementverweis: ID oder `<typ>#<n>` (n-tes Wurzelelement dieses Typs, 1-basiert). */
-async function aufloesen(seite, verweis) {
-  const m = /^([a-z]+)#(\d+)$/.exec(verweis);
+export async function aufloesen(seite, verweis) {
+  // `<typ>#<n>` bzw. `<typ>#<n>><kindtyp>#<m>` (ap-53, design.md 7a)
+  const m = /^([a-z_]+)#(\d+)(?:>([a-z_]+)#(\d+))?$/.exec(verweis ?? '');
   if (!m) return verweis;
   return seite.evaluate(
-    ([typ, n]) => {
+    ([typ, n, kind, k]) => {
       const wurzeln = window.__cee.draht().graph.filter((e) => e.type === typ);
-      return wurzeln[n - 1]?.id ?? null;
+      const w = wurzeln[n - 1];
+      if (!w || !kind) return w?.id ?? null;
+      return w.content.filter((e) => e.type === kind)[k - 1]?.id ?? null;
     },
-    [m[1], Number(m[2])],
+    [m[1], Number(m[2]), m[3] ?? null, Number(m[4] ?? 0)],
   );
 }
 
-async function imModell(seite, p) {
+export async function imModell(seite, p) {
   if (!p) return false;
   return seite.evaluate(({ x, y }) => {
     const c = document.querySelector('[data-zone="modell"] canvas');
@@ -56,7 +63,7 @@ async function imModell(seite, p) {
 }
 
 /** Bildschirmpunkt für einen Klick; liegt er außerhalb, wird die Ansicht eingepasst (wie von Hand gezoomt). */
-async function zielPunkt(seite, klick) {
+export async function zielPunkt(seite, klick) {
   const lesen = async () => {
     if (klick.modell_mm)
       return seite.evaluate((p) => window.__cee.draht_projiziere(p), klick.modell_mm);
@@ -75,7 +82,7 @@ async function zielPunkt(seite, klick) {
   return p;
 }
 
-async function befehlAusloesen(o, l, schritt) {
+export async function befehlAusloesen(o, l, schritt) {
   const s = o.seite;
   const id = schritt.befehl;
   if (schritt.args) {
@@ -146,7 +153,7 @@ async function schrittAusfuehren(o, l, schritt, basis) {
   throw new Error(`unbekannter Schritt: ${JSON.stringify(schritt)}`);
 }
 
-async function schnappschuss(seite, extra) {
+export async function schnappschuss(seite, extra) {
   const d = await seite.evaluate(() => window.__cee.draht());
   const struktur = (await lies.struktur(seite)).map((z) => ({
     id: z.id,

@@ -217,11 +217,18 @@ export class Fenster {
     d.anstossen();
     // Skizze und Hochziehen (ap-53)
     const sk = this.app.skizze;
-    const zeichnung = sk.zeichnung();
-    const sig = JSON.stringify([zeichnung, this.app.thema]);
+    // Günstige Signatur (ohne Netzdaten): neu zeichnen nur, wenn sich Ergebnis oder Bedienzustand ändert
+    const sig = JSON.stringify([
+      this.app.draht.ergebnisSchluessel.length,
+      this.app.draht.ergebnis?.results.map((r) => r.hash),
+      this.app.thema,
+      this.app.auswahlIds(),
+      [...this.app.ausgeblendet],
+      sk.signatur(),
+    ]);
     if (sig !== this.skizzenSignatur) {
       this.skizzenSignatur = sig;
-      this.szene.zeichneSkizze(zeichnung);
+      this.szene.zeichneSkizze(sk.zeichnung());
       if (sk.hoverSeit !== null && sk.hover) {
         const seit = sk.hoverSeit;
         requestAnimationFrame(() => {

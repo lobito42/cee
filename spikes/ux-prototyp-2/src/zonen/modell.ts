@@ -40,7 +40,11 @@ export const BEFEHL_SYMBOL: Record<string, Symbolname> = {
 /** Hülle eines Elements in Bildschirmkoordinaten (konvex), oder null. */
 export function huelleBildschirm(app: App, id: string): Punkt[] | null {
   const e = app.find(id);
-  if (e?.type === 'extrude' || e?.type === 'sketch') {
+  if (e?.type === 'sketch') {
+    const pts = app.skizze.skizzeBildschirm(id);
+    return pts.length ? konvexeHuelle(pts) : null;
+  }
+  if (e?.type === 'extrude') {
     const s = app.draht.szene().find((x) => x.element === id);
     const l = s?.lage_mm as {
       min?: [number, number, number];

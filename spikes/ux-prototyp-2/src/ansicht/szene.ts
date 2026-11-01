@@ -6,6 +6,7 @@ import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry.js';
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js';
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
 import { acceleratedRaycast, computeBoundsTree, disposeBoundsTree } from 'three-mesh-bvh';
+import { ViewportGizmo } from 'three-viewport-gizmo';
 import { tokens } from '../erzeugt/tokens';
 
 // Strahltests über eine BVH (three-mesh-bvh, MIT): Körpernetze der Skizzen-Körper (ap-53)
@@ -182,6 +183,16 @@ export class Szene {
     this.licht.gegen.position.set(2, 1, 1);
     if (this.zeichnung) this.zeichne(this.zeichnung);
     this.anfordern();
+  }
+
+  /** Lage der Leinwand im Fenster, je synchronem Ablauf einmal gemessen (vermeidet erzwungene Layouts). */
+  private rechteckCache: DOMRect | null = null;
+  rechteck(): DOMRect {
+    if (!this.rechteckCache) {
+      this.rechteckCache = this.canvas.getBoundingClientRect();
+      queueMicrotask(() => (this.rechteckCache = null));
+    }
+    return this.rechteckCache;
   }
 
   groesseAnpassen(): void {
@@ -539,6 +550,8 @@ export class Szene {
 
   /** Globale Achsen nur im Drahtmodell-Dokument zeigen (Teil-Dokumente haben ihre eigene Orientierung). */
   zeigeWeltachsen(an: boolean): void {
+    const we = this.wuerfelEl();
+    if (we) we.style.display = an ? '' : 'none';
     if (this.weltAchsen.visible === an) return;
     this.weltAchsen.visible = an;
     this.anfordern();
@@ -674,7 +687,7 @@ export class Szene {
   // --- Abfragen -----------------------------------------------------------------------------------
 
   private zuNdc(clientX: number, clientY: number): THREE.Vector2 {
-    const r = this.canvas.getBoundingClientRect();
+    const r = this.rechteck();
     return new THREE.Vector2(
       ((clientX - r.left) / r.width) * 2 - 1,
       -((clientY - r.top) / r.height) * 2 + 1,
@@ -697,12 +710,18 @@ export class Szene {
     };
   }
 
+  /** Tiefe eines Weltpunkts im Bild (0 vorn … 1 hinten). */
+  tiefe(p: V3): number {
+    const v = new THREE.Vector3(p[0], p[1], p[2]).project(this.kameraAnwenden());
+    return (v.z + 1) / 2;
+  }
+
   projiziere(p: V3 | THREE.Vector3): Punkt {
     const cam = this.kameraAnwenden();
     const v = (
       p instanceof THREE.Vector3 ? p.clone() : new THREE.Vector3(p[0], p[1], p[2])
     ).project(cam);
-    const r = this.canvas.getBoundingClientRect();
+    const r = this.rechteck();
     return { x: r.left + ((v.x + 1) / 2) * r.width, y: r.top + ((1 - v.y) / 2) * r.height };
   }
 
@@ -799,6 +818,87 @@ export class Szene {
     const h = this.flaecheHoehe();
     for (const m of this.linienMaterialien) m.resolution.set(b, h);
     this.renderer.render(this.scene, cam);
+    if (this.wuerfel && this.weltAchsen.visible) {
+      this.wuerfel.camera = cam as THREE.OrthographicCamera;
+      this.wuerfel.target.copy(this.kamera.ziel);
+      this.wuerfelSetzt = true;
+      this.wuerfel.cameraUpdate();
+      this.wuerfelSetzt = false;
+      this.wuerfel.render();
+    }
+  }
+
+  // --- Ansichtswürfel (three-viewport-gizmo, MIT) ---------------------------------------------------
+
+  private wuerfel: ViewportGizmo | null = null;
+  private wuerfelSetzt = false;
+  private wuerfelEl(): HTMLElement | null {
+    return this.zone.querySelector<HTMLElement>('.ansichtswuerfel');
+  }
+  /** Klick auf eine Seite bzw. Ecke: Blickrichtung (Kamera → Ziel) an den Aufrufer. */
+  beiWuerfel: ((richtung: V3) => void) | null = null;
+
+  /** Ansichtswürfel oben rechts im Modell (nur mit Weltachsen: Drahtmodell- und Skizzen-Dokument). */
+  wuerfelAnlegen(): void {
+    if (this.wuerfel) return;
+    const g = new ViewportGizmo(this.kameraAnwenden() as THREE.OrthographicCamera, this.renderer, {
+      container: this.zone,
+      type: 'cube',
+      size: 112,
+      placement: 'top-right',
+      offset: { top: 56, right: 12 },
+      animated: false,
+      className: 'ansichtswuerfel',
+    });
+    const el = this.wuerfelEl();
+    if (el) {
+      el.dataset.ansichtswuerfel = '';
+      el.dataset.chrome = '';
+    }
+    g.addEventListener('change', () => {
+      if (this.wuerfelSetzt) return;
+      const d = new THREE.Vector3();
+      g.camera.getWorldDirection(d);
+      this.beiWuerfel?.([d.x, d.y, d.z]);
+    });
+    this.wuerfel = g;
+    this.anfordern();
+  }
+
+  /** Bildschirmpunkt einer Seite („vorne“, „oben“ …) bzw. Ecke („vorne-rechts-oben“) des Würfels. */
+  wuerfelPunkt(name: string): Punkt | null {
+    const g = this.wuerfel;
+    if (!g || !this.weltAchsen.visible) return null;
+    const teile: Record<string, V3> = {
+      vorne: [0, -1, 0],
+      hinten: [0, 1, 0],
+      rechts: [1, 0, 0],
+      links: [-1, 0, 0],
+      oben: [0, 0, 1],
+      unten: [0, 0, -1],
+    };
+    const d = new THREE.Vector3();
+    for (const t of name.split('-')) {
+      const v = teile[t];
+      if (v) d.add(new THREE.Vector3(...v));
+    }
+    if (d.lengthSq() === 0) return null;
+    const el = this.wuerfelEl();
+    if (!el) return null;
+    const r = el.getBoundingClientRect();
+    const cam = this.kameraAnwenden();
+    const rechts = new THREE.Vector3().setFromMatrixColumn(cam.matrixWorld, 0);
+    const oben = new THREE.Vector3().setFromMatrixColumn(cam.matrixWorld, 1);
+    // Würfel mit Kantenlänge ≈ 0,5 der Widgetgröße; Seite bzw. Ecke liegt bei d · 0,25 (Seite) bzw. 0,22 (Ecke)
+    // gemessen: Würfelkante bei ≈ 0,35 der Widgetbreite; Seite mittig (0,2), Seite auf Kante gesehen am Rand (0,34), Ecke 0,36
+    const blick = new THREE.Vector3();
+    cam.getWorldDirection(blick);
+    const kante = Math.abs(d.clone().normalize().dot(blick)) < 0.3;
+    const f = (name.includes('-') ? 0.3 : kante ? 0.34 : 0.2) * r.width;
+    return {
+      x: r.left + r.width / 2 + d.dot(rechts) * f,
+      y: r.top + r.height / 2 - d.dot(oben) * f,
+    };
   }
 
   // --- Skizze und Körper (ap-53) ------------------------------------------------------------------
@@ -878,18 +978,44 @@ export class Szene {
     return new THREE.Color(tokens[schluessel as 'farbe.hell.text']);
   }
 
-  zeichneSkizze(z: SkizzenZeichnung): void {
-    for (const k of [...this.skizzen.children]) {
-      this.skizzen.remove(k);
+  private koerperGruppe = new THREE.Group();
+  private koerperSignatur = '';
+  private koerperLinien: LineMaterial[] = [];
+
+  private leeren(g: THREE.Group): void {
+    for (const k of [...g.children]) {
+      g.remove(k);
       k.traverse((o) => {
         const m = o as THREE.Mesh;
+        m.geometry?.disposeBoundsTree?.();
         m.geometry?.dispose();
         (m.material as THREE.Material | undefined)?.dispose?.();
       });
     }
-    this.linienMaterialien = [];
-    this.koerperNetze = [];
+  }
+
+  zeichneSkizze(z: SkizzenZeichnung): void {
+    if (!this.koerperGruppe.parent) this.scene.add(this.koerperGruppe);
+    this.leeren(this.skizzen);
     const akzent = this.farbe('akzent');
+    // Körper nur neu bauen, wenn sie sich ändern (Netz, BVH): beim Ziehen bleibt nur die Vorschau dynamisch
+    const sig = JSON.stringify([
+      this.thema,
+      z.koerper.map((k) => [k.element, k.positionen.length, k.positionen.slice(0, 6), k.gewaehlt]),
+    ]);
+    if (sig !== this.koerperSignatur) {
+      this.koerperSignatur = sig;
+      this.leeren(this.koerperGruppe);
+      this.koerperNetze = [];
+      this.linienMaterialien = [];
+      this.zeichneKoerper(z, akzent);
+      this.koerperLinien = this.linienMaterialien;
+    }
+    this.linienMaterialien = [...this.koerperLinien];
+    this.zeichneRest(z, akzent);
+  }
+
+  private zeichneKoerper(z: SkizzenZeichnung, akzent: THREE.Color): void {
     for (const k of z.koerper) {
       const geo = new THREE.BufferGeometry();
       geo.setAttribute('position', new THREE.Float32BufferAttribute(k.positionen, 3));
@@ -907,14 +1033,17 @@ export class Szene {
       );
       mesh.userData.elementId = k.element;
       this.koerperNetze.push(mesh);
-      this.skizzen.add(mesh);
+      this.koerperGruppe.add(mesh);
       // Auswahl nur über die Farbe: gleiche Kantenbreite, Akzent statt Text
       for (const l of this.linie(k.kanten, k.gewaehlt ? akzent : this.farbe('normal'), KANTE_PX)) {
         l.material.depthTest = true;
         l.userData.elementId = k.element;
-        this.skizzen.add(l);
+        this.koerperGruppe.add(l);
       }
     }
+  }
+
+  private zeichneRest(z: SkizzenZeichnung, akzent: THREE.Color): void {
     for (const b of z.bereiche) {
       if (b.dreiecke.length) {
         const geo = new THREE.BufferGeometry().setFromPoints(
@@ -982,8 +1111,12 @@ export class Szene {
     ray.firstHitOnly = true;
     ray.setFromCamera(this.zuNdc(clientX, clientY), cam);
     const t = ray.intersectObjects(this.koerperNetze, false)[0];
+    this.letzterKoerperTreffer = t ? [t.point.x, t.point.y, t.point.z] : null;
     return t ? String(t.object.userData.elementId) : null;
   }
+
+  /** Weltpunkt des letzten Körpertreffers (für den Vergleich mit Bereichen auf Flächen). */
+  letzterKoerperTreffer: V3 | null = null;
 
   /** Strahltest-Messung (ms je Strahl) auf einem Testnetz mit `n` Dreiecken. */
   messeStrahl(n: number, positionen: [number, number][]): number[] {

@@ -469,7 +469,7 @@ export class Skizze {
       return true;
     }
     if (this.offen) return false;
-    const k = this.app.szene?.koerperBei(x, y);
+    const k = this.vorderererKoerper(x, y);
     if (k) {
       this.bereichWahl = null;
       this.app.waehle(k, 'setzen');
@@ -488,6 +488,19 @@ export class Skizze {
     }
     this.bereichWahl = null;
     return false;
+  }
+
+  /** Körper unter dem Zeiger, sofern kein Bereich auf oder vor seiner Oberfläche liegt. */
+  private vorderererKoerper(x: number, y: number): string | null {
+    const sz = this.app.szene;
+    const k = sz?.koerperBei(x, y) ?? null;
+    const hit = sz?.letzterKoerperTreffer;
+    if (!k || !sz || !hit) return k;
+    const b = this.bereichBei(x, y);
+    const e = b ? this.ebeneDerSkizze(b.skizze) : null;
+    const p = e ? sz.aufEbene(x, y, e.o, e.n) : null;
+    if (p && sz.tiefe(p) <= sz.tiefe(hit) + 1e-5) return null;
+    return k;
   }
 
   private klickUv(sk: string, x: number, y: number): UV | null {
@@ -514,6 +527,8 @@ export class Skizze {
       const uv = e ? this.uvAusBildschirm(e, x, y) : null;
       if (!uv) continue;
       const r = FANG_PX / this.pxProMm();
+      // leere Skizze: am Ursprung ihrer Ebene greifbar
+      if (!s.content.length && Math.hypot(uv[0], uv[1]) <= 2 * r) return s.id;
       for (const k of s.content) {
         const zuege = this.kurvenZuegeUv(k);
         for (const z of zuege)
@@ -714,6 +729,51 @@ export class Skizze {
     return this.bereiche().find((b) => b.element === w.element) ?? null;
   }
 
+  /** Bedienzustand, der die Zeichnung ändert (für die Zeichen-Signatur). */
+  signatur(): string {
+    return JSON.stringify([
+      this.offen,
+      this.werkzeug,
+      this.start,
+      this.zeigerUv,
+      this.fang,
+      this.hover,
+      this.bereichWahl?.element ?? null,
+      this.hoch ? [this.hoch.skizze, this.hoch.punkt, this.hoch.hoehe] : null,
+      this.app.szene?.pxProMm() ?? 0,
+    ]);
+  }
+
+  /** Sichtbarer Bildschirmpunkt eines Körpers: erster Rasterpunkt der Bildhülle, an dem der Strahl ihn trifft. */
+  koerperBildschirm(id: string): { x: number; y: number } | null {
+    const sz = this.app.szene;
+    const l = this.app.draht.szene().find((s) => s.element === id)?.lage_mm as
+      { min?: V3; max?: V3 } | null | undefined;
+    if (!sz || !l?.min || !l.max) return null;
+    const ecken = sz.eckenProjiziert({ min: l.min, max: l.max });
+    const xs = ecken.map((p) => p.x);
+    const ys = ecken.map((p) => p.y);
+    const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+    const mx = (x0 + x1) / 2;
+    const my = (y0 + y1) / 2;
+    const punkte: { x: number; y: number }[] = [];
+    for (let i = 0; i <= 12; i++)
+      for (let j = 0; j <= 12; j++)
+        punkte.push({ x: x0 + ((x1 - x0) * i) / 12, y: y0 + ((y1 - y0) * j) / 12 });
+    punkte.sort((a, b) => Math.hypot(a.x - mx, a.y - my) - Math.hypot(b.x - mx, b.y - my));
+    return punkte.find((p) => sz.koerperBei(p.x, p.y) === id) ?? null;
+  }
+
+  /** Bildschirmpunkte einer Skizze (Kurven, sonst Ursprung der Ebene) für Kontur und Kontextleiste. */
+  skizzeBildschirm(id: string): { x: number; y: number }[] {
+    const s = this.app.find(id);
+    const e = this.ebeneDerSkizze(id);
+    const sz = this.app.szene;
+    if (!s || !e || !sz) return [];
+    const uv = s.content.flatMap((k) => this.kurvenZuegeUv(k).flat());
+    return (uv.length ? uv : [[0, 0] as UV]).map((p) => sz.projiziere(this.welt(e, p)));
+  }
+
   /** Bildschirmhülle des gewählten Bereichs (für die Kontextleiste). */
   bereichBildschirm(): { x: number; y: number }[] | null {
     const b = this.gewaehlterBereich();
@@ -872,6 +932,23 @@ export class Skizze {
   griffAnbinden(): void {
     const sz = this.app.szene;
     if (!sz) return;
+    // Ansichtswürfel: Klick auf Seite/Ecke ruft den passenden Ansichtsbefehl (eine Wirkung im Register)
+    sz.wuerfelAnlegen();
+    sz.beiWuerfel = (d) => {
+      const hoehe = (Math.asin(Math.max(-1, Math.min(1, -d[2]))) * 180) / Math.PI;
+      const azimut = (Math.atan2(-d[0], d[1]) * 180) / Math.PI;
+      const befehl =
+        hoehe > 40
+          ? 'ansicht.oben'
+          : Math.abs(hoehe) < 5 && Math.abs(azimut) < 5
+            ? 'ansicht.vorne'
+            : Math.abs(hoehe) >= 5
+              ? 'ansicht.isometrisch'
+              : null;
+      if (befehl) this.app.ausfuehren(befehl, {}, 'ansichtsleiste' as never);
+      else sz.nach({ azimut, hoehe }, 0);
+      this.app.rendern();
+    };
     const g = sz.griffErzeugen();
     g.addEventListener('mouseDown', () => {
       const lage = this.griffLage();
@@ -896,7 +973,8 @@ export class Skizze {
       const lage = this.griffLage();
       if (!h || !lage || !this.ziehStart) return;
       const d = sz.griffObjekt.position.clone().sub(this.ziehStart);
-      h.hoehe = rund(h.basis + d.dot(new THREE.Vector3(...lage.n)));
+      // Ziehen rastet auf 0,5 mm; genaue Werte tippt man
+      h.hoehe = Math.round((h.basis + d.dot(new THREE.Vector3(...lage.n))) * 2) / 2;
       h.text = '';
       this.app.rendern();
     });

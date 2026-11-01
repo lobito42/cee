@@ -185,8 +185,16 @@ export class Draht {
     return this.graph().length > 0;
   }
 
+  private schluesselCache: { dok: Element; wert: string } | null = null;
+
+  /** Kanonischer Graph; je synchronem Ablauf und Dokumentstand einmal berechnet (Rendern fragt je Zeile). */
   schluessel(): string {
-    return kanon(this.graph().map(elementform));
+    const dok = this.app.dokument();
+    if (this.schluesselCache?.dok !== dok) {
+      this.schluesselCache = { dok, wert: kanon(this.graph().map(elementform)) };
+      queueMicrotask(() => (this.schluesselCache = null));
+    }
+    return this.schluesselCache.wert;
   }
 
   /** Neues Ergebnis anfordern, wenn sich der Graph geändert hat (höchstens eine Anfrage je Stand). */
@@ -348,9 +356,22 @@ export class Draht {
   }
 
   /** Elemente in der Szene: alle nicht verworfenen mit Ergebnis; neue ohne Ergebnis fehlen noch. */
+  /** Zwischenspeicher für einen synchronen Ablauf (ein Rendern ruft Szene und Zeichnung oft auf). */
+  private szeneCache: { schluessel: unknown[]; wert: SzenenObjekt[] } | null = null;
+
   szene(): SzenenObjekt[] {
     if (!this.ergebnis) return [];
+    const merk = [
+      this.app.dokument(),
+      this.ergebnis,
+      [...this.app.ausgeblendet].join(','),
+      this.app.isoliert,
+      this.app.aktiv,
+    ];
+    if (this.szeneCache && this.szeneCache.schluessel.every((x, i) => x === merk[i]))
+      return this.szeneCache.wert;
     const bekannt = new Set(this.ergebnis.results.map((r) => r.id));
+    const versteckt = this.app.versteckteIds();
     const aus: SzenenObjekt[] = [];
     for (const e of alleElemente(this.app.dokument())) {
       if (!istDrahtTyp(e.type) || istVerworfen(e) || !bekannt.has(e.id)) continue;
@@ -358,10 +379,12 @@ export class Draht {
       aus.push({
         element: e.id,
         art: this.artVon(e),
-        sichtbar: !this.app.istAusgeblendet(e.id) && !this.app.versteckteIds().has(e.id),
+        sichtbar: !this.app.istAusgeblendet(e.id) && !versteckt.has(e.id),
         lage_mm: this.lage(e),
       });
     }
+    this.szeneCache = { schluessel: merk, wert: aus };
+    queueMicrotask(() => (this.szeneCache = null));
     return aus;
   }
 
@@ -479,11 +502,29 @@ export class Draht {
     const e = finde(this.app.dokument(), id);
     const sz = this.app.szene;
     if (!e || !sz) return null;
+    if (e.type === 'extrude') return this.app.skizze.koerperBildschirm(id);
     const g = this.geometrie(e);
     if (!g || !g.length) return null;
     let p: V3 = g[0] as V3;
-    if (e.type === 'plane') p = anker === 'ecke' ? (g[2] as V3) : this.mitte(g);
-    else if (e.type === 'segment' || e.type === 'axis') {
+    if (e.type === 'plane') {
+      // ohne Anker: Punkt im Inneren abseits von Ursprung und Achsen (halb zur Ecke), damit der Klick die Ebene trifft
+      const m = this.mitte(g);
+      p =
+        anker === 'ecke'
+          ? (g[2] as V3)
+          : anker === 'mitte'
+            ? m
+            : plus(m, minus(g[2] as V3, m), 0.5);
+      if (!anker) {
+        // erste Stelle im Inneren, an der ein Klick genau diese Ebene trifft (nicht verdeckt)
+        for (const ecke of [2, 0, 1, 3])
+          for (const f of [0.5, 0.75, 0.3]) {
+            const q = plus(m, minus(g[ecke] as V3, m), f);
+            const s = sz.projiziere(q);
+            if (this.treffer(s.x, s.y) === id && !sz.koerperBei(s.x, s.y)) return s;
+          }
+      }
+    } else if (e.type === 'segment' || e.type === 'axis') {
       p = anker === 'mitte' || !anker ? this.mitte(g) : (g[0] as V3);
       if (e.type === 'segment' && !anker) p = this.mitte(g);
     } else if (e.type === 'line' || e.type === 'ray') {
@@ -519,7 +560,14 @@ export class Draht {
         rang = 2;
         for (let i = 0; i < s.length; i++)
           d = Math.min(d, abstandStrecke(x, y, s[i] as Pt, s[(i + 1) % s.length] as Pt));
-        if (d > FANG_PX && innen(x, y, s)) d = FANG_PX - 0.01;
+        if (d > FANG_PX && innen(x, y, s)) {
+          // im Inneren: die vorderste Ebene gewinnt (Tiefe des Schnittpunkts, 0 … 1)
+          const o = this.haupt(e);
+          const p = o ? vec(o.origin) : null;
+          const n = o ? vec(o.normal) : null;
+          const hit = p && n ? sz.aufEbene(x, y, p, n) : null;
+          d = FANG_PX - 0.01 - (hit ? 0.005 * (1 - sz.tiefe(hit)) : 0);
+        }
       } else d = abstandStrecke(x, y, s[0] as Pt, s[1] as Pt);
       if (d > FANG_PX) continue;
       if (!beste || rang < beste.rang || (rang === beste.rang && d < beste.d))

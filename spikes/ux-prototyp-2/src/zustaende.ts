@@ -160,8 +160,18 @@ export function anwenden(name: string, app: App): { gezeigt: string; danach?: ()
     dok.meta.name = 'Skizze';
     app.projekt = p;
     app.dok = 'skizze';
+    // Struktur eingeklappt: das Modell ist breit genug für ±100 mm bei 5 px/mm (design.md Abschnitt 5)
+    app.zonen.struktur = false;
     app.draht.einpassen = name !== 'skizze-leer';
-    return { gezeigt: name };
+    // Halter: etwas steiler von oben, damit der Steg die Bereiche der Grundplatte nicht verdeckt
+    const danach =
+      name === 'skizze-halter'
+        ? () => {
+            if (app.szene) app.szene.kamera.hoehe = 50;
+            app.rendern();
+          }
+        : undefined;
+    return { gezeigt: name, danach };
   }
   if ((DRAHT_ZUSTAENDE as readonly string[]).includes(name)) {
     const inhalt =

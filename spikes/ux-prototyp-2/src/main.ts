@@ -316,6 +316,26 @@ async function start(): Promise<void> {
       },
       skizze_bildschirm: (id: string, uv: [number, number]) => app.skizze.bildschirm(id, uv),
       skizze_messen: (n: number, pos: [number, number][]) => app.szene?.messeStrahl(n, pos) ?? [],
+      /** Element wählen wie per Klick in der Struktur (Prüfschritte mit `element`). */
+      skizze_waehlen: (id: string) => {
+        app.skizze.bereichWahl = null;
+        app.waehle(id, 'setzen');
+        app.rendernSofort();
+      },
+      skizze_hover_ms: () => app.skizze.hoverMs,
+      draht_bereit: () => app.draht.bereit(),
+      /** Ansicht verschieben (Maßstab bleibt), bis der Skizzenpunkt in der Mitte liegt – wie Verschieben von Hand. */
+      skizze_zeigen: (id: string, uv: [number, number]) => {
+        const sz = app.szene;
+        const e = app.skizze.ebeneDerSkizze(id);
+        if (!sz || !e) return;
+        const p = app.skizze.welt(e, uv);
+        const q = sz.projiziere(p);
+        const r = sz.canvas.getBoundingClientRect();
+        sz.schieben(r.left + r.width / 2 - q.x, r.top + r.height / 2 - q.y);
+        app.rendernSofort();
+      },
+      wuerfel_punkt: (s: string) => app.szene?.wuerfelPunkt(s) ?? null,
     }),
   });
 

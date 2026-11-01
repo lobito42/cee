@@ -10,6 +10,7 @@ import { auswahlBefehle } from './auswahl.mjs';
 import { basisBefehle } from './basis.mjs';
 import { datenBefehle } from './daten.mjs';
 import { drahtmodellBefehle } from './drahtmodell.mjs';
+import { skizzeBefehle } from './skizze.mjs';
 import { fensterBefehle } from './fenster.mjs';
 import { katalogBefehle } from './katalog.mjs';
 import { menueBefehle } from './menue.mjs';
@@ -48,6 +49,7 @@ const BEFEHLE = {
   ...katalogBefehle,
   ...menueBefehle,
   ...drahtmodellBefehle,
+  ...skizzeBefehle,
 };
 
 const { befehl, optionen, alle, positionen } = argumente(process.argv.slice(2));
@@ -59,7 +61,8 @@ if (!befehl || !BEFEHLE[befehl]) {
 }
 
 // Wireframe-Basics (ap-50): Brücke zum Geometrie-Worker nur für `drahtmodell`, außer mit `--ohne-bruecke`.
-if (befehl === 'drahtmodell' && !('ohne-bruecke' in optionen)) process.env.CEE_BRUECKE = 'pruefen';
+if ((befehl === 'drahtmodell' || befehl === 'skizze') && !('ohne-bruecke' in optionen))
+  process.env.CEE_BRUECKE = 'pruefen';
 
 const PORT_DRAHT = Number(process.env.CEE_PORT_DRAHT ?? 41750);
 
@@ -67,7 +70,7 @@ const server = await preview({
   root: WURZEL,
   // Drahtmodell: fester Port, damit Vorschau und Brücke in jedem Lauf denselben Ursprung haben (ap-50)
   preview:
-    befehl === 'drahtmodell'
+    befehl === 'drahtmodell' || befehl === 'skizze'
       ? { port: PORT_DRAHT, strictPort: true, host: '127.0.0.1', open: false }
       : { port: 0, host: '127.0.0.1', open: false },
 });
