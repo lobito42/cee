@@ -1219,7 +1219,8 @@ h3 {
 
 .werkzeugleiste kbd {
   color: var(--farbe-text-3);
-  font-size: var(--schrift-groesse-klein);
+  font: var(--schrift-schnitt-normal) var(--schrift-groesse-klein) / var(--schrift-zeilenhoehe)
+    var(--schrift-familie-ui);
 }
 
 .wertfeld-zeiger,
@@ -1231,7 +1232,8 @@ h3 {
   border: var(--linie-breite) solid var(--farbe-akzent);
   border-radius: var(--radius-klein);
   white-space: nowrap;
-  font-size: var(--schrift-groesse-klein);
+  font: var(--schrift-schnitt-normal) var(--schrift-groesse-klein) / var(--schrift-zeilenhoehe)
+    var(--schrift-familie-ui);
 }
 
 .wertfeld-zeiger {
