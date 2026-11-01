@@ -87,9 +87,13 @@ Sagt der Mensch „nur Satzerkennung“, entfällt nur der optionale Teil der Kl
 
 ### 2. Werkzeugliste aus dem Befehlsregister
 
-- Ein Befehl wird Werkzeug, wenn er in `src/befehle.json` das Feld `"ki": true` trägt. In dieser Stufe genau 8:
-  die sechs `referenz.*`, `element.ausblenden`, `element.verwerfen`. Kein Werkzeug ohne Befehl; kein Befehl der
-  Familie Freigabe (ADR-047, ADR-055).
+- Ein Befehl wird Werkzeug, wenn er in `src/befehle.json` das Feld `"ki": true` trägt; jeder solche Befehl ergibt
+  genau ein Werkzeug. Pflicht in dieser Stufe sind genau 8: die sechs `referenz.*`, `element.ausblenden`,
+  `element.verwerfen`. Diese Stufe gibt keinem weiteren Befehl `ki: true`. Spätere freigegebene Stufen dürfen genau
+  die Befehle mit `ki: true` anmelden, die ihre design.md nennt; bisher ist das ap-53 mit `skizze.anlegen`,
+  `skizze.linie`, `skizze.rechteck`, `skizze.kreis`, `koerper.hochziehen` (Werkzeuge `skizze_anlegen`,
+  `skizze_linie`, `skizze_rechteck`, `skizze_kreis`, `koerper_hochziehen`). Andere Werkzeuge sind nicht erlaubt. Kein
+  Werkzeug ohne Befehl; kein Befehl der Familie Freigabe (ADR-047, ADR-055).
 - Format wie MCP `tools/list`: `{name, description, inputSchema}`. `name` = Befehls-ID mit `_` statt `.` und `-`
   (`referenz.punkt-relativ` → `referenz_punkt_relativ`). `description` aus dem Übersetzungsschlüssel
   `ki.werkzeug.<id>` (de), ein Satz, dann `Beispiel: ` und genau ein JSON-Objekt mit Argumenten, z. B.
@@ -218,7 +222,7 @@ aufzeichnet.
 
 | AK | Prüft | Requirement |
 | --- | --- | --- |
-| AK-1 | Werkzeugliste: genau 8, Namen, Schema flach, Größen als String mit Einheit, je ein Beispiel, kein Werkzeug ohne Befehl | Werkzeuge aus dem Register |
+| AK-1 | Werkzeugliste: die 8 Pflichtwerkzeuge, weitere nur die 5 aus ap-53, so viele `ki: true`-Befehle wie Werkzeuge, Namen, Schema flach, Größen als String mit Einheit, je ein Beispiel, kein Werkzeug ohne Befehl | Werkzeuge aus dem Register |
 | AK-2 | Werkzeugergebnisse und strukturierte Fehler; Fehler ändert Entwurf nicht | Werkzeugergebnis und Fehler |
 | AK-3 | Prüfsatz mit `regel`: 5/5 bestanden, Prüfer im Test nachgerechnet, 3 Läufe bytegleich | Satzerkennung, Prüfsatz |
 | AK-4 | Änderungssatz: Graph unverändert bis Übernehmen, Geister, Verwerfen, Rückgängig, Urheber | Änderungssatz mit Vorschau |
