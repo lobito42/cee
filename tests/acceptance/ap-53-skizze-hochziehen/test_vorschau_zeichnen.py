@@ -63,10 +63,7 @@ def test_rechteck_mit_getipptem_mass():
     rects = neue_elemente(a.s("anfang"), ende, "sketch_rectangle")
     assert len(rects) == 1, rects
     assert _ecken(rects[0]) == {(0.0, 0.0), (60.0, 40.0)}, _ecken(rects[0])
-    assert "raster" in {a.s("r_hover")["fang"]["art"], a.s("r_klick")["fang"]["art"]}, (
-        a.s("r_hover")["fang"],
-        a.s("r_klick")["fang"],
-    )
+    assert a.s("r_klick")["fang"]["art"] == "raster", a.s("r_klick")["fang"]
     assert a.s("r_tab")["wertfeld"]["sichtbar"] is True
     assert a.s("r_tab")["wertfeld"]["feld"] == "hoehe", a.s("r_tab")["wertfeld"]
     assert a.s("r_breite")["wertfeld"]["sichtbar"] is True

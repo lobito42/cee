@@ -203,4 +203,4 @@ def test_schemas_gueltig_und_additiv():
     for o in koerper:
         assert o["netz"].get("unit") == "mm", o["netz"].keys()
         kz = o["kantenzuege"]
-        assert (kz.get("unit") if isinstance(kz, dict) else "mm") == "mm"
+        assert kz.get("unit") == "mm" and kz.get("zuege"), kz

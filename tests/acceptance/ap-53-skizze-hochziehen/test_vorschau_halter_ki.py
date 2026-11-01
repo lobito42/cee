@@ -10,6 +10,7 @@ Der Halter entsteht auf drei Wegen mit demselben Ergebnis: direkt im Worker (`sk
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -22,17 +23,18 @@ from ki_helpers import (  # noqa: E402
     karten,
     ki_pruefen,
     skript_aufrufe,
+    werkzeugnachrichten,
 )
 from skz_helpers import (  # noqa: E402
     SAblauf,
     anfang,
     ausgang,
     flach,
-    gr,
     halter_direkt,
     halter_params,
     huelle,
     kind_id,
+    mm_param,
     nahe,
     neue_elemente,
     rel,
@@ -282,7 +284,7 @@ def test_halter_ueber_den_ki_chat():
     `chat.uebernehmen` und `bearbeiten.rueckgaengig`: vor dem Übernehmen zeigt die Karte alle 9 neuen Elemente als Geister
     bei unverändertem `graph_hash`; nach Übernehmen stimmen Volumen beider Körper relativ 1e-6 mit dem direkten
     Worker-Fall, der Verlauf nennt `urheber` = `ki`; nach einem Rückgängig-Schritt ist `graph_hash` der Ausgangswert."""
-    start = KiAblauf().laufen("skizze-leer").s("anfang") if False else anfang("skizze-leer")
+    start = anfang("skizze-leer")
     k0 = wurzeln(start["graph"], "frame")[0]["id"]
     with Testmodell(skript_aufrufe(_halter_aufrufe(k0))) as tm:
         a = KiAblauf()
@@ -308,4 +310,79 @@ def test_halter_ueber_den_ki_chat():
     neu = ende["verlauf"][len(a.s("anfang")["verlauf"]) :]
     assert neu and all(v["urheber"] == "ki" for v in neu), neu
     assert a.s("rueck")["graph_hash"] == h0, "ein Rückgängig muss den ganzen Satz zurücknehmen"
-    _ = gr, VOLUMEN
+
+
+def _text_mm(t: str, einheit: str) -> float:
+    m = re.fullmatch(rf"\s*(-?\d+(?:[.,]\d+)?)\s*{einheit}\s*", str(t))
+    assert m, f"keine Größe in {einheit}: {t!r}"
+    return float(m.group(1).replace(",", "."))
+
+
+def _rechteck_klickweg(a: SAblauf, ebene: str) -> SAblauf:
+    a.add("ebene", klick={"element": ebene}).add("offen", taste="S").add("r", taste="R")
+    a.add("ecke", **_zeiger(0, 0, "klicken"))
+    a.add("weg", **_zeiger(30, 20, "bewegen"))
+    a.add("b", tippen="60").add("tab", taste="Tab").add("h", tippen="40").add("ok", taste="Enter")
+    return a
+
+
+def test_ki_skizzenwerkzeug_wirkt_wie_der_klickweg():
+    """Requirement „Befehle als KI-Werkzeuge“, Scenario „KI-Skizzenwerkzeug wirkt wie der Klickweg“: das Testmodell liefert
+    `skizze_anlegen` (`ebene` = `<XY-Ebene von K0>.plane`) und `skizze_rechteck` (0, 0, 60, 40 mm), dann
+    `chat.uebernehmen`; im zweiten Lauf entsteht dasselbe Rechteck per Klick und Tippen. Das Werkzeugergebnis nennt genau 1
+    Bereich mit `punkt` (30 mm, 20 mm) und `flaeche` 2400 mm2; `sketch` und `sketch_rectangle` beider Läufe stimmen in
+    `type`, `params` und `inputs` überein (bis auf IDs), das Aktionsprotokoll nennt `skizze.anlegen` und `skizze.rechteck`."""
+    g = anfang("skizze-leer")["graph"]
+    ebene = kind_id(g, "frame", 1, "plane", 1)
+    aufrufe = [
+        lambda ids: ("skizze_anlegen", {"ebene": f"{ebene}.plane"}),
+        lambda ids: (
+            "skizze_rechteck",
+            {"skizze": f"{ids[0]}.sketch", "u1": "0 mm", "v1": "0 mm", "u2": "60 mm", "v2": "40 mm"},
+        ),
+    ]
+    with Testmodell(skript_aufrufe(aufrufe)) as tm:
+        k = KiAblauf()
+        k.add("waehlen", befehl="ki.anbieter-waehlen", args={"id": "openai-kompatibel"})
+        k.add("senden", chat="Zeichne ein Rechteck 60 mal 40 auf die XY-Ebene")
+        k.add("uebernehmen", befehl="chat.uebernehmen")
+        k.laufen("skizze-leer", env=tm.env())
+        ergebnisse = werkzeugnachrichten(tm.anfragen[-1])
+    rect_ergebnis = [r for r in ergebnisse if r.get("bereiche") is not None]
+    assert len(rect_ergebnis) == 1, ergebnisse
+    ber = rect_ergebnis[0]["bereiche"]
+    assert len(ber) == 1, ber
+    u, v = (_text_mm(x, "mm") for x in ber[0]["punkt"])
+    assert abs(u - 30) <= 1e-6 and abs(v - 20) <= 1e-6, ber[0]
+    assert rel(_text_mm(ber[0]["flaeche"], "mm2"), 2400), ber[0]
+
+    c = _rechteck_klickweg(SAblauf(), ebene).laufen("skizze-leer")
+
+    def kern(snap_vor: dict, snap: dict) -> dict:
+        sk = neue_elemente(snap_vor, snap, "sketch")
+        rc = neue_elemente(snap_vor, snap, "sketch_rectangle")
+        assert len(sk) == 1 and len(rc) == 1, (sk, rc)
+        return {
+            "sketch": (sk[0]["inputs"]["ebene"].split(".")[0], sk[0]["params"]),
+            "rechteck": {
+                "ecken": {
+                    (mm_param(rc[0], "u1"), mm_param(rc[0], "v1")),
+                    (mm_param(rc[0], "u2"), mm_param(rc[0], "v2")),
+                },
+                "inputs": rc[0]["inputs"],
+            },
+        }
+
+    ki_kern, klick_kern = kern(k.s("anfang"), k.s("uebernehmen")), kern(c.s("anfang"), c.s("ok"))
+    assert ki_kern == klick_kern, (ki_kern, klick_kern)
+    assert ki_kern["rechteck"]["ecken"] == {(0.0, 0.0), (60.0, 40.0)}
+
+    def befehle(a, von: str, bis: str) -> list[str]:
+        neu = a.s(bis)["protokoll"][len(a.s(von)["protokoll"]) :]
+        return sorted(p["befehl"] for p in neu if p["befehl"] in ("skizze.anlegen", "skizze.rechteck"))
+
+    assert (
+        befehle(k, "anfang", "uebernehmen")
+        == befehle(c, "anfang", "ok")
+        == ["skizze.anlegen", "skizze.rechteck"]
+    )

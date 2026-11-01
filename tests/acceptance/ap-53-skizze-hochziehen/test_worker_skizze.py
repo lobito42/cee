@@ -252,8 +252,8 @@ def test_bereiche_schneidende_konturen():
     assert len(e["results"]) == len(a["elements"]), "nicht alle Elemente berechnet"
     schnitt = befunde_mit(e, "curves_intersect")
     assert len(schnitt) == 1, schnitt
-    text = json.dumps(schnitt[0][1], ensure_ascii=False) + schnitt[0][0]
-    assert "R1" in text and "R2" in text, schnitt
+    assert schnitt[0][0] == "S1" and schnitt[0][1]["beteiligt"] == ["R1", "R2"], schnitt
+    assert res(e, "S1")["state"] == "aktuell"
     b = bereiche(e, "S1")
     assert len(b) == 1 and b[0]["aussen"] == ["C1"], b
     assert rel(flaeche_von(b[0]), math.pi * 25), b[0]

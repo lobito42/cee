@@ -93,12 +93,18 @@ def test_bereich_waehlen_nur_ueber_farbe():
     a.add("auswahl2", zeiger={**_lage(kreis), "aktion": "klicken"})
     a.laufen("skizze-halter")
 
+    for b in (gross, kreis):
+        assert b["element"].startswith(f"{b['skizze']}@"), b  # Schlüssel `<Skizze>@<u>;<v>` (design.md 7a)
+    assert gross["element"] != kreis["element"]
     h = [k for k in a.s("hover")["kontur"] if k["art"] == "hover"]
-    assert h, a.s("hover")["kontur"]
+    assert [k["element"] for k in h] == [gross["element"]], a.s("hover")["kontur"]
     k1 = [k for k in a.s("auswahl1")["kontur"] if k["art"] == "auswahl"]
     k2 = [k for k in a.s("auswahl2")["kontur"] if k["art"] == "auswahl"]
-    assert len(k1) == 1 and len(k2) == 1, (a.s("auswahl1")["kontur"], a.s("auswahl2")["kontur"])
-    assert k1[0]["element"] != k2[0]["element"], "zweite Auswahl muss einen anderen Bereich nennen"
+    assert [k["element"] for k in k1] == [gross["element"]], a.s("auswahl1")["kontur"]
+    assert [k["element"] for k in k2] == [kreis["element"]], a.s("auswahl2")["kontur"]
+    assert a.s("auswahl1")["auswahl"] == [gross["element"]] and a.s("auswahl2")["auswahl"] == [
+        kreis["element"]
+    ]
     for k in (*k1, *k2):
         assert _hex(k["farbe"]) in _akzent(), (k["farbe"], _akzent())
     breiten = [a.s(n)["linienbreiten"] for n in ("hover", "auswahl1", "auswahl2")]
@@ -251,8 +257,8 @@ def test_picking_budget():
 
 
 ERLAUBT = {
-    "MPL-2.0", "Apache-2.0", "MIT", "MIT-0", "BSD-2-Clause", "BSD-3-Clause", "ISC", "Zlib", "CC0-1.0",
-    "Unicode-3.0", "Unicode-DFS-2016", "0BSD", "BSL-1.0", "PSF-2.0",
+    "MPL-2.0", "Apache-2.0", "MIT", "BSD-2-Clause", "BSD-3-Clause", "ISC", "Zlib", "CC0-1.0",
+    "Unicode-3.0", "Unicode-DFS-2016", "0BSD", "BSL-1.0", "PSF-2.0", "OFL-1.1",
 }  # fmt: skip
 
 

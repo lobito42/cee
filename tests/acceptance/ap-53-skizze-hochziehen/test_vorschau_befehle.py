@@ -77,6 +77,7 @@ def test_orte_kuerzel_und_grenzen():
     assert doppelt == [], f"doppelte Kürzel im Register: {doppelt}"
 
     # frühere Kürzel unverändert (Stand origin/main)
+    subprocess.run(["git", "fetch", "-q", "origin", "main"], cwd=ROOT, capture_output=True, text=True)
     alt = subprocess.run(
         ["git", "show", "origin/main:spikes/ux-prototyp-2/src/befehle.json"],
         cwd=ROOT,

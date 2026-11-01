@@ -129,8 +129,9 @@ def test_punkt_ausserhalb_und_hoehe_null():
     )
     fehlt = befunde_mit(e, "region_missing")
     assert [i for i, _ in fehlt] == ["XA"], fehlt
-    entartet = [x for x in befunde_mit(e, "degenerate") if x[0].startswith("X")]
-    assert [i for i, _ in entartet] == ["XB"], entartet
+    entartet = befunde_mit(e, "degenerate")
+    assert [i for i, _ in entartet] == ["XB"], entartet  # im ganzen Ergebnis genau 1
+    assert res(e, "XA")["state"] == "fehlerhaft" and res(e, "XB")["state"] == "fehlerhaft"
     assert res(e, "XC")["state"] == "aktuell"
     assert rel(volumen(koerper(e, "XC")), 60 * 40 * 8)
     for i in ("XA", "XB"):
@@ -200,5 +201,7 @@ def test_netz_liegt_auf_der_form_und_ist_geschlossen():
             + a[2] * (b[0] * c[1] - b[1] * c[0])
         ) / 6
     assert abs(abs(vol) - volumen(o)) <= 0.01 * volumen(o), (vol, volumen(o))
-    assert o["kantenzuege"], "keine Kantenzüge"
+    kz = o["kantenzuege"]
+    assert kz["unit"] == "mm" and kz["zuege"], "Kantenzüge: Einheit mm und mindestens ein Zug"
+    assert all(len(z) >= 2 and all(len(pt) == 3 for pt in z) for z in kz["zuege"]), kz["zuege"][:2]
     assert ausgang(e, "X2", "koerper")["type"] == "solid"
