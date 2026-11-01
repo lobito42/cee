@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cee.dev/format/kernel/auftrag.schema.json",
+  "title": "Auftrag an den Geometrie-Worker (cee-kernel/0)",
+  "description": "Elemente in Elementform (ADR-028) in der Reihenfolge des Rust-Kerns (order()); Kind-Elemente als eigene Einträge, content nur mit IDs. Verworfene Elemente (meta.verworfen) bleiben im Auftrag.",
+  "type": "object",
+  "required": ["protocol", "elements"],
+  "properties": {
+    "protocol": { "const": "cee-kernel/0" },
+    "elements": { "type": "array", "items": { "$ref": "#/$defs/element" } },
+    "befunde": {
+      "description": "Befunde des Rust-Kerns beim Bauen des Auftrags: input_missing (Zyklus) und die Warnung unit_assumed.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/befund" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "groesse": {
+      "type": "object",
+      "required": ["value", "unit"],
+      "properties": { "value": { "type": "number" }, "unit": { "type": "string" } },
+      "additionalProperties": false
+    },
+    "element": {
+      "type": "object",
+      "required": ["id", "type", "inputs", "params", "outputs", "content", "meta"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "type": { "type": "string", "minLength": 1 },
+        "inputs": {
+          "description": "Eingang -> '<id>.<output>' mit benanntem Ausgang (ADR-016, ADR-058).",
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "params": { "type": "object" },
+        "outputs": { "type": "object", "additionalProperties": { "type": "string" } },
+        "content": { "type": "array", "items": { "type": "string" } },
+        "meta": { "type": "object" }
+      }
+    },
+    "befund": {
+      "type": "object",
+      "required": ["code", "element", "hinweis"],
+      "properties": {
+        "code": { "enum": ["input_missing", "unit_assumed"] },
+        "element": { "type": "string" },
+        "input": { "type": "string" },
+        "param": { "type": "string" },
+        "hinweis": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

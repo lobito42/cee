@@ -115,6 +115,10 @@ export function tastenAnbinden(app: App): void {
           e.preventDefault();
           return;
         }
+        if (app.draht.abbrechen()) {
+          e.preventDefault();
+          return;
+        }
         if (app.dndAbbrechen?.()) {
           e.preventDefault();
           return;

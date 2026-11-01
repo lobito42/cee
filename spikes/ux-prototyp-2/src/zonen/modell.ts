@@ -36,6 +36,8 @@ export const BEFEHL_SYMBOL: Record<string, Symbolname> = {
 
 /** Hülle eines Elements in Bildschirmkoordinaten (konvex), oder null. */
 export function huelleBildschirm(app: App, id: string): Punkt[] | null {
+  const draht = app.draht.huelleBildschirm(id);
+  if (draht) return konvexeHuelle(draht);
   const box = app.huelle(id);
   if (!box || !app.szene) return null;
   return konvexeHuelle(app.szene.eckenProjiziert(box));
@@ -314,7 +316,11 @@ function kontextleiste(app: App, ursprung: Punkt, breite: number): HTMLElement |
   if (!alle.length) return null;
   const box = huellbox(alle);
   const mitteX = Math.min(Math.max(box.x + box.breite / 2 - ursprung.x, 110), breite - 110);
-  const oben = Math.max(box.y - ursprung.y - 46, 84);
+  // Drahtmodell: unter die Auswahl, damit Punkte darüber anklickbar bleiben (ap-50)
+  const unten = art === 'punkt' || art === 'punkte' || app.draht.aktiv();
+  const oben = unten
+    ? Math.min(box.y + box.hoehe - ursprung.y + 14, 2000)
+    : Math.max(box.y - ursprung.y - 46, 84);
   return aktionsLeiste(app, aktionen, `left:${Math.round(mitteX)}px;top:${Math.round(oben)}px`);
 }
 
@@ -455,6 +461,30 @@ function zeigerzahl(app: App, ursprung: Punkt): HTMLElement | null {
   );
 }
 
+/** Hinweis im Bild der Arbeitsfläche, solange ein Referenz-Befehl auf Klicks wartet. */
+function befehlsHinweis(app: App): HTMLElement | null {
+  const m = app.draht.modus;
+  if (!m) return null;
+  const schluessel =
+    m.art === 'punkt'
+      ? 'rueck.draht.punkt-klicken'
+      : m.punkte.length === 0
+        ? 'rueck.draht.zwei-punkte'
+        : 'rueck.draht.zweiter-punkt';
+  return h(
+    'div',
+    {
+      class: 'befehls-hinweis',
+      role: 'status',
+      'data-muster': 'Rueckmeldung',
+      'data-key': 'befehls-hinweis',
+    },
+    h('span', { class: 'befehls-hinweis-text' }, app.t(schluessel)),
+    h('kbd', { class: 'befehls-hinweis-taste' }, 'Esc'),
+    h('span', { class: 'befehls-hinweis-abbruch' }, app.t('rueck.draht.esc-abbrechen')),
+  );
+}
+
 export function baueModell(app: App): (HTMLElement | null)[] {
   const szene = app.szene;
   const r = szene?.canvas.getBoundingClientRect();
@@ -488,6 +518,7 @@ export function baueModell(app: App): (HTMLElement | null)[] {
           h('p', {}, app.t('modell.leer')),
         )
       : null,
+    befehlsHinweis(app),
     kontextleiste(app, ursprung, breite),
     griffElement(app, ursprung),
     ...schilder(app, ursprung),

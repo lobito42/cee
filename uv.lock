@@ -180,10 +180,14 @@ version = "0.0.1"
 source = { editable = "worker" }
 dependencies = [
     { name = "build123d" },
+    { name = "cee-sdk" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "build123d", specifier = ">=0.9" }]
+requires-dist = [
+    { name = "build123d", specifier = ">=0.9" },
+    { name = "cee-sdk", editable = "sdk/python" },
+]
 
 [[package]]
 name = "certifi"

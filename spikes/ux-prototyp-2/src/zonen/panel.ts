@@ -26,6 +26,26 @@ export function bauePanel(app: App): HTMLElement[] {
           'div',
           { class: 'befunde', 'data-key': 'liste' },
           ...befunde.map((b) => {
+            if (b.code)
+              return h(
+                'div',
+                {
+                  class: 'befund',
+                  'data-muster': 'Befund',
+                  'data-schwere': 'fehler',
+                  'data-element': b.elementId,
+                  'data-code': b.code,
+                  'data-key': `k-${b.elementId}-${b.code}`,
+                },
+                h(
+                  'span',
+                  { class: 'schwere' },
+                  symbol('circle-alert', 14),
+                  h('span', { class: 'wort' }, app.t('status.fehlerhaft')),
+                ),
+                h('span', { class: 'ort' }, app.name(b.elementId)),
+                h('span', { class: 'text' }, b.text ?? app.t(b.schluessel)),
+              );
             const korrektur = app.letzterGueltigerWert(b);
             return h(
               'div',

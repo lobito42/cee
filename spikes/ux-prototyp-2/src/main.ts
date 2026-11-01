@@ -226,6 +226,42 @@ async function start(): Promise<void> {
           : null;
       },
       elemente: () => alleElemente(dokument()).map((e) => e.id),
+      // Wireframe-Basics (ap-50): Rohdaten für das Prüfwerkzeug `pruefen -- drahtmodell …`
+      draht: () => ({
+        bereit: app.draht.bereit(),
+        graph: JSON.parse(JSON.stringify(dokument().content)) as unknown,
+        ergebnis: app.draht.ergebnis
+          ? (JSON.parse(JSON.stringify(app.draht.ergebnis)) as unknown)
+          : null,
+        szene: app.draht.szene(),
+        befunde: app
+          .befunde()
+          .filter((b) => b.code)
+          .map((b) => ({ element: b.elementId, code: b.code, ort: 'panel', text: b.text })),
+        modus: app.draht.modus ? app.draht.modus.art : null,
+      }),
+      draht_bildschirm: (id: string, anker?: string) => app.draht.bildschirm(id, anker),
+      /** Befehl mit Parametern auslösen (Prüfschritt `{befehl, args}`), wie aus dem Menü. */
+      draht_befehl: (id: string, par: Record<string, unknown>) => app.ausfuehren(id, par, 'menue'),
+      draht_projiziere: (p: [number, number, number]) => app.szene?.projiziere(p) ?? null,
+      /** Ansicht so einpassen, dass das Drahtmodell und `p` (mm) sichtbar sind (wie Zoomen von Hand). */
+      draht_einpassen: (p?: [number, number, number]) => {
+        const box = app.huelleAlle();
+        const pts = [box?.min, box?.max, p].filter((x): x is [number, number, number] => !!x);
+        if (!pts.length) return;
+        const min = [0, 1, 2].map((i) => Math.min(...pts.map((q) => q[i] as number))) as [
+          number,
+          number,
+          number,
+        ];
+        const max = [0, 1, 2].map((i) => Math.max(...pts.map((q) => q[i] as number))) as [
+          number,
+          number,
+          number,
+        ];
+        app.szene?.passeEin({ min, max }, 0);
+        app.rendernSofort();
+      },
     }),
   });
 

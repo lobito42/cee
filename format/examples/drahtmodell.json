@@ -1,0 +1,302 @@
+{
+  "schema_version": 1,
+  "elements": [
+    {
+      "id": "K1",
+      "type": "frame",
+      "inputs": {},
+      "params": {
+        "x": {
+          "value": 100,
+          "unit": "mm"
+        },
+        "y": {
+          "value": 0,
+          "unit": "mm"
+        },
+        "z": {
+          "value": 0,
+          "unit": "mm"
+        },
+        "rx": {
+          "value": 0,
+          "unit": "deg"
+        },
+        "ry": {
+          "value": 0,
+          "unit": "deg"
+        },
+        "rz": {
+          "value": 30,
+          "unit": "deg"
+        }
+      },
+      "outputs": {
+        "frame": "frame",
+        "origin": "point",
+        "x": "line",
+        "y": "line",
+        "z": "line",
+        "xy": "plane",
+        "yz": "plane",
+        "zx": "plane"
+      },
+      "content": [
+        {
+          "id": "K1-ursprung",
+          "type": "point",
+          "inputs": {
+            "frame": "K1.frame"
+          },
+          "params": {
+            "x": {
+              "value": 0,
+              "unit": "mm"
+            },
+            "y": {
+              "value": 0,
+              "unit": "mm"
+            },
+            "z": {
+              "value": 0,
+              "unit": "mm"
+            }
+          },
+          "outputs": {
+            "point": "point"
+          },
+          "content": [],
+          "meta": {
+            "name": "Ursprung"
+          }
+        },
+        {
+          "id": "K1-x",
+          "type": "axis",
+          "inputs": {
+            "of": "K1.x"
+          },
+          "params": {},
+          "outputs": {
+            "line": "line"
+          },
+          "content": [],
+          "meta": {
+            "name": "X-Achse"
+          }
+        },
+        {
+          "id": "K1-y",
+          "type": "axis",
+          "inputs": {
+            "of": "K1.y"
+          },
+          "params": {},
+          "outputs": {
+            "line": "line"
+          },
+          "content": [],
+          "meta": {
+            "name": "Y-Achse"
+          }
+        },
+        {
+          "id": "K1-z",
+          "type": "axis",
+          "inputs": {
+            "of": "K1.z"
+          },
+          "params": {},
+          "outputs": {
+            "line": "line"
+          },
+          "content": [],
+          "meta": {
+            "name": "Z-Achse"
+          }
+        },
+        {
+          "id": "K1-xy",
+          "type": "plane",
+          "inputs": {
+            "of": "K1.xy"
+          },
+          "params": {},
+          "outputs": {
+            "plane": "plane"
+          },
+          "content": [],
+          "meta": {
+            "name": "XY-Ebene"
+          }
+        },
+        {
+          "id": "K1-yz",
+          "type": "plane",
+          "inputs": {
+            "of": "K1.yz"
+          },
+          "params": {},
+          "outputs": {
+            "plane": "plane"
+          },
+          "content": [],
+          "meta": {
+            "name": "YZ-Ebene"
+          }
+        },
+        {
+          "id": "K1-zx",
+          "type": "plane",
+          "inputs": {
+            "of": "K1.zx"
+          },
+          "params": {},
+          "outputs": {
+            "plane": "plane"
+          },
+          "content": [],
+          "meta": {
+            "name": "ZX-Ebene"
+          }
+        }
+      ],
+      "meta": {
+        "name": "Koordinatensystem 1"
+      }
+    },
+    {
+      "id": "P1",
+      "type": "point",
+      "inputs": {},
+      "params": {
+        "x": {
+          "value": 10,
+          "unit": "mm"
+        },
+        "y": {
+          "value": 20,
+          "unit": "mm"
+        },
+        "z": {
+          "value": 0,
+          "unit": "mm"
+        }
+      },
+      "outputs": {
+        "point": "point"
+      },
+      "content": [],
+      "meta": {
+        "name": "Punkt 1"
+      }
+    },
+    {
+      "id": "P2",
+      "type": "point",
+      "inputs": {
+        "frame": "K1.frame"
+      },
+      "params": {
+        "x": {
+          "value": 50,
+          "unit": "mm"
+        },
+        "y": {
+          "value": 0,
+          "unit": "mm"
+        },
+        "z": {
+          "value": 0,
+          "unit": "mm"
+        }
+      },
+      "outputs": {
+        "point": "point"
+      },
+      "content": [],
+      "meta": {
+        "name": "Punkt 2"
+      }
+    },
+    {
+      "id": "P3",
+      "type": "point",
+      "inputs": {
+        "ref": "P1.point"
+      },
+      "params": {
+        "x": {
+          "value": 0,
+          "unit": "mm"
+        },
+        "y": {
+          "value": 0,
+          "unit": "mm"
+        },
+        "z": {
+          "value": 25,
+          "unit": "mm"
+        }
+      },
+      "outputs": {
+        "point": "point"
+      },
+      "content": [],
+      "meta": {
+        "name": "Punkt 3"
+      }
+    },
+    {
+      "id": "S1",
+      "type": "segment",
+      "inputs": {
+        "a": "P1.point",
+        "b": "P2.point"
+      },
+      "params": {},
+      "outputs": {
+        "segment": "segment",
+        "start": "point",
+        "end": "point"
+      },
+      "content": [],
+      "meta": {
+        "name": "Strecke 1"
+      }
+    },
+    {
+      "id": "G1",
+      "type": "line",
+      "inputs": {
+        "a": "P1.point",
+        "b": "P3.point"
+      },
+      "params": {},
+      "outputs": {
+        "line": "line"
+      },
+      "content": [],
+      "meta": {
+        "name": "Gerade 1"
+      }
+    },
+    {
+      "id": "H1",
+      "type": "ray",
+      "inputs": {
+        "a": "K1.origin",
+        "b": "P2.point"
+      },
+      "params": {},
+      "outputs": {
+        "ray": "ray",
+        "start": "point"
+      },
+      "content": [],
+      "meta": {
+        "name": "Halbgerade 1"
+      }
+    }
+  ]
+}

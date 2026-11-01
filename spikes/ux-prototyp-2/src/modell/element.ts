@@ -6,6 +6,8 @@ export interface Element {
   type: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   params: Record<string, any>;
+  /** Eingänge `<id>.<ausgang>` (Drahtmodell, ap-50). */
+  inputs?: Record<string, string>;
   content: Element[];
   meta: { name: string; verworfen?: boolean } & Record<string, unknown>;
 }
