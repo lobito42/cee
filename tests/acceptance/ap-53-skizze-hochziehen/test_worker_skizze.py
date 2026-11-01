@@ -136,7 +136,7 @@ def test_einheiten_kreis_durchmesser():
             "S1",
             "K0.xy",
             s_kreis("CM", 0, 0, {"value": 0.05, "unit": "m"}),
-            s_kreis("CN", 100, 0, 50),
+            s_kreis("CN", 100, 0, 50, ohne_einheit=True),
             s_kreis("CK", 200, 0, {"value": 5, "unit": "kg"}),
         ),
     ]
