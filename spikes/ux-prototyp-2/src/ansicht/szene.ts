@@ -108,7 +108,9 @@ export class Szene {
     this.renderer.setPixelRatio(1);
     this.scene.add(this.gruppe);
     this.scene.add(this.draht);
-    this.scene.add(this.globaleAchsen());
+    this.weltAchsen = this.globaleAchsen();
+    this.weltAchsen.visible = false;
+    this.scene.add(this.weltAchsen);
     this.scene.add(this.licht.umgebung, this.licht.gerichtet, this.licht.gegen);
     this.setThema('hell');
     new ResizeObserver(() => this.groesseAnpassen()).observe(zone);
@@ -490,6 +492,15 @@ export class Szene {
     }
     this.anfordern();
     this.melde();
+  }
+
+  private weltAchsen: THREE.Group;
+
+  /** Globale Achsen nur im Drahtmodell-Dokument zeigen (Teil-Dokumente haben ihre eigene Orientierung). */
+  zeigeWeltachsen(an: boolean): void {
+    if (this.weltAchsen.visible === an) return;
+    this.weltAchsen.visible = an;
+    this.anfordern();
   }
 
   /** Globales Koordinatensystem: immer sichtbare, dünne Achsen im Ursprung (X rot, Y grün, Z blau). */

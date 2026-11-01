@@ -212,6 +212,7 @@ export class Fenster {
   /** Drahtmodell (ap-50): Ergebnis anfordern und zeichnen, sobald es da ist. */
   private zeichneDraht(): void {
     const d = this.app.draht;
+    this.szene.zeigeWeltachsen(this.app.dok === 'drahtmodell');
     d.anstossen();
     const liste = d.zeichnung();
     const signatur = JSON.stringify([liste, this.app.thema]);
