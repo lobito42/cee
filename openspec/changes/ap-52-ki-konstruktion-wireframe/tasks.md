@@ -31,5 +31,5 @@
   `ki_bereit_ms`) – Prüfung: AK-4, AK-8 (Budgets)
 - [x] 3.3 Prüfbefehl `ki pruefsatz` mit den Prüfern aus design.md Abschnitt 5 (`--anbieter`, `--wiederholungen`) –
   Prüfung: AK-3; zum Schluss `uv run pytest -q tests/acceptance/ap-52-ki-konstruktion-wireframe`
-- [ ] 3.4 Klick-Anleitung aus design.md Abschnitt 9 in die PR-Beschreibung übernehmen; Lint im Prototyp –
+- [x] 3.4 Klick-Anleitung aus design.md Abschnitt 9 in die PR-Beschreibung übernehmen; Lint im Prototyp –
   Prüfung: `npm --prefix spikes/ux-prototyp-2 run lint`
