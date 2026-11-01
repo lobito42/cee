@@ -126,8 +126,15 @@ def s_rechteck(id: str, u1: float, v1: float, u2: float, v2: float) -> dict:
     return _el(id, "sketch_rectangle", {"u1": mm(u1), "v1": mm(v1), "u2": mm(u2), "v2": mm(v2)})
 
 
-def s_kreis(id: str, u: float, v: float, d) -> dict:
-    return _el(id, "sketch_circle", {"u": mm(u), "v": mm(v), "d": d if isinstance(d, dict) else mm(d)})
+def s_kreis(id: str, u: float, v: float, d, *, ohne_einheit: bool = False) -> dict:
+    """Kreis. `d` als Größe (dict) bleibt unverändert, sonst mm; mit `ohne_einheit=True` bleibt `d` eine nackte Zahl
+    (Scenario „Einheiten“: der Kern nimmt die Standard-Einheit an und warnt mit `unit_assumed`)."""
+    if ohne_einheit:
+        assert not isinstance(d, dict), d
+        wert = d
+    else:
+        wert = d if isinstance(d, dict) else mm(d)
+    return _el(id, "sketch_circle", {"u": mm(u), "v": mm(v), "d": wert})
 
 
 def skizze(id: str, ebene: str, *kinder: dict) -> dict:
