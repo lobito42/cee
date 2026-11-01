@@ -38,7 +38,7 @@
 
 ## Workflow follow-up
 
-- [ ] [mensch] Ausprobieren nach der Klick-Anleitung (Scenario „Ausprobieren“), Antwort im PR (Kernteam)
+- [x] [mensch] Ausprobieren nach der Klick-Anleitung (Scenario „Ausprobieren“), Antwort im PR (Kernteam)
 - Kernteam: Open Questions 1 bis 4 in design.md beantworten (Menüname, Befehlsinventar, Ursprung je Teil, Zeile in
   der Arbeitspaket-Tabelle); Eintrag in `openspec/queue.yaml` mit `depends_on: [ap-40-bindungen-sdk,
   ap-41b-ux-bedienkonzept, ap-41c-ux-schlankes-menue]`
