@@ -200,6 +200,7 @@ export class Szene {
     const b = Math.max(1, Math.round(r.width));
     const h = Math.max(1, Math.round(r.height));
     this.renderer.setSize(b, h, false);
+    this.mass = { b, h };
     this.canvas.style.width = `${b}px`;
     this.canvas.style.height = `${h}px`;
     this.persp.aspect = b / h;
@@ -208,12 +209,15 @@ export class Szene {
     this.melde();
   }
 
+  private mass = { b: 0, h: 0 };
+
   private flaecheBreite(): number {
-    return this.canvas.clientWidth || 1;
+    // Größe aus groesseAnpassen (ResizeObserver): kein erzwungenes Layout je Bild
+    return this.mass.b || this.canvas.clientWidth || 1;
   }
 
   private flaecheHoehe(): number {
-    return this.canvas.clientHeight || 1;
+    return this.mass.h || this.canvas.clientHeight || 1;
   }
 
   private halbeHoehe(abstand = this.kamera.abstand): number {
