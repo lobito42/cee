@@ -15,6 +15,8 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+# Suchpfad für die Hilfen aus ap-52 (ki_helpers), damit die Datei auch allein gesammelt werden kann.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "ap-52-ki-konstruktion-wireframe"))
 
 from conftest import need_module  # noqa: E402
 from ki_helpers import (  # noqa: E402
