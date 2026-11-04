@@ -6,7 +6,7 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | --- | --- | --- |
 | [ADR-001](ADR-001-geometriekernel-opencascade.md) | Geometriekernel OpenCascade | vorgeschlagen, geändert durch ADR-032 |
 | [ADR-002](ADR-002-build123d-als-modelliersprache.md) | build123d als Modelliersprache | vorgeschlagen, geändert durch ADR-028 |
-| [ADR-003](ADR-003-code-ist-die-quelle-der-wahrheit.md) | Code ist die Quelle der Wahrheit | ersetzt durch ADR-028 |
+| [ADR-003](ADR-003-code-ist-die-quelle-der-wahrheit.md) | Code ist die Quelle der Wahrheit | ersetzt durch ADR-028, wieder aufgenommen durch ADR-067 |
 | [ADR-004](ADR-004-step-ap242-als-bruecke-zu-allen-cad-systemen.md) | STEP AP242 als Brücke zu allen CAD-Systemen | vorgeschlagen, geändert durch ADR-042 |
 | [ADR-005](ADR-005-extension-plus-lokaler-geometrie-dienst.md) | Extension plus lokaler Geometrie-Dienst | ersetzt durch ADR-031 |
 | [ADR-006](ADR-006-bestehende-viewer-komponenten-wiederverwenden.md) | Bestehende Viewer-Komponenten wiederverwenden | vorgeschlagen |
@@ -70,3 +70,4 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-064](ADR-064-mensch-entscheidet-agenten-integrieren.md) | Mensch entscheidet, Agenten integrieren | akzeptiert |
 | [ADR-065](ADR-065-bedienkonzept-fensteraufbau.md) | Bedienkonzept – Fensteraufbau nach Apple-Gerüst mit VS-Code-Leisten | vorgeschlagen |
 | [ADR-066](ADR-066-zustand-in-drei-schichten.md) | Zustand in drei Schichten – Eingaben, Rechenergebnis, Ansicht | vorgeschlagen |
+| [ADR-067](ADR-067-neuausrichtung-geometrie-als-code.md) | Neuausrichtung – Geometrie als Code, parametrisch und editierbar | vorgeschlagen |

@@ -1,4 +1,7 @@
 # Warteschlange freigegebener Changes – nur das Kernteam ändert diese Datei.
+#
+# RUHT seit 2026-11-04 (ADR-067): Gearbeitet wird in kurzen Runden nach docs/plan.md. Alle Einträge stehen auf
+# night: false; die Nachtschicht ist ausgeschaltet. Die Einträge bleiben als Bestand erhalten.
 # Reihenfolge nach Meilensteinen (ADR-059, ADR-062): M0 Klären → M1 Modellieren → M2 Zusammen → M3 Beta.
 # Ein Eintrag hier ist die Freigabe. Die Nachtschicht nimmt den ersten Eintrag, dessen nächster Schritt offen ist.
 #
@@ -15,13 +18,13 @@ changes:
   - id: ap-00-setup
     phase: build
     model: sonnet
-    night: true    # reine Einrichtung, durch Abnahmetests vollständig prüfbar
+    night: false    # reine Einrichtung, durch Abnahmetests vollständig prüfbar
     depends_on: []
 
   - id: ap-01-spike-datenmodell
     phase: build
     model: opus    # Agent kern-specialist
-    night: true    # Testfeld für autonomes Arbeiten; Bewertung des Ergebnisses durch das Kernteam im PR
+    night: false    # Testfeld für autonomes Arbeiten; Bewertung des Ergebnisses durch das Kernteam im PR
     depends_on: []
 
   - id: ap-02-akustik-nachhallzeit
@@ -33,59 +36,59 @@ changes:
   - id: ap-03-spike-sync
     phase: tests
     model: opus    # Spike; Agent kern-specialist
-    night: true    # Kernaussagen automatisch prüfbar; zwei Browser-Scenarios als menschliche Abnahme im PR
+    night: false    # Kernaussagen automatisch prüfbar; zwei Browser-Scenarios als menschliche Abnahme im PR
     depends_on: [ap-01-spike-datenmodell]
 
   - id: ap-05a-schema-einheiten
     phase: tests
     model: sonnet  # Agent kern-specialist bei Schwierigkeiten
-    night: true    # vollständig automatisch prüfbar
+    night: false    # vollständig automatisch prüfbar
     depends_on: [ap-01-spike-datenmodell]
 
   - id: ap-05b-abhaengigkeiten
     phase: tests
     model: sonnet
-    night: true    # vollständig automatisch prüfbar
+    night: false    # vollständig automatisch prüfbar
     depends_on: [ap-05a-schema-einheiten]
 
   - id: ap-41b-ux-bedienkonzept
     phase: tests
     model: sonnet
-    night: true    # freigegeben 2026-10-23 (Kernteam): Spec „Interaktions-Grundlagen“ und Tests sind auf main; sieben [mensch]-Scenarios nach dem Bau. Ersetzt ap-41 (No-Go im Pilot TP1)
+    night: false    # freigegeben 2026-10-23 (Kernteam): Spec „Interaktions-Grundlagen“ und Tests sind auf main; sieben [mensch]-Scenarios nach dem Bau. Ersetzt ap-41 (No-Go im Pilot TP1)
     depends_on: []
 
   - id: ap-49-spike-auswahl
     phase: tests
     model: opus    # Agent geometry-specialist (Auswahl nach Regel, stabile Adressen)
-    night: true    # Kernaussagen automatisch prüfbar; zwei [mensch]-Scenarios (Einordnung, Empfehlung) im PR
+    night: false    # Kernaussagen automatisch prüfbar; zwei [mensch]-Scenarios (Einordnung, Empfehlung) im PR
     depends_on: []
 
   - id: ap-40-bindungen-sdk
     phase: tests
     model: opus    # Agent kern-specialist (Rustler, WASM, PyO3)
-    night: true    # vollständig automatisch prüfbar
+    night: false    # vollständig automatisch prüfbar
     depends_on: [ap-05b-abhaengigkeiten]
 
   - id: ap-41c-ux-schlankes-menue
     phase: tests
     model: sonnet
-    night: true    # freigegeben 2026-10-25 (Kernteam): nur Befehle mit Wirkung zeigen, kurzes Kontextmenü, keine doppelten Befehle; Nachbesserung zu ap-41b nach Ausprobieren
+    night: false    # freigegeben 2026-10-25 (Kernteam): nur Befehle mit Wirkung zeigen, kurzes Kontextmenü, keine doppelten Befehle; Nachbesserung zu ap-41b nach Ausprobieren
     depends_on: [ap-41b-ux-bedienkonzept]
 
   - id: ap-50-wireframe-basics
     phase: tests
     model: opus    # Agent geometry-specialist (Kernel-Schnittstelle, OpenCascade-Worker)
-    night: true    # freigegeben 2026-10-25 (Kernteam): echter Geometriekern, erste kleine Stufe (Koordinatensystem, Punkte, Geraden); ein [mensch]-Scenario „Ausprobieren“
+    night: false    # freigegeben 2026-10-25 (Kernteam): echter Geometriekern, erste kleine Stufe (Koordinatensystem, Punkte, Geraden); ein [mensch]-Scenario „Ausprobieren“
     depends_on: [ap-40-bindungen-sdk, ap-41b-ux-bedienkonzept, ap-41c-ux-schlankes-menue]
 
   - id: ap-52-ki-konstruktion-wireframe
     phase: spec
     model: opus    # Agent geometry-specialist; KI-Anbieter-Schnittstelle, Werkzeuge aus dem Befehlsregister
-    night: true    # freigegeben 2026-10-29 (Kernteam): KI konstruiert Wireframe aus einem Satz; zieht Teil von ap-15 vor (ADR-059, gemeldet); ein [mensch]-Scenario „Ausprobieren“
+    night: false    # freigegeben 2026-10-29 (Kernteam): KI konstruiert Wireframe aus einem Satz; zieht Teil von ap-15 vor (ADR-059, gemeldet); ein [mensch]-Scenario „Ausprobieren“
     depends_on: [ap-50-wireframe-basics]
 
   - id: ap-53-skizze-hochziehen
     phase: spec
     model: opus    # Agent geometry-specialist; Skizze, Hochziehen, Picking, Kamera (fertige Bausteine nach ADR-034)
-    night: true    # freigegeben 2026-10-30 (Kernteam): Ebene wählen, Skizze, Hochziehen, Halter als Prüfauftrag; Bedienung im Bild; zwei [mensch]-Scenarios
+    night: false    # freigegeben 2026-10-30 (Kernteam): Ebene wählen, Skizze, Hochziehen, Halter als Prüfauftrag; Bedienung im Bild; zwei [mensch]-Scenarios
     depends_on: [ap-50-wireframe-basics, ap-52-ki-konstruktion-wireframe]
