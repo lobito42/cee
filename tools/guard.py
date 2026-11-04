@@ -9,7 +9,7 @@ Was ein Agent schreiben darf, ergibt sich aus dem Branch:
   neu/<id>     Neuzuschnitt in einem Schritt: openspec/changes/<id>/, tests/acceptance/<id>/, tests/golden/
   archiv/<id>  nur Archivieren: openspec/changes/<id>/ (Verschieben), changes/archive/, openspec/specs/
   fix/<grund>  Produktcode und tests/unit/ – aber keinen Vertrag (main reparieren, rote PRs, Hausmeister)
-  runde/<thema> Runde nach docs/plan.md (ADR-067): Produktcode, tests/acceptance/<thema>/, tests/golden/<thema>/
+  runde/<thema> Runde nach docs/plan.md (ADR-067): Produktcode, tests/acceptance|golden/<thema>/
   adr/<thema>  Kernteam-Dateien (ADRs, Regeln, Werkzeug); gemergt wird erst nach dem Ja des Menschen (ADR-064)
   sonst        Produktcode, aber keinen Vertrag
 
