@@ -47,7 +47,11 @@ für den ersten echten Nutzen aber nicht nötig.
    mit einer Vorschau im Browser. Keine Nachtschicht, kein vierstufiger Ablauf (Spec → Tests → Umsetzung →
    Archiv) für Prototyp-Arbeit; ein kurzer Rundenplan in `docs/plan.md` und Prüfungen im selben Branch genügen.
    OpenSpec bleibt für Teile, die stabil werden (Format des Bauplans, Prüfer).
-7. **Weiter gültig:** Lizenzen und Abhängigkeiten (ADR-034), kein fester KI-Anbieter, lokale Modelle, keine Daten
+7. **Vorbilder über Prinzipien, nicht Nachbau.** `docs/design/prinzipien.md` hält fest, welches Prinzip wir
+   von welchem Vorbild übernehmen; tragend ist „ein Bauplan, viele Sichten“. Jeder Bildschirm wird zuerst
+   gezeichnet und vom Menschen bestätigt, dann gebaut; abgenommen wird im Vergleich mit dem Entwurf, nicht über
+   Zähl-Tests. Der bisherige Prototyp ist Steinbruch, nicht Vorlage.
+8. **Weiter gültig:** Lizenzen und Abhängigkeiten (ADR-034), kein fester KI-Anbieter, lokale Modelle, keine Daten
    an Dritte ohne Wahl (ADR-037), Einheiten (ADR-057), Designsystem (ADR-061), Kernel-Schnittstelle im Worker
    (ADR-032). Wo ein älteres ADR dieser Entscheidung widerspricht, gilt diese.
 

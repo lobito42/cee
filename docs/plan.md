@@ -10,6 +10,8 @@ Was du danach ausprobieren kannst: Den Winkelhalter öffnen, in 3D drehen, Breit
 ändern, das Teil passt sich an, „Als STL herunterladen“ liefert eine druckbare Datei. Die Code-Ansicht zeigt den
 Bauplan; eine Änderung dort wirkt sofort.
 
+- Zuerst: Entwurf des einen Bildschirms nach `docs/design/prinzipien.md` (Größen-Tabelle, Schrittliste, 3D mit
+  Ansichtswürfel, Code zum Aufklappen, STL). Gebaut wird erst nach dem Ja zum Bild.
 - Format des Bauplans festziehen: `Params` mit Einheit, Standardwert und Bereich je Größe, `build(p)`, benannte
   Schritte. Vorlage: `parts/examples/halter.py`.
 - Worker: Bauplan laden, mit Werten rechnen, Netz und STL liefern, Fehler verständlich melden (Zeile, Ursache).

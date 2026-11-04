@@ -37,8 +37,9 @@ Mensch ändert ihn über Regler, Code oder Chat, die KI schlägt Änderungen mit
 6. **Geometrie nur im Worker** hinter der Kernel-Schnittstelle (OpenCascade über build123d).
 7. **Jede Zahl ist eine Größe mit Einheit.**
 8. **Fehler eines Teils zerbrechen nie die Anwendung**; Fehler werden verständlich gemeldet (Zeile, Ursache).
-9. **Oberfläche:** ein Muster je Aufgabe nach `docs/design/muster.md`, Tokens aus `docs/design/tokens.json`,
-   keine Git-Begriffe für den Menschen.
+9. **Oberfläche: ein Bauplan, viele Sichten.** Prinzipien der Vorbilder nach `docs/design/prinzipien.md`
+   kombinieren, nichts nachbauen. Erst Entwurf, Ja des Menschen, dann Bau. Nur zeigen, was funktioniert. Tokens
+   aus `docs/design/tokens.json`, keine Git-Begriffe für den Menschen.
 10. **Erst das Erlebnis, dann das Fundament:** Nichts bauen, was die laufende Runde nicht braucht.
 
 Ältere ADRs in `docs/adr/` sind Hintergrund; wo sie ADR-067 widersprechen, gilt ADR-067. `docs/ideen/` ist ein
