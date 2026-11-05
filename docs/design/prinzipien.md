@@ -40,6 +40,21 @@ Bedienhandlung schreibt in den Bauplan, und jede Änderung am Bauplan zeigt sich
 4. **Eine Sache, ein Ort.** Gleiche Symbole bedeuten dasselbe; keine zwei Wege, die anders aussehen und dasselbe
    tun.
 
+## Aufbau und Rollen der Zahlen
+
+- **Verschachtelt, aber in Reihenfolge:** Der Aufbau ist ein Baum (Baugruppe → Teil → Schritte → Bausteine), jede
+  Ebene zuklappbar. Innerhalb einer Ebene gilt die Reihenfolge der Entstehung; dort spult ein Klick zurück. Der Baum
+  ist das Bild des Bauplans (verschachtelte `schritt`-Blöcke und Bausteine als Funktionen), keine zweite Liste.
+- **Jede Zahl hat genau eine Rolle:**
+  1. **Größe** – von außen sichtbar und änderbar (Eingang des Bausteins bzw. `Params` des Teils).
+  2. **Abgeleitet** – Formel aus anderen Größen, sichtbar, nicht direkt änderbar.
+  3. **Festgelegt** – innen im Baustein, mit Namen und Grund (z. B. Norm), beim Aufklappen ausgegraut sichtbar.
+  Eine Zahl ohne Rolle meldet der Prüfer.
+- **Wer entscheidet:** der Mensch, dem der Bauplan gehört. „Als Größe zeigen“ und „Festlegen“ sind Änderungen am
+  Bauplan. Über Ebenen hinweg entscheidet jede Ebene, welche Größen ihrer Bausteine sie nach oben weitergibt; die
+  Baugruppe ändert nur, was das Teil anbietet. Die KI schlägt vor: Was der Mensch genannt hat, wird Größe, der Rest
+  wird festgelegt und gezeigt.
+
 ## Bewusst nicht übernommen
 
 - Eigene Modelliersprache (Zoo KCL, FeatureScript): Wir nutzen Python und build123d, das Modelle schon kennen.
