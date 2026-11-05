@@ -15,8 +15,24 @@ ZAHL = re.compile(r"^\s*(-?\d+(?:[.,]\d+)?)\s*([a-zA-Z°]*)\s*$")
 BEREICH = re.compile(r"^\s*\[\s*([^\]]+?)\s*\.\.\s*([^\]]+?)\s*\]\s*(.*)$", re.S)
 FEST = re.compile(r"^\s*\[\s*fest\s*\]\s*(.*)$", re.S | re.I)
 WERTFELDER = {
-    "distance", "distance2", "radius", "radius2", "diameter", "depth", "angle", "offset", "taper", "length",
-    "thickness", "height", "width", "spacing", "count", "pitch", "draft", "setback",
+    "distance",
+    "distance2",
+    "radius",
+    "radius2",
+    "diameter",
+    "depth",
+    "angle",
+    "offset",
+    "taper",
+    "length",
+    "thickness",
+    "height",
+    "width",
+    "spacing",
+    "count",
+    "pitch",
+    "draft",
+    "setback",
 }
 STUFEN = 10  # Halbierungsschritte bei der Suche nach der Grenze
 
@@ -97,46 +113,71 @@ def _feste_zahlen(feature: dict[str, Any]) -> list[tuple[str, str]]:
     return funde
 
 
-FELDNAME = {"distance": "Länge", "radius": "Radius", "diameter": "Durchmesser", "depth": "Tiefe",
-            "angle": "Winkel", "offset": "Abstand", "taper": "Schräge", "thickness": "Dicke"}
+FELDNAME = {
+    "distance": "Länge",
+    "radius": "Radius",
+    "diameter": "Durchmesser",
+    "depth": "Tiefe",
+    "angle": "Winkel",
+    "offset": "Abstand",
+    "taper": "Schräge",
+    "thickness": "Dicke",
+}
 
 
 def statisch(doc: dict[str, Any], skizzen: list[dict[str, Any]], groessen: list[Groesse]) -> list[Befund]:
     befunde: list[Befund] = []
     for s in skizzen:
         if s.get("dof", 0) > 0:
-            befunde.append(Befund(
-                "warnung", f"Skizze „{s['name']}“ ist nicht vollständig bestimmt",
-                f"Sie hat noch {s['dof']} Freiheiten. Ihre Lage und Maße kommen aus gezeichneten Zahlen statt aus "
-                "Größen; ändert man eine Größe, bleiben diese Stellen einfach stehen.",
-            ))
+            befunde.append(
+                Befund(
+                    "warnung",
+                    f"Skizze „{s['name']}“ ist nicht vollständig bestimmt",
+                    f"Sie hat noch {s['dof']} Freiheiten. Ihre Lage und Maße kommen aus gezeichneten Zahlen statt aus "
+                    "Größen; ändert man eine Größe, bleiben diese Stellen einfach stehen.",
+                )
+            )
         if s.get("failing"):
-            befunde.append(Befund("fehler", f"Skizze „{s['name']}“ hat widersprüchliche Bedingungen",
-                                  f"Betroffen: {', '.join(map(str, s['failing']))}."))
+            befunde.append(
+                Befund(
+                    "fehler",
+                    f"Skizze „{s['name']}“ hat widersprüchliche Bedingungen",
+                    f"Betroffen: {', '.join(map(str, s['failing']))}.",
+                )
+            )
     for f in doc.get("features", []):
         if f.get("type") == "sketch" or f.get("suppressed"):
             continue
         for feld, wert in _feste_zahlen(f):
             if f.get("type") == "hole" and feld == "diameter":
-                befunde.append(Befund(
-                    "hinweis", f"Bohrung „{f.get('name')}“: Durchmesser {wert} steht fest",
-                    "SolidCraft kann eine Schraubengröße (z. B. M6) noch nicht als Größe führen. „Bohrungen auf M5“ "
-                    "geht deshalb nur durch Ändern des Schritts. Vorschlag für SolidCraft: Gewinde als Größe.",
-                ))
+                befunde.append(
+                    Befund(
+                        "hinweis",
+                        f"Bohrung „{f.get('name')}“: Durchmesser {wert} steht fest",
+                        "SolidCraft kann eine Schraubengröße (z. B. M6) noch nicht als Größe führen. „Bohrungen auf M5“ "
+                        "geht deshalb nur durch Ändern des Schritts. Vorschlag für SolidCraft: Gewinde als Größe.",
+                    )
+                )
             else:
-                befunde.append(Befund(
-                    "warnung", f"Schritt „{f.get('name')}“: {FELDNAME.get(feld, feld)} {wert} ist eine feste Zahl",
-                    "Sie hängt an keiner Größe. Wenn das Absicht ist, als Größe mit „[fest] Grund“ anlegen; sonst "
-                    "aus einer Größe oder Formel ableiten.",
-                ))
+                befunde.append(
+                    Befund(
+                        "warnung",
+                        f"Schritt „{f.get('name')}“: {FELDNAME.get(feld, feld)} {wert} ist eine feste Zahl",
+                        "Sie hängt an keiner Größe. Wenn das Absicht ist, als Größe mit „[fest] Grund“ anlegen; sonst "
+                        "aus einer Größe oder Formel ableiten.",
+                    )
+                )
     for g in groessen:
         if g.rolle == "ohne":
-            befunde.append(Befund(
-                "hinweis", f"Größe „{g.name}“ hat keinen Bereich",
-                "Ohne Bereich kann niemand prüfen, wie weit sie sich ändern lässt. Im Kommentar ergänzen, z. B. "
-                f"„[{fmt((g.wert or 1) * 0.5, g.einheit)} .. {fmt((g.wert or 1) * 2, g.einheit)}] Grund“.",
-                groesse=g.name,
-            ))
+            befunde.append(
+                Befund(
+                    "hinweis",
+                    f"Größe „{g.name}“ hat keinen Bereich",
+                    "Ohne Bereich kann niemand prüfen, wie weit sie sich ändern lässt. Im Kommentar ergänzen, z. B. "
+                    f"„[{fmt((g.wert or 1) * 0.5, g.einheit)} .. {fmt((g.wert or 1) * 2, g.einheit)}] Grund“.",
+                    groesse=g.name,
+                )
+            )
     return befunde
 
 
@@ -153,8 +194,10 @@ def signatur(antwort: dict[str, Any]) -> tuple:
 
 def beschreiben(vorher: tuple, nachher: tuple, antwort: dict[str, Any]) -> str:
     if nachher[0]:
-        meldungen = [str(e.get("message", e)) if isinstance(e, dict) else str(e)
-                     for e in (antwort.get("errors") or []) + (antwort.get("parameter_errors") or [])]
+        meldungen = [
+            str(e.get("message", e)) if isinstance(e, dict) else str(e)
+            for e in (antwort.get("errors") or []) + (antwort.get("parameter_errors") or [])
+        ]
         return "Das Teil lässt sich nicht mehr bauen" + (f": {meldungen[0]}" if meldungen else "") + "."
     if nachher[1] != vorher[1]:
         return f"Aus {vorher[1]} Körper(n) werden {nachher[1]} – das Teil zerfällt oder verschmilzt."
@@ -162,8 +205,10 @@ def beschreiben(vorher: tuple, nachher: tuple, antwort: dict[str, Any]) -> str:
         return "Der Körper ist nicht mehr geschlossen und damit nicht druckbar."
     fv = sum(f for f, _ in vorher[3])
     fn = sum(f for f, _ in nachher[3])
-    return (f"Die Gestalt ändert sich ({fv} → {fn} Flächen): vermutlich schneidet ein Schritt in einen anderen "
-            "oder ein Teil verschwindet.")
+    return (
+        f"Die Gestalt ändert sich ({fv} → {fn} Flächen): vermutlich schneidet ein Schritt in einen anderen "
+        "oder ein Teil verschwindet."
+    )
 
 
 def pruefen(teil: Path, sitzung: Sitzung) -> Ergebnis:
@@ -174,15 +219,20 @@ def pruefen(teil: Path, sitzung: Sitzung) -> Ergebnis:
 
     # SolidCraft verlangt mindestens eine Größe: die erste auf ihren eigenen Wert setzen
     nenn_set = {groessen[0].name: groessen[0].ausdruck} if groessen else {}
-    nenn = (sitzung.werkzeug("check_parameters", {"set": nenn_set}) if nenn_set
-            else sitzung.werkzeug("measure", {}))
+    nenn = sitzung.werkzeug("check_parameters", {"set": nenn_set}) if nenn_set else sitzung.werkzeug("measure", {})
     if not nenn_set:
         nenn = {"measure": nenn, "errors": []}
     ref = signatur(nenn)
     ergebnis = Ergebnis(teil.stem, groessen, befunde, nenn)
     if ref[0] or not ref[2]:
-        befunde.insert(0, Befund("fehler", "Das Teil ist schon mit den Nennwerten fehlerhaft",
-                                 beschreiben((False, ref[1], True, ref[3]), ref, nenn)))
+        befunde.insert(
+            0,
+            Befund(
+                "fehler",
+                "Das Teil ist schon mit den Nennwerten fehlerhaft",
+                beschreiben((False, ref[1], True, ref[3]), ref, nenn),
+            ),
+        )
         return ergebnis
 
     def probe(werte: dict[str, str]) -> tuple[tuple, dict[str, Any]]:
@@ -215,15 +265,17 @@ def pruefen(teil: Path, sitzung: Sitzung) -> Ergebnis:
         sig, antwort = probe({g.name: fmt(ziel, g.einheit).replace(",", ".")})
         richtung = "unter" if ziel < g.wert else "über"
         ergebnis.haltbar[g.name] = f"kippt {richtung} ≈ {fmt(gut, g.einheit)}"
-        befunde.append(Befund(
-            "fehler" if sig[0] or not sig[2] else "warnung",
-            f"„{g.name}“ hält nicht den ganzen Bereich: kippt {richtung} ≈ {fmt(gut, g.einheit)}",
-            f"Bei {g.name} = {fmt(ziel, g.einheit)}: {beschreiben(ref, sig, antwort)} Erlaubt sind laut Kommentar "
-            f"{fmt(g.von, g.einheit)} bis {fmt(g.bis, g.einheit)}. Entweder den Bereich enger fassen oder den "
-            "Aufbau so ändern, dass er mitwächst.",
-            groesse=g.name,
-            werte={g.name: fmt(ziel, g.einheit).replace(",", ".")},
-        ))
+        befunde.append(
+            Befund(
+                "fehler" if sig[0] or not sig[2] else "warnung",
+                f"„{g.name}“ hält nicht den ganzen Bereich: kippt {richtung} ≈ {fmt(gut, g.einheit)}",
+                f"Bei {g.name} = {fmt(ziel, g.einheit)}: {beschreiben(ref, sig, antwort)} Erlaubt sind laut Kommentar "
+                f"{fmt(g.von, g.einheit)} bis {fmt(g.bis, g.einheit)}. Entweder den Bereich enger fassen oder den "
+                "Aufbau so ändern, dass er mitwächst.",
+                groesse=g.name,
+                werte={g.name: fmt(ziel, g.einheit).replace(",", ".")},
+            )
+        )
 
     mit_bereich = [g for g in groessen if g.rolle == "groesse" and g.von is not None and g.bis is not None]
     if len(mit_bereich) > 1:
@@ -231,11 +283,14 @@ def pruefen(teil: Path, sitzung: Sitzung) -> Ergebnis:
             werte = {g.name: fmt(waehle(g), g.einheit).replace(",", ".") for g in mit_bereich}
             sig, antwort = probe(werte)
             if sig != ref:
-                befunde.append(Befund(
-                    "warnung", f"Zusammenspiel: {name} geht nicht",
-                    f"Jede Größe für sich mag halten, zusammen aber nicht: {beschreiben(ref, sig, antwort)}",
-                    werte=werte,
-                ))
+                befunde.append(
+                    Befund(
+                        "warnung",
+                        f"Zusammenspiel: {name} geht nicht",
+                        f"Jede Größe für sich mag halten, zusammen aber nicht: {beschreiben(ref, sig, antwort)}",
+                        werte=werte,
+                    )
+                )
     rang = {"fehler": 0, "warnung": 1, "hinweis": 2}
     ergebnis.befunde.sort(key=lambda b: rang[b.art])
     return ergebnis

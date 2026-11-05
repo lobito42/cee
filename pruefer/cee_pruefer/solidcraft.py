@@ -14,9 +14,7 @@ from pathlib import Path
 from typing import Any
 
 VERSION = "0.30.1"
-DEB_URL = (
-    f"https://github.com/tangency-labs/solidcraft/releases/download/v{VERSION}/solidcraft-linux-x86_64.deb"
-)
+DEB_URL = f"https://github.com/tangency-labs/solidcraft/releases/download/v{VERSION}/solidcraft-linux-x86_64.deb"
 CACHE = Path(os.environ.get("CEE_CACHE", Path.home() / ".cache" / "cee")) / "solidcraft" / VERSION
 
 
@@ -151,13 +149,24 @@ def bild(teil: Path, werte: dict[str, str], ziel: Path, cli: Path | None = None)
     """Bild des Teils mit geänderten Größen (ohne das Teil zu ändern); None, wenn es nicht geht."""
     cli = cli or finden()
     skript = ziel.with_suffix(".json")
-    befehle = [
-        {"command": "parameters.change", "params": {"name": n, "expression": w}} for n, w in werte.items()
-    ]
+    befehle = [{"command": "parameters.change", "params": {"name": n, "expression": w}} for n, w in werte.items()]
     skript.write_text(json.dumps({"commands": befehle}), encoding="utf-8")
     lauf = subprocess.run(
-        [str(cli), "snapshot", str(skript), "--in", str(teil), "--out", str(ziel), "--view", "iso",
-         "--width", "640", "--height", "440"],
+        [
+            str(cli),
+            "snapshot",
+            str(skript),
+            "--in",
+            str(teil),
+            "--out",
+            str(ziel),
+            "--view",
+            "iso",
+            "--width",
+            "640",
+            "--height",
+            "440",
+        ],
         capture_output=True,
         text=True,
     )

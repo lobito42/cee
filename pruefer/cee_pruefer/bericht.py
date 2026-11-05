@@ -10,8 +10,11 @@ from pathlib import Path
 from .pruefen import Ergebnis, fmt
 from .solidcraft import bild
 
-FARBE = {"fehler": ("#C13C36", "#FFE0DB", "Fehler"), "warnung": ("#7E5403", "#FAE9CE", "Warnung"),
-         "hinweis": ("#3A69AD", "#DFECFF", "Hinweis")}
+FARBE = {
+    "fehler": ("#C13C36", "#FFE0DB", "Fehler"),
+    "warnung": ("#7E5403", "#FAE9CE", "Warnung"),
+    "hinweis": ("#3A69AD", "#DFECFF", "Hinweis"),
+}
 ROLLE = {"groesse": "Größe", "fest": "festgelegt", "ohne": "ohne Rolle"}
 
 
@@ -24,8 +27,10 @@ def _png(pfad: Path | None) -> str:
 
 def kurz(e: Ergebnis) -> str:
     zaehl = {a: sum(1 for b in e.befunde if b.art == a) for a in FARBE}
-    zeilen = [f"Teil {e.teil}: {zaehl['fehler']} Fehler, {zaehl['warnung']} Warnungen, {zaehl['hinweis']} Hinweise "
-              f"({e.probiert} Varianten durchprobiert)"]
+    zeilen = [
+        f"Teil {e.teil}: {zaehl['fehler']} Fehler, {zaehl['warnung']} Warnungen, {zaehl['hinweis']} Hinweise "
+        f"({e.probiert} Varianten durchprobiert)"
+    ]
     zeilen += [f"- [{FARBE[b.art][2]}] {b.titel}" for b in e.befunde]
     return "\n".join(zeilen)
 
@@ -53,15 +58,19 @@ def html_bericht(e: Ergebnis, teil: Path, bilder: bool = True) -> str:
             p = bild(teil, b.werte, tmp / f"b{i}.png")
             if p is not None:
                 werte = ", ".join(f"{k} = {v}" for k, v in b.werte.items())
-                abb = (f"<div class='paar'><figure>{_png(nenn_bild)}<figcaption>Nennwerte</figcaption></figure>"
-                       f"<figure>{_png(p)}<figcaption>{html.escape(werte)}</figcaption></figure></div>")
+                abb = (
+                    f"<div class='paar'><figure>{_png(nenn_bild)}<figcaption>Nennwerte</figcaption></figure>"
+                    f"<figure>{_png(p)}<figcaption>{html.escape(werte)}</figcaption></figure></div>"
+                )
         karten.append(
             f"<section class='karte'><span class='marke' style='color:{fg};background:{bg}'>{wort}</span>"
             f"<h3>{html.escape(b.titel)}</h3><p>{html.escape(b.text)}</p>{abb}</section>"
         )
     if not karten:
-        karten.append("<section class='karte'><h3>Keine Befunde</h3><p>Das Teil ist parametrisch und hält jede "
-                      "Größe über ihren Bereich.</p></section>")
+        karten.append(
+            "<section class='karte'><h3>Keine Befunde</h3><p>Das Teil ist parametrisch und hält jede "
+            "Größe über ihren Bereich.</p></section>"
+        )
     return f"""<!doctype html>
 <html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Prüfbericht {html.escape(e.teil)}</title>
@@ -86,10 +95,10 @@ figcaption{{color:var(--text2);font-size:12px;margin-top:4px}}
 </style></head><body><main>
 <h1>Prüfbericht: {html.escape(e.teil)}</h1>
 <div class="unter">CEE-Prüfer auf SolidCraft · {e.probiert} Varianten durchprobiert</div>
-<div class="zahlen"><div class="zahl"><b>{zaehl['fehler']}</b>Fehler</div><div class="zahl"><b>{zaehl['warnung']}</b>
-Warnungen</div><div class="zahl"><b>{zaehl['hinweis']}</b>Hinweise</div></div>
+<div class="zahlen"><div class="zahl"><b>{zaehl["fehler"]}</b>Fehler</div><div class="zahl"><b>{zaehl["warnung"]}</b>
+Warnungen</div><div class="zahl"><b>{zaehl["hinweis"]}</b>Hinweise</div></div>
 {_png(nenn_bild)}
 <h2>Größen</h2><div class="tabelle"><table><tr><th>Größe</th><th>Wert</th><th>Rolle</th><th>Bereich</th>
-<th>Ergebnis</th><th>Grund</th></tr>{''.join(zeilen)}</table></div>
-<h2>Befunde</h2>{''.join(karten)}
+<th>Ergebnis</th><th>Grund</th></tr>{"".join(zeilen)}</table></div>
+<h2>Befunde</h2>{"".join(karten)}
 </main></body></html>"""
