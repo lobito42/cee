@@ -1,43 +1,38 @@
-# Plan – kurze Runden (ADR-067)
+# Plan – kurze Runden (ADR-067, ADR-068)
 
-Ziel über allem: **Teil beschreiben → KI schreibt parametrischen Bauplan → 3D ansehen → Größen ändern → STL
-drucken.** Jede Runde endet mit etwas, das der Mensch ausprobiert. Fertige Runden wandern nach unten unter
-„Erledigt“, mit einem Satz zum Ergebnis.
+Ziel über allem: **Teil beschreiben → KI baut ein wirklich parametrisches Teil → ansehen → Größen ändern →
+drucken.** Den CAD-Kern liefert SolidCraft (ADR-068); CEE liefert Prüfen, Absicht und Zusammenarbeit. Jede Runde
+endet mit etwas, das der Mensch ausprobiert. Fertige Runden wandern nach unten unter „Erledigt“.
 
-## Runde 1 – Ein Teil als Bauplan, mit Reglern und STL (ohne KI)
+## Runde 1 – CEE-Prüfer für SolidCraft-Teile
 
-Was du danach ausprobieren kannst: Den Winkelhalter öffnen, in 3D drehen, Breite, Dicke oder Bohrung per Regler
-ändern, das Teil passt sich an, „Als STL herunterladen“ liefert eine druckbare Datei. Die Code-Ansicht zeigt den
-Bauplan; eine Änderung dort wirkt sofort.
+Was du danach ausprobieren kannst: Ein Teil (z. B. den Winkelhalter) prüfen lassen und einen Bericht mit Bildern
+lesen: Welche Zahlen stehen fest, obwohl sie Größen sein sollten? Hält das Teil jede Größe über ihren Bereich, und
+wo genau kippt es (z. B. „Bohrung schneidet den Steg ab Dicke 3 mm“)?
 
-- Zuerst: Entwurf des einen Bildschirms nach `docs/design/prinzipien.md` (Größen-Tabelle, Schrittliste, 3D mit
-  Ansichtswürfel, Code zum Aufklappen, STL). Gebaut wird erst nach dem Ja zum Bild.
-- Format des Bauplans festziehen: `Params` mit Einheit, Standardwert und Bereich je Größe, `build(p)`, benannte
-  Schritte. Vorlage: `parts/examples/halter.py`.
-- Worker: Bauplan laden, mit Werten rechnen, Netz und STL liefern, Fehler verständlich melden (Zeile, Ursache).
-- Oberfläche (auf Basis des bisherigen Prototyps): Größen-Liste mit Reglern links, 3D in der Mitte, Code-Ansicht
-  zum Aufklappen, STL-Knopf.
-- Prüfer: läuft, gültig und geschlossen, jede Größe am Rand ihres Bereichs baut noch.
+- Teil lesen (`.sc` oder Befehlsliste), Größen mit Rollen und Bereichen aus dem Kommentar.
+- Feste Zahlen in Skizzen und Schritten finden.
+- Jede Größe an Rändern und dazwischen durchprobieren (SolidCraft „Werte durchprobieren“), Fehler, offene Körper
+  und Gestaltänderungen (andere Zahl an Flächen, Bohrungen, Körpern) melden, mit Bild des Grenzfalls.
+- Bericht als Seite zum Ansehen.
 
-## Runde 2 – Die KI ändert den Bauplan
+## Runde 2 – Die KI schlägt eine Änderung vor
 
-„Mach die Wand 1 mm dicker“, „Bohrungen auf M6“, „noch eine Bohrung in die Mitte“: Die KI schlägt eine Änderung
-vor, du siehst vorher/nachher in 3D und welche Größen sich ändern, dann Übernehmen oder Verwerfen.
-Weiterverwendet wird der Unterbau aus der letzten KI-Stufe (Vorschlagskarte, Anbieter-Schnittstelle, lokale
-Modelle).
+„Bohrungen für M5 und die Platte 2 mm dicker“: Die KI arbeitet an einer Kopie über die SolidCraft-Schnittstelle,
+du siehst vorher/nachher, die geänderten Größen und das Prüferergebnis, dann Übernehmen oder Verwerfen.
 
 ## Runde 3 – Die KI baut ein neues Teil aus einer Beschreibung
 
-„Halter für ein 25-mm-Rohr, zwei M5-Schrauben, 3 mm Wand, druckbar.“ Gemessen an einem festen Satz von fünf
-Aufgaben mit Prüfern: läuft, gültig, druckbar, und jede genannte Größe ist eine benannte, änderbare Größe.
+„Halter für ein 25-mm-Rohr, zwei M5-Schrauben, 3 mm Wand, druckbar.“ Gemessen an fünf festen Aufgaben: läuft,
+druckbar, jede genannte Größe ist eine benannte Größe mit Bereich, und der Prüfer findet nichts.
 
 ## Danach (Reihenfolge offen)
 
 Mehrere Teile zu einer Baugruppe, Skizzen mit Bedingungen, Materialien, Zusammenarbeit, Knoten-Ansicht.
 
-## Ruht (ADR-067)
+## Ruht (ADR-067, ADR-068)
 
-Element-Graph im Rust-Kern, Synchronisierung, Server, Bindungen, Fachpakete, Akustik, die offenen Changes in
+Eigener Geometrie-Worker (build123d), eigene CAD-Oberfläche, Element-Graph im Rust-Kern, Synchronisierung, Server, Bindungen, Fachpakete, Akustik, die offenen Changes in
 `openspec/queue.yaml`. Nichts davon ist gelöscht.
 
 ## Erledigt

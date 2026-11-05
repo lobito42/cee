@@ -1,9 +1,10 @@
 # CEE – Anweisungen für Coding-Agenten
 
 Gilt für Claude Code, OpenCode und Pi. CEE (Collaborative Engineering Environment) soll für kleine und mittlere
-Unternehmen werden, was Blender und OpenSCAD für ihre Communities sind. **Aktuelle Richtung (ADR-067):
-Geometrie als Code – parametrisch und editierbar.** Ein Teil ist ein lesbarer Bauplan (Python, build123d); der
-Mensch ändert ihn über Regler, Code oder Chat, die KI schlägt Änderungen mit Vorschau vor.
+Unternehmen werden, was Blender und OpenSCAD für ihre Communities sind. **Aktuelle Richtung (ADR-067, ADR-068):
+parametrisch und editierbar, auf SolidCraft aufgesetzt.** Den CAD-Kern liefert SolidCraft (freies Rust-CAD, über
+`solidcraft-cli` und MCP); CEE baut, was fehlt: Prüfer (Rollen, Bereiche, prüfbar parametrisch), KI auf Ebene der
+Absicht mit Vorschlag und Vorschau, später Zusammenarbeit und Freigaben.
 
 ## Zu Beginn jeder Sitzung
 
@@ -24,8 +25,8 @@ Mensch ändert ihn über Regler, Code oder Chat, die KI schlägt Änderungen mit
 
 ## Grundsätze
 
-1. **Der Bauplan ist die Quelle der Wahrheit.** `Params` (benannte Größen mit Einheit, Standard, Bereich) plus
-   `build(p)` plus benannte Schritte. Geometrie, Netze, STL sind abgeleitet und werden nie gespeichert.
+1. **Das SolidCraft-Teil ist die Quelle der Wahrheit** (ADR-068): benannte Größen mit Einheit, Rolle und Bereich
+   im Kommentar, benannte Schritte. Kein zweiter Bauplan daneben. Netze und STL sind abgeleitet.
 2. **Parametrisch heißt prüfbar parametrisch:** Keine Zahl im Code, die eigentlich eine Größe ist. Jede Größe
    lässt sich in ihrem Bereich ändern, ohne dass das Teil zerbricht – das belegen Prüfer, nie das Modell selbst.
 3. **KI ändert nur als Vorschlag mit Vorschau** (vorher/nachher, geänderte Größen, Code-Diff); Übernehmen oder
@@ -34,7 +35,7 @@ Mensch ändert ihn über Regler, Code oder Chat, die KI schlägt Änderungen mit
    Punktlisten.
 5. **Kein fester KI-Anbieter:** lokale Modelle müssen gehen, keine Daten an Dritte ohne ausdrückliche Wahl, keine
    Telemetrie ohne Zustimmung.
-6. **Geometrie nur im Worker** hinter der Kernel-Schnittstelle (OpenCascade über build123d).
+6. **Geometrie kommt aus SolidCraft**, angesteuert über `solidcraft-cli` und MCP; eine fest gewählte Version.
 7. **Jede Zahl ist eine Größe mit Einheit.**
 8. **Fehler eines Teils zerbrechen nie die Anwendung**; Fehler werden verständlich gemeldet (Zeile, Ursache).
 9. **Oberfläche: ein Bauplan, viele Sichten.** Prinzipien der Vorbilder nach `docs/design/prinzipien.md`
@@ -67,9 +68,9 @@ Branch `adr/<thema>`, der Mensch sagt Ja im Gespräch, dann mergt der Agent: `do
 
 | Pfad | Inhalt | Stand | Prüfen |
 | --- | --- | --- | --- |
-| `worker/` | Geometrie-Worker (build123d/OCP) | **aktiv** | `uv run ruff check . && uv run pytest -q` |
-| `parts/` | Baupläne, z. B. `parts/examples/halter.py` | **aktiv** | – |
-| `spikes/ux-prototyp-2/` | Oberfläche (Basis für Runde 1) | **aktiv** | `npm --prefix spikes/ux-prototyp-2 run lint && npm --prefix spikes/ux-prototyp-2 test` |
+| `pruefer/` | CEE-Prüfer für SolidCraft-Teile (Runde 1) | **aktiv** | `uv run ruff check pruefer && uv run pytest -q tests/acceptance/pruefer` |
+| `parts/` | Beispielteile (`.sc` und Befehlslisten) | **aktiv** | – |
+| `worker/`, `spikes/` | build123d-Worker, alter Prototyp | ruht (ADR-068) | – |
 | `crates/`, `server/`, `client/`, `packages/` | Element-Graph, Sync-Server, Produkt-Client, Fachpakete | ruht (ADR-067) | wie bisher, nur bei Bedarf |
 | `sdk/`, `format/` | SDK und Formatspezifikation (Apache-2.0) | ruht | – |
 
