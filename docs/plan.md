@@ -1,43 +1,51 @@
-# Plan – kurze Runden (ADR-067)
+# Plan – kurze Runden (ADR-067, ADR-068)
 
-Ziel über allem: **Teil beschreiben → KI schreibt parametrischen Bauplan → 3D ansehen → Größen ändern → STL
-drucken.** Jede Runde endet mit etwas, das der Mensch ausprobiert. Fertige Runden wandern nach unten unter
-„Erledigt“, mit einem Satz zum Ergebnis.
+Ziel über allem: **Teil beschreiben → KI baut ein wirklich parametrisches Teil → ansehen → Größen ändern →
+drucken – gemeinsam, mit KI-Vorschlägen und Freigabe.** Den CAD-Kern liefert unsere Kopie von SolidCraft (ADR-068);
+CEE liefert Prüfen, Zusammenarbeit, Vorschläge, KI und PLM. Jede Runde
+endet mit etwas, das der Mensch ausprobiert. Fertige Runden wandern nach unten unter „Erledigt“.
 
-## Runde 1 – Ein Teil als Bauplan, mit Reglern und STL (ohne KI)
+## Runde 1 – CEE-Prüfer für SolidCraft-Teile
 
-Was du danach ausprobieren kannst: Den Winkelhalter öffnen, in 3D drehen, Breite, Dicke oder Bohrung per Regler
-ändern, das Teil passt sich an, „Als STL herunterladen“ liefert eine druckbare Datei. Die Code-Ansicht zeigt den
-Bauplan; eine Änderung dort wirkt sofort.
+Was du danach ausprobieren kannst: Ein Teil (z. B. den Winkelhalter) prüfen lassen und einen Bericht mit Bildern
+lesen: Welche Zahlen stehen fest, obwohl sie Größen sein sollten? Hält das Teil jede Größe über ihren Bereich, und
+wo genau kippt es (z. B. „Bohrung schneidet den Steg ab Dicke 3 mm“)?
 
-- Zuerst: Entwurf des einen Bildschirms nach `docs/design/prinzipien.md` (Größen-Tabelle, Schrittliste, 3D mit
-  Ansichtswürfel, Code zum Aufklappen, STL). Gebaut wird erst nach dem Ja zum Bild.
-- Format des Bauplans festziehen: `Params` mit Einheit, Standardwert und Bereich je Größe, `build(p)`, benannte
-  Schritte. Vorlage: `parts/examples/halter.py`.
-- Worker: Bauplan laden, mit Werten rechnen, Netz und STL liefern, Fehler verständlich melden (Zeile, Ursache).
-- Oberfläche (auf Basis des bisherigen Prototyps): Größen-Liste mit Reglern links, 3D in der Mitte, Code-Ansicht
-  zum Aufklappen, STL-Knopf.
-- Prüfer: läuft, gültig und geschlossen, jede Größe am Rand ihres Bereichs baut noch.
+- Teil lesen (`.sc` oder Befehlsliste), Größen mit Rollen und Bereichen aus dem Kommentar.
+- Feste Zahlen in Skizzen und Schritten finden.
+- Jede Größe an Rändern und dazwischen durchprobieren (SolidCraft „Werte durchprobieren“), Fehler, offene Körper
+  und Gestaltänderungen (andere Zahl an Flächen, Bohrungen, Körpern) melden, mit Bild des Grenzfalls.
+- Bericht als Seite zum Ansehen.
 
-## Runde 2 – Die KI ändert den Bauplan
+## Runde 2 – Eigene Kopie, die sich selbst abgleicht
 
-„Mach die Wand 1 mm dicker“, „Bohrungen auf M6“, „noch eine Bohrung in die Mitte“: Die KI schlägt eine Änderung
-vor, du siehst vorher/nachher in 3D und welche Größen sich ändern, dann Übernehmen oder Verwerfen.
-Weiterverwendet wird der Unterbau aus der letzten KI-Stufe (Vorschlagskarte, Anbieter-Schnittstelle, lokale
-Modelle).
+Was du danach siehst: Unsere Kopie von SolidCraft (mit CEE-Namen) läuft im Browser und als App. Einmal pro Woche
+holt sie die Neuerungen von SolidCraft automatisch herein; der Prüfer und die Tests entscheiden, ob es übernommen
+wird. Ein Bericht sagt, was neu ist.
 
-## Runde 3 – Die KI baut ein neues Teil aus einer Beschreibung
+## Runde 3 – Zu zweit am selben Teil, Änderungen als Vorschlag
 
-„Halter für ein 25-mm-Rohr, zwei M5-Schrauben, 3 mm Wand, druckbar.“ Gemessen an einem festen Satz von fünf
-Aufgaben mit Prüfern: läuft, gültig, druckbar, und jede genannte Größe ist eine benannte, änderbare Größe.
+Was du ausprobierst: Zwei Fenster (oder zwei Personen) bearbeiten denselben Winkelhalter, mit Cursor und Namen.
+Jede Änderung kann als Vorschlag gemacht werden: Vorher/Nachher, geänderte Größen, Prüferergebnis, dann Übernehmen
+oder Verwerfen. Zusammenarbeit nach dem Vorbild von FigCraft (ADR-068).
+
+## Runde 4 – Die KI als Teilnehmer
+
+Die KI sitzt mit in der Sitzung und macht nur Vorschläge, zum Beispiel „Bohrungen für M5 und die Platte 2 mm
+dicker“. Modell frei wählbar; lokal, sobald schnell genug.
+
+## Runde 5 – Freigabe: der Anfang von PLM
+
+Ein Stand wird freigegeben: Teilenummer, Revision A, unveränderlich, mit Prüfbericht und STEP/STL. Danach
+Stückliste und Ereignisse für PLM/ERP.
 
 ## Danach (Reihenfolge offen)
 
-Mehrere Teile zu einer Baugruppe, Skizzen mit Bedingungen, Materialien, Zusammenarbeit, Knoten-Ansicht.
+PLM/ERP-Schnittstelle, KI baut neue Teile aus einer Beschreibung, langlebige Entwürfe, Fachpakete (Raum, Akustik).
 
-## Ruht (ADR-067)
+## Ruht (ADR-067, ADR-068)
 
-Element-Graph im Rust-Kern, Synchronisierung, Server, Bindungen, Fachpakete, Akustik, die offenen Changes in
+Eigener Geometrie-Worker (build123d), eigene CAD-Oberfläche, Element-Graph im Rust-Kern, Synchronisierung, Server, Bindungen, Fachpakete, Akustik, die offenen Changes in
 `openspec/queue.yaml`. Nichts davon ist gelöscht.
 
 ## Erledigt

@@ -55,6 +55,13 @@ Bedienhandlung schreibt in den Bauplan, und jede Änderung am Bauplan zeigt sich
   Baugruppe ändert nur, was das Teil anbietet. Die KI schlägt vor: Was der Mensch genannt hat, wird Größe, der Rest
   wird festgelegt und gezeigt.
 
+### Rollen und Bereiche im Teil (ADR-068)
+
+Im Kommentar einer SolidCraft-Größe, am Anfang: `[40 mm .. 120 mm]` für den Bereich, `[fest]` für eine
+festgelegte Zahl, danach der Grund in Worten. Beispiel: `[6 mm .. 20 mm] Mindestabstand für den Schraubenkopf`.
+Eine Größe ohne Bereich meldet der Prüfer als Hinweis, eine feste Zahl in Skizze oder Schritt, die keine Größe und
+kein Ausdruck ist, als Befund.
+
 ## Bewusst nicht übernommen
 
 - Eigene Modelliersprache (Zoo KCL, FeatureScript): Wir nutzen Python und build123d, das Modelle schon kennen.
