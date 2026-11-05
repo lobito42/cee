@@ -154,8 +154,9 @@ def statisch(doc: dict[str, Any], skizzen: list[dict[str, Any]], groessen: list[
                     Befund(
                         "hinweis",
                         f"Bohrung „{f.get('name')}“: Durchmesser {wert} steht fest",
-                        "SolidCraft kann eine Schraubengröße (z. B. M6) noch nicht als Größe führen. „Bohrungen auf M5“ "
-                        "geht deshalb nur durch Ändern des Schritts. Vorschlag für SolidCraft: Gewinde als Größe.",
+                        "SolidCraft kann eine Schraubengröße (z. B. M6) noch nicht als Größe führen. "
+                        "„Bohrungen auf M5“ geht deshalb nur durch Ändern des Schritts. "
+                        "Vorschlag für SolidCraft: Gewinde als Größe.",
                     )
                 )
             else:
