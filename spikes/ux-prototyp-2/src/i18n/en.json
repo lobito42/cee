@@ -451,6 +451,9 @@
       "gerade": "Line through two points",
       "halbgerade": "Ray through two points",
       "strecke": "Segment through two points"
+    },
+    "ki": {
+      "anbieter-waehlen": "Choose AI provider"
     }
   },
   "draht": {
@@ -485,5 +488,51 @@
       "protocol": "Invalid message to the geometry kernel",
       "kernel_unavailable": "Geometry service unavailable"
     }
+  },
+  "ki": {
+    "werkzeug": {
+      "referenz": {
+        "koordinatensystem": "Create a coordinate system: origin x, y, z and rotation rx, ry, rz. Example: {\"x\": \"100 mm\", \"rz\": \"30 deg\"}",
+        "punkt": "Place a point at coordinates. Example: {\"x\": \"10 mm\", \"y\": \"20 mm\", \"z\": \"0 mm\"}",
+        "punkt-relativ": "Place a point offset from point ref. Example: {\"ref\": \"P1.point\", \"z\": \"25 mm\"}",
+        "gerade": "Infinite line through points a and b. Example: {\"a\": \"P1.point\", \"b\": \"P2.point\"}",
+        "halbgerade": "Ray starting at a through b. Example: {\"a\": \"P1.point\", \"b\": \"P2.point\"}",
+        "strecke": "Segment from a to b. Example: {\"a\": \"P1.point\", \"b\": \"P2.point\"}"
+      },
+      "element": {
+        "ausblenden": "Hide an element. Example: {\"element\": \"G1\"}",
+        "verwerfen": "Discard an element (undo brings it back). Example: {\"element\": \"S1\"}"
+      }
+    },
+    "kopf": {
+      "regel": "Sentence recognition – no model, stays on this computer",
+      "lokal": "{modell} – stays on this computer",
+      "extern": "{modell} – goes to {host}"
+    },
+    "uebersicht": {
+      "kopf": "Model overview (per line: ID type \"ID\" (name) parameters references):",
+      "leer": "(no elements yet)"
+    },
+    "antwort": {
+      "vorschlag": "Here is my proposal. The model shows a preview; only Apply changes anything.",
+      "unklar": "I did not understand that. Try for example: „Punkt bei 10, 20, 5 mm“, „Rechteck 100 × 60 mm in der XY-Ebene mit Punkt 40 mm darüber“, „Koordinatensystem bei x 100 mm, um 30° um z gedreht“.",
+      "zeitlimit": "No answer from the model (time limit). Nothing was changed.",
+      "fehler": "The model cannot be reached ({fehler}). Nothing was changed.",
+      "grenze": "I stopped after 20 steps; the card shows what was done so far.",
+      "teilweise": "Applied; {n} steps could not be carried out any more.",
+      "nicht-verfuegbar": "This provider is not set up ({befund}); sentence recognition stays active."
+    },
+    "karte": {
+      "neu": "{n} new",
+      "verworfen": "{n} discarded",
+      "ausgeblendet": "{n} hidden"
+    },
+    "status": {
+      "offen": "Proposal",
+      "uebernommen": "applied",
+      "verworfen": "discarded"
+    },
+    "hinweis": "For example: Punkt bei 10, 20, 5 mm",
+    "denkt": "Working on it …"
   }
 }

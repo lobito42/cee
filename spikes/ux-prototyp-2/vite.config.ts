@@ -1,11 +1,14 @@
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 import { kernelBruecke } from './bruecke/kernel';
+import { kiBruecke } from './bruecke/ki';
 
 // Die Brücke zum Geometrie-Worker gibt es nur in `vorschau.sh` (CEE_BRUECKE=1) und im Prüfmodus
 // (CEE_BRUECKE=pruefen); der statische Build und die übrigen Prüfbefehle laufen ohne sie (ap-50).
+// Mit ihr kommen die KI-Anbieter (ap-52), ebenfalls nur auf 127.0.0.1.
 const bruecke = process.env.CEE_BRUECKE;
 const repo = fileURLToPath(new URL('../..', import.meta.url));
+const pruefmodus = bruecke === 'pruefen';
 
 export default defineConfig({
   base: './',
@@ -13,6 +16,6 @@ export default defineConfig({
   // `format/examples` liegt außerhalb des Prototyps (Testzustand drahtmodell-beispiel)
   server: { host: '127.0.0.1', fs: { allow: [repo] } },
   preview: { host: '127.0.0.1' },
-  plugins: bruecke ? [kernelBruecke({ repo, pruefmodus: bruecke === 'pruefen' })] : [],
+  plugins: bruecke ? [kernelBruecke({ repo, pruefmodus }), kiBruecke({ pruefmodus })] : [],
   test: { include: ['src/**/*.test.ts'] },
 });

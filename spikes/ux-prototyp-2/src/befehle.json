@@ -137,12 +137,18 @@
       "handlung": "verwerfen",
       "familie": "Bearbeiten",
       "titel": "befehl.element.verwerfen",
-      "parameter": {},
+      "parameter": {
+        "element": {
+          "typ": "element",
+          "pflicht": true
+        }
+      },
       "bezug": "element",
       "rang": 3,
       "wesentlich": true,
       "untergruppe": "Element",
-      "kuerzel": "Entf"
+      "kuerzel": "Entf",
+      "ki": true
     },
     {
       "id": "auswahl.duplizieren",
@@ -486,12 +492,18 @@
       "handlung": "ausblenden",
       "familie": "Sichtbarkeit",
       "titel": "befehl.element.ausblenden",
-      "parameter": {},
+      "parameter": {
+        "element": {
+          "typ": "element",
+          "pflicht": true
+        }
+      },
       "bezug": "element",
       "rang": 4,
       "wesentlich": true,
       "untergruppe": "Sichtbarkeit",
-      "kuerzel": "H"
+      "kuerzel": "H",
+      "ki": true
     },
     {
       "id": "element.einblenden",
@@ -880,6 +892,20 @@
       "untergruppe": "Chat"
     },
     {
+      "id": "ki.anbieter-waehlen",
+      "familie": "Chat",
+      "titel": "befehl.ki.anbieter-waehlen",
+      "parameter": {
+        "id": {
+          "typ": "text"
+        }
+      },
+      "bezug": "keine",
+      "rang": 177.5,
+      "wesentlich": false,
+      "untergruppe": "Chat"
+    },
+    {
       "id": "task.wechseln",
       "familie": "Fenster",
       "titel": "befehl.task.wechseln",
@@ -903,61 +929,182 @@
       "id": "referenz.koordinatensystem",
       "familie": "Referenz",
       "titel": "befehl.referenz.koordinatensystem",
-      "parameter": {},
+      "parameter": {
+        "x": {
+          "dimension": "length",
+          "einheit": "mm"
+        },
+        "y": {
+          "dimension": "length",
+          "einheit": "mm"
+        },
+        "z": {
+          "dimension": "length",
+          "einheit": "mm"
+        },
+        "rx": {
+          "dimension": "angle",
+          "einheit": "deg"
+        },
+        "ry": {
+          "dimension": "angle",
+          "einheit": "deg"
+        },
+        "rz": {
+          "dimension": "angle",
+          "einheit": "deg"
+        },
+        "parent": {
+          "typ": "referenz",
+          "ausgang": "frame"
+        },
+        "name": {
+          "typ": "text"
+        }
+      },
       "bezug": "keine",
       "rang": 0.5,
       "wesentlich": true,
-      "untergruppe": "Koordinatensystem"
+      "untergruppe": "Koordinatensystem",
+      "ki": true
     },
     {
       "id": "referenz.punkt",
       "familie": "Referenz",
       "titel": "befehl.referenz.punkt",
-      "parameter": {},
+      "parameter": {
+        "x": {
+          "dimension": "length",
+          "einheit": "mm"
+        },
+        "y": {
+          "dimension": "length",
+          "einheit": "mm"
+        },
+        "z": {
+          "dimension": "length",
+          "einheit": "mm"
+        },
+        "frame": {
+          "typ": "referenz",
+          "ausgang": "frame"
+        },
+        "name": {
+          "typ": "text"
+        }
+      },
       "bezug": "keine",
       "rang": 0.6,
       "wesentlich": true,
-      "untergruppe": "Punkt"
+      "untergruppe": "Punkt",
+      "ki": true
     },
     {
       "id": "referenz.punkt-relativ",
       "familie": "Referenz",
       "titel": "befehl.referenz.punkt-relativ",
-      "parameter": {},
+      "parameter": {
+        "ref": {
+          "typ": "referenz",
+          "ausgang": "point",
+          "pflicht": true
+        },
+        "x": {
+          "dimension": "length",
+          "einheit": "mm"
+        },
+        "y": {
+          "dimension": "length",
+          "einheit": "mm"
+        },
+        "z": {
+          "dimension": "length",
+          "einheit": "mm"
+        },
+        "name": {
+          "typ": "text"
+        }
+      },
       "bezug": "punkt",
       "rang": 0.1,
       "wesentlich": true,
-      "untergruppe": "Punkt"
+      "untergruppe": "Punkt",
+      "ki": true
     },
     {
       "id": "referenz.gerade",
       "familie": "Referenz",
       "titel": "befehl.referenz.gerade",
-      "parameter": {},
+      "parameter": {
+        "a": {
+          "typ": "referenz",
+          "ausgang": "point",
+          "pflicht": true
+        },
+        "b": {
+          "typ": "referenz",
+          "ausgang": "point",
+          "pflicht": true
+        },
+        "name": {
+          "typ": "text"
+        }
+      },
       "bezug": "punkte",
       "rang": 0.2,
       "wesentlich": true,
-      "untergruppe": "Linie"
+      "untergruppe": "Linie",
+      "ki": true
     },
     {
       "id": "referenz.halbgerade",
       "familie": "Referenz",
       "titel": "befehl.referenz.halbgerade",
-      "parameter": {},
+      "parameter": {
+        "a": {
+          "typ": "referenz",
+          "ausgang": "point",
+          "pflicht": true
+        },
+        "b": {
+          "typ": "referenz",
+          "ausgang": "point",
+          "pflicht": true
+        },
+        "name": {
+          "typ": "text"
+        }
+      },
       "bezug": "punkte",
       "rang": 0.3,
       "wesentlich": false,
-      "untergruppe": "Linie"
+      "untergruppe": "Linie",
+      "ki": true
     },
     {
       "id": "referenz.strecke",
       "familie": "Referenz",
       "titel": "befehl.referenz.strecke",
-      "parameter": {},
+      "parameter": {
+        "a": {
+          "typ": "referenz",
+          "ausgang": "point",
+          "pflicht": true
+        },
+        "b": {
+          "typ": "referenz",
+          "ausgang": "point",
+          "pflicht": true
+        },
+        "name": {
+          "typ": "text"
+        }
+      },
       "bezug": "punkte",
       "rang": 0.4,
       "wesentlich": true,
-      "untergruppe": "Linie"
+      "untergruppe": "Linie",
+      "ki": true
     }
   ]
 }

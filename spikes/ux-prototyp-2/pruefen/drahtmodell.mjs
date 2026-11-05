@@ -22,7 +22,7 @@ const kanon = (x) =>
   );
 const hash = (x) => createHash('sha256').update(kanon(x)).digest('hex');
 
-async function warteBereit(seite, ms = 15000) {
+export async function warteBereit(seite, ms = 15000) {
   await seite
     .waitForFunction(() => window.__cee.draht().bereit, null, { polling: 10, timeout: ms })
     .catch(() => undefined);
@@ -30,7 +30,7 @@ async function warteBereit(seite, ms = 15000) {
 }
 
 /** Elementverweis: ID oder `<typ>#<n>` (n-tes Wurzelelement dieses Typs, 1-basiert). */
-async function aufloesen(seite, verweis) {
+export async function aufloesen(seite, verweis) {
   const m = /^([a-z]+)#(\d+)$/.exec(verweis);
   if (!m) return verweis;
   return seite.evaluate(
@@ -115,7 +115,7 @@ async function befehlAusloesen(o, l, schritt) {
   await l.warte();
 }
 
-async function schrittAusfuehren(o, l, schritt, basis) {
+export async function schrittAusfuehren(o, l, schritt, basis) {
   const s = o.seite;
   if ('warten_ms' in schritt) {
     if (schritt.warten_ms > 0) await s.waitForTimeout(schritt.warten_ms);
@@ -146,7 +146,7 @@ async function schrittAusfuehren(o, l, schritt, basis) {
   throw new Error(`unbekannter Schritt: ${JSON.stringify(schritt)}`);
 }
 
-async function schnappschuss(seite, extra) {
+export async function schnappschuss(seite, extra) {
   const d = await seite.evaluate(() => window.__cee.draht());
   const struktur = (await lies.struktur(seite)).map((z) => ({
     id: z.id,

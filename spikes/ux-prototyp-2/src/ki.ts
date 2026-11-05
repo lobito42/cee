@@ -4,6 +4,13 @@ import type { App, Vorschlag } from './app';
 import { groesseText } from './ui/format';
 import { wert, type Element } from './modell/element';
 import { mm } from './modell/element';
+import {
+  anbieterWaehlen,
+  offeneKarte,
+  satzSenden,
+  uebernehmen,
+  verwerfen as verwerfenKarte,
+} from './ki/konstruktion';
 
 const NAMEN: [RegExp, string][] = [
   [/\bsteg\b|\brib\b|\bweb\b/, 'steg'],
@@ -89,8 +96,20 @@ export function wirkungenRegistrieren(app: App): void {
   app.registriere('chat.senden', (par) => {
     const text = (typeof par.text === 'string' ? par.text : app.chat.eingabe).trim();
     if (!text) return false;
+    if (app.ki.beschaeftigt) return false;
     app.chat.nachrichten.push({ von: 'person', text });
     app.chat.eingabe = '';
+    // Mit Brücke (ap-52): Satz an den aktiven Anbieter; die Simulation nur als Rückfall
+    if (app.ki.bruecke) {
+      void satzSenden(app, text, () => {
+        const v = erkenne(app, text);
+        if (!v) return false;
+        app.chat.vorschlag = v;
+        app.chat.nachrichten.push({ von: 'ki', text: '', schluessel: 'chat.antwort.vorschlag' });
+        return true;
+      });
+      return;
+    }
     const v = erkenne(app, text);
     if (v) {
       app.chat.vorschlag = v;
@@ -100,16 +119,28 @@ export function wirkungenRegistrieren(app: App): void {
       app.chat.nachrichten.push({ von: 'ki', text: '', schluessel: 'chat.antwort.unklar' });
     }
   });
-  app.registriere('chat.uebernehmen', () => {
+  app.registriere('chat.uebernehmen', (par) => {
+    const karte = offeneKarte(app, par.karte);
+    if (karte) return uebernehmen(app, karte);
     const v = app.chat.vorschlag;
     if (!v) return false;
     app.chat.vorschlag = null;
     for (const b of v.befehle) app.ausfuehren(b.id, b.parameter, 'chat', 'ki');
     app.chat.nachrichten.push({ von: 'ki', text: '', schluessel: 'chat.antwort.erledigt' });
   });
-  app.registriere('chat.verwerfen', () => {
+  app.registriere('chat.verwerfen', (par) => {
+    const karte = offeneKarte(app, par.karte);
+    if (karte) return verwerfenKarte(app, karte);
     app.chat.vorschlag = null;
     app.chat.nachrichten.push({ von: 'ki', text: '', schluessel: 'chat.antwort.verworfen' });
+  });
+  app.registriere('ki.anbieter-waehlen', (par) => {
+    if (!app.ki.bruecke) return false;
+    const id =
+      typeof par.id === 'string'
+        ? par.id
+        : (app.ki.anbieter.find((a) => a.verfuegbar && a.id !== app.ki.aktiv)?.id ?? 'regel');
+    void anbieterWaehlen(app, id);
   });
 }
 
