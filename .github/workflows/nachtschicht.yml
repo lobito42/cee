@@ -13,9 +13,8 @@ name: Nachtschicht
 # auto-merge.yml, nicht hier. Ist das Kontingent erschöpft, endet die Runde ohne weiteren Verbrauch.
 # Zeitbudget je Lauf: neue Runden starten nur in den ersten 150 Minuten.
 
+# Ausgeschaltet seit 2026-11-04 (ADR-067): keine geplanten Läufe mehr, nur noch von Hand startbar.
 on:
-  schedule:
-    - cron: "17 1,4,7,10,13,16,19,22 * * *"   # alle 3 Stunden, täglich; GitHub startet geplante Läufe oft später
   workflow_dispatch:
 
 concurrency:

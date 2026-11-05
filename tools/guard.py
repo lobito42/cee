@@ -9,6 +9,7 @@ Was ein Agent schreiben darf, ergibt sich aus dem Branch:
   neu/<id>     Neuzuschnitt in einem Schritt: openspec/changes/<id>/, tests/acceptance/<id>/, tests/golden/
   archiv/<id>  nur Archivieren: openspec/changes/<id>/ (Verschieben), changes/archive/, openspec/specs/
   fix/<grund>  Produktcode und tests/unit/ – aber keinen Vertrag (main reparieren, rote PRs, Hausmeister)
+  runde/<thema> Runde nach docs/plan.md (ADR-067): Produktcode, tests/acceptance|golden/<thema>/
   adr/<thema>  Kernteam-Dateien (ADRs, Regeln, Werkzeug); gemergt wird erst nach dem Ja des Menschen (ADR-064)
   sonst        Produktcode, aber keinen Vertrag
 
@@ -63,7 +64,7 @@ CORE_ONLY = (
     "sdk/LICENSE",
     "format/LICENSE",
 )
-BRANCH_RE = re.compile(r"^(?:claude/)?(spec|tests|change|neu|archiv|fix|adr)/([a-z0-9][a-z0-9-]*)$")
+BRANCH_RE = re.compile(r"^(?:claude/)?(spec|tests|change|neu|archiv|fix|adr|runde)/([a-z0-9][a-z0-9-]*)$")
 
 
 def run_git(*args: str, cwd: Path | None = None) -> str:
@@ -120,10 +121,12 @@ def reason(rel: str, branch: str, role: str = "") -> str | None:
 
     acceptance = re.match(r"^tests/acceptance/([^/]+)/", rel)
     if acceptance:
-        if kind in ("tests", "neu") and acceptance.group(1) == cid:
+        if kind in ("tests", "neu", "runde") and acceptance.group(1) == cid:
             return None
         return f"{rel}: Abnahmetests schreibt man nur auf Branch tests/{acceptance.group(1)}"
 
+    if kind == "runde" and rel.startswith((f"tests/golden/{cid}/", f"tests/ui-reference/{cid}/")):
+        return None
     if rel.startswith(("tests/golden/", "tests/ui-reference/")):
         return None if kind in ("tests", "neu") else f"{rel}: Referenzdaten nur auf tests/<id> oder neu/<id>"
 

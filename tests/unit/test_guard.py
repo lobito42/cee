@@ -39,9 +39,17 @@ ALLOWED = [
     ("tools/guard.py", "adr/mensch-entscheidet"),
     (".github/workflows/ci.yml", "adr/mensch-entscheidet"),
     ("AGENTS.md", "claude/adr/mensch-entscheidet"),
+    # ADR-067: kurze Runden – Produktcode und eigene Prüfungen im selben Branch
+    ("worker/src/cee_worker/bauplan.py", "runde/bauplan"),
+    ("tests/acceptance/bauplan/test_regler.py", "runde/bauplan"),
+    ("tests/golden/bauplan/halter.json", "runde/bauplan"),
 ]
 
 BLOCKED = [
+    ("tests/acceptance/anderes/test_x.py", "runde/bauplan"),
+    ("tests/golden/anderes/x.json", "runde/bauplan"),
+    ("AGENTS.md", "runde/bauplan"),
+    ("tests/unit/test_x.py", "runde/bauplan"),
     ("tests/acceptance/conftest.py", "change/ap-17-identitaet"),  # Prüfbericht H1
     ("conftest.py", "change/ap-17-identitaet"),  # Nachprüfung: Wurzel-conftest
     ("tests/conftest.py", "change/ap-17-identitaet"),
