@@ -71,4 +71,4 @@ Geschützter Bereich: Änderungen nur durch das Kernteam. Status-Werte: vorgesch
 | [ADR-065](ADR-065-bedienkonzept-fensteraufbau.md) | Bedienkonzept – Fensteraufbau nach Apple-Gerüst mit VS-Code-Leisten | vorgeschlagen |
 | [ADR-066](ADR-066-zustand-in-drei-schichten.md) | Zustand in drei Schichten – Eingaben, Rechenergebnis, Ansicht | vorgeschlagen |
 | [ADR-067](ADR-067-neuausrichtung-geometrie-als-code.md) | Neuausrichtung – Geometrie als Code, parametrisch und editierbar | akzeptiert, geändert durch ADR-068 |
-| [ADR-068](ADR-068-auf-solidcraft-aufsetzen.md) | Auf SolidCraft aufsetzen – CAD-Kern nutzen, nicht nachbauen | akzeptiert |
+| [ADR-068](ADR-068-auf-solidcraft-aufsetzen.md) | Auf SolidCraft aufsetzen – eigene Kopie mit Abgleich, Zusammenarbeit und Vorschläge als Fundament | akzeptiert |

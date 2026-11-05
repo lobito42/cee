@@ -2,9 +2,9 @@
 
 Gilt für Claude Code, OpenCode und Pi. CEE (Collaborative Engineering Environment) soll für kleine und mittlere
 Unternehmen werden, was Blender und OpenSCAD für ihre Communities sind. **Aktuelle Richtung (ADR-067, ADR-068):
-parametrisch und editierbar, auf SolidCraft aufgesetzt.** Den CAD-Kern liefert SolidCraft (freies Rust-CAD, über
-`solidcraft-cli` und MCP); CEE baut, was fehlt: Prüfer (Rollen, Bereiche, prüfbar parametrisch), KI auf Ebene der
-Absicht mit Vorschlag und Vorschau, später Zusammenarbeit und Freigaben.
+parametrisch und editierbar, auf einer eigenen Kopie von SolidCraft.** Den CAD-Kern liefert SolidCraft (freies
+Rust-CAD), als Kopie, die sich regelmäßig abgleicht; CEE baut, was fehlt: Prüfer, Zusammenarbeit (nach FigCraft),
+Vorschläge mit Vorschau, KI als Teilnehmer, Freigaben und PLM/ERP. Gemeinsames Fundament ist der Änderungssatz.
 
 ## Zu Beginn jeder Sitzung
 
