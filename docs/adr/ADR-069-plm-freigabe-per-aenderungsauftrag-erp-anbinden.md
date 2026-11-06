@@ -2,7 +2,7 @@
 
 - Status: akzeptiert
 - Datum: 2026-11-06
-- Entscheider: Kernteam (Ja im Gespräch, 2026-11-06: „Ja zu PLM/ERP“)
+- Entscheider: Kernteam (Ja im Gespräch, 2026-11-06: „Ja zu PLM/ERP“; „Ja“ zu vse als erster Anbindung)
 - Ergänzt: ADR-068 Punkt 3 (Freigabe und PLM); bestätigt ADR-047 und ADR-048
 
 ## Kontext
@@ -24,12 +24,15 @@ Versand ab 2027 bei über 800.000 € Umsatz, ab 2028 für fast alle).
    Nur Menschen geben frei.
 2. **Sachnummern** aus Kategorie, laufender Nummer und Variante; Stücklisten als Text (Ideen aus gitplm, kein
    Code ohne Lizenzprüfung nach ADR-034).
-3. **ERP wird angebunden, nicht gebaut.** Erste Anbindung: InvenTree (MIT) über das offene Austauschformat und die
-   Ereignisse aus ADR-048; danach Odoo Community, dann ERPNext, je nach Bedarf. Die Aufgabenteilung aus ADR-048
-   gilt unverändert (CEE führt Produktdefinition und Konstruktions-Stückliste, das ERP Lager, Preise, Aufträge und
-   Fertigungs-Stückliste).
+3. **ERP wird angebunden, nicht gebaut.** Erste Anbindung ist **vse** (eigenes Projekt des Kernteams,
+   `lobito42/vse`, Elixir): Es führt Bestand, Preise, Aufträge und Belegkette und hat Teile mit Revision, Status und
+   konfigurierbare Stückliste schon; es fehlt die Übergabe von außen. CEE liefert den freigegebenen Stand samt
+   Stückliste im offenen Austauschformat in `format/` (Apache-2.0), vse nimmt jede Revision als Teil auf. Danach
+   InvenTree (MIT), Odoo Community, ERPNext je nach Bedarf. Die Aufgabenteilung aus ADR-048 gilt unverändert (CEE
+   führt Geometrie und Konstruktions-Stückliste, das ERP Lager, Preise, Aufträge und Fertigungs-Stückliste).
+   Solange vse keine Lizenz hat, werden nur Ideen und Wörter geteilt, kein Code.
 4. **Reihenfolge im Plan:** Runde 5 Freigabe (Änderungsauftrag, Revision, Sachnummer, Prüfbericht), Runde 6
-   Anbindung an InvenTree. E-Rechnung gehört ins ERP, nicht in CEE.
+   Anbindung an vse. E-Rechnung gehört ins ERP, nicht in CEE.
 
 ## Folgen
 

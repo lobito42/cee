@@ -40,10 +40,11 @@ Was du ausprobierst: Eine Änderung wird als Änderungsauftrag vorgelegt (Vorher
 Prüferergebnis) und von dir freigegeben. Erst dabei entsteht die Revision (A, B, …): Teilenummer aus Kategorie,
 laufender Nummer und Variante, unveränderlich, mit Prüfbericht und STEP/STL. Stückliste als Text.
 
-## Runde 6 – Anbindung an ein ERP (ADR-069)
+## Runde 6 – Anbindung an vse als erstes ERP (ADR-069)
 
-Was du ausprobierst: Ein freigegebenes Teil mit Stückliste erscheint als Teil im ERP InvenTree (Teile, Lager,
-Stücklisten); eine Änderung der Freigabe gibt dort ein Ereignis. Weitere ERP (Odoo Community, ERPNext) nach Bedarf.
+Was du ausprobierst: Ein freigegebenes Teil mit Stückliste erscheint als Teil in vse (Revision, Stückliste); eine
+Bestellung dort zeigt auf genau diese Revision; eine neue Freigabe gibt ein Ereignis. Weitere ERP (InvenTree, Odoo
+Community, ERPNext) nach Bedarf.
 
 ## Danach (Reihenfolge offen)
 
