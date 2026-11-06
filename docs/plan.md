@@ -34,14 +34,20 @@ oder Verwerfen. Zusammenarbeit nach dem Vorbild von FigCraft (ADR-068).
 Die KI sitzt mit in der Sitzung und macht nur Vorschläge, zum Beispiel „Bohrungen für M5 und die Platte 2 mm
 dicker“. Modell frei wählbar; lokal, sobald schnell genug.
 
-## Runde 5 – Freigabe: der Anfang von PLM
+## Runde 5 – Freigabe: der Anfang von PLM (ADR-069)
 
-Ein Stand wird freigegeben: Teilenummer, Revision A, unveränderlich, mit Prüfbericht und STEP/STL. Danach
-Stückliste und Ereignisse für PLM/ERP.
+Was du ausprobierst: Eine Änderung wird als Änderungsauftrag vorgelegt (Vorher/Nachher, geänderte Größen,
+Prüferergebnis) und von dir freigegeben. Erst dabei entsteht die Revision (A, B, …): Teilenummer aus Kategorie,
+laufender Nummer und Variante, unveränderlich, mit Prüfbericht und STEP/STL. Stückliste als Text.
+
+## Runde 6 – Anbindung an ein ERP (ADR-069)
+
+Was du ausprobierst: Ein freigegebenes Teil mit Stückliste erscheint als Teil im ERP InvenTree (Teile, Lager,
+Stücklisten); eine Änderung der Freigabe gibt dort ein Ereignis. Weitere ERP (Odoo Community, ERPNext) nach Bedarf.
 
 ## Danach (Reihenfolge offen)
 
-PLM/ERP-Schnittstelle, KI baut neue Teile aus einer Beschreibung, langlebige Entwürfe, Fachpakete (Raum, Akustik).
+KI baut neue Teile aus einer Beschreibung, langlebige Entwürfe, Fachpakete (Raum, Akustik).
 
 ## Ruht (ADR-067, ADR-068)
 
