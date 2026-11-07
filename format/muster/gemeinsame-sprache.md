@@ -1,45 +1,78 @@
-# Gemeinsame Sprache für CEE und das KMU-Projekt (Entwurf)
+# Gemeinsame Sprache für CEE und das ERP-Projekt (Entwurf)
 
-Lizenz: Apache-2.0 (wie `format/`). Status: **Entwurf zum Lesen, noch nichts gebaut.** Grundlage ist die Übergabe
-vom 2026-11-06; das zweite Projekt (End-to-End-Software für kleine und mittlere Unternehmen) ist hier noch nicht
-gesichtet, die Muster sind deshalb bewusst abstrakt und aus ADR-047/048/069 abgeleitet.
+Lizenz: Apache-2.0 (wie `format/`). Status: **Entwurf zum Lesen, noch nichts gebaut.** Grundlage sind ADR-047, 048,
+057, 058, 069 und die Vorgaben des Kernteams vom 2026-11-07 zu Kennungen und Beziehungen. Das zweite Projekt ist ein
+eigenes, privates ERP-Projekt des Kernteams; Einzelheiten daraus stehen hier bewusst nicht.
 
 ## Idee
 
-Zwei Projekte, eine Sprache: Wer ein Teil konstruiert, eine Rezeptur entwickelt oder ein Leistungsverzeichnis
-schreibt, tut sechs Dinge, die in jeder Branche gleich heißen können. Wenn beide Projekte diese sechs Muster mit
-denselben Wörtern und Feldern beschreiben, können Daten und Werkzeuge (Prüfer, Freigabe, ERP-Anbindung) geteilt
-werden, ohne dass eines das andere übernehmen muss. Zusammengelegt wird erst, wenn beide Projekte denselben Code
-schreiben würden.
+Zwei Projekte, eine Sprache: Wer ein Teil konstruiert, eine Spezifikation schreibt oder eine Rezeptur entwickelt,
+tut sieben Dinge, die in jeder Branche gleich heißen können. Beschreiben beide Projekte sie mit denselben Wörtern
+und Feldern, lässt sich ein freigegebener Stand übergeben, ohne umzurechnen. Zusammengelegt wird erst, wenn beide
+Projekte denselben Code schreiben würden.
 
-## Die sechs Muster
+## Die sieben Bausteine
 
-| Muster | Wort | Kern | Konstruktion | Bäckerei | Handwerk |
-| --- | --- | --- | --- | --- | --- |
-| 1 | **Item** | Etwas Benanntes mit stabiler Nummer, das es einmal gibt | Teil, Baugruppe | Brötchen, Rohstoff | Leistung, Material |
-| 2 | **Struktur** | Ein Item besteht aus anderen Items mit Menge und Einheit | Stückliste | Rezeptur | Leistungsverzeichnis |
-| 3 | **Variante** | Ein Item in Ausprägungen, die sich in benannten Größen unterscheiden | Länge, Farbe | Größe, Sorte | Ausführung |
-| 4 | **Änderung** | Vorschlag → Prüfung → Entscheidung eines Menschen | Änderungsauftrag | neue Rezeptur | geändertes Angebot |
-| 5 | **Freigabestand** | Unveränderlicher Stand mit Revision, Prüfbericht und Datum | Revision A | Rezeptur Version 3 | Angebot Stand 2026-11 |
-| 6 | **Übergabe** | Ein Freigabestand geht an Produktion oder Vertrieb, als Ereignis | an ERP/Fertigung | an Produktionsplanung | an Rechnung/Auftrag |
+| Nr. | Baustein | Kern | Beispiele |
+| --- | --- | --- | --- |
+| 1 | **Element** | Etwas Benanntes mit **technischer ID**, **lesbarer ID**, **Name** und **Beschreibung** | Teil, Baugruppe, Spezifikation, Anforderung, Rezeptur |
+| 2 | **Beziehung** | Verbindung zwischen Elementen mit eigener Art (und Menge mit Einheit oder Formel, wo es passt) | Baugruppe → Bauteilverwendung; Spezifikation → Anforderungen |
+| 3 | **Lebenszyklus** | Status je Elementart und Regeln, was in welchem Status angelegt, gelesen, geändert, gelöscht werden darf | in Arbeit → freigegeben → ausgelaufen |
+| 4 | **Variante** | Dasselbe Element in Ausprägungen, die sich in benannten Größen oder Merkmalen unterscheiden | Länge, Farbe, Sorte |
+| 5 | **Änderung** | Vorschlag → Prüfung → Entscheidung eines Menschen | Änderungsauftrag |
+| 6 | **Freigabestand** | Unveränderlicher Stand mit Revision, Prüfbericht und Datum | Revision A |
+| 7 | **Übergabe** | Ein Freigabestand geht an Produktion oder Vertrieb, als Ereignis | an ERP, Fertigung |
 
-## Regeln (gelten für alle sechs)
+## Kennungen (Baustein 1)
 
-1. **Jede Zahl ist eine Größe mit Einheit** (ADR-057). Keine nackten Zahlen.
-2. **Nummern sind stabil und tragen keine Bedeutung, die sich ändern kann**; Adressen beruhen auf der ID (ADR-058).
-3. **Nur Menschen geben frei** (ADR-047); Agenten und KI machen Vorschläge (Muster 4).
+Jedes Element hat drei Arten von Kennzeichnung:
+
+1. **Technische ID.** Unveränderlich, maschinell vergeben, nie bedeutungstragend, wird dem Menschen nicht
+   angezeigt. Adressen und Beziehungen beruhen auf ihr (ADR-058). Sie muss auch bei gleichzeitigem Anlegen durch
+   zwei Bearbeiter kollisionsfrei sein (siehe Zusammenarbeit, Runde 3).
+2. **Menschenlesbare ID.** Darf sich logisch aus mehreren Bestandteilen zusammensetzen, zum Beispiel **Stamm-ID**,
+   **Version** (Revision) und **Dokumentationsversion**. Aufbau, Vergabe, Prüfziffer oder Zeichenvorrat sind
+   **individuelle Regeln je Elementart** (und je Firma). Die lesbare ID ist eine Anzeige- und Suchhilfe; die
+   technische ID bleibt die Wahrheit.
+3. **Name und Beschreibung.** Frei, änderbar, mehrsprachig denkbar; keine Identität.
+
+## Lebenszyklus und CRUD (Baustein 3)
+
+Pro Elementart gibt es eigene Regeln: Welche Status gibt es, welche Übergänge sind erlaubt, wer darf anlegen,
+ändern, verwerfen (nicht löschen, ADR-051/052), und welche Teile der lesbaren ID ändern sich bei welchem Übergang
+(zum Beispiel erhöht eine technische Änderung die Version, eine reine Dokumentationsänderung die
+Dokumentationsversion). Die Regeln sind Daten der Elementart, nicht Sonderwege im Code.
+
+## Beziehungen (Baustein 2)
+
+Beziehungen sind selbst beschrieben (Art, Richtung, Menge, Gültigkeit) und verbinden Elemente, die **jeweils
+eigene Revisionen und einen eigenen Lebenszyklus** haben. Beispiele:
+
+- Eine **Spezifikation** besteht aus **eigens revisionierten Anforderungen**, hat selbst einen Lebenszyklus und
+  kann Varianten haben.
+- Eine **Baugruppe** besteht aus **Bauteilverwendungen**; eine Verwendung nennt das Bauteil (mit Revision), Menge,
+  Gültigkeit und Position.
+- Eine Variante kann Beziehungen ein- oder ausschalten oder Mengen ändern.
+
+## Regeln (gelten für alle Bausteine)
+
+1. **Jede Zahl ist eine Größe mit Einheit** (ADR-057).
+2. **Technische IDs sind stabil**; die lesbare ID kann Bedeutung tragen, die sich ändert.
+3. **Nur Menschen geben frei** (ADR-047); Agenten und KI machen Vorschläge (Baustein 5).
 4. **Ein Freigabestand ändert sich nie.** Eine Änderung erzeugt immer einen neuen Stand.
-5. **Ein führendes System je Feld** (ADR-048): Jede Angabe hat genau ein System, das sie pflegt.
+5. **Ein führendes System je Feld** (ADR-048): CEE führt Geometrie und Konstruktions-Stückliste, das ERP Bestand,
+   Preise, Aufträge.
 6. **Offenes Textformat**, das sich in einer Versionsverwaltung lesen und vergleichen lässt.
 
-## Was dieser Entwurf noch nicht festlegt
+## Was noch offen ist
 
-- Feldnamen und Schema (kommt, wenn Runde 5 das Austauschformat in `format/` konkret macht, ADR-069).
-- Ob „Struktur“ Mengen nur zählt oder auch Rechenregeln erlaubt (Skalieren einer Rezeptur).
-- Wie Muster 3 (Variante) mit SolidCraft-Größen zusammenpasst (Größe mit Bereich, ADR-068).
-- Der Abgleich mit dem tatsächlichen Stand des zweiten Projekts.
-
-## Frage an den Menschen
-
-Soll das zweite Projekt die Wörter und Muster so übernehmen, oder passen die Wörter dort anders? Dafür fehlt der
-Zugriff auf das zweite Projekt (freiwillig).
+- **Freigabestand: Teil oder Aufbau?** Vorschlag: Ein Freigabestand ist immer ein Element mit allem, was darunter
+  hängt (bei einem einzelnen Teil dasselbe).
+- **Verweise:** Zeigt eine Beziehung fest auf eine Revision oder gleitend auf die jeweils aktuelle? Vorschlag:
+  beides möglich, im Freigabestand immer fest.
+- **Regeln als Daten:** Wie werden die individuellen Regeln für lesbare IDs und Lebenszyklen beschrieben (eigenes
+  kleines Regelformat), und wo liegen sie (Firma, Elementart)?
+- **Rechenregeln in Mengen** (Formeln) und **Merkmale mit Bereich** für Varianten: Vorschlag ja, passend zu
+  SolidCraft-Größen mit Bereich (ADR-068).
+- **Feldnamen und Schema:** kommen mit Runde 5, wenn das Austauschformat in `format/` konkret wird (ADR-069).
+- **Lizenz des ERP-Projekts:** offen; ohne Lizenz nur Wörter und Ideen.
