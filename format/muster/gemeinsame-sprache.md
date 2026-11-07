@@ -54,13 +54,36 @@ eigene Revisionen und einen eigenen Lebenszyklus** haben. Beispiele:
   Gültigkeit und Position.
 - Eine Variante kann Beziehungen ein- oder ausschalten oder Mengen ändern.
 
+## Verweise: fest, gleitend und die Auflösung bei der Transaktion
+
+Ein Verweis zeigt entweder **fest** auf eine Revision oder **gleitend** auf „Objekt X in der aktuellsten Version“
+(Vorgabe des Kernteams 2026-11-07). Beides ist auch im freigegebenen Zustand erlaubt. Festgeschrieben wird erst bei
+einer **tatsächlichen Transaktion**; dabei wird die **tatsächlich angezogene Version dokumentiert**.
+
+Zwei Beispiele aus dem Alltag:
+
+1. **Verhandlung mit einem Lieferanten (drei Monate).** Die Anforderungen und die Spezifikation ändern sich
+   währenddessen laufend. Die Anfrageunterlagen verweisen deshalb **gleitend** auf die Spezifikation und ihre
+   Anforderungen; sonst müsste man die Unterlagen ständig neu ausgeben. **Zur Vergabe** wird die Version
+   **fest dokumentiert**: Der Vergabebeleg trägt die tatsächlich gültige Revision von Spezifikation und
+   Anforderungen.
+2. **Rückwärtskompatibles Bauteil (Lagerbestand aufbrauchen).** Ein Bauteil wird aktualisiert, bleibt aber
+   innerhalb des **Austauschbarkeitskorridors** (Form, Passung, Funktion). Die **technische Freigabe nennt nur die
+   Bauteil-ID**. Welche Revision tatsächlich verbaut wird, schreibt erst die **Fertigung** fest (am Fertigungsauftrag
+   oder an der Entnahme), je nachdem, was im Lager liegt.
+
+Daraus folgt: Der **Auflöser** ist nicht überall derselbe. Bei der Vergabe löst ein Mensch auf, bei der Fertigung
+löst der Fertigungsauftrag auf. Jeder Verweis bekommt deshalb eine **Auflösungsregel** (wann, durch wen, nach welcher
+Auswahl, zum Beispiel „neueste freigegebene Revision im Korridor“). Das Ergebnis steht am Beleg, nicht im
+verweisenden Element.
+
 ## Regeln (gelten für alle Bausteine)
 
 1. **Jede Zahl ist eine Größe mit Einheit** (ADR-057).
 2. **Technische IDs sind stabil**; die lesbare ID kann Bedeutung tragen, die sich ändert.
 3. **Nur Menschen geben frei** (ADR-047); Agenten und KI machen Vorschläge (Baustein 5).
 4. **Ein Freigabestand ändert sich nie.** Eine Änderung erzeugt immer einen neuen Stand. Gleitende Verweise bleiben
-   dabei erlaubt; aufgelöst und festgehalten wird erst bei der Transaktion.
+   dabei erlaubt; aufgelöst und festgehalten wird erst bei der Transaktion, nie still.
 5. **Ein führendes System je Feld** (ADR-048): CEE führt Geometrie und Konstruktions-Stückliste, das ERP Bestand,
    Preise, Aufträge.
 6. **Offenes Textformat**, das sich in einer Versionsverwaltung lesen und vergleichen lässt.
@@ -69,12 +92,14 @@ eigene Revisionen und einen eigenen Lebenszyklus** haben. Beispiele:
 
 - **Freigabestand: Teil oder Aufbau?** Vorschlag: Ein Freigabestand ist immer ein Element mit allem, was darunter
   hängt (bei einem einzelnen Teil dasselbe).
-- **Verweise (Vorgabe des Kernteams 2026-11-07):** Es gibt beides: **fest** auf eine Revision und **gleitend** auf
-  „Objekt X in der aktuellsten Version“. Beides ist auch im freigegebenen Zustand möglich. Erst bei einer
-  **tatsächlichen Transaktion** (Bestellung, Übergabe, Fertigungsauftrag) wird aufgelöst und die **tatsächlich
-  angezogene Version dokumentiert**. Noch zu klären: wie der aufgelöste Stand festgehalten wird (am Beleg), was ein
-  Freigabestand mit gleitenden Verweisen verspricht (er ändert sich nie – aber was „aktuellste“ ist, schon), und
-  wann ein gleitender Verweis nachgezogen werden darf (Hinweis, Zustimmung, nie still).
+- **Austauschbarkeitskorridor:** Wie wird er je Element beschrieben (Form, Passung, Funktion als Prüfpunkte, die ein
+  Mensch beim Freigeben bestätigt)? Vorschlag: Eine Änderung innerhalb des Korridors ist eine neue Revision derselben
+  technischen Identität; eine Änderung außerhalb ist ein neues Element mit Verweis „ersetzt“.
+- **Auflösungsregel:** Welche Regeln gibt es (neueste freigegebene Revision, neueste im Korridor, ausdrücklich
+  gewählte), und wo wird die gezogene Version festgehalten (am Beleg)? Wann darf ein gleitender Verweis nachgezogen
+  werden (Hinweis oder Zustimmung, nie still)?
+- **Freigabestand mit gleitenden Verweisen:** Er selbst ändert sich nie; was „aktuellste“ bedeutet, kann sich ändern.
+  Zu klären, was er zusichert (Vorschlag: nur die Struktur und die Auflösungsregeln, nicht die Versionen).
 - **Regeln als Daten:** Wie werden die individuellen Regeln für lesbare IDs und Lebenszyklen beschrieben (eigenes
   kleines Regelformat), und wo liegen sie (Firma, Elementart)?
 - **Rechenregeln in Mengen** (Formeln) und **Merkmale mit Bereich** für Varianten: Vorschlag ja, passend zu
